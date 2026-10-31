@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultraman</title>
+<meta name="description" content="Build API pipelines step by step, see each response, put them under load and hand them to your agent. Free, local, files in your repo.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="lanes" aria-hidden="true">
+    <span class="lane top"></span>
+    <span class="lane mid"><span class="word">Ultraman</span></span>
+    <span class="lane bottom"></span>
+  </div>
+  <h1 class="sr">Ultraman</h1>
+
+  <div class="intro">
+    <p class="lede">Build an API test the way you'd explain it: log in, create an order, check it shows up. Then watch every step run, put it under load, and let your agent use it.</p>
+
+    <div class="install" data-os="mac">
+      <div class="oses" role="tablist" aria-label="Your system">
+        <button role="tab" id="tab-mac" aria-controls="cmd-mac" aria-selected="true" data-os="mac">macOS</button>
+        <button role="tab" id="tab-linux" aria-controls="cmd-linux" aria-selected="false" data-os="linux">Linux</button>
+        <button role="tab" id="tab-windows" aria-controls="cmd-windows" aria-selected="false" data-os="windows">Windows</button>
+      </div>
+      <div class="cmd" role="tabpanel" id="cmd-mac" aria-labelledby="tab-mac" data-os="mac">
+        <p class="where">In Terminal:</p>
+        <code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code>
+        <button class="copy" type="button">Copy</button>
+      </div>
+      <div class="cmd" role="tabpanel" id="cmd-linux" aria-labelledby="tab-linux" data-os="linux">
+        <p class="where">In a terminal:</p>
+        <code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code>
+        <button class="copy" type="button">Copy</button>
+      </div>
+      <div class="cmd" role="tabpanel" id="cmd-windows" aria-labelledby="tab-windows" data-os="windows">
+        <p class="where">In PowerShell:</p>
+        <code>irm https://ultraman-app.github.io/install.ps1 | iex</code>
+        <button class="copy" type="button">Copy</button>
+      </div>
+      <p class="fine">It installs the app and the <code>ultraman</code> command for your user, with everything they need inside. Free, no account, no admin rights. Your pipelines are plain files in your repo.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="pipeline">
+    <h2>A pipeline is a file in your repo</h2>
+    <figure class="drawn">
+      <div class="scroll" tabindex="0" aria-label="The diagram; scrolls sideways on small screens"><!-- diagram --><svg class="diagram" viewBox="0 0 1429 194" width="1429" height="194" role="img" aria-label="The create order pipeline as a diagram: 6 steps left to right, with the checks under them"><path class="edge seq" style="--i:1" d="M170,78 C210,78 190,78 230,78"/><path class="edge seq" style="--i:1" d="M223,74 L230,78 L223,82"/><path class="edge seq" style="--i:2" d="M380,78 C420,78 400,78 440,78"/><path class="edge seq" style="--i:2" d="M433,74 L440,78 L433,82"/><path class="edge seq" style="--i:3" d="M590,78 C630,78 610,78 650,78"/><path class="edge seq" style="--i:3" d="M643,74 L650,78 L643,82"/><path class="edge seq" style="--i:5" d="M800,78 C840,78 820,78 860,78"/><path class="edge seq" style="--i:5" d="M853,74 L860,78 L853,82"/><path class="edge seq" style="--i:6" d="M1010,78 C1050,78 1030,78 1070,78"/><path class="edge seq" style="--i:6" d="M1063,74 L1070,78 L1063,82"/><path class="edge data" style="--i:1" d="M95,56 C95,24 305,24 305,56"/><path class="edge data" style="--i:1" d="M298,52 L305,56 L298,60"/><text class="etxt" x="200" y="52" text-anchor="middle">$.token</text><path class="edge data" style="--i:2" d="M95,56 C95,24 515,24 515,56"/><path class="edge data" style="--i:2" d="M508,52 L515,56 L508,60"/><text class="etxt" x="305" y="52" text-anchor="middle">$.user_id</text><path class="edge data" style="--i:5" d="M725,56 C725,24 935,24 935,56"/><path class="edge data" style="--i:5" d="M928,52 L935,56 L928,60"/><text class="etxt" x="830" y="52" text-anchor="middle">$.id</text><path class="edge data" style="--i:4" d="M800,78 L830,78 L830,134 L739.5,134 L739.5,140"/><path class="note" style="--i:4" d="M650,140 h171 l8,8 v26 h-179 z"/><text class="notetxt" x="660" y="161">status of $create = 201</text><path class="edge data" style="--i:7" d="M1220,78 L1250,78 L1250,134 L1239.5,134 L1239.5,140"/><path class="note" style="--i:7" d="M1070,140 h331 l8,8 v26 h-339 z"/><text class="notetxt" x="1080" y="161">contains of $list $[*].id contains {{order_id}}</text><rect class="box" style="--i:0" x="20" y="56" width="150" height="44" rx="6"/><text class="tag" x="30" y="73">request · POST</text><text class="name" x="30" y="90">login</text><rect class="box" style="--i:1" x="230" y="56" width="150" height="44" rx="6"/><text class="tag" x="240" y="73">extract</text><text class="name" x="240" y="90">token ← $.token</text><rect class="box" style="--i:2" x="440" y="56" width="150" height="44" rx="6"/><text class="tag" x="450" y="73">extract</text><text class="name" x="450" y="90">user_id ← $.user_…</text><rect class="box" style="--i:3" x="650" y="56" width="150" height="44" rx="6"/><text class="tag" x="660" y="73">request · POST</text><text class="name" x="660" y="90">create</text><rect class="box" style="--i:5" x="860" y="56" width="150" height="44" rx="6"/><text class="tag" x="870" y="73">extract</text><text class="name" x="870" y="90">order_id ← $.id</text><rect class="box" style="--i:6" x="1070" y="56" width="150" height="44" rx="6"/><text class="tag" x="1080" y="73">request · GET</text><text class="name" x="1080" y="90">list</text></svg><!-- /diagram --></div>
+      <figcaption>Log in, create an order, check it shows up in the list: <code>create order</code> as the window draws it. Dotted lines carry values from one step to the next; the checks hang below the step they check.</figcaption>
+    </figure>
+    <div class="twin">
+      <pre class="yaml" tabindex="0" aria-label="create-order.yaml"><code><span class="k">name:</span> create order
+<span class="k">host:</span> "{{env.api}}"
+<span class="k">auth:</span> { bearer: "{{token}}" }
+<span class="k">steps:</span>
+  - <span class="k">request:</span> login
+    <span class="k">method:</span> POST
+    <span class="k">path:</span> /auth/login
+    <span class="k">auth:</span> none
+    <span class="k">json:</span> { user: "{{env.test_user}}", password: "{{env.password}}" }
+  - <span class="k">extract:</span> token
+    <span class="k">from:</span> $login
+    <span class="k">path:</span> $.token
+  - <span class="k">extract:</span> user_id
+    <span class="k">from:</span> $login
+    <span class="k">path:</span> $.user_id
+  - <span class="k">request:</span> create
+    <span class="k">method:</span> POST
+    <span class="k">path:</span> /users/:userId/orders
+    <span class="k">params:</span> { userId: "{{user_id}}" }
+    <span class="k">json:</span> { sku: A-1, qty: 2 }
+  - <span class="k">assert:</span> status
+    <span class="k">of:</span> $create
+    <span class="k">equals:</span> 201
+  - <span class="k">extract:</span> order_id
+    <span class="k">from:</span> $create
+    <span class="k">path:</span> $.id
+  - <span class="k">request:</span> list
+    <span class="k">method:</span> GET
+    <span class="k">path:</span> /orders
+  - <span class="k">assert:</span> contains
+    <span class="k">of:</span> $list
+    <span class="k">path:</span> $[*].id
+    <span class="k">value:</span> "{{order_id}}"</code></pre>
+      <div class="copytext beside">
+        <p>Each step is a request, a value you take from a response, a check, a wait, a loop, or a block you reuse, like logging in. You build it in the window without writing YAML.</p>
+        <p>The YAML is what lands in git, next to your code. The team reviews it in a pull request, and the app syncs it with one button.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="run">
+    <div class="copytext">
+      <h2>Run it and read what happened</h2>
+      <p>From the window or from a terminal, every step says what it did. A failed check shows what it expected and what came back, with the full response a click away. Secrets never reach the output or the history.</p>
+    </div>
+    <pre class="narrated" tabindex="0" aria-label="The output of ultraman run create order"><code><span class="prompt">$ ultraman run "create order"</span>
+<span class="line"><span class="ok">  ✓</span> 1 request POST /auth/login · 200 · 16 ms</span>
+<span class="line"><span class="ok">  ✓</span> 2 extract token ← $.token from $login · bc6dcdac-3c80-484d-83d1-dedb0a905328</span>
+<span class="line"><span class="ok">  ✓</span> 3 extract user_id ← $.user_id from $login · u_ana</span>
+<span class="line"><span class="ok">  ✓</span> 4 request POST /users/:userId/orders · 201 · 3 ms</span>
+<span class="line"><span class="ok">  ✓</span> 5 assert status of $create = 201</span>
+<span class="line"><span class="ok">  ✓</span> 6 extract order_id ← $.id from $create · ord_2</span>
+<span class="line"><span class="ok">  ✓</span> 7 request GET /orders · 200 · 3 ms</span>
+<span class="line"><span class="ok">  ✓</span> 8 assert $[*].id of $list contains {{order_id}}</span>
+<span class="line total"><span class="ok">✓</span> create order · 8 steps · 28 ms</span></code></pre>
+  </section>
+
+  <section class="load">
+    <div class="copytext">
+      <h2>Then see if it holds</h2>
+      <p>The same pipeline, run by many users at once: steady, ramping up, or in a spike. The report starts with a verdict in plain words, then the numbers behind it.</p>
+    </div>
+    <div class="verdict">
+      <p class="vtitle">Holds</p>
+      <p class="vtext">p95 was 44.8 ms with up to 20 users and 602 requests per second, without errors.</p>
+      <p class="vfoot">A 20-second ramp of <code>create order</code> against the demo API on a laptop: 4,040 runs, 12,120 requests.</p>
+    </div>
+  </section>
+
+  <section class="ci">
+    <div class="copytext">
+      <h2>Run it in CI</h2>
+      <p>The same command installs only <code>ultraman</code> on a build machine. A failed check fails the job; secrets come from environment variables named <code>ULTRAMAN_SECRET_</code> plus the secret's name.</p>
+    </div>
+    <pre class="snippet" tabindex="0" aria-label="A GitHub Actions job"><code><span class="k">- run:</span> curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli
+<span class="k">- run:</span> ultraman run "create order" --env staging
+  <span class="k">env:</span>
+    <span class="k">ULTRAMAN_SECRET_PASSWORD:</span> ${{ secrets.API_PASSWORD }}</code></pre>
+  </section>
+
+  <section class="agent">
+    <div class="copytext">
+      <h2>Hand it to your agent</h2>
+      <p>Point Claude Code, Cursor or any MCP client at <code>ultraman mcp</code>. Your agent finds the pipelines you have, reuses your blocks to build new ones and runs them. Each call waits for your OK in the window, and it never sees a secret.</p>
+    </div>
+    <pre class="snippet" tabindex="0" aria-label="An MCP client's configuration"><code>{
+  <span class="k">"mcpServers"</span>: {
+    <span class="k">"ultraman"</span>: { <span class="k">"command"</span>: "ultraman", <span class="k">"args"</span>: ["mcp"] }
+  }
+}</code></pre>
+  </section>
+
+  <section class="small">
+    <div>
+      <h2>Why a download from the browser warns</h2>
+      <p>We don't pay for code signing yet. The commands above download with curl and PowerShell, which don't mark the file as coming from the internet, so macOS and Windows open it without asking. If you'd rather download the installer from the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest">releases page</a>, macOS asks you to allow it in System Settings, under Privacy &amp; Security, and Windows shows it behind More info, then Run anyway.</p>
+    </div>
+    <div>
+      <h2>Uninstall</h2>
+      <p>macOS: drag Ultraman out of <code>~/Applications</code> and delete <code>~/.local/share/ultraman</code> and <code>~/.local/bin/ultraman</code>.</p>
+      <p>Linux: delete <code>~/.local/share/ultraman</code>, <code>~/.local/bin/ultraman</code> and <code>~/.local/share/applications/ultraman.desktop</code>.</p>
+      <p>Windows: remove Ultraman from Settings, Apps, then delete <code>%LOCALAPPDATA%\ultraman-cli</code>.</p>
+      <p>Your saved secrets stay in <code>~/.ultraman</code> until you delete it too.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <svg class="mark" viewBox="0 0 24 18" width="24" height="18" aria-hidden="true"><path d="M0 0h24v3.5H9z"/><path d="M0 7.25h24v3.5H0z"/><path d="M0 14.5h15l9 3.5H0z"/></svg>
+  <p>Ultraman, built on <a href="https://github.com/AbeOrigin/UltraTon">UltraTon</a>.</p>
+  <p><a href="https://github.com/ultraman-app/ultraman-app.github.io/releases">All versions</a></p>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

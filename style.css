@@ -1,0 +1,159 @@
+/* Ultraman's page. Colors are the app's tokens (app/src/tokens.css): Day by default, Night when the system asks
+   for dark. The cobalt is a surface here, not an accent: the header is the mark's three stripes grown to the
+   page's width, with the name inside the middle one. */
+
+@font-face { font-family: "Archivo"; src: url(fonts/archivo-latin-wdth-normal.woff2) format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+@font-face { font-family: "Inter Tight"; src: url(fonts/inter-tight-latin-wght-normal.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url(fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2"); font-weight: 100 800; font-display: swap; }
+
+:root {
+  --bg: #F4F6FC; --surf: #FFFFFF; --surf2: #EAEEFA; --line: #DDE3F3;
+  --txt: #0B1030; --mut: #5A6285; --acc: #2E46FF; --acc-ink: #1F33D6;
+  --ok: #0F7A4C;
+  --deep: #1A2BC4;          /* the command's well inside the cobalt */
+  --term: #0B1030; --term-txt: #EEF1FF; --term-mut: #8A92B4; --term-ok: #3DDC97;
+  --grad-ok: radial-gradient(120% 150% at 88% 12%, #6E8BFF 0%, #2E46FF 30%, #1A2BC4 58%, #0A1260 100%);
+  --display: "Archivo", "Inter Tight", ui-sans-serif, sans-serif;
+  --font: "Inter Tight", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+  --gutter: clamp(16px, 5vw, 72px);
+  --mid: clamp(84px, 17vw, 250px);   /* the middle stripe, which holds the name */
+  --thin: calc(var(--mid) * .21);
+  --gap: calc(var(--thin) * 1.07);
+  --slant: calc(var(--thin) * 2.57); /* the mark's slanted ends: 9 over 3.5 */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #04050A; --surf: #0B0E1A; --surf2: #121628; --line: #1C2238;
+    --txt: #EEF1FF; --mut: #8A92B4; --acc-ink: #8E9DFF; --ok: #3DDC97;
+    --term: #0B0E1A;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--txt); font: 17px/1.55 var(--font); }
+a { color: var(--acc-ink); text-underline-offset: .18em; }
+code { font-family: var(--mono); font-size: .88em; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* The header: cobalt, the three stripes and the name. */
+.hero { background: var(--acc); color: #fff; padding: calc(var(--gutter) * .9) 0 clamp(48px, 8vw, 104px); overflow: hidden; }
+.hero :focus-visible { outline-color: #fff; }
+.lanes { display: grid; gap: var(--gap); }
+.lane { display: block; width: 100%; background: #fff; }
+.lane.top, .lane.bottom { height: var(--thin); }
+.lane.top { clip-path: polygon(0 0, 100% 0, 100% 100%, var(--slant) 100%); }
+.lane.bottom { clip-path: polygon(0 0, calc(100% - var(--slant)) 0, 100% 100%, 0 100%); }
+.lane.mid { height: var(--mid); display: flex; align-items: center; overflow: hidden; }
+.word {
+  font-family: var(--display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
+  font-size: calc(var(--mid) * 1.02); line-height: 1; letter-spacing: -.035em; color: var(--acc);
+  white-space: nowrap; padding-left: calc(var(--gutter) - .06em); transform: translateY(.04em);
+}
+
+.intro { padding: clamp(32px, 5vw, 64px) var(--gutter) 0; max-width: calc(46rem + var(--gutter) * 2); }
+.lede { font-size: clamp(19px, 2.1vw, 23px); line-height: 1.45; margin: 0 0 36px; max-width: 38ch; }
+
+.oses { display: flex; gap: 24px; margin-bottom: 12px; }
+.oses button { all: unset; cursor: pointer; font-weight: 600; color: rgb(255 255 255 / .84); padding: 4px 0; border-bottom: 2px solid transparent; }
+.oses button:hover { color: #fff; }
+.oses button[aria-selected="true"] { color: #fff; border-bottom-color: #fff; }
+.oses button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+/* Without JS the three commands show one under the other, and the tabs aren't there. */
+.oses { display: none; }
+.js .oses { display: flex; }
+.cmd { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; background: var(--deep); border-radius: 6px; padding: 14px 14px 14px 18px; margin-bottom: 12px; }
+.js .cmd { display: none; }
+.js .install[data-os="mac"] .cmd[data-os="mac"], .js .install[data-os="linux"] .cmd[data-os="linux"], .js .install[data-os="windows"] .cmd[data-os="windows"] { display: grid; }
+.cmd .where { grid-column: 1 / -1; margin: 0; font-size: 14px; color: rgb(255 255 255 / .82); }
+/* One line, as it gets pasted; it scrolls if the screen is narrower. */
+.cmd code { font-size: clamp(13px, 1.5vw, 15px); color: #fff; white-space: nowrap; overflow-x: auto; min-width: 0; padding-bottom: 4px; scrollbar-width: thin; scrollbar-color: rgb(255 255 255 / .45) transparent; }
+@media (max-width: 560px) { .cmd { grid-template-columns: minmax(0, 1fr); } .copy { justify-self: start; } }
+.copy { font: 600 14px var(--font); color: var(--acc); background: #fff; border: 0; border-radius: 4px; padding: 8px 14px; cursor: pointer; min-width: 76px; }
+.copy:hover { background: #E8EDFF; }
+.fine { font-size: 15px; color: rgb(255 255 255 / .9); margin: 18px 0 0; max-width: 58ch; }
+.fine code { color: #fff; }
+
+/* The rest: one column of text, real artifacts next to it. */
+main { padding: 0 var(--gutter); }
+section { padding: clamp(56px, 8vw, 112px) 0 0; }
+h2 { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-size: clamp(27px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -.015em; margin: 0 0 16px; max-width: 26ch; text-wrap: balance; }
+.copytext { max-width: 40rem; margin-bottom: 32px; }
+.copytext p { margin: 0; color: var(--mut); }
+.copytext code { color: var(--txt); }
+
+pre { margin: 0; font: 13.5px/1.6 var(--mono); overflow-x: auto; }
+pre code { font-size: inherit; }
+.yaml, .snippet { background: var(--surf); border: 1px solid var(--line); border-radius: 6px; padding: 20px 22px; }
+.yaml .k, .snippet .k { color: var(--acc-ink); }
+.snippet { max-width: 52rem; }
+
+.drawn { margin: 8px 0 40px; }
+.drawn .scroll { overflow-x: auto; padding: 4px 0 8px; }
+.drawn figcaption { font-size: 15px; color: var(--mut); margin-top: 12px; max-width: 62ch; }
+.drawn figcaption code { color: var(--txt); }
+/* As wide as the page allows; under 900 px it keeps its size and scrolls. */
+.diagram { display: block; width: 100%; min-width: 900px; height: auto; }
+.twin { display: grid; gap: 24px 48px; align-items: start; }
+@media (min-width: 960px) { .twin { grid-template-columns: minmax(0, 34rem) minmax(0, 1fr); } }
+.copytext.beside { margin: 0; }
+.copytext.beside p + p { margin-top: 14px; }
+.diagram .box { fill: var(--surf); stroke: var(--line); stroke-width: 1.5; }
+.diagram .tag { fill: var(--mut); font: 11px var(--mono); }
+.diagram .name { fill: var(--txt); font: 500 13px var(--mono); }
+.diagram .edge { fill: none; stroke: var(--mut); stroke-width: 1.5; }
+.diagram .edge.data { stroke-dasharray: 4 3; stroke: var(--acc); }
+.diagram .etxt, .diagram .notetxt { fill: var(--mut); font: 11px var(--mono); }
+.diagram .note { fill: var(--surf2); stroke: var(--line); }
+
+.narrated { background: var(--term); color: var(--term-txt); border-radius: 6px; padding: 22px 24px; max-width: 60rem; }
+.narrated .prompt { color: var(--term-mut); }
+.narrated .ok { color: var(--term-ok); }
+.narrated .total { font-weight: 700; }
+/* The one moment of motion: the run plays once, at its own pace, when it comes into view. */
+.js .narrated .line { opacity: 0; }
+.js .narrated.played .line { animation: show 1ms linear forwards; animation-delay: var(--at, 0ms); }
+@keyframes show { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .js .narrated .line { opacity: 1; } .js .narrated.played .line { animation: none; } }
+
+.verdict { position: relative; isolation: isolate; overflow: hidden; background: var(--grad-ok); color: #fff; border-radius: 8px; padding: clamp(24px, 4vw, 44px); max-width: 52rem; }
+/* The app's grain over the gradient. */
+.verdict::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .22; mix-blend-mode: overlay; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.vtitle { font-family: var(--display); font-stretch: 125%; font-weight: 800; font-size: clamp(44px, 6vw, 72px); line-height: 1; margin: 0 0 14px; }
+.vtext { font-size: clamp(18px, 2vw, 21px); margin: 0 0 22px; max-width: 34ch; }
+.vfoot { font-size: 14px; margin: 0; color: rgb(255 255 255 / .88); max-width: 52ch; }
+
+.small { display: grid; gap: 40px; padding-bottom: 24px; }
+@media (min-width: 900px) { .small { grid-template-columns: 1fr 1fr; gap: 64px; } }
+.small h2 { font-size: clamp(21px, 2.2vw, 25px); }
+.small p { color: var(--mut); margin: 0 0 10px; max-width: 58ch; }
+.small code { color: var(--txt); overflow-wrap: anywhere; }
+
+footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 48px var(--gutter) 56px; margin-top: 64px; border-top: 1px solid var(--line); color: var(--mut); font-size: 15px; }
+footer p { margin: 0; }
+footer .mark { fill: var(--acc); }
+
+/* Motion, only when the system doesn't ask for less. Two moments: the header traces itself once on load, and the
+   diagram runs once when it comes into view, step by step as in the app: cobalt while it runs, green when done. */
+@media (prefers-reduced-motion: no-preference) {
+  /* The width, not a scale: the name is uncovered instead of squeezed, and the bottom stripe's point travels. */
+  .js .lane { animation: trace 900ms cubic-bezier(.2, 0, 0, 1) both; }
+  .js .lane.mid { animation-delay: 70ms; }
+  .js .lane.bottom { animation-delay: 140ms; }
+  .js .word { animation: arrive 1000ms 260ms cubic-bezier(.2, 0, 0, 1) both; }
+
+  .js .diagram .box, .js .diagram .note { animation: step 560ms linear both paused; animation-delay: calc(var(--i) * 240ms); }
+  .js .diagram .edge.seq { animation: pass 420ms linear both paused; animation-delay: calc(var(--i) * 240ms - 160ms); }
+  .js .diagram.played .box, .js .diagram.played .note, .js .diagram.played .edge.seq { animation-play-state: running; }
+}
+@keyframes trace { from { width: 0; } }
+@keyframes arrive { from { opacity: 0; transform: translate(-5%, .04em); } }
+@keyframes step {
+  0% { stroke: var(--line); }
+  30%, 62% { stroke: var(--acc); stroke-width: 2.5; }
+  100% { stroke: var(--ok); stroke-width: 1.5; }
+}
+@keyframes pass { 50% { stroke: var(--acc); } }
