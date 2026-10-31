@@ -48,6 +48,23 @@
 
     # Everything is downloaded and checked before anything is touched: a failure leaves the previous install as it was.
     $sums = Get-Content (Get-Asset 'SHA256SUMS')
+
+    # The release's signature: with a release key (scripts/release-key.sh writes it into $releaseKey below; a test or a
+    # fork can pass ULTRAMAN_RELEASE_KEY), SHA256SUMS must come signed by its private key. Someone who replaces a release
+    # and its checksums without that key can't get it installed.
+    $releaseKey = ''
+    if ($env:ULTRAMAN_RELEASE_KEY) { $releaseKey = $env:ULTRAMAN_RELEASE_KEY }
+    if ($releaseKey) {
+      $sig = Join-Path $tmp 'SHA256SUMS.sig'
+      try { Invoke-WebRequest -UseBasicParsing -Uri "$base/SHA256SUMS.sig" -OutFile $sig }
+      catch { Fail "the release has no signature (SHA256SUMS.sig); nothing was changed" }
+      $rsa = New-Object Security.Cryptography.RSACryptoServiceProvider
+      try {
+        $rsa.FromXmlString($releaseKey)
+        $valid = $rsa.VerifyData([IO.File]::ReadAllBytes((Join-Path $tmp 'SHA256SUMS')), 'SHA256', [IO.File]::ReadAllBytes($sig))
+      } finally { $rsa.Dispose() }
+      if (-not $valid) { Fail "SHA256SUMS doesn't carry a valid signature from Ultraman's release key; nothing was changed" }
+    }
     function Get-Checked([string]$name) {
       $file = Get-Asset $name
       $line = $sums | Where-Object { ($_ -split '\s+', 2)[1] -replace '^\*', '' -eq $name } | Select-Object -First 1

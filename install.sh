@@ -56,9 +56,9 @@ if [ $os = macos ]; then app_asset=Ultraman-macos-$arch.dmg; else app_asset=Ultr
 tmp=$(mktemp -d "${TMPDIR:-/tmp}/ultraman.XXXXXX")
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
-fetch() { # url file
-  if command -v curl >/dev/null 2>&1; then curl -fsSL --retry 2 -o "$2" "$1" || fail "couldn't download $1"
-  elif command -v wget >/dev/null 2>&1; then wget -q -O "$2" "$1" || fail "couldn't download $1"
+fetch() { # url file [what to say if it can't]
+  if command -v curl >/dev/null 2>&1; then curl -fsSL --retry 2 -o "$2" "$1" || fail "${3:-couldn't download $1}"
+  elif command -v wget >/dev/null 2>&1; then wget -q -O "$2" "$1" || fail "${3:-couldn't download $1}"
   else fail "curl or wget is needed"
   fi
 }
@@ -78,6 +78,21 @@ checked() { # name
 
 # Everything is downloaded and checked before anything is touched: a failure leaves the previous install as it was.
 fetch "$base/SHA256SUMS" "$tmp/SHA256SUMS"
+
+# The release's signature: with a release key (scripts/release-key.sh writes it between the KEY lines below; a test or
+# a fork can pass ULTRAMAN_RELEASE_KEY), SHA256SUMS must come signed by its private key. Someone who replaces a release
+# and its checksums without that key can't get it installed.
+release_key=${ULTRAMAN_RELEASE_KEY:-}
+[ -n "$release_key" ] || release_key=$(cat <<'KEY'
+KEY
+)
+if [ -n "$release_key" ]; then
+  command -v openssl >/dev/null 2>&1 || fail "openssl is needed to check the release's signature"
+  fetch "$base/SHA256SUMS.sig" "$tmp/SHA256SUMS.sig" "the release has no signature (SHA256SUMS.sig); nothing was changed"
+  printf '%s\n' "$release_key" > "$tmp/release-key.pem"
+  openssl dgst -sha256 -verify "$tmp/release-key.pem" -signature "$tmp/SHA256SUMS.sig" "$tmp/SHA256SUMS" >/dev/null 2>&1 ||
+    fail "SHA256SUMS doesn't carry a valid signature from Ultraman's release key; nothing was changed"
+fi
 cli_tgz=$(checked "$cli_asset")
 app_file=
 [ -n "$cli_only" ] || app_file=$(checked "$app_asset")
