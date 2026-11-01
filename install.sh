@@ -84,6 +84,17 @@ fetch "$base/SHA256SUMS" "$tmp/SHA256SUMS"
 # and its checksums without that key can't get it installed.
 release_key=${ULTRAMAN_RELEASE_KEY:-}
 [ -n "$release_key" ] || release_key=$(cat <<'KEY'
+-----BEGIN PUBLIC KEY-----
+MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEApgC1Yv14KqDbjGS7St81
+bq2NQhxJpGqJOXOfjKDmeQRfUWqbHo3y+HDF5rtIrtT9WX7IA+j4IYPUsj77mHyE
+NBXFHjRZDgeqIyFvnRrhFL6XDPdkZGLahWhk20Oz5NWmacWFoO0tKb0t5Eu/wuin
+cBpPsdoFjGM1f23/TIH3BUVQe9hyPtzXM+lGCpUEfACHNW8NWHru6K5REQ6KnFdJ
+dfq6zfEaaplbS3Xq8HGzZhehdRIM7AeWwT6LwGUThjzM0jYpt/Cc4KyKye10upGx
+jtc5qKs9HXjO5PyMKfVHdPGJKD7WURAXU8nUUWKllmr3osInRSVyQOWts+FfXlKY
+KGrGFmd09A+Zxj0FN1v9ksBITYlhUvAr0yWyVYDOyKG4eWhIQ3eR9HQsrjIOEnRK
+KDX6LG2Ujd8uJCIssL1PJ/NKgR+ClbOk4jkVu1ymL6yRk/3ECMAB/qcKFS0LY7Io
+b1wV8RJcrW18DnEU/eRnXIUwZQKJOWrIpQdTl7Cvv6mxAgMBAAE=
+-----END PUBLIC KEY-----
 KEY
 )
 if [ -n "$release_key" ]; then

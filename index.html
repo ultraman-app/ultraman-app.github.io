@@ -29,13 +29,13 @@
   "description": "A free desktop app for testing APIs with pipelines of visible steps: run them, load-test them, run them in CI and hand them to AI agents over MCP.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Windows, macOS, Linux",
-  "softwareVersion": "0.1.0",
+  "softwareVersion": "0.2.0",
   "downloadUrl": "https://github.com/ultraman-app/ultraman-app.github.io/releases/latest",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
 <link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -163,6 +163,18 @@
 <span class="k">- run:</span> ultraman run "create order" --env staging
   <span class="k">env:</span>
     <span class="k">ULTRAMAN_SECRET_PASSWORD:</span> ${{ secrets.API_PASSWORD }}</code></pre>
+  </section>
+
+  <section class="vault">
+    <div class="copytext">
+      <h2>Your secrets stay locked</h2>
+      <p>Saved secrets are encrypted on your machine with a master password only you know. Nothing on disk opens them, so a program that copies the folder gets nothing it can use, and only the Ultraman window, or a terminal where you type the password, can unlock them. You can have this machine remember the password; the app tells you first what that costs on your system.</p>
+    </div>
+    <pre class="snippet" tabindex="0" aria-label="The secrets folder, and listing the secrets"><code><span class="k">$</span> ls ~/.ultraman
+secrets.enc  vault.json
+<span class="k">$</span> ultraman secret list
+Master password:
+api_token</code></pre>
   </section>
 
   <section class="agent">

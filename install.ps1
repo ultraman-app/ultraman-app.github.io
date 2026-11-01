@@ -52,7 +52,7 @@
     # The release's signature: with a release key (scripts/release-key.sh writes it into $releaseKey below; a test or a
     # fork can pass ULTRAMAN_RELEASE_KEY), SHA256SUMS must come signed by its private key. Someone who replaces a release
     # and its checksums without that key can't get it installed.
-    $releaseKey = ''
+    $releaseKey = '<RSAKeyValue><Modulus>pgC1Yv14KqDbjGS7St81bq2NQhxJpGqJOXOfjKDmeQRfUWqbHo3y+HDF5rtIrtT9WX7IA+j4IYPUsj77mHyENBXFHjRZDgeqIyFvnRrhFL6XDPdkZGLahWhk20Oz5NWmacWFoO0tKb0t5Eu/wuincBpPsdoFjGM1f23/TIH3BUVQe9hyPtzXM+lGCpUEfACHNW8NWHru6K5REQ6KnFdJdfq6zfEaaplbS3Xq8HGzZhehdRIM7AeWwT6LwGUThjzM0jYpt/Cc4KyKye10upGxjtc5qKs9HXjO5PyMKfVHdPGJKD7WURAXU8nUUWKllmr3osInRSVyQOWts+FfXlKYKGrGFmd09A+Zxj0FN1v9ksBITYlhUvAr0yWyVYDOyKG4eWhIQ3eR9HQsrjIOEnRKKDX6LG2Ujd8uJCIssL1PJ/NKgR+ClbOk4jkVu1ymL6yRk/3ECMAB/qcKFS0LY7Iob1wV8RJcrW18DnEU/eRnXIUwZQKJOWrIpQdTl7Cvv6mx</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>'
     if ($env:ULTRAMAN_RELEASE_KEY) { $releaseKey = $env:ULTRAMAN_RELEASE_KEY }
     if ($releaseKey) {
       $sig = Join-Path $tmp 'SHA256SUMS.sig'
