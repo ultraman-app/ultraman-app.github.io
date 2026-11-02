@@ -40,12 +40,14 @@ for (const b of document.querySelectorAll('.copy')) {
   });
 }
 
-// Each line shows up after the previous one, a little slower than the real run so it can be followed.
-const run = document.querySelector('.narrated');
-[...run.querySelectorAll('.line')].forEach((l, i) => l.style.setProperty('--at', `${180 + i * 140}ms`));
-new IntersectionObserver((entries, o) => {
-  if (entries.some(e => e.isIntersecting)) { run.classList.add('played'); o.disconnect(); }
-}, { threshold: .4 }).observe(run);
+// Each line shows up after the previous one, a little slower than the real run so it can be followed: the run and
+// the mock, each when it comes into view.
+for (const run of document.querySelectorAll('.narrated')) {
+  [...run.querySelectorAll('.line')].forEach((l, i) => l.style.setProperty('--at', `${180 + i * 140}ms`));
+  new IntersectionObserver((entries, o) => {
+    if (entries.some(e => e.isIntersecting)) { run.classList.add('played'); o.disconnect(); }
+  }, { threshold: .4 }).observe(run);
+}
 
 // The diagram runs once, like the window shows a run, when most of it is in view.
 const diagram = document.querySelector('.diagram');

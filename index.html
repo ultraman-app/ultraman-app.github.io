@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ultraman: API test pipelines you can see, run and load-test</title>
-<meta name="description" content="Ultraman is a free desktop app for testing APIs: build a pipeline step by step, see every response, put it under load, run it in CI and hand it to your AI agent over MCP. Pipelines are YAML files in your repo.">
+<meta name="description" content="Ultraman is a free desktop app for testing APIs: build a pipeline step by step, see every response, put it under load, mock it, run it in CI and hand it to your AI agent over MCP. Pipelines are YAML files in your repo.">
 <link rel="canonical" href="https://ultraman-app.github.io/">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#2E46FF">
@@ -35,7 +35,7 @@
 }
 </script>
 <link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -121,6 +121,7 @@
       <div class="copytext beside">
         <p>Each step is a request, a value you take from a response, a check, a wait, a loop, or a block you reuse, like logging in. You build it in the window without writing YAML.</p>
         <p>The YAML is what lands in git, next to your code. The team reviews it in a pull request, and the app syncs it with one button.</p>
+        <p>Coming from Postman? Import your collections and environments: folders, requests, auth and the usual test scripts come in as checks, and secret values go to the vault, never to a file.</p>
       </div>
     </div>
   </section>
@@ -142,6 +143,45 @@
 <span class="line total"><span class="ok">✓</span> create order · 8 steps · 28 ms</span></code></pre>
   </section>
 
+  <section class="checks">
+    <div class="copytext">
+      <h2>Checks that write themselves</h2>
+      <p><b>Generate checks</b> reads the response on screen and proposes its status and each field's type. Add a pattern or a JSON Schema where you need more. After every send, if a field went missing or changed type since the last time, a banner says so before your frontend finds out.</p>
+    </div>
+    <div class="artifact">
+      <pre class="yaml" tabindex="0" aria-label="A request's checks"><code><span class="c"># proposed by Generate checks</span>
+<span class="k">- assert:</span> status
+  <span class="k">equals:</span> 200
+<span class="k">- assert:</span> type
+  <span class="k">path:</span> $.qty
+  <span class="k">value:</span> number
+<span class="k">- assert:</span> exists
+  <span class="k">header:</span> X-Request-Id
+<span class="c"># added by hand</span>
+<span class="k">- assert:</span> matches
+  <span class="k">path:</span> $.id
+  <span class="k">value:</span> /^ord_/
+<span class="k">- assert:</span> schema
+  <span class="k">value:</span> schemas/order.json</code></pre>
+      <p class="drift" role="note"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1.5 15 14H1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v3.5M8 11.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>The response changed shape since the last send: <code>$.qty removed</code>, <code>$.id: string → number</code></span></p>
+    </div>
+  </section>
+
+  <section class="mock">
+    <div class="copytext">
+      <h2>A fake API from what you already sent</h2>
+      <p>Your frontend needs the API, and it's down, slow or not written yet. <code>ultraman mock</code> answers with the responses your sends got, per environment. What it has no recording for can go on to the real API. A route can play its recordings in order (pending, pending, done) or stay on the one you pin, and only pages on your own machine can call it.</p>
+    </div>
+    <pre class="narrated" tabindex="0" aria-label="The output of ultraman mock with a proxy"><code><span class="prompt">$ ultraman mock --proxy https://staging.example.com</span>
+<span class="line">POST /auth/login ← shop/login · 18:15</span>
+<span class="line">GET /orders ← shop/orders · 18:16</span>
+<span class="line"><span class="prompt">what has no recording goes to https://staging.example.com as it came</span></span>
+<span class="line"><span class="prompt">mock at http://127.0.0.1:4300 · environment local · Ctrl+C to stop</span></span>
+<span class="line">POST /auth/login → 200 · shop/login</span>
+<span class="line">GET /orders → 200 · shop/orders</span>
+<span class="line">GET /orders/ord_9 → 200 <span class="ok">· proxied</span></span></code></pre>
+  </section>
+
   <section class="load">
     <div class="copytext">
       <h2>Then see if it holds</h2>
@@ -157,10 +197,11 @@
   <section class="ci">
     <div class="copytext">
       <h2>Run it in CI</h2>
-      <p>The same command installs only <code>ultraman</code> on a build machine. A failed check fails the job; secrets come from environment variables named <code>ULTRAMAN_SECRET_</code> plus the secret's name.</p>
+      <p>The same command installs only <code>ultraman</code> on a build machine. <code>--all</code> or <code>--tag smoke</code> picks the pipelines, <code>--parallel 4</code> runs four at once and <code>--junit</code> writes the report your CI shows. A failed check fails the job; secrets come from environment variables named <code>ULTRAMAN_SECRET_</code> plus the secret's name.</p>
+      <p>On your machine, <code>--watch</code> runs again on every save and <code>--every 5m</code> on a schedule, with a system notification when a run fails or passes again.</p>
     </div>
     <pre class="snippet" tabindex="0" aria-label="A GitHub Actions job"><code><span class="k">- run:</span> curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli
-<span class="k">- run:</span> ultraman run "create order" --env staging
+<span class="k">- run:</span> ultraman run --all --parallel 4 --junit results.xml --env staging
   <span class="k">env:</span>
     <span class="k">ULTRAMAN_SECRET_PASSWORD:</span> ${{ secrets.API_PASSWORD }}</code></pre>
   </section>
@@ -169,6 +210,7 @@
     <div class="copytext">
       <h2>Your secrets stay locked</h2>
       <p>Saved secrets are encrypted on your machine with a master password only you know. Nothing on disk opens them, so a program that copies the folder gets nothing it can use, and only the Ultraman window, or a terminal where you type the password, can unlock them. You can have this machine remember the password; the app tells you first what that costs on your system.</p>
+      <p>Environments work the same way: shared values go to git, your own stay on this machine, and a secret one leaves only a reference in the file while its value lives in the vault.</p>
     </div>
     <pre class="snippet" tabindex="0" aria-label="The secrets folder, and listing the secrets"><code><span class="k">$</span> ls ~/.ultraman
 secrets.enc  vault.json
@@ -210,6 +252,6 @@ api_token</code></pre>
   <p><a href="https://github.com/ultraman-app/ultraman-app.github.io/releases">All versions</a></p>
 </footer>
 
-<script src="main.js" defer></script>
+<script src="main.js?v=2" defer></script>
 </body>
 </html>

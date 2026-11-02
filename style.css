@@ -10,6 +10,7 @@
   --bg: #F4F6FC; --surf: #FFFFFF; --surf2: #EAEEFA; --line: #DDE3F3;
   --txt: #0B1030; --mut: #5A6285; --acc: #2E46FF; --acc-ink: #1F33D6;
   --ok: #0F7A4C;
+  --warn: #8A4B00; --warn-bg: #FFF4E0; --warn-line: #F2D19B;
   --deep: #1A2BC4;          /* the command's well inside the cobalt */
   --term: #0B1030; --term-txt: #EEF1FF; --term-mut: #8A92B4; --term-ok: #3DDC97;
   --grad-ok: radial-gradient(120% 150% at 88% 12%, #6E8BFF 0%, #2E46FF 30%, #1A2BC4 58%, #0A1260 100%);
@@ -29,6 +30,7 @@
   :root {
     --bg: #04050A; --surf: #0B0E1A; --surf2: #121628; --line: #1C2238;
     --txt: #EEF1FF; --mut: #8A92B4; --acc-ink: #8E9DFF; --ok: #3DDC97;
+    --warn: #F5B454; --warn-bg: #1E1708; --warn-line: #4A3612;
     --term: #0B0E1A;
   }
 }
@@ -91,11 +93,13 @@ h2 { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-siz
 .copytext { max-width: 40rem; margin-bottom: 32px; }
 .copytext p { margin: 0; color: var(--mut); }
 .copytext code { color: var(--txt); }
+.copytext p + p { margin-top: 14px; }
 
 pre { margin: 0; font: 13.5px/1.6 var(--mono); overflow-x: auto; }
 pre code { font-size: inherit; }
 .yaml, .snippet { background: var(--surf); border: 1px solid var(--line); border-radius: 6px; padding: 20px 22px; }
 .yaml .k, .snippet .k { color: var(--acc-ink); }
+.yaml .c { color: var(--mut); }
 .snippet { max-width: 52rem; }
 
 .drawn { margin: 8px 0 40px; }
@@ -120,6 +124,12 @@ pre code { font-size: inherit; }
 .narrated { background: var(--term); color: var(--term-txt); border-radius: 6px; padding: 22px 24px; max-width: 60rem; }
 .narrated .prompt { color: var(--term-mut); }
 .narrated .ok { color: var(--term-ok); }
+
+/* What the app's banner says when a response changed shape since the last send. */
+.artifact { max-width: 34rem; }
+.drift { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; padding: 12px 14px; border: 1px solid var(--warn-line); border-radius: 6px; background: var(--warn-bg); color: var(--warn); font-size: 14.5px; line-height: 1.45; }
+.drift svg { flex: none; margin-top: 3px; }
+.drift code { color: inherit; white-space: nowrap; }
 .narrated .total { font-weight: 700; }
 /* The one moment of motion: the run plays once, at its own pace, when it comes into view. */
 .js .narrated .line { opacity: 0; }
@@ -138,16 +148,16 @@ pre code { font-size: inherit; }
 /* Wide screens: each section's words on the left and its artifact beside them, instead of one narrow column with
    half the screen empty. */
 @media (min-width: 1200px) {
-  .load, .vault, .agent { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
-  .load .copytext, .vault .copytext, .agent .copytext { margin-bottom: 0; }
-  .load h2, .vault h2, .agent h2 { max-width: 14ch; }
+  .checks, .load, .vault, .agent { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
+  .checks .copytext, .load .copytext, .vault .copytext, .agent .copytext { margin-bottom: 0; }
+  .checks h2, .load h2, .vault h2, .agent h2 { max-width: 14ch; }
 }
 /* The run's output and the CI job are the widest artifacts (~700 px): beside their words only when they fit without
    scrolling. */
 @media (min-width: 1400px) {
-  .run, .ci { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
-  .run .copytext, .ci .copytext { margin-bottom: 0; }
-  .run h2, .ci h2 { max-width: 14ch; }
+  .run, .mock, .ci { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
+  .run .copytext, .mock .copytext, .ci .copytext { margin-bottom: 0; }
+  .run h2, .mock h2, .ci h2 { max-width: 14ch; }
 }
 
 .small { display: grid; gap: 40px; padding-bottom: 24px; }
