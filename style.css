@@ -2,9 +2,9 @@
    for dark. The cobalt is a surface here, not an accent: the header is the mark's three stripes grown to the
    page's width, with the name inside the middle one. */
 
-@font-face { font-family: "Archivo"; src: url(fonts/archivo-latin-wdth-normal.woff2) format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
-@font-face { font-family: "Inter Tight"; src: url(fonts/inter-tight-latin-wght-normal.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url(fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2"); font-weight: 100 800; font-display: swap; }
+@font-face { font-family: "Unbounded"; src: url(fonts/unbounded-latin-wght-normal.woff2) format("woff2"); font-weight: 200 900; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url(fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2) format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url(fonts/atkinson-hyperlegible-mono-latin-wght-normal.woff2) format("woff2"); font-weight: 200 800; font-display: swap; }
 
 :root {
   --bg: #F4F6FC; --surf: #FFFFFF; --surf2: #EAEEFA; --line: #DDE3F3;
@@ -14,9 +14,9 @@
   --deep: #1A2BC4;          /* the command's well inside the cobalt */
   --term: #0B1030; --term-txt: #EEF1FF; --term-mut: #8A92B4; --term-ok: #3DDC97;
   --grad-ok: radial-gradient(120% 150% at 88% 12%, #6E8BFF 0%, #2E46FF 30%, #1A2BC4 58%, #0A1260 100%);
-  --display: "Archivo", "Inter Tight", ui-sans-serif, sans-serif;
-  --font: "Inter Tight", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+  --display: "Unbounded", "Atkinson Hyperlegible Next", ui-sans-serif, sans-serif;
+  --font: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --mono: "Atkinson Hyperlegible Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
   --gutter: clamp(16px, 5vw, 72px);
   /* The page's width: past it, the margins grow on both sides instead of the content running to the left. */
   --page: 80rem;
