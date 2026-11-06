@@ -160,6 +160,16 @@ pre code { font-size: inherit; }
   .run h2, .mock h2, .ci h2 { max-width: 14ch; }
 }
 
+/* Phones. Wider screens let the name run off the right edge on purpose, but a phone kept only "ULTRA": here the
+   stripes are sized so the whole word fits between the gutters (the word is ~7.4 times the stripe's height). Taps get
+   44 px, and the code boxes give some padding back to the code. */
+@media (max-width: 600px) {
+  :root { --mid: calc((100vw - 2 * var(--gutter)) / 7.6); }
+  .oses button { padding: 8px 0; }
+  .copy { min-height: 44px; }
+  .yaml, .snippet, .narrated { padding: 16px; }
+}
+
 .small { display: grid; gap: 40px; padding-bottom: 24px; }
 @media (min-width: 900px) { .small { grid-template-columns: 1fr 1fr; gap: 64px; } }
 .small h2 { font-size: clamp(21px, 2.2vw, 25px); }
