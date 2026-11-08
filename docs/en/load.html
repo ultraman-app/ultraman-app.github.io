@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Load · Ultraman docs</title>
+<meta name="description" content="Load (next to Run) tells you how many users, or how much traffic, your API can take before it slows down or fails. It opens the load screen of the pipeline on…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/load.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/load.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/load.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/load.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/load.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/load.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/load.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html" aria-current="page">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html" aria-current="page">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="load">Load <a class="self" href="#load" aria-label="Load">#</a></h1>
+<p><strong>Load</strong> (next to Run) tells you how many users, or how much traffic, your API can take before it slows down or fails. It opens the load screen of the pipeline on screen: each virtual user runs the whole pipeline in a loop, and if a step fails, that iteration counts as an error and the user starts another one.</p>
+<aside class="note"><p>Send load only to an API of your own, or one you have permission to test. The load screen shows the target before you start and says the same.</p></aside>
+<h2 id="test-file">A load test is a file <a class="self" href="#test-file" aria-label="A load test is a file">#</a></h2>
+<p>Its settings live in <code>ultraman/load-tests/&lt;name&gt;.yaml</code>, shared through git, so the same test runs the same way for everyone. The first time, Load creates one with 10 users for 30 seconds.</p>
+<h2 id="shape">The shape of the load <a class="self" href="#shape" aria-label="The shape of the load">#</a></h2>
+<p>The presets draw the planned users as you type:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Preset</th><th scope="col">Shape</th></tr></thead>
+<tbody>
+<tr><td>Steady</td><td>the same users all along</td></tr>
+<tr><td>Ramp-up and hold</td><td>grow, hold, come down (JMeter&#39;s thread group)</td></tr>
+<tr><td>Ramp</td><td>grow from 0 to the users</td></tr>
+<tr><td>Spike</td><td>a base and a sudden peak</td></tr>
+<tr><td>Arrival rate</td><td>N new iterations per second, whatever the API takes (Artillery&#39;s arrivalRate)</td></tr>
+<tr><td>Custom</td><td>your own stages</td></tr>
+</tbody>
+</table></div>
+<p><strong>Users</strong> (a closed model) answers &quot;does it hold this many people?&quot;. <strong>Arrival rate</strong> (an open model) answers &quot;does it hold this traffic?&quot;: if the API slows down, arrivals keep coming, like in production.</p>
+<p>With arrival rate, each arrival is a new user that runs one iteration. <strong>Max users</strong> (<code>maxUsers</code>, 100 unless the test says, at most 1000) is how many may be alive at once. An arrival that finds them all busy is <strong>dropped</strong>, never queued, and the report counts it. If more than 1% of the arrivals are dropped, the verdict says the rate wasn&#39;t reached. The report then has two latencies: the <strong>service time</strong> (from sending to the answer) and the <strong>response time</strong>, counted from when the arrival was due, so a slow start on this computer shows in it.</p>
+<h2 id="per-user">Per user <a class="self" href="#per-user" aria-label="Per user">#</a></h2>
+<p>Under <strong>More</strong>:</p>
+<ul>
+<li><strong>Setup block</strong>: runs once per user before its first iteration (log in once per user).</li>
+<li><strong>Before and after</strong>: a block once per test (seed data, clean up).</li>
+<li><strong>Cookies</strong>: each user has its own cookie jar.</li>
+<li><strong>Data file</strong>: a CSV or JSON inside the project; each row is one user&#39;s (or one iteration&#39;s) values.</li>
+<li><strong>Think time</strong> and <strong>pacing</strong>: pauses between iterations, and a minimum time per iteration.</li>
+<li><strong>Responses</strong>: by default only the bodies a check or extract reads are kept, to save memory.</li>
+</ul>
+<h2 id="live">While it runs <a class="self" href="#live" aria-label="While it runs">#</a></h2>
+<p>Live tiles and charts show requests per second, latency, errors and users. <strong>−N</strong>, <strong>+N</strong>, <strong>Hold</strong> and <strong>Resume</strong> change the load without stopping it. The strip <strong>This computer</strong> watches your own machine: if the generator is the bottleneck, the verdict says <code>limited</code> instead of blaming the API.</p>
+<h2 id="verdicts">The verdict <a class="self" href="#verdicts" aria-label="The verdict">#</a></h2>
+<p>The report starts with a verdict in words. They are:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Verdict</th><th scope="col">In plain words</th><th scope="col">Roughly when</th></tr></thead>
+<tbody>
+<tr><td>Holds</td><td>the API kept up</td><td>under 1% of the iterations failed and the latency didn&#39;t climb as users grew</td></tr>
+<tr><td>Queues</td><td>the API got slower instead of failing</td><td>the p95 of the last fifth of the test is over five times the first fifth&#39;s and at least 50 ms more, and the requests per second stopped growing with the users; in an arrival-rate test, also when more than 1% of the arrivals were dropped</td></tr>
+<tr><td>Rejects</td><td>the API answered errors</td><td>more than 1% of the iterations failed; it says when the errors started and with how many users</td></tr>
+<tr><td>Broken</td><td>the problem is the pipeline or the address, not the load</td><td>the first 20 iterations all failed; &quot;The target refuses connections&quot; when the server isn&#39;t reachable</td></tr>
+<tr><td>Too few iterations</td><td>not enough to conclude</td><td>fewer than 20 iterations ran; raise the time or the users</td></tr>
+<tr><td>Limited</td><td>this computer was the limit, so the numbers say little about the API</td><td>Ultraman&#39;s own thread, memory or connections were at their limit</td></tr>
+<tr><td>Protected</td><td>Ultraman stopped the test to protect this computer</td><td>memory was running out; what it measured up to then is in the report</td></tr>
+</tbody>
+</table></div>
+<p>A load never says &quot;holds&quot; on a computer that was at its limit: it says Limited. The <strong>This computer</strong> strip shows why.</p>
+<h2 id="report">The report <a class="self" href="#report" aria-label="The report">#</a></h2>
+<p>At the end, a verdict in words (it held, it queued, it broke…), the latencies (p50, p95, p99, max), throughput, errors per step with one failed request kept for each, where the time went, and APDEX if the test asks for it.</p>
+<ul>
+<li><strong>Thresholds</strong> (<code>p95: 500ms</code>, <code>errors: 1%</code>) pass or fail the run; <code>warn</code> levels only warn.</li>
+<li><strong>Compare with</strong> puts a report against an earlier one; <strong>Trend</strong> shows the last runs of the test.</li>
+<li><strong>Export</strong> writes a self-contained HTML page or CSV files.</li>
+</ul>
+<h2 id="idempotent">Responses that must not change <a class="self" href="#idempotent" aria-label="Responses that must not change">#</a></h2>
+<p>In a request&#39;s <strong>Options</strong>, <strong>always answers the same</strong> marks a request that should give the same answer every time (a product page, a lookup). Under load each answer, status and body, is compared with the first one for the same request. A different one fails that iteration, and the report shows how many times and the two answers. <strong>Ignore fields</strong> (<code>$.timestamp, $.meta.requestId</code>) leaves out what changes on purpose. In YAML it is <code>idempotent: true</code> or <code>idempotent: { ignore: [$.timestamp] }</code>. When a test discards response bodies, there is nothing to compare, and the report says &quot;not compared&quot;.</p>
+<h2 id="load-streams">Streams under load <a class="self" href="#load-streams" aria-label="Streams under load">#</a></h2>
+<p>A pipeline with <code>websocket</code> or <code>sse</code> steps is a load scenario like any other: each iteration opens its own connection, runs <code>send</code> and <code>receive</code> on it, and closes it (or the engine does at the iteration&#39;s end). Ten users who hold a socket for twenty seconds each waiting for three updates is a <code>repeat</code> around a <code>receive</code>; the demo has that test as <code>live orders</code>.</p>
+<p>With streams in the test, the report gains a <strong>Streams</strong> strip under the tiles: connections opened, how many were open at once and still open at the end (should be 0), messages received and sent, messages per second, how many streams the server closed (with the most common close code) and how many messages a size cap left out. The Users chart draws the open connections as a dotted line. A <code>receive</code> row in the steps table reports the <strong>time to the message</strong>, the stream&#39;s latency, with its own p95 and error rate.</p>
+<ul>
+<li><code>streamErrors: 0%</code> is a threshold on the connections the server closed mid-run and the messages it dropped; <code>steps: { update: { p95: 3s } }</code> bounds one <code>receive</code> by its name.</li>
+<li>Each stream buffers at most 1 MB under load, and the reader waits when that&#39;s full.</li>
+<li><strong>Export</strong> and <code>--csv</code> add <code>-streams.csv</code> with the strip&#39;s numbers.</li>
+<li>The <code>limited</code> verdict applies here too: a connection count is a machine limit like any other.</li>
+</ul>
+<h2 id="scenarios">Several scenarios <a class="self" href="#scenarios" aria-label="Several scenarios">#</a></h2>
+<p>A test can mix pipelines: three people browsing for each one checking out. Each scenario has its own stages, or they share the test&#39;s stages split by weight. The report has a row and a verdict per scenario.</p>
+<h2 id="workers">More than one thread <a class="self" href="#workers" aria-label="More than one thread">#</a></h2>
+<p>By default a load runs on one thread. When the <strong>This computer</strong> strip shows the thread at its limit and the verdict says <code>limited</code>, spread the users over more threads: <code>--workers N</code> (1 to 8) in <code>ultraman run --load</code>, or the <code>ULTRAMAN_LOAD_WORKERS</code> environment variable; the reports merge into one. A test with a before or after block runs on one thread.</p>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<p>The <a href="security.html#promise">promise</a> applies here as everywhere. What this part adds:</p>
+<ul>
+<li><strong>Whoever owns the API:</strong> the target is shown before the test starts, with a reminder to test only an API of your own.</li>
+<li><strong>You:</strong> brakes hold or stop users when your own computer is overloaded or low on memory, instead of freezing it.</li>
+<li><strong>Your team:</strong> a load test never holds a secret; its <code>inputs</code> can&#39;t carry <code>secrets.</code> or <code>env.</code> values. The reports in <code>ultraman/loads/</code> stay on your machine. See <a href="security.html#stored">where things are stored</a>.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="pipelines.html"><small>Previous</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Next</small><span>Environments and secrets</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

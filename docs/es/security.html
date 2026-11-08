@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Seguridad y consentimiento · Documentación de Ultraman</title>
+<meta name="description" content="Qué pregunta Ultraman antes de enviar algo, cómo mantiene tus secretos fuera de la vista y qué deja en tus manos: las promesas que podés comprobar, para vos…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/es/security.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/security.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/security.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/security.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Saltar al contenido</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/security.html" lang="en" hreflang="en">English</a>
+<a href="../es/security.html" lang="es" hreflang="es" aria-current="true">Español</a>
+<a href="../pt/security.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menú</summary>
+<nav aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html" aria-current="page">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html" aria-current="page">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="security">Seguridad y consentimiento <a class="self" href="#security" aria-label="Seguridad y consentimiento">#</a></h1>
+<p>Qué pregunta Ultraman antes de enviar algo, cómo mantiene tus secretos fuera de la vista y qué deja en tus manos: las promesas que podés comprobar, para vos, tu equipo y tu CI. No hay telemetría, ni analíticas, ni reportes de fallos, ni cuenta.</p>
+<h2 id="promise">La promesa <a class="self" href="#promise" aria-label="La promesa">#</a></h2>
+<p><strong>Ultraman nunca envía nada de forma insegura sin tu consentimiento explícito.</strong> En la práctica:</p>
+<ul>
+<li>un secreto va solo a un origen (esquema, host y puerto) al que dijiste que sí para ese secreto;</li>
+<li>un archivo sale sin preguntar solo desde <code>ultraman/files/</code>, la carpeta que tu proyecto comparte a propósito; cualquier otro archivo necesita un sí;</li>
+<li>una carpeta en la que no confiaste no envía nada y no ejecuta git;</li>
+<li>el valor de un secreto no se ve: en todos los lugares donde lo podrías leer, dice <code>[secret:name]</code>.</li>
+</ul>
+<p>Un sí es tuyo. Se guarda en tu computadora, nunca en el proyecto, así que quien escribió una pipeline no puede decir que sí por vos. Cuando Ultraman no puede preguntar (una terminal sin nadie adelante, un runner de CI), se detiene en vez de enviar. La única forma de saltear las preguntas es una que elegís vos: <code>--yes</code> en una terminal o <code>yes: true</code> en CI, pensadas para ramas que solo tu equipo puede cambiar.</p>
+<p><strong>Comprobalo vos mismo</strong>, en tu propio proyecto:</p>
+<ul>
+<li>Apuntá una request que use <code>{{secrets.x}}</code> a un host que no permitiste para ese secreto y apretá <strong>Enviar</strong>: la pregunta aparece antes de que salga nada. Apretá Esc y no se envía nada.</li>
+<li>Abrí <code>ultraman/.gitignore</code>: <code>runs/</code>, <code>loads/</code>, <code>mcp/</code>, <code>history/</code>, <code>.serve</code>, <code>local/</code> y <code>mock/</code> quedan fuera de git. Buscá <code>secrets.</code> en el proyecto: solo encontrás referencias como <code>{{secrets.token}}</code>, nunca un valor que Ultraman haya guardado.</li>
+<li>Mirá en <code>~/.ultraman</code>: los valores de los secretos se guardan solo cifrados, en <code>secrets.enc</code> (con <code>vault.json</code>); la misma carpeta tiene también archivos de texto plano como <code>trust.json</code> y la consulta de actualizaciones. Nada de eso está en el proyecto.</li>
+</ul>
+<p>El resto de esta página dice cómo funciona cada parte, a quién protege y <a href="security.html#limits">qué no cubre</a>.</p>
+<h2 id="consent">Cuándo pregunta Ultraman <a class="self" href="#consent" aria-label="Cuándo pregunta Ultraman">#</a></h2>
+<p>Ultraman pregunta antes de enviar un secreto a un origen que no permitiste para ese secreto en este proyecto, y antes de enviar un archivo de fuera de <code>ultraman/files/</code>. La pregunta nombra qué va adónde. La opción segura va primero y tiene el foco; Cancelar (o Esc) no envía nada.</p>
+<p><strong>Un secreto a un origen nuevo.</strong> La ventana pregunta &quot;¿Enviar el secreto <code>token</code> a <code>https://api.example.com</code>?&quot; y te recuerda que, si la request la escribió otra persona, tenés que revisar que el host sea tuyo. El valor en sí nunca se muestra.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Opción</th><th scope="col">Qué hace</th></tr></thead>
+<tbody>
+<tr><td><strong>Usar otro valor, solo esta vez</strong> (la opción por defecto)</td><td>Escribís un valor solo para este envío; el secreto guardado se queda en tu computadora.</td></tr>
+<tr><td><strong>Enviarlo, solo esta vez</strong></td><td>Sale esta vez; Ultraman vuelve a preguntar la próxima.</td></tr>
+<tr><td><strong>Permitir https://api.example.com para este secreto</strong></td><td>A partir de ahora, en este proyecto, este secreto va a ese origen sin preguntar.</td></tr>
+<tr><td><strong>Cancelar</strong></td><td>No se envía nada.</td></tr>
+</tbody>
+</table></div>
+<p>Un sí cubre un secreto y un origen: el mismo secreto a otro host o puerto vuelve a preguntar, y también otro secreto al mismo host. Cuando una request define su propio header <code>host</code>, también se pregunta por el origen que nombra ese header.</p>
+<p><strong>Un archivo de fuera de `ultraman/files/`.</strong> La ventana pregunta &quot;¿Enviar un archivo de fuera de ultraman/files?&quot;, con la ruta y adónde va, y dice que quien escribió la ruta eligió el archivo. <strong>Elegir el archivo</strong> (ventana de escritorio) te deja elegirlo vos, dentro del proyecto o copiado a él; <strong>Enviarlo y recordar este archivo</strong> deja que salga de ahora en más en este proyecto; Cancelar no envía nada.</p>
+<p><strong>En la terminal.</strong> <code>ultraman run</code> lista lo que la ejecución enviaría y a lo que todavía no dijiste que sí, nombra el archivo para mirar, y pregunta:</p>
+<pre tabindex="0"><code>  y  yes, just this once
+  a  always: allow these for this project
+  N  no, send nothing (default)</code></pre>
+<p>Enter, Ctrl+C o Ctrl+D es un no. En una carpeta en la que no confiaste, <code>a</code> también confía en ella. Si no hay una terminal donde preguntar, la ejecución se detiene con código de salida 2 antes de enviar nada. <code>--yes</code> dice que sí a todo en esa única ejecución y no recuerda nada; en CI, en cambio, listá qué puede ir adónde (<a href="security.html#ci">En CI</a>).</p>
+<p><strong>A quién protege:</strong> a vos, cuando corrés una request que escribió otra persona; a tu equipo, porque el cambio de un colega no puede apuntar tu secreto a un host nuevo sin que lo veas; y a CI, que se niega en vez de enviar.</p>
+<h2 id="trusted-folders">Carpetas de confianza y modo restringido <a class="self" href="#trusted-folders" aria-label="Carpetas de confianza y modo restringido">#</a></h2>
+<p>La primera vez que abrís una carpeta, Ultraman pregunta &quot;¿Confías en esta carpeta?&quot;: sus pipelines y requests pueden enviar tus secretos y archivos a cualquier servidor, y su configuración de git puede ejecutar comandos en tu computadora.</p>
+<ul>
+<li><strong>Abrir en modo restringido</strong> (la opción por defecto): la podés ver y editar. Ultraman no envía nada desde ahí, no ejecuta nada (ni requests, ni pipelines, ni tests de carga, ni streams, ni servidor mock) y no ejecuta git, así que no hay sincronización. Un candado de <strong>Modo restringido</strong> en la barra de arriba vuelve a preguntar cuando estés listo.</li>
+<li><strong>Confiar en esta carpeta</strong>: solo si sabés de dónde viene. Lo decidís una vez por carpeta, en esta computadora.</li>
+</ul>
+<p>Un agente no puede guardar, enviar ni correr nada en una carpeta en la que no confiaste. Tus carpetas de confianza se guardan en tu carpeta de Ultraman (<code>~/.ultraman/trust.json</code>), nunca en el proyecto.</p>
+<p>La confianza no es un cheque en blanco: en una carpeta de confianza, un secreto igual pregunta antes de ir a un origen nuevo, y un archivo de fuera de <code>ultraman/files/</code> igual pregunta antes de salir.</p>
+<p><strong>A quién protege:</strong> a vos, cuando abrís un repositorio que escribió otra persona. Git ejecuta lo que dice la configuración propia de un repositorio, así que Ultraman no lo ejecuta ahí hasta que confíes en la carpeta.</p>
+<h2 id="vault">La bóveda <a class="self" href="#vault" aria-label="La bóveda">#</a></h2>
+<p>Los valores de los secretos viven en una bóveda en tu computadora: <code>vault.json</code> y <code>secrets.enc</code> en <code>~/.ultraman/</code> (o en la carpeta que nombre <code>ULTRAMAN_HOME</code>). Nunca están en el proyecto, así que git nunca los lleva: un proyecto guarda solo referencias como <code>{{secrets.token}}</code>.</p>
+<ul>
+<li><strong>Cifrado.</strong> Una clave aleatoria cifra los secretos (AES-256-GCM). Esa clave se guarda solo envuelta por una clave derivada de tu contraseña maestra (scrypt). La contraseña necesita al menos 8 caracteres; una frase larga es mejor.</li>
+<li><strong>Bloqueo.</strong> La ventana pide la contraseña la primera vez que una ejecución necesita un secreto. La bóveda se vuelve a bloquear después de 30 minutos sin uso. El candado de arriba (<strong>Secretos: bloqueo, contraseña</strong>) la bloquea ahora o cambia la contraseña. Bloquearla también termina las sesiones WebSocket y SSE que leen un secreto de la bóveda.</li>
+<li><strong>Sin recuperación.</strong> Nadie puede abrir la bóveda sin la contraseña, Ultraman incluido. Si la olvidás, <strong>¿La olvidaste?</strong> borra todos los secretos guardados para que puedas empezar de nuevo.</li>
+<li><strong>Recordar en este equipo</strong> (solo en la ventana de escritorio, apagado por defecto) guarda la clave de la bóveda en el llavero de tu sistema para que la bóveda se abra sin preguntar. En Windows y Linux, otras apps que ejecutás pueden leer esa entrada; en macOS el Llavero pregunta primero. La terminal nunca lo usa: la CLI siempre pide la contraseña, o toma variables <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code> en su lugar (<a href="environments.html#secrets">Secretos</a>).</li>
+</ul>
+<p><strong>A quién protege:</strong> a vos, porque una copia de tu carpeta de Ultraman, un backup o un disco robado no abre tus secretos sin la contraseña; a tu equipo, porque los secretos nunca viajan por el repositorio.</p>
+<h2 id="redaction">Ocultamiento <a class="self" href="#redaction" aria-label="Ocultamiento">#</a></h2>
+<p>El valor de un secreto no aparece donde lo podrías leer: respuestas, historial, ejecuciones, reportes de carga, exportaciones (cURL, HTML, CSV), errores, la salida de la terminal y lo que recibe un agente. Se ve como <code>[secret:name]</code>.</p>
+<ul>
+<li><strong>También cuentan los valores hechos a partir de un secreto:</strong> un header de basic auth armado con él, el secreto codificado como URL o en base64, un valor que el servidor devuelve tal cual, y valores que pasan por variables, bloques, exports y extracts. Ultraman guarda hasta 256 valores así por cada pipeline y bloque de una ejecución; pasado eso, trata la variable entera como un secreto.</li>
+<li><strong>Se oculta antes de cortar.</strong> Un body largo se corta para que entre recién después de ocultar los secretos, así que nunca muestra la mitad de uno.</li>
+<li><strong>Los checks no pueden leer un secreto.</strong> Un assert, un <code>if</code>, el <code>where</code> de un stream o un extract por regex sobre una respuesta que devuelve un secreto se rechaza con un error en vez de correr: saber si pasó diría algo sobre el valor. Compará, en cambio, un valor que dé la respuesta.</li>
+</ul>
+<h2 id="files">Archivos que envía una request <a class="self" href="#files" aria-label="Archivos que envía una request">#</a></h2>
+<p>Solo los archivos de <code>ultraman/files/</code> salen sin preguntar. Esa es la carpeta que tu proyecto comparte a propósito: cuando elegís en la ventana un archivo de otro lado, Ultraman ofrece <strong>Copiarlo al proyecto</strong>, y la sincronización con git lo comparte con tu equipo.</p>
+<p>Cualquier otro archivo que lea una request (un body, una parte multipart, un mensaje de stream, una CA propia) pregunta una vez (<a href="security.html#consent">Cuándo pregunta Ultraman</a>) y no se usa hasta que digas que sí. Eso incluye archivos de otros lugares del repositorio, archivos y carpetas ocultos como <code>.env</code>, <code>.npmrc</code> o <code>.git</code> (incluso dentro de <code>ultraman/files/</code>), y las carpetas propias de esta computadora dentro de <code>ultraman/</code> (valores locales, historial, ejecuciones, reportes).</p>
+<p>Ultraman tampoco sigue enlaces simbólicos (ni junctions de Windows) dentro de <code>ultraman/</code>. Si un archivo de ahí es un enlace, un diálogo dice adónde apunta y no se guarda nada a través de él; <strong>Guardar como archivo normal aquí</strong> reemplaza el enlace en su lugar.</p>
+<p><strong>A quién protege:</strong> a vos, a tu equipo y a CI: una pipeline compartida o un pull request no pueden hacer que una request envíe tus claves SSH, un archivo <code>.env</code> o las credenciales de un checkout sin que alguien diga que sí.</p>
+<h2 id="redirects">Redirecciones <a class="self" href="#redirects" aria-label="Redirecciones">#</a></h2>
+<p>Cuando un servidor redirige una request a otro origen, Ultraman descarta los headers <code>authorization</code>, <code>cookie</code> y <code>proxy-authorization</code>. Si la request lleva un secreto en otro header, sus headers personalizados también se quedan atrás. Un 307 o 308 que reenviaría a otro origen un body que contiene un secreto no se sigue: recibís la redirección misma como respuesta. Una redirección de <code>https</code> a <code>http</code> se rechaza, y un handshake de WebSocket o SSE nunca sigue una redirección.</p>
+<p><strong>A quién protege:</strong> a vos: el sí que diste para un host no acompaña a una redirección hacia otro.</p>
+<h2 id="local-server">El servidor local <a class="self" href="#local-server" aria-label="El servidor local">#</a></h2>
+<p>La ventana, el comando <code>ultraman</code> y el puente del agente hablan con un servidor local por proyecto (<code>ultraman serve</code>). Escucha solo en <code>127.0.0.1</code>, y:</p>
+<ul>
+<li>responde solo a requests dirigidas a <code>127.0.0.1</code> o <code>localhost</code>, así que una página web no puede llegar a él haciendo que su propio nombre de dominio apunte a tu computadora;</li>
+<li>rechaza cambios de cualquier página web que no sea la propia ventana, y acepta solo JSON;</li>
+<li>necesita el token de sesión y el origen de la ventana para cada decisión: responder una pregunta de consentimiento, confiar en una carpeta, abrir la bóveda, aprobar la tarjeta de un agente, abrir un stream;</li>
+<li>le pide a cualquier otro que llame que pruebe que es la CLI de Ultraman, con una clave guardada en tu carpeta de Ultraman; la CLI verifica el servidor de la misma manera antes de entregarle una ejecución.</li>
+</ul>
+<p>La página de la ventana carga solo sus propios archivos y se conecta solo a esta computadora.</p>
+<p>El servidor mock también escucha en <code>127.0.0.1</code> y responde solo a páginas y programas de esta computadora. <code>ultraman mock --expose</code> lo abre a tu red, después de una advertencia que confirmás; la ventana y el agente no pueden hacer eso.</p>
+<p><strong>A quién protege:</strong> a vos: el servidor local rechaza una página web abierta en tu navegador, así que no puede hacer que Ultraman envíe tus secretos ni leer tu proyecto.</p>
+<h2 id="agents">Agentes <a class="self" href="#agents" aria-label="Agentes">#</a></h2>
+<p>Un agente de IA conectado mediante <code>ultraman mcp</code> trabaja con tu aprobación, tarjeta por tarjeta (<a href="agents.html#cards">Agentes</a>):</p>
+<ul>
+<li>cada llamada muestra una tarjeta en la ventana; ejecutar algo lleva dos, una para empezar y otra para entregarle el resultado al agente; solo las llamadas de solo lectura se pueden aprobar &quot;siempre&quot;, y solo para esa sesión;</li>
+<li>el agente puede usar <code>{{secrets.x}}</code> pero nunca ve ni define un valor; lo que recibe está oculto, y la tarjeta de entrega avisa cuando un resultado lleva tokens, cookies o headers de autenticación;</li>
+<li>solo puede enviar un secreto a un host que el proyecto ya nombra (un valor de entorno o el host de una pipeline), y la tarjeta de inicio lista cada secreto y origen que todavía no permitiste: aprobar la tarjeta los deja salir esa única vez;</li>
+<li>no puede desbloquear la bóveda, responder una pregunta de consentimiento, confiar en una carpeta, sincronizar con git ni borrar nada.</li>
+</ul>
+<p><strong>A quién protege:</strong> a vos, cuando algo que lee el agente intenta manejarlo: no se ejecuta ni sale nada sin tu clic.</p>
+<h2 id="ci">En CI <a class="self" href="#ci" aria-label="En CI">#</a></h2>
+<p>Un runner no tiene bóveda ni nadie a quien preguntarle. Los secretos vienen de variables <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code> (<a href="environments.html#ci-secrets">En CI</a>) y se ocultan como cualquier otro. Con la GitHub Action, la entrada <code>allow</code> lista qué secreto puede ir a qué origen; todo lo demás se rechaza antes de enviarse. <code>yes: true</code> (o <code>--yes</code>) apaga las preguntas: usalo solo para ramas en las que solo puede hacer push tu equipo. Acá también sale sin un sí solo <code>ultraman/files/</code>, y la acción se niega a correr junto al token de checkout del job. Los detalles están en <a href="ci.html">CI</a>.</p>
+<p><strong>A quién protege:</strong> a CI y a tu equipo: un pull request que apunta un secreto a un host nuevo falla en vez de enviarlo.</p>
+<h2 id="leaves-your-machine">Qué sale de tu computadora <a class="self" href="#leaves-your-machine" aria-label="Qué sale de tu computadora">#</a></h2>
+<p>Tus requests, a los hosts que nombran, bajo las reglas de arriba. Además de eso:</p>
+<ul>
+<li><strong>La consulta de actualizaciones.</strong> Cuando se abre la ventana, el servidor local le pregunta a GitHub cuál es la última versión de Ultraman, como máximo una vez por día. GitHub ve tu dirección IP; no se envía nada sobre vos ni sobre tus proyectos. Solo si existe una versión más nueva, la ventana de escritorio lee de GitHub los detalles de la actualización. No se descarga nada hasta que hagas clic en <strong>Actualizar y reiniciar</strong>, y una actualización se instala solo si lleva la firma de Ultraman. Definí <code>ULTRAMAN_NO_UPDATE_CHECK=1</code> en el entorno desde el que arrancás Ultraman para apagar las dos cosas.</li>
+<li><strong>La sincronización con git</strong>, a tu propio remoto, cuando sincronizás (solo carpetas de confianza).</li>
+<li><strong>El `--proxy` del servidor mock</strong>, a la URL que le des.</li>
+</ul>
+<p>No hay telemetría, ni analíticas, ni reportes de fallos, ni cuenta.</p>
+<h2 id="stored">Dónde se guarda cada cosa <a class="self" href="#stored" aria-label="Dónde se guarda cada cosa">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Dónde</th><th scope="col">Qué</th><th scope="col">En git</th></tr></thead>
+<tbody>
+<tr><td><code>ultraman/pipelines/</code>, <code>blocks/</code>, <code>envs/</code>, <code>requests/</code>, <code>files/</code>, <code>load-tests/</code></td><td>el proyecto compartido</td><td>sí</td></tr>
+<tr><td><code>ultraman/local/</code></td><td>los valores de entorno de esta computadora</td><td>no</td></tr>
+<tr><td><code>ultraman/history/</code>, <code>runs/</code>, <code>loads/</code>, <code>mcp/</code>, <code>mock/</code></td><td>historial, ejecuciones, reportes de carga, el registro de llamadas del agente, las elecciones del mock (con los secretos ya ocultos)</td><td>no</td></tr>
+<tr><td><code>~/.ultraman/vault.json</code>, <code>secrets.enc</code></td><td>la bóveda, cifrada</td><td>no, fuera del proyecto</td></tr>
+<tr><td><code>~/.ultraman/trust.json</code></td><td>tus carpetas de confianza y tus síes</td><td>no, fuera del proyecto</td></tr>
+<tr><td><code>~/.ultraman/serve-&lt;port&gt;.key</code>, <code>.token</code></td><td>cómo se identifican la CLI y la ventana ante el servidor local</td><td>no, fuera del proyecto</td></tr>
+<tr><td><code>~/.ultraman/update-check.json</code></td><td>la última consulta de actualizaciones</td><td>no, fuera del proyecto</td></tr>
+<tr><td>el llavero de tu sistema</td><td>la clave de la bóveda, solo con <strong>Recordar en este equipo</strong></td><td>no</td></tr>
+</tbody>
+</table></div>
+<p><code>ULTRAMAN_HOME</code> mueve <code>~/.ultraman</code> a otro lugar. En macOS y Linux los archivos que Ultraman escribe ahí los puede leer solo tu usuario; en Windows dependen de los permisos de tu perfil de usuario.</p>
+<h2 id="limits">Límites honestos <a class="self" href="#limits" aria-label="Límites honestos">#</a></h2>
+<p>Lo que Ultraman no protege, y qué hacer al respecto:</p>
+<ul>
+<li><strong>Una carpeta de confianza es de confianza.</strong> Confiar deja que sus requests corran y que se apliquen sus ajustes de git. Confiá en una carpeta solo cuando también correrías su código.</li>
+<li><strong>Tu computadora está fuera de alcance.</strong> Un programa que corre como vos puede leer de la memoria una bóveda desbloqueada o registrar la contraseña que escribís. Con <strong>Recordar en este equipo</strong> en Windows o Linux, otras apps que ejecutás pueden leer la clave: dejalo apagado en computadoras compartidas o sin administración.</li>
+<li><strong>Una contraseña maestra olvidada pierde los secretos.</strong> Es a propósito: no hay recuperación.</li>
+<li><strong>Solo se ocultan los secretos.</strong> Un token escrito en un header o en un valor de entorno es texto plano: se ve, se guarda en el historial y se sincroniza si está en un archivo compartido. Los valores de <code>ultraman/local/</code> quedan fuera de git pero no se ocultan. Hacé secreto cada credencial.</li>
+<li><strong>El ocultamiento funciona por valor.</strong> Ultraman reconoce un secreto en las formas que puede prever (tal cual, codificado como URL, base64, devuelto por el servidor); un servidor que lo transforma de otra manera devuelve algo que Ultraman no puede distinguir. Los secretos muy cortos se reconocen de menos formas: usá secretos largos. Y oculta valores, no nombres: un secreto que un servidor devuelve como nombre de un header se ve tal como es.</li>
+<li><strong>CI corre lo que dice el workflow.</strong> Un pull request que cambia el archivo del workflow mismo está fuera de lo que Ultraman puede verificar, y <code>yes: true</code> o <code>--yes</code> apagan las preguntas. Mantené tus secretos lejos de los pull requests de forks (<a href="ci.html">CI</a>).</li>
+<li><strong>Un agente con una shell</strong> también puede ejecutar comandos por su cuenta: las tarjetas de aprobación cubren solo lo que pasa por Ultraman.</li>
+<li><strong>Los instaladores no están firmados por Microsoft ni por Apple</strong>, así que tu sistema advierte la primera vez que abrís Ultraman. Lo que sí está firmado: las actualizaciones (verificadas contra una clave incorporada en la app) y los checksums de la versión que los scripts de instalación verifican antes de instalar. El comando de instalación de una línea ejecuta un script traído del sitio de Ultraman, así que para ese script confía en el sitio.</li>
+<li><strong>Sin auditoría independiente.</strong> Las revisiones de seguridad de Ultraman las hacen quienes lo construyen, antes de cada versión; ninguna parte externa lo auditó. Si tu política exige una antes de guardar credenciales en una herramienta, esa es hoy la respuesta honesta.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="getting-started.html"><small>Anterior</small><span>Primeros pasos</span></a><a rel="next" href="requests.html"><small>Siguiente</small><span>Requests</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+</body>
+</html>

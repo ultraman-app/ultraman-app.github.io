@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Importar · Documentação do Ultraman</title>
+<meta name="description" content="Os botões ao lado de Nova coleção (área de Requests) trazem o que você já tem: uma exportação do Postman, uma especificação OpenAPI, um plano do JMeter, um…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/pt/importing.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/importing.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/importing.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/importing.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/importing.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Ir para o conteúdo</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/importing.html" lang="en" hreflang="en">English</a>
+<a href="../es/importing.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/importing.html" lang="pt" hreflang="pt" aria-current="true">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentação">
+<ul>
+<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="why.html">Por que o Ultraman</a></li>
+<li><a href="getting-started.html">Primeiros passos</a></li>
+<li><a href="security.html">Segurança e consentimento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="importing.html" aria-current="page">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">O terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="faq.html">Perguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentação">
+<ul>
+<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="why.html">Por que o Ultraman</a></li>
+<li><a href="getting-started.html">Primeiros passos</a></li>
+<li><a href="security.html">Segurança e consentimento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="importing.html" aria-current="page">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">O terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="faq.html">Perguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="importing">Importar <a class="self" href="#importing" aria-label="Importar">#</a></h1>
+<p>Os botões ao lado de <strong>Nova coleção</strong> (área de Requests) trazem o que você já tem: uma exportação do Postman, uma especificação OpenAPI, um plano do JMeter, um script do Artillery ou uma gravação do navegador, para você não começar do zero. Nada no projeto é sobrescrito: um nome já usado ganha <code>-2</code>. No fim, um resumo diz o que entrou, o que foi adaptado, o que precisa de uma mão e quais arquivos foram pulados.</p>
+<h2 id="postman">Do Postman <a class="self" href="#postman" aria-label="Do Postman">#</a></h2>
+<p>O botão de importar aceita coleções (v2.0, v2.1), ambientes e globais exportados do Postman. Pastas, requests, bodies, auth (bearer, basic, API key), variáveis e descrições entram como estavam. Os segredos dos ambientes vão para o cofre, nunca para um arquivo. Scripts de teste comuns (status, equals, includes, tempo de resposta, <code>pm.environment.set</code>) viram checks; o resto fica nas <strong>Notas</strong> da request.</p>
+<h2 id="openapi">Do OpenAPI <a class="self" href="#openapi" aria-label="Do OpenAPI">#</a></h2>
+<p><strong>API</strong> aceita um documento OpenAPI 3 (JSON ou YAML) e faz uma coleção: uma request por operação, com bodies de exemplo e checks de contrato (status e formato da resposta).</p>
+<h2 id="jmeter">Do JMeter <a class="self" href="#jmeter" aria-label="Do JMeter">#</a></h2>
+<p><strong>JMX</strong> aceita um plano <code>.jmx</code>: uma pipeline por Thread Group, um bloco de preparação a partir de um Once Only Controller, um ambiente a partir das User Defined Variables e um teste de carga com um cenário por grupo. O que não se traduz (scripts, alguns controllers) aparece listado como &quot;precisa de uma mão&quot;, com o seu texto.</p>
+<h2 id="artillery">Do Artillery <a class="self" href="#artillery" aria-label="Do Artillery">#</a></h2>
+<p><strong>ART</strong> aceita um script do Artillery (<code>.yml</code> ou <code>.json</code>): pipelines, blocos antes/depois, ambientes e um teste de carga com as fases como etapas e pesos. Processors e hooks são listados, não executados.</p>
+<h2 id="from-traffic">De tráfego gravado <a class="self" href="#from-traffic" aria-label="De tráfego gravado">#</a></h2>
+<p><strong>De um arquivo HAR…</strong> (área de Pipelines) transforma uma gravação do navegador numa pipeline. No Chrome ou no Firefox: DevTools › Network › clique direito › <strong>Save all as HAR</strong>. O Ultraman mantém as chamadas à API, encontra os valores que uma resposta passa para a seguinte (um id, um token) e os transforma em extracts visíveis, para a pipeline voltar a funcionar em vez de repetir valores antigos.</p>
+<aside class="note"><p>Uma gravação pode conter senhas e tokens: o Ultraman troca por <code>{{secrets.x}}</code> os que ele conhece do seu cofre, mas leia a proposta antes de salvar.</p></aside>
+<h2 id="never">O que uma importação nunca faz <a class="self" href="#never" aria-label="O que uma importação nunca faz">#</a></h2>
+<p>Uma importação só lê o arquivo que você escolheu e escreve arquivos no seu projeto. Nunca envia uma request, nunca lê nenhum outro arquivo do seu disco, nunca busca um endereço citado dentro do arquivo (um <code>$ref</code> do OpenAPI para uma URL é anotado, não seguido), nunca expande entidades XML num <code>.jmx</code> e nunca executa um script: scripts de teste do Postman, processors do JMeter e hooks do Artillery são listados em &quot;precisa de uma mão&quot; com o seu texto, e só os casos comuns e simples viram checks.</p>
+<aside class="note"><p>Um arquivo de outra pessoa pode conter qualquer coisa, mas importá-lo é tão seguro quanto abri-lo como texto. Revise o que entrou antes de executar: a primeira execução é o que envia.</p></aside>
+<h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
+<ul>
+<li><strong>Você:</strong> importar não envia nada e não executa nada; a primeira request só sai quando você a envia ou executa, com o sim de sempre para qualquer segredo. Veja <a href="security.html#consent">consentimento</a>.</li>
+<li><strong>Você e seu time:</strong> os valores secretos de um ambiente do Postman vão para o cofre, nunca para um arquivo do projeto. Num HAR, os valores que batem com o seu cofre viram <code>{{secrets.x}}</code>; leia a proposta antes de salvar, porque uma gravação pode conter senhas que você nunca guardou. Veja <a href="security.html#vault">o cofre</a>.</li>
+<li><strong>Você:</strong> uma pipeline que veio de fora continua sem poder ler um segredo num check, nem enviar um arquivo de fora de <code>ultraman/files/</code> sem que ninguém peça. Veja <a href="security.html#files">arquivos</a>.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="environments.html"><small>Anterior</small><span>Ambientes e segredos</span></a><a rel="next" href="mock.html"><small>Seguinte</small><span>Servidor mock</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+</body>
+</html>

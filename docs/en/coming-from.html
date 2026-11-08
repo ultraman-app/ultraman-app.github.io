@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Coming from another tool · Ultraman docs</title>
+<meta name="description" content="Some ideas have the same name here, some have another, and a few don&#39;t exist on purpose.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/coming-from.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/coming-from.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/coming-from.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/coming-from.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/coming-from.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/coming-from.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/coming-from.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/coming-from.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html" aria-current="page">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html" aria-current="page">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="coming-from">Coming from another tool <a class="self" href="#coming-from" aria-label="Coming from another tool">#</a></h1>
+<p>Some ideas have the same name here, some have another, and a few don&#39;t exist on purpose.</p>
+<h2 id="postman">From Postman <a class="self" href="#postman" aria-label="From Postman">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Postman</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td>Collection, folder, request</td><td>the same, in the Requests area</td></tr>
+<tr><td>Environment, globals</td><td>environment (shared values + this machine&#39;s)</td></tr>
+<tr><td>Secret variable</td><td>a secret in the vault: <code>{{secrets.x}}</code></td></tr>
+<tr><td><code>{{variable}}</code></td><td><code>{{env.x}}</code>, <code>{{secrets.x}}</code> or <code>{{x}}</code> (session, collection variable)</td></tr>
+<tr><td>Tests (<code>pm.test</code>)</td><td>checks: assert and extract, no code</td></tr>
+<tr><td><code>pm.environment.set</code> from a response</td><td>an extract</td></tr>
+<tr><td>Collection Runner</td><td><strong>Run</strong> in the collection&#39;s menu, or <code>ultraman run --collection</code></td></tr>
+<tr><td>Flows</td><td>pipelines</td></tr>
+<tr><td>Mock servers (cloud)</td><td>the mock server, local, from your history</td></tr>
+<tr><td>Workspaces, sync</td><td>git: <strong>Sync</strong></td></tr>
+<tr><td>Pre-request scripts</td><td>not on purpose: functions (<code>{{random.uuid}}</code>, <code>hmac.sha256</code>) and blocks cover the common cases</td></tr>
+</tbody>
+</table></div>
+<h2 id="jmeter">From JMeter <a class="self" href="#jmeter" aria-label="From JMeter">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">JMeter</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td>Test plan</td><td>a load test (<code>ultraman/load-tests/</code>)</td></tr>
+<tr><td>Thread Group</td><td>a scenario: a pipeline with its stages</td></tr>
+<tr><td>Number of threads, ramp-up, duration</td><td>stages: <code>{ users: 50, for: 60s }</code></td></tr>
+<tr><td>Loop count</td><td><code>iterations</code></td></tr>
+<tr><td>Once Only Controller</td><td>a setup block (once per user)</td></tr>
+<tr><td>setUp / tearDown Thread Group</td><td><code>before</code> / <code>after</code> (once per test)</td></tr>
+<tr><td>HTTP Request sampler</td><td>a request step</td></tr>
+<tr><td>Regular Expression / JSON Extractor</td><td>an extract (<code>regex:</code> or <code>path:</code>)</td></tr>
+<tr><td>Response Assertion</td><td>an assert</td></tr>
+<tr><td>CSV Data Set Config</td><td>a data file</td></tr>
+<tr><td>HTTP Cookie Manager</td><td>cookies per user (on by default)</td></tr>
+<tr><td>Constant Timer, Uniform Random Timer</td><td>think time</td></tr>
+<tr><td>Constant Throughput Timer</td><td>pacing, or an arrival rate</td></tr>
+<tr><td>If Controller</td><td>the <code>if</code> step</td></tr>
+<tr><td>User Defined Variables</td><td>an environment</td></tr>
+<tr><td>Listeners, Aggregate Report</td><td>the report: verdict, latencies, errors per step</td></tr>
+<tr><td>BeanShell / JSR223</td><td>not on purpose; what can&#39;t be translated is listed when you import a <code>.jmx</code></td></tr>
+</tbody>
+</table></div>
+<h2 id="artillery">From Artillery <a class="self" href="#artillery" aria-label="From Artillery">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Artillery</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td><code>config.target</code></td><td>the pipeline&#39;s host, or an environment</td></tr>
+<tr><td><code>phases</code> with <code>arrivalRate</code></td><td>stages with <code>rate:</code> (the Arrival rate preset)</td></tr>
+<tr><td><code>phases</code> with <code>rampTo</code></td><td>stages that go from one rate to another</td></tr>
+<tr><td><code>scenarios</code> with <code>weight</code></td><td>scenarios mixed by weight</td></tr>
+<tr><td><code>flow</code></td><td>a pipeline&#39;s steps</td></tr>
+<tr><td><code>capture</code></td><td>an extract</td></tr>
+<tr><td><code>expect</code> plugin</td><td>asserts</td></tr>
+<tr><td><code>ensure</code></td><td>thresholds</td></tr>
+<tr><td><code>payload</code></td><td>a data file</td></tr>
+<tr><td><code>before</code> / <code>after</code></td><td><code>before</code> / <code>after</code> blocks</td></tr>
+<tr><td><code>think</code></td><td>think time, or a <code>wait</code> step</td></tr>
+<tr><td><code>config.environments</code></td><td>environments</td></tr>
+<tr><td>processors, hooks</td><td>not on purpose; listed when you import</td></tr>
+</tbody>
+</table></div>
+<h2 id="streams-from">Streams <a class="self" href="#streams-from" aria-label="Streams">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Tool</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td>Postman&#39;s WebSocket request</td><td>a stream request in the Requests area (<strong>New WebSocket or SSE</strong>)</td></tr>
+<tr><td>Postman&#39;s saved messages</td><td>the request&#39;s <strong>Messages</strong> tab</td></tr>
+<tr><td>k6 <code>ws.connect</code>, <code>socket.on(&#39;message&#39;)</code></td><td>a <code>websocket</code> step and a <code>receive</code></td></tr>
+<tr><td>Artillery&#39;s <code>ws</code> engine: <code>send</code>, <code>match</code></td><td>a <code>send</code> step and a <code>receive</code> with <code>where</code></td></tr>
+<tr><td>Gatling <code>ws(&quot;x&quot;).connect</code>, <code>await.on(check)</code></td><td>the same: <code>websocket</code>, <code>receive</code> with <code>where</code></td></tr>
+<tr><td>JMeter&#39;s WebSocket Samplers: open, write, read, close</td><td>the four steps: <code>websocket</code>, <code>send</code>, <code>receive</code>, <code>close</code></td></tr>
+<tr><td>SSE through a plugin or a script</td><td>an <code>sse</code> step and a <code>receive</code> with <code>where: { event: price }</code></td></tr>
+</tbody>
+</table></div>
+<p>Not here: automatic reconnects (connect again, or write the retry as steps), Socket.IO, WebSocket compression, and a mock for streams.</p>
+<h2 id="own-words">Words that are only Ultraman&#39;s <a class="self" href="#own-words" aria-label="Words that are only Ultraman&#39;s">#</a></h2>
+<ul>
+<li><strong>Pipeline</strong>: a flow of visible steps; the same file is a functional test, a load scenario and a CI check.</li>
+<li><strong>Block</strong>: a reusable piece of a pipeline (a login).</li>
+<li><strong>Verdict</strong>: the report&#39;s sentence: it held, it queued, it broke, or <code>limited</code> when your computer was the limit.</li>
+<li><strong>Linked copy</strong>: a collection request inside a pipeline that remembers where it came from.</li>
+<li><strong>Consent</strong>: your explicit yes before Ultraman sends something sensitive somewhere new: a secret to a host it never went to, or a file from outside the project. Ultraman asks once per case and sends nothing until you answer (<a href="security.html#consent">Security and consent</a>).</li>
+<li><strong>Trusted folder</strong>: a project folder you told Ultraman to trust, on this machine. In a folder you haven&#39;t trusted it sends nothing from the window and runs no git (<a href="security.html#trusted-folders">trusted folders</a>).</li>
+<li><strong>Vault</strong>: the encrypted store on your computer where secrets live, opened with your master password and never placed in the repo (<a href="security.html#vault">the vault</a>).</li>
+</ul>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<ul>
+<li><strong>You:</strong> nothing is converted into code that runs: scripts from Postman, JMeter or Artillery are listed as &quot;needs a hand&quot; and never executed (<a href="importing.html#safety">importing</a>).</li>
+<li><strong>You:</strong> imported secret values never land in a file; they go to the vault or are left for you to set (<a href="security.html#vault">the vault</a>).</li>
+<li><strong>Your team:</strong> what you bring in becomes YAML in git, so reviewers see it as a diff.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="agents.html"><small>Previous</small><span>Agents (MCP)</span></a><a rel="next" href="faq.html"><small>Next</small><span>Questions</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

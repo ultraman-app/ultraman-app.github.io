@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Agents (MCP) · Ultraman docs</title>
+<meta name="description" content="An AI agent (Claude Code, or any other MCP client) can use Ultraman through ultraman mcp. It can do what you do in the window: read and write requests…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/agents.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/agents.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/agents.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/agents.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/agents.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/agents.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/agents.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/agents.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html" aria-current="page">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html" aria-current="page">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="agents">Agents (MCP) <a class="self" href="#agents" aria-label="Agents (MCP)">#</a></h1>
+<p>An AI agent (Claude Code, or any other MCP client) can use Ultraman through <code>ultraman mcp</code>. It can do what you do in the window: read and write requests, pipelines and load tests, send and run them, import, start the mock server, read reports and compare them. You approve every call.</p>
+<h2 id="connect">Connect it <a class="self" href="#connect" aria-label="Connect it">#</a></h2>
+<p><code>ultraman mcp</code> is an MCP server over stdio. In Claude Code:</p>
+<pre tabindex="0"><code>claude mcp add ultraman -- ultraman mcp --project &lt;your project folder&gt;</code></pre>
+<p>Any other MCP client takes the same thing in its own settings: a stdio server whose command is <code>ultraman</code> and whose arguments are <code>mcp --project &lt;your project folder&gt;</code>. Without <code>--project</code>, the folder you start it from (or the nearest one above it that has <code>ultraman/</code>) is the project.</p>
+<p>Two things must be true, or each tool answers &quot;open Ultraman on this project to approve the agent&#39;s requests&quot;:</p>
+<ul>
+<li>Ultraman&#39;s window is open on that project, because that is where you approve;</li>
+<li>the folder is trusted in the window (<a href="security.html#trusted-folders">trusted folders</a>).</li>
+</ul>
+<h2 id="cards">You approve every call <a class="self" href="#cards" aria-label="You approve every call">#</a></h2>
+<p>Each thing the agent asks for shows as a card at the bottom right: who asks, what, and the detail (for a change, the diff). <strong>Approve</strong> or <strong>Reject</strong> (with a reason the agent reads). Read-only requests can be approved &quot;always&quot;; that lasts for the agent&#39;s current session only, and only while Ultraman stays open.</p>
+<p>What runs (a pipeline, a request, a load) has two cards: one to start it, and one to deliver the result to the agent. The delivery card warns when the result carries tokens, cookies or authentication headers. If you reject a delivery, that is final.</p>
+<p>A call lasts at most about 50 seconds, because most clients cut a tool call at 60: a long run keeps going and the agent asks for its result later. While a card waits for you, the agent gets a progress notice every 5 seconds. Every request is logged in <code>ultraman/mcp/</code>, which git ignores.</p>
+<p>A WebSocket or SSE stream is sent once (<code>send_stream</code>, or a saved stream request): it opens, sends the messages on the card, listens for the time on the card (30 seconds at most), closes, and the delivery has the handshake and the messages both ways (the first 50, each cut to 4 KB). The agent has no live session: for one that stays open, use the window.</p>
+<h2 id="tools">What it can do <a class="self" href="#tools" aria-label="What it can do">#</a></h2>
+<p>The tools come in areas that match the window:</p>
+<ul>
+<li><strong>Pipelines and blocks:</strong> list, read, save and run them; read past runs; turn a HAR file or history entries into a proposed pipeline.</li>
+<li><strong>Requests:</strong> list, read and save collections and requests, move and organize them, add one to a pipeline, send a saved request with its checks, run a collection, send an ad-hoc request, read the history.</li>
+<li><strong>Streams:</strong> one-shot WebSocket and SSE sends.</li>
+<li><strong>Load:</strong> list, read and save load tests, run one, read reports, compare two, trend, export.</li>
+<li><strong>Project:</strong> list and save environments, list secrets (names only), import a Postman, OpenAPI, JMeter or Artillery file, read the YAML format reference.</li>
+<li><strong>Mock server:</strong> status, start, stop, reset, pin a recording.</li>
+</ul>
+<p>A write shows its diff (or the whole new file) on the card. A save that turns on plain http or a custom CA is flagged in red.</p>
+<h2 id="limits">What it can&#39;t do <a class="self" href="#limits" aria-label="What it can&#39;t do">#</a></h2>
+<p>On purpose, the agent can&#39;t see or set a secret&#39;s value, unlock the vault, say yes to a consent, trust a folder, sync with git, or delete anything. Those stay with you, in the window. It can use <code>{{secrets.x}}</code>; the value never reaches it, and results are redacted before they are handed over.</p>
+<p>One thing is not a secret: a token that a step extracts from a response (for example a login&#39;s <code>access_token</code>) is just data, so it comes back to the agent. That is why the delivery card highlights tokens, cookies and authentication headers before you approve.</p>
+<h2 id="ask">Asking it things <a class="self" href="#ask" aria-label="Asking it things">#</a></h2>
+<p>The agent reads this same manual (<code>get_manual</code>) and the YAML format reference (<code>get_reference</code>), so you can ask it &quot;how do I run this with 50 users?&quot; or &quot;make a pipeline that logs in and creates an order&quot; and it will propose the change for you to approve. What a result says is handed to it as data to read, not as instructions to follow.</p>
+<aside class="note"><p>The approval protects what goes through the MCP channel. An agent with a shell (Claude Code has one) can also read your project&#39;s files or run <code>ultraman run</code> on its own: that is outside Ultraman&#39;s reach. Treat the cards as consent, not as a sandbox, and give an agent only the access you would give a colleague.</p></aside>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<ul>
+<li><strong>You:</strong> nothing the agent asks for happens until you approve its card, and a rejected delivery stays rejected (<a href="security.html#agents">agents</a>).</li>
+<li><strong>You:</strong> the agent never sees a secret&#39;s value and can&#39;t unlock the vault, give a consent, trust a folder, sync or delete (<a href="security.html#redaction">redaction</a>).</li>
+<li><strong>You:</strong> the agent can&#39;t approve itself: a decision needs the window (<a href="security.html#local-server">local server</a>).</li>
+<li><strong>Your team:</strong> the agent&#39;s requests are logged in <code>ultraman/mcp/</code>, on your machine only.</li>
+<li><strong>Limit:</strong> an agent with its own shell is outside the cards (<a href="security.html#limits">limits</a>).</li>
+</ul>
+<nav class="pager"><a rel="prev" href="team.html"><small>Previous</small><span>Working as a team</span></a><a rel="next" href="coming-from.html"><small>Next</small><span>Coming from another tool</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

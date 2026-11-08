@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Getting started · Ultraman docs</title>
+<meta name="description" content="From installing Ultraman to your first request and your first pipeline, plus how it updates, why your system may warn about it, and how to remove it.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/getting-started.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/getting-started.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/getting-started.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/getting-started.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/getting-started.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/getting-started.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/getting-started.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html" aria-current="page">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html" aria-current="page">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="getting-started">Getting started <a class="self" href="#getting-started" aria-label="Getting started">#</a></h1>
+<p>From installing Ultraman to your first request and your first pipeline, plus how it updates, why your system may warn about it, and how to remove it.</p>
+<h2 id="install">Install <a class="self" href="#install" aria-label="Install">#</a></h2>
+<p>One command installs the app and the <code>ultraman</code> command for your user, with everything they need inside (Node included). No admin rights, no account.</p>
+<p>macOS and Linux, in a terminal:</p>
+<pre tabindex="0"><code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code></pre>
+<p>Windows, in PowerShell:</p>
+<pre tabindex="0"><code>irm https://ultraman-app.github.io/install.ps1 | iex</code></pre>
+<p>Before it installs anything, the script checks that the files are the ones Ultraman released (see <a href="getting-started.html#update">What is signed</a>); if they aren&#39;t, it stops and nothing changes.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">System</th><th scope="col">The app</th><th scope="col">The command</th></tr></thead>
+<tbody>
+<tr><td>macOS (Apple silicon or Intel)</td><td><code>~/Applications/Ultraman.app</code></td><td><code>~/.local/bin/ultraman</code></td></tr>
+<tr><td>Linux (x64)</td><td><code>~/.local/share/ultraman/Ultraman.AppImage</code>, in your applications menu</td><td><code>~/.local/bin/ultraman</code></td></tr>
+<tr><td>Windows (x64)</td><td>Start menu, Ultraman</td><td><code>%LOCALAPPDATA%\ultraman-cli</code>, added to your PATH</td></tr>
+</tbody>
+</table></div>
+<ul>
+<li>On macOS and Linux, if <code>~/.local/bin</code> isn&#39;t on your PATH, the script prints the line to add to your shell&#39;s profile. On Windows, open a new terminal so it sees the new PATH.</li>
+<li>On Linux the app is an AppImage and needs FUSE: if it doesn&#39;t open, install <code>libfuse2</code>.</li>
+</ul>
+<p><strong>Only the command</strong>, for a build machine or a server, without the app:</p>
+<pre tabindex="0"><code>curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli</code></pre>
+<pre tabindex="0"><code>$env:ULTRAMAN_CLI_ONLY = 1; irm https://ultraman-app.github.io/install.ps1 | iex</code></pre>
+<p>A given version instead of the latest: add <code>--version &lt;version&gt;</code> after <code>--</code> (macOS, Linux), or set <code>ULTRAMAN_VERSION</code> first (any system). In GitHub Actions, the action installs it for you: see <a href="ci.html#github-action">CI</a>.</p>
+<h2 id="project">Open a project <a class="self" href="#project" aria-label="Open a project">#</a></h2>
+<p>A project is any folder: Ultraman keeps its files in an <code>ultraman/</code> folder inside it. Usually that&#39;s the repo of the API you test, so the tests travel with the code. Open it from the folder menu at the top left.</p>
+<p>The first time, Ultraman asks whether you trust the folder, because a project&#39;s pipelines decide where requests go and its git settings can run commands on your machine:</p>
+<ul>
+<li><strong>Open in restricted mode</strong> (the default): you can browse and edit, but Ultraman sends nothing from it and runs no git until you trust it.</li>
+<li><strong>Trust this folder</strong>: only if you know where it came from. You answer once per folder, on this machine.</li>
+</ul>
+<p>More in <a href="security.html#trusted-folders">Trusted folders</a>.</p>
+<p>What lives where:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Folder</th><th scope="col">What</th><th scope="col">Shared through git</th></tr></thead>
+<tbody>
+<tr><td><code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code></td><td>pipelines and reusable blocks</td><td>yes</td></tr>
+<tr><td><code>ultraman/requests/</code></td><td>collections of requests</td><td>yes</td></tr>
+<tr><td><code>ultraman/envs/</code></td><td>environments</td><td>yes</td></tr>
+<tr><td><code>ultraman/load-tests/</code></td><td>load tests</td><td>yes</td></tr>
+<tr><td><code>ultraman/files/</code></td><td>files a request sends</td><td>yes</td></tr>
+<tr><td><code>ultraman/local/</code></td><td>this machine&#39;s values and data files</td><td>no</td></tr>
+<tr><td><code>ultraman/runs/</code>, <code>loads/</code>, <code>history/</code></td><td>what you ran and sent</td><td>no</td></tr>
+<tr><td><code>ultraman/mcp/</code></td><td>a log of your agent&#39;s calls</td><td>no</td></tr>
+<tr><td><code>ultraman/mock/</code></td><td>the answers you pinned in the mock server</td><td>no</td></tr>
+<tr><td><code>ultraman/.serve</code></td><td>where this project&#39;s running engine listens</td><td>no</td></tr>
+</tbody>
+</table></div>
+<p>Ultraman writes <code>ultraman/.gitignore</code> with the folders that stay on your machine, so git leaves them out. Secrets aren&#39;t in the project at all: see <a href="security.html#stored">Where things are stored</a>.</p>
+<h2 id="areas">The two areas <a class="self" href="#areas" aria-label="The two areas">#</a></h2>
+<ul>
+<li><strong>Pipelines</strong>: multi-step flows, the diagram, Run and Load.</li>
+<li><strong>Requests</strong>: collections like in Postman, tabs, Send, history and the mock server.</li>
+</ul>
+<p>Switch between them at the top. The environment selector next to them chooses which environment (local, staging…) everything runs against; the eye shows its values.</p>
+<h2 id="first-request">Your first request <a class="self" href="#first-request" aria-label="Your first request">#</a></h2>
+<ol>
+<li>Go to <strong>Requests</strong> and click <strong>New collection</strong>. Give it a name and a host, like <code>https://api.example.com</code>. Later you can replace that with <code>{{env.api}}</code>, so it changes with the environment (see <a href="environments.html">Environments</a>).</li>
+<li>In the collection&#39;s menu, <strong>New request</strong>. Write the method and the path.</li>
+<li>Press <strong>Send</strong> (or Ctrl/Cmd+Enter). The response shows below.</li>
+<li>In the response, hover a value: its menu adds a check (assert) or takes the value into a variable (extract).</li>
+<li><strong>Save</strong> (Ctrl/Cmd+S).</li>
+</ol>
+<h2 id="first-pipeline">Your first pipeline <a class="self" href="#first-pipeline" aria-label="Your first pipeline">#</a></h2>
+<ol>
+<li>In a collection&#39;s menu, <strong>Create pipeline</strong>: Ultraman builds one with all its requests, the login first.</li>
+<li>Or in <strong>Pipelines</strong>, <strong>New pipeline</strong> and <strong>Add step</strong>.</li>
+<li><strong>Run</strong> runs it top to bottom; each step shows its result in place.</li>
+</ol>
+<h2 id="keys">Keys worth knowing <a class="self" href="#keys" aria-label="Keys worth knowing">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Key</th><th scope="col">What</th></tr></thead>
+<tbody>
+<tr><td>Ctrl/Cmd+P</td><td>open anything by name</td></tr>
+<tr><td>Ctrl/Cmd+Enter</td><td>send the request</td></tr>
+<tr><td>Ctrl/Cmd+S</td><td>save</td></tr>
+<tr><td>?</td><td>all the shortcuts</td></tr>
+<tr><td>F1</td><td>this manual</td></tr>
+</tbody>
+</table></div>
+<h2 id="update">Updates <a class="self" href="#update" aria-label="Updates">#</a></h2>
+<p>When the window opens, Ultraman asks GitHub whether a newer release exists, at most once a day. That question is all that goes out: GitHub sees your IP address, nothing about you or your projects. The <code>ultraman</code> command on its own, in a terminal or in CI, never asks.</p>
+<ul>
+<li>If there is a newer version, a card in the bottom-left corner shows it, with <strong>What&#39;s new</strong> and <strong>Update and restart</strong>. Nothing downloads before you click.</li>
+<li><strong>Update and restart</strong> waits until your changes are saved and nothing is running, then downloads the new version, checks its signature, installs it and restarts. The <code>ultraman</code> command is updated with it.</li>
+<li><strong>Not now</strong> hides the card until a newer version comes out.</li>
+<li>By hand: close Ultraman and run the <a href="getting-started.html#install">install command</a> again. It replaces the app and the command in place; if anything fails, the previous install stays as it was.</li>
+<li>Your projects, saved secrets and trust answers stay: they live in your folders and in <code>~/.ultraman</code>.</li>
+<li>To turn the check off, set <code>ULTRAMAN_NO_UPDATE_CHECK=1</code> in the environment Ultraman starts from.</li>
+</ul>
+<p>What is signed:</p>
+<ul>
+<li><strong>Updates from the window</strong>: only a build signed with Ultraman&#39;s update key installs; the key&#39;s public half is built into the app. A download that doesn&#39;t match is not installed.</li>
+<li><strong>The install commands</strong>: they download the release&#39;s list of checksums (<code>SHA256SUMS</code>) and its signature, made with Ultraman&#39;s release key, whose public half is written inside the script. They install only files that match that signed list, and stop with &quot;nothing was changed&quot; otherwise.</li>
+</ul>
+<p>More on what leaves your machine in <a href="security.html#leaves-your-machine">Security and consent</a>.</p>
+<h2 id="os-warning">When your system warns <a class="self" href="#os-warning" aria-label="When your system warns">#</a></h2>
+<p>The installers are not signed with an Apple or Microsoft certificate: on Windows they&#39;re unsigned, on macOS signed only ad hoc (not notarized). What protects you instead is the signed list of checksums above.</p>
+<p>With the install commands nothing warns: curl and PowerShell don&#39;t mark the file as downloaded from the internet, and the script checks the release&#39;s signature itself. If you download an installer from the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">releases page</a> in a browser instead:</p>
+<ul>
+<li><strong>macOS</strong> won&#39;t open it the first time. Allow it in System Settings, Privacy &amp; Security, <strong>Open Anyway</strong>.</li>
+<li><strong>Windows</strong> SmartScreen says it protected your PC. Click <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
+</ul>
+<p>A file downloaded by hand isn&#39;t checked by the script. Comparing it with <code>SHA256SUMS</code> from the same release catches a broken download, but only the script also checks that the list itself is signed by Ultraman: prefer the commands.</p>
+<h2 id="uninstall">Uninstall <a class="self" href="#uninstall" aria-label="Uninstall">#</a></h2>
+<ul>
+<li><strong>macOS</strong>: drag Ultraman out of <code>~/Applications</code>, then delete <code>~/.local/share/ultraman</code> and <code>~/.local/bin/ultraman</code>.</li>
+<li><strong>Linux</strong>: delete <code>~/.local/share/ultraman</code>, <code>~/.local/bin/ultraman</code> and <code>~/.local/share/applications/ultraman.desktop</code>.</li>
+<li><strong>Windows</strong>: remove Ultraman in Settings, Apps, then delete <code>%LOCALAPPDATA%\ultraman-cli</code> and take it out of your user PATH.</li>
+</ul>
+<p>What stays until you delete it yourself:</p>
+<ul>
+<li><code>~/.ultraman</code> (on Windows, <code>%USERPROFILE%\.ultraman</code>): your encrypted vault, your trust answers and a few small files of Ultraman&#39;s own. Delete it to remove your saved secrets for good.</li>
+<li>If you turned on <a href="environments.html#remember">Remember on this machine</a>, the vault&#39;s key is in your system&#39;s keychain: choose <strong>Forget the password on this machine</strong> in the vault&#39;s menu before uninstalling, or delete the <code>io.github.ultraman-app</code> entry from the keychain.</li>
+<li>Your projects&#39; <code>ultraman/</code> folders are yours: uninstalling doesn&#39;t touch them.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="why.html"><small>Previous</small><span>Why Ultraman</span></a><a rel="next" href="security.html"><small>Next</small><span>Security and consent</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

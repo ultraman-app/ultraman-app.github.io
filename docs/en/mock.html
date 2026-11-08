@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Mock server · Ultraman docs</title>
+<meta name="description" content="The mock server answers your API&#39;s requests with responses you already recorded, so a front end (or a test) can work while the real API is down, slow or not…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/mock.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/mock.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/mock.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/mock.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/mock.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/mock.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/mock.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/mock.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html" aria-current="page">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html" aria-current="page">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="mock">Mock server <a class="self" href="#mock" aria-label="Mock server">#</a></h1>
+<p>The mock server answers your API&#39;s requests with responses you already recorded, so a front end (or a test) can work while the real API is down, slow or not built yet. It runs on your computer and nobody else can reach it unless you choose.</p>
+<h2 id="recordings">Where it gets its answers <a class="self" href="#recordings" aria-label="Where it gets its answers">#</a></h2>
+<p>From the <strong>History</strong>: every request you sent is a recording. In <strong>History</strong>, open <strong>Mock server</strong>: it lists the routes it can answer (method and path, with path parameters) for the chosen environment.</p>
+<h2 id="start">Start it <a class="self" href="#start" aria-label="Start it">#</a></h2>
+<p>Choose a port and <strong>Start</strong> (4300 by default). It answers only on this machine, and only starts in a <a href="security.html#trusted-folders">trusted folder</a> (the terminal asks).</p>
+<ul>
+<li><strong>Recorded delay</strong> answers as slowly as the real API did.</li>
+<li><strong>Forward the rest to</strong> sends what it has no recording for to a real host.</li>
+<li>A route with several recordings answers with the newest; <strong>pin</strong> a specific one, or <strong>In order</strong> to go through them one by one (<strong>Reset sequences</strong> starts again).</li>
+</ul>
+<h2 id="matching">Which recording answers <a class="self" href="#matching" aria-label="Which recording answers">#</a></h2>
+<p>A request is matched in this order, and the first match wins:</p>
+<ol>
+<li>the same method, path and query (the order of the query parameters doesn&#39;t matter);</li>
+<li>the same method and path, any query;</li>
+<li>the request&#39;s path template: <code>/users/:userId/orders</code> answers <code>/users/u_bob/orders</code> with the recording of <code>u_ana</code>.</li>
+</ol>
+<p>With no match, the mock answers <code>404</code> with the known routes. If a route has several recordings, the newest answers, unless you pin one or choose <strong>In order</strong>. Only the chosen environment&#39;s recordings are served, and a new send is picked up without restarting. Each answer carries <code>x-ultraman-mock</code> headers that say which recording it was, and a response too big or binary is cut or empty, with a header that says so. Cookies and tokens that the real API set are served as recorded.</p>
+<h2 id="cli">From the terminal <a class="self" href="#cli" aria-label="From the terminal">#</a></h2>
+<p><code>ultraman mock --env local --port 4300</code> starts the same server without the window; <code>--proxy &lt;url&gt;</code> forwards the rest.</p>
+<p>To let other computers on your network reach it, the terminal has <code>--expose</code>. It is not in the window and an agent can&#39;t turn it on. Ultraman warns that anyone on your network can read the responses, which may hold real data, and waits for Enter (or <code>--yes</code>). With <code>--proxy</code> too, it warns that anyone on your network, and any web page open there, could call that API through this machine with this machine&#39;s access. The safe choice is to leave <code>--expose</code> out.</p>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<ul>
+<li><strong>You:</strong> the mock listens on <code>127.0.0.1</code> only and answers only requests that name this machine. A web page from another site gets a refusal, so a site you visit can&#39;t read your recordings or reach an API through <code>--proxy</code>.</li>
+<li><strong>You:</strong> <code>--proxy</code> forwards only to the address you give, and adds no credentials of its own.</li>
+<li><strong>Your team:</strong> recordings come from your personal history, which is never synced. Secrets in it are already hidden as <code>[secret:x]</code>. See <a href="security.html#stored">where things are stored</a> and <a href="security.html#local-server">the local server</a>.</li>
+<li><strong>You:</strong> <code>--expose</code> is a deliberate, warned choice in the terminal. See <a href="security.html#limits">the limits</a>.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="importing.html"><small>Previous</small><span>Importing</span></a><a rel="next" href="cli.html"><small>Next</small><span>The terminal</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

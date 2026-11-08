@@ -46,6 +46,10 @@ code { font-family: var(--mono); font-size: .88em; }
 /* The header: cobalt, the three stripes and the name. */
 .hero { background: var(--acc); color: #fff; padding: calc(var(--gutter) * .9) 0 clamp(48px, 8vw, 104px); overflow: hidden; }
 .hero :focus-visible { outline-color: #fff; }
+/* The way into the docs, above the stripes: white on the cobalt, each link a 44 px target. */
+.topnav { display: flex; justify-content: flex-end; gap: 4px 24px; padding: 0 var(--side) calc(var(--gutter) * .5); margin-top: calc(var(--gutter) * -.5); }
+.topnav a { color: #fff; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.topnav a:hover { text-decoration: underline; }
 .lanes { display: grid; gap: var(--gap); }
 .lane { display: block; width: 100%; background: #fff; }
 .lane.top, .lane.bottom { height: var(--thin); }
@@ -85,6 +89,7 @@ code { font-family: var(--mono); font-size: .88em; }
 .copy:hover { background: #E8EDFF; }
 .fine { font-size: 15px; color: rgb(255 255 255 / .9); margin: 18px 0 0; max-width: 58ch; }
 .fine code { color: #fff; }
+.fine a { color: #fff; }
 
 /* The rest: one column of text, real artifacts next to it. */
 main { padding: 0 var(--side); }
@@ -94,6 +99,8 @@ h2 { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-siz
 .copytext p { margin: 0; color: var(--mut); }
 .copytext code { color: var(--txt); }
 .copytext p + p { margin-top: 14px; }
+/* Each section's way into its docs page. */
+.copytext p.more { color: var(--txt); font-weight: 600; }
 
 pre { margin: 0; font: 13.5px/1.6 var(--mono); overflow-x: auto; }
 pre code { font-size: inherit; }
@@ -148,10 +155,27 @@ pre code { font-size: inherit; }
 /* Wide screens: each section's words on the left and its artifact beside them, instead of one narrow column with
    half the screen empty. */
 @media (min-width: 1200px) {
-  .checks, .load, .vault, .agent { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
-  .checks .copytext, .load .copytext, .vault .copytext, .agent .copytext { margin-bottom: 0; }
-  .checks h2, .load h2, .vault h2, .agent h2 { max-width: 14ch; }
+  .checks, .load, .promise, .vault, .agent { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
+  .checks .copytext, .load .copytext, .promise .copytext, .vault .copytext, .agent .copytext { margin-bottom: 0; }
+  .checks h2, .load h2, .promise h2, .vault h2, .agent h2 { max-width: 14ch; }
 }
+
+/* The question the window asks before a secret goes somewhere new, drawn as the app's dialog: the words are the app's. */
+.ask { margin: 0; max-width: 34rem; }
+.dialog { background: var(--surf); border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; box-shadow: 0 12px 32px rgb(11 16 48 / .10); }
+.dialog code { overflow-wrap: anywhere; }
+.asktitle { font-weight: 700; margin: 0 0 8px; line-height: 1.35; }
+.askbody { color: var(--mut); font-size: 15px; margin: 0 0 16px; }
+.askbody code { color: var(--txt); }
+.choices { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.choices li { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 15px; font-weight: 600; }
+.choices li.first { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc); }
+.ask figcaption { font-size: 15px; color: var(--mut); margin-top: 12px; max-width: 62ch; }
+
+/* What the page doesn't show, in one row of links. */
+.also h2 { font-size: clamp(21px, 2.2vw, 25px); }
+.also ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; }
+.also a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
 /* The run's output and the CI job are the widest artifacts (~700 px): beside their words only when they fit without
    scrolling. */
 @media (min-width: 1400px) {
@@ -178,6 +202,7 @@ pre code { font-size: inherit; }
 
 footer { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 48px var(--side) 56px; margin-top: 64px; border-top: 1px solid var(--line); color: var(--mut); font-size: 15px; }
 footer p { margin: 0; }
+footer nav { display: flex; flex-wrap: wrap; gap: 12px 16px; }
 footer .mark { fill: var(--acc); }
 
 /* Motion, only when the system doesn't ask for less. Two moments: the header traces itself once on load, and the

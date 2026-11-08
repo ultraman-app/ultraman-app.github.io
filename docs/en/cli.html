@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>The terminal · Ultraman docs</title>
+<meta name="description" content="The ultraman command runs your pipelines and load tests from a terminal, serves the project to other tools and keeps secrets in the vault. Run it from the…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/cli.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/cli.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/cli.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/cli.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/cli.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/cli.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/cli.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/cli.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html" aria-current="page">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html" aria-current="page">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="cli">The terminal <a class="self" href="#cli" aria-label="The terminal">#</a></h1>
+<p>The <code>ultraman</code> command runs your pipelines and load tests from a terminal, serves the project to other tools and keeps secrets in the vault. Run it from the project&#39;s folder (or any folder inside it). To use it on a build machine, see <a href="ci.html">CI</a>.</p>
+<h2 id="commands">The commands <a class="self" href="#commands" aria-label="The commands">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>ultraman run &lt;pipeline&gt;</code></td><td>Runs a pipeline, found by name and then by id.</td></tr>
+<tr><td><code>ultraman run --all</code>, <code>--tag X</code>, <code>--collection ID</code></td><td>Runs several pipelines at once.</td></tr>
+<tr><td><code>ultraman run --load &lt;test&gt;</code></td><td>Plays a load test; <code>ultraman run &lt;pipeline&gt; --load</code> uses that pipeline&#39;s default test.</td></tr>
+<tr><td><code>ultraman serve [--port 4100]</code></td><td>Starts the project&#39;s local server (the window and the other commands talk to it).</td></tr>
+<tr><td><code>ultraman secret set &lt;name&gt;</code>, <code>list</code>, <code>rm &lt;name&gt;</code>, <code>password</code></td><td>Manages the vault.</td></tr>
+<tr><td><code>ultraman mock [--port 4300]</code></td><td>Serves your recorded history as a mock API. See <a href="mock.html">Mock server</a>.</td></tr>
+<tr><td><code>ultraman mcp [--project &lt;folder&gt;]</code></td><td>The bridge an AI agent connects to. See <a href="agents.html">Agents</a>.</td></tr>
+<tr><td><code>ultraman --version</code></td><td>Prints the version.</td></tr>
+</tbody>
+</table></div>
+<p>A command with no arguments, or an unknown one, prints the usage and exits with 2.</p>
+<h2 id="run">Run pipelines <a class="self" href="#run" aria-label="Run pipelines">#</a></h2>
+<pre tabindex="0"><code>ultraman run &quot;create order&quot; --env local --input user=ana
+ultraman run --all --env ci --yes
+ultraman run --tag smoke --env ci --parallel 4
+ultraman run --collection shop --env staging</code></pre>
+<p>Give exactly one of: a pipeline, <code>--all</code>, <code>--tag</code> or <code>--collection</code>; anything else is exit 2. Everything is checked for all the selected pipelines before the first request goes out.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Flag</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>--all</code></td><td>Every pipeline in the project.</td></tr>
+<tr><td><code>--tag X</code></td><td>The pipelines with that tag. Repeat it and a pipeline needs every tag given.</td></tr>
+<tr><td><code>--collection ID</code></td><td>Runs a collection; <code>shop/orders</code> runs only that folder.</td></tr>
+<tr><td><code>--env X</code></td><td>The environment. With a single environment in the project it is used on its own; with several you must pass <code>--env</code>.</td></tr>
+<tr><td><code>--input k=v</code></td><td>A value for an input; repeat it for more. A value that starts with <code>[</code> or <code>{</code> is read as JSON when it is valid; anything else stays text (<code>id=00123</code> stays <code>00123</code>). The names <code>env.*</code> and <code>secrets.*</code> are reserved.</td></tr>
+<tr><td><code>--parallel N</code></td><td>Runs up to N pipelines at the same time (1 to 16). Each one prints whole when it ends.</td></tr>
+<tr><td><code>--bail</code></td><td>Stops starting new pipelines after the first one that fails. The ones running finish; the rest show as skipped.</td></tr>
+<tr><td><code>--watch</code></td><td>Runs again whenever a file under <code>ultraman/</code> changes.</td></tr>
+<tr><td><code>--every D</code></td><td>Runs again on a timer: <code>30s</code>, <code>5m</code>, <code>1h</code> or a bare number of seconds, at least 5 seconds. It counts from the end of the previous run and combines with <code>--watch</code>.</td></tr>
+<tr><td><code>--no-notify</code></td><td>With <code>--watch</code> or <code>--every</code>, no desktop notification when a run fails and when it passes again.</td></tr>
+<tr><td><code>--json</code></td><td>One JSON event per line on standard output, for other tools. No colors.</td></tr>
+<tr><td><code>--junit FILE</code></td><td>Writes a JUnit XML report. See <a href="cli.html#junit">JUnit</a>.</td></tr>
+<tr><td><code>--local</code></td><td>Runs in this process even when the window has the project open. See <a href="cli.html#one-engine">One engine</a>.</td></tr>
+<tr><td><code>--yes</code></td><td>Answers yes to every question. Read <a href="cli.html#consent">Consent in the terminal</a> first.</td></tr>
+</tbody>
+</table></div>
+<p>Each run is saved in <code>ultraman/runs/</code>. Colors appear only in a terminal; <code>NO_COLOR</code> turns them off. Ctrl+C cancels the running step, saves the run and exits with 1.</p>
+<p>Exit codes: <strong>0</strong> everything passed, <strong>1</strong> a step failed (or you pressed Ctrl+C), <strong>2</strong> it never ran: a bad flag, a missing pipeline, input, environment or secret, an invalid pipeline, or nothing was sent because nobody said yes.</p>
+<h2 id="consent">Consent in the terminal <a class="self" href="#consent" aria-label="Consent in the terminal">#</a></h2>
+<p>Ultraman asks before it sends anything you haven&#39;t approved. In a terminal it asks when:</p>
+<ul>
+<li>the folder isn&#39;t trusted yet;</li>
+<li>a secret would go to an origin it has never gone to;</li>
+<li>a file from outside <code>ultraman/files/</code> would be sent.</li>
+</ul>
+<p>The question lists what would go where, and you answer <strong>y</strong> (this time), <strong>a</strong> (always, for this project) or <strong>N</strong> (the default: nothing is sent). &quot;Always&quot; is kept in <code>~/.ultraman/trust.json</code> on your machine, never in the project, so a teammate&#39;s checkout can&#39;t carry it. The whole model is on the <a href="security.html#consent">Security and consent</a> page.</p>
+<p>Without a terminal and without <code>--yes</code> there is nobody to ask: Ultraman lists what it would send and exits with 2, having sent nothing.</p>
+<p><strong>`--yes` skips every question.</strong> Anything the pipelines and environments say then goes wherever they say, including your secrets, and a value taken from a response that carries a secret goes too. Use it where only your team can change those files; never on code from forks or people you don&#39;t know. <a href="ci.html#yes">CI</a> explains the safer way for GitHub Actions.</p>
+<h2 id="load">Run a load test <a class="self" href="#load" aria-label="Run a load test">#</a></h2>
+<pre tabindex="0"><code>ultraman run --load checkout-peak --env staging --junit load.xml --html report.html --baseline last</code></pre>
+<p>The test is <code>ultraman/load-tests/&lt;name&gt;.yaml</code>, given by name or id. Besides <code>--env</code>, <code>--input</code>, <code>--junit</code>, <code>--json</code>, <code>--local</code> and <code>--yes</code> (which work as above), a load takes:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Flag</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>--target URL</code></td><td>Sends everything to another origin for this run (<code>https://staging.example.com</code>, with an optional base path, without user, password, <code>?</code> or <code>#</code>).</td></tr>
+<tr><td><code>--overrides JSON</code></td><td>Replaces top-level keys of the test for this run, written as in the YAML.</td></tr>
+<tr><td><code>--workers N</code></td><td>Plays the load with N threads (1 to 8). The default is one, or <code>ULTRAMAN_LOAD_WORKERS</code>.</td></tr>
+<tr><td><code>--output FILE</code></td><td>Writes the final report as JSON.</td></tr>
+<tr><td><code>--html FILE</code></td><td>Writes the report as one self-contained page.</td></tr>
+<tr><td><code>--csv DIR</code></td><td>Writes the series and the steps as CSV files into that folder.</td></tr>
+<tr><td><code>--baseline last</code> or a file</td><td>Prints how this run compares with an earlier report: the last one saved for this test, or a JSON file.</td></tr>
+</tbody>
+</table></div>
+<p><code>--all</code>, <code>--tag</code>, <code>--collection</code>, <code>--bail</code>, <code>--parallel</code>, <code>--watch</code> and <code>--every</code> don&#39;t apply to a load.</p>
+<p>Exit codes: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or it was stopped (Ctrl+C or the generator&#39;s own brakes); <strong>2</strong> nothing was sent. The thresholds and verdicts are explained in <a href="load.html">Load</a>; for gates in a pipeline see <a href="ci.html#load-in-ci">CI</a>.</p>
+<h2 id="junit">JUnit for CI <a class="self" href="#junit" aria-label="JUnit for CI">#</a></h2>
+<p><code>--junit FILE</code> writes a JUnit XML report after the runs, also after Ctrl+C with what ran: a test suite per pipeline and a test case per top-level step, with what was sent and received for the ones that failed. Secrets are hidden in it like everywhere else. Missing folders are created.</p>
+<pre tabindex="0"><code>ultraman run --all --env ci --yes --junit reports/ultraman.xml</code></pre>
+<h2 id="secrets">Secrets <a class="self" href="#secrets" aria-label="Secrets">#</a></h2>
+<p>On your machine, <code>ultraman secret set api-key</code> saves one in the vault: it asks for the master password and the value, both without echo. A value piped in (<code>echo &quot;$VALUE&quot; | ultraman secret set api-key</code>) is read from standard input; the master password still needs a terminal. Names use letters, digits, <code>_</code>, <code>.</code> and <code>-</code>. <code>secret list</code> shows the names, <code>secret rm &lt;name&gt;</code> removes one (exit 1 if it isn&#39;t there) and <code>secret password</code> changes the master password. See <a href="security.html#vault">the vault</a>.</p>
+<p>On a build machine there is no vault. Pass a secret as an environment variable named <code>ULTRAMAN_SECRET_</code> plus its name in upper case, with every character that isn&#39;t a letter or a digit turned into <code>_</code>: <code>api-key</code> is <code>ULTRAMAN_SECRET_API_KEY</code>. It wins over the vault and needs no password. Without <code>--yes</code>, a secret still goes only where it has been approved.</p>
+<h2 id="env-vars">Environment variables <a class="self" href="#env-vars" aria-label="Environment variables">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Variable</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>ULTRAMAN_SECRET_&lt;NAME&gt;</code></td><td>The value of a secret for this command.</td></tr>
+<tr><td><code>ULTRAMAN_HOME</code></td><td>Replaces <code>~/.ultraman</code>, where the vault, the trust list and the server&#39;s keys live.</td></tr>
+<tr><td><code>ULTRAMAN_LOAD_WORKERS</code></td><td>The default number of threads for a load (<code>--workers</code> wins).</td></tr>
+<tr><td><code>ULTRAMAN_NO_UPDATE_CHECK</code></td><td><code>1</code> turns off the daily check for a newer version.</td></tr>
+<tr><td><code>ULTRAMAN_PROJECT</code></td><td>The project folder the desktop window opens with.</td></tr>
+<tr><td><code>NO_COLOR</code></td><td>No colors in the output.</td></tr>
+<tr><td><code>ULTRAMAN_VERSION</code>, <code>ULTRAMAN_CLI_ONLY</code></td><td>For the installers: the version to install, and only the command, without the window. See <a href="getting-started.html#install">Install</a>.</td></tr>
+</tbody>
+</table></div>
+<h2 id="one-engine">The window and the terminal together <a class="self" href="#one-engine" aria-label="The window and the terminal together">#</a></h2>
+<p>If the window is open on the project, <code>ultraman run</code> hands the run to it: you see it live in the window, and the terminal prints the same as always. <code>--local</code> runs it in the terminal instead, which is what you want on a shared build machine. <a href="ci.html">CI</a> runs always use it.</p>
+<nav class="pager"><a rel="prev" href="mock.html"><small>Previous</small><span>Mock server</span></a><a rel="next" href="ci.html"><small>Next</small><span>CI</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

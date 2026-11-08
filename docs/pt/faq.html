@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Perguntas · Documentação do Ultraman</title>
+<meta name="description" content="Respostas curtas ao que os times perguntam antes de adotar o Ultraman, os &quot;nãos&quot; honestos incluídos. Cada resposta leva à página que aprofunda.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/pt/faq.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/faq.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/faq.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/faq.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/faq.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Ir para o conteúdo</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/faq.html" lang="en" hreflang="en">English</a>
+<a href="../es/faq.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/faq.html" lang="pt" hreflang="pt" aria-current="true">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentação">
+<ul>
+<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="why.html">Por que o Ultraman</a></li>
+<li><a href="getting-started.html">Primeiros passos</a></li>
+<li><a href="security.html">Segurança e consentimento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">O terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="faq.html" aria-current="page">Perguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentação">
+<ul>
+<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="why.html">Por que o Ultraman</a></li>
+<li><a href="getting-started.html">Primeiros passos</a></li>
+<li><a href="security.html">Segurança e consentimento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">O terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="faq.html" aria-current="page">Perguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="faq">Perguntas <a class="self" href="#faq" aria-label="Perguntas">#</a></h1>
+<p>Respostas curtas ao que os times perguntam antes de adotar o Ultraman, os &quot;nãos&quot; honestos incluídos. Cada resposta leva à página que aprofunda.</p>
+<h2 id="trust">Confiança e segurança <a class="self" href="#trust" aria-label="Confiança e segurança">#</a></h2>
+<h3 id="credentials">Ele poderia enviar meu token ao lugar errado? <a class="self" href="#credentials" aria-label="Ele poderia enviar meu token ao lugar errado?">#</a></h3>
+<p>Um segredo vai só para uma origem (esquema, host e porta) à qual você disse sim; na primeira vez que ele iria para um lugar novo, o Ultraman pergunta, e num terminal também pergunta. Quando um redirecionamento leva a outra origem, as credenciais são descartadas. Numa pasta em que você não confiou, a janela não envia nada e não executa git. Veja <a href="security.html#consent">Segurança e consentimento</a>.</p>
+<h3 id="agents">Um agente de IA pode ver meus segredos? <a class="self" href="#agents" aria-label="Um agente de IA pode ver meus segredos?">#</a></h3>
+<p>Não. Um agente conectado por MCP pode usar <code>{{secrets.x}}</code>, mas o valor nunca chega a ele, e toda chamada mostra um cartão na janela que você aprova ou rejeita. Ele não pode desbloquear o cofre, dar sim a um host novo, confiar numa pasta, sincronizar com o git nem apagar nada. Um token que um passo extrai de uma resposta é dado, não segredo: o cartão que entrega um resultado destaca os tokens antes de você aprová-lo. Veja <a href="agents.html#limits">Agentes</a>.</p>
+<h3 id="phone-home">Ele envia alguma coisa sobre mim? <a class="self" href="#phone-home" aria-label="Ele envia alguma coisa sobre mim?">#</a></h3>
+<p>Sem telemetria e sem conta. Enquanto a janela está aberta, o Ultraman pergunta ao GitHub no máximo uma vez por dia se existe uma versão mais nova, e não envia nada sobre você nem sobre seus projetos; <code>ULTRAMAN_NO_UPDATE_CHECK=1</code> desliga isso. Nada é baixado até você escolher <strong>Atualizar e reiniciar</strong>. Veja <a href="security.html#leaves-your-machine">O que sai da sua máquina</a>.</p>
+<h3 id="os">Em quais sistemas ele roda? <a class="self" href="#os" aria-label="Em quais sistemas ele roda?">#</a></h3>
+<p>Windows (x64), macOS (Apple silicon e Intel) e Linux (x64, como AppImage). Os instaladores não são assinados pela Microsoft nem pela Apple, então a primeira abertura mostra um aviso; as atualizações e os checksums dos scripts de instalação são assinados. Veja <a href="getting-started.html#os-warning">O aviso da primeira abertura</a>.</p>
+<h3 id="share-secrets">Como compartilho segredos com meu time? <a class="self" href="#share-secrets" aria-label="Como compartilho segredos com meu time?">#</a></h3>
+<p>Não compartilha. Cada pessoa define os próprios valores no próprio cofre, com os nomes que o ambiente usa (<code>staging.token</code>); o CI recebe os dele por <code>ULTRAMAN_SECRET_*</code>. O repositório leva só <code>{{secrets.x}}</code>. Veja <a href="environments.html#secrets">Segredos</a>.</p>
+<h2 id="scope">O que ele faz e não faz <a class="self" href="#scope" aria-label="O que ele faz e não faz">#</a></h2>
+<h3 id="scripts">Posso escrever scripts? <a class="self" href="#scripts" aria-label="Posso escrever scripts?">#</a></h3>
+<p>Não, de propósito: o que um passo faz está sempre na tela, e quem revisa o lê num diff sem executar nada. Em vez disso há asserts, extracts (por path JSON, header ou regex), passos <code>if</code> e <code>repeat</code>, blocos reutilizáveis e funções dentro de <code>{{ }}</code> como <code>random.uuid</code>, <code>now.iso</code>, <code>base64(x)</code> e <code>hmac.sha256(secrets.key, body)</code>. Quando você importa, scripts de teste comuns do Postman viram checks; os outros scripts são listados para você, nunca executados. Veja <a href="pipelines.html#helpers">Ajudantes</a>.</p>
+<h3 id="protocols">Quais protocolos ele fala? <a class="self" href="#protocols" aria-label="Quais protocolos ele fala?">#</a></h3>
+<p>HTTP e HTTPS, WebSocket e Server-Sent Events (SSE). Os streams funcionam como requests na área de Requests, como passos de pipeline e sob carga. Sem suporte: Socket.IO, WebSockets comprimidos, reconexões automáticas (conecte de novo, ou escreva a nova tentativa como passos) e um mock para streams. Veja <a href="requests.html#streams">Streams</a>.</p>
+<h3 id="grpc">Ele faz gRPC? <a class="self" href="#grpc" aria-label="Ele faz gRPC?">#</a></h3>
+<p>Não. O Ultraman testa APIs HTTP, incluindo streams WebSocket e SSE; para gRPC, escolha uma ferramenta que o suporte (veja <a href="why.html#not-for">Quando escolher outra coisa</a>).</p>
+<h3 id="graphql">Ele faz GraphQL? <a class="self" href="#graphql" aria-label="Ele faz GraphQL?">#</a></h3>
+<p>Não há suporte dedicado a GraphQL: sem schema, sem editor de queries. Uma query GraphQL é um POST HTTP com um body JSON, então você pode enviá-la como qualquer request e checar o resultado. Um servidor GraphQL muitas vezes responde 200 mesmo quando a query falhou, então acrescente um assert de que <code>$.errors</code> não existe. Veja <a href="requests.html#checks">Checks</a>.</p>
+<h3 id="auth">Quais tipos de autenticação? <a class="self" href="#auth" aria-label="Quais tipos de autenticação?">#</a></h3>
+<p>Bearer token, basic auth e API key (num header ou na query string), definidos numa request, numa coleção ou numa pipeline. <code>ca</code> confia na autoridade certificadora do seu próprio servidor. Não há certificados de cliente (mTLS), fluxos OAuth2, AWS SigV4 nem NTLM. Para uma API que distribui tokens, um passo de login, um extract do token e uma auth bearer que o usa cobrem o caso comum. Veja <a href="pipelines.html#steps">Pipelines</a>.</p>
+<h3 id="import">Posso trazer meu trabalho existente? <a class="self" href="#import" aria-label="Posso trazer meu trabalho existente?">#</a></h3>
+<p>Sim: coleções e ambientes do Postman, documentos OpenAPI 3, planos <code>.jmx</code> do JMeter, scripts do Artillery e tráfego gravado no seu navegador como um arquivo HAR. Os segredos de um ambiente do Postman vão para o cofre. O que não pode ser traduzido é listado, não perdido, e uma importação nunca envia uma request nem executa um script. Veja <a href="importing.html">Importar</a>.</p>
+<h3 id="requirements">Ele precisa de Node, Java ou algo instalado? <a class="self" href="#requirements" aria-label="Ele precisa de Node, Java ou algo instalado?">#</a></h3>
+<p>Não. O instalador traz tudo, Node incluído, para a sua pasta de usuário, sem direitos de administrador. Veja <a href="getting-started.html#install">Instalar</a>.</p>
+<h3 id="command-only">Posso usá-lo sem o app desktop? <a class="self" href="#command-only" aria-label="Posso usá-lo sem o app desktop?">#</a></h3>
+<p>Sim: instale só o comando (<code>--cli</code>) para uma máquina de build ou um servidor. A janela é onde você responde às perguntas de consentimento e aprova os cartões do agente; o comando pergunta no terminal em vez disso. Veja <a href="cli.html">O terminal</a>.</p>
+<h2 id="teams">Times e CI <a class="self" href="#teams" aria-label="Times e CI">#</a></h2>
+<h3 id="permissions">Quem pode ver e mudar nossos testes? <a class="self" href="#permissions" aria-label="Quem pode ver e mudar nossos testes?">#</a></h3>
+<p>Quem pode ler ou escrever no seu repositório git: o Ultraman não tem contas, papéis nem workspaces próprios. As mudanças nos testes chegam ao time por <strong>Sincronizar</strong> e são revisadas como pull requests. Os segredos nunca são sincronizados: cada pessoa guarda os seus no próprio cofre. Veja <a href="team.html">Trabalhando em time</a>.</p>
+<h3 id="conflicts">O que acontece quando duas pessoas mudam a mesma pipeline? <a class="self" href="#conflicts" aria-label="O que acontece quando duas pessoas mudam a mesma pipeline?">#</a></h3>
+<p><strong>Sincronizar</strong> mostra as duas versões lado a lado, como passos ou como YAML, e você escolhe <strong>Ficar com a minha</strong>, <strong>Usar a do remoto</strong> ou <strong>Salvar a minha como cópia</strong>. Esc cancela e não muda nada. Veja <a href="team.html#conflicts">Conflitos</a>.</p>
+<h3 id="ci">Funciona no CI? <a class="self" href="#ci" aria-label="Funciona no CI?">#</a></h3>
+<p>Sim. <code>ultraman run</code> executa pipelines, coleções ou testes de carga, escreve um relatório JUnit e sai com 0 (passou), 1 (um check ou limiar falhou) ou 2 (não conseguiu executar). No GitHub, a action <code>ultraman-app/run-action@v1</code> instala e executa; em outros sistemas, instale só a CLI. Um runner não tem cofre: os segredos vêm de variáveis de ambiente <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code>. Veja <a href="ci.html">CI</a>.</p>
+<h2 id="load-questions">Carga <a class="self" href="#load-questions" aria-label="Carga">#</a></h2>
+<h3 id="distributed">Um teste de carga pode rodar em várias máquinas? <a class="self" href="#distributed" aria-label="Um teste de carga pode rodar em várias máquinas?">#</a></h3>
+<p>Não. Uma carga roda num computador, numa thread por padrão e até 8 com <code>--workers</code>. Se você precisa de carga vinda de muitas máquinas ou da nuvem, escolha uma ferramenta feita para isso (veja <a href="why.html#not-for">Quando escolher outra coisa</a>).</p>
+<h3 id="scale">Quanta carga ele consegue gerar? <a class="self" href="#scale" aria-label="Quanta carga ele consegue gerar?">#</a></h3>
+<p>Tanto quanto o seu computador conseguir enviar: depende da máquina, da rede e do peso de cada request. A faixa <strong>Este computador</strong> vigia a sua máquina durante a execução, e quando ela foi o gargalo o veredito diz <code>limited</code> em vez de culpar a API. Veja <a href="load.html#workers">Mais de uma thread</a>.</p>
+<nav class="pager"><a rel="prev" href="coming-from.html"><small>Anterior</small><span>Se você vem de outra ferramenta</span></a><a rel="next" href="../en/reference.html"><small>Seguinte</small><span>Format reference (YAML)</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+</body>
+</html>

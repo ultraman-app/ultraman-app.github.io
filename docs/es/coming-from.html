@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Si venís de otra herramienta · Documentación de Ultraman</title>
+<meta name="description" content="Algunas ideas se llaman igual acá, otras tienen otro nombre, y unas pocas no existen a propósito.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/es/coming-from.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/coming-from.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/coming-from.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/coming-from.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/coming-from.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Saltar al contenido</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/coming-from.html" lang="en" hreflang="en">English</a>
+<a href="../es/coming-from.html" lang="es" hreflang="es" aria-current="true">Español</a>
+<a href="../pt/coming-from.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menú</summary>
+<nav aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html" aria-current="page">Si venís de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html" aria-current="page">Si venís de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="coming-from">Si venís de otra herramienta <a class="self" href="#coming-from" aria-label="Si venís de otra herramienta">#</a></h1>
+<p>Algunas ideas se llaman igual acá, otras tienen otro nombre, y unas pocas no existen a propósito.</p>
+<h2 id="postman">Desde Postman <a class="self" href="#postman" aria-label="Desde Postman">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Postman</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td>Collection, folder, request</td><td>lo mismo, en el área Requests</td></tr>
+<tr><td>Environment, globals</td><td>entorno (valores compartidos + los de esta máquina)</td></tr>
+<tr><td>Secret variable</td><td>un secreto en la bóveda: <code>{{secrets.x}}</code></td></tr>
+<tr><td><code>{{variable}}</code></td><td><code>{{env.x}}</code>, <code>{{secrets.x}}</code> o <code>{{x}}</code> (sesión, variable de colección)</td></tr>
+<tr><td>Tests (<code>pm.test</code>)</td><td>checks: assert y extract, sin código</td></tr>
+<tr><td><code>pm.environment.set</code> desde una respuesta</td><td>un extract</td></tr>
+<tr><td>Collection Runner</td><td><strong>Correr</strong> en el menú de la colección, o <code>ultraman run --collection</code></td></tr>
+<tr><td>Flows</td><td>pipelines</td></tr>
+<tr><td>Mock servers (en la nube)</td><td>el servidor mock, local, a partir de tu historial</td></tr>
+<tr><td>Workspaces, sync</td><td>git: <strong>Sincronizar</strong></td></tr>
+<tr><td>Pre-request scripts</td><td>no, a propósito: las funciones (<code>{{random.uuid}}</code>, <code>hmac.sha256</code>) y los bloques cubren los casos comunes</td></tr>
+</tbody>
+</table></div>
+<h2 id="jmeter">Desde JMeter <a class="self" href="#jmeter" aria-label="Desde JMeter">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">JMeter</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td>Test plan</td><td>un test de carga (<code>ultraman/load-tests/</code>)</td></tr>
+<tr><td>Thread Group</td><td>un escenario: una pipeline con sus etapas</td></tr>
+<tr><td>Number of threads, ramp-up, duration</td><td>etapas: <code>{ users: 50, for: 60s }</code></td></tr>
+<tr><td>Loop count</td><td><code>iterations</code></td></tr>
+<tr><td>Once Only Controller</td><td>un bloque de preparación (una vez por usuario)</td></tr>
+<tr><td>setUp / tearDown Thread Group</td><td><code>before</code> / <code>after</code> (una vez por test)</td></tr>
+<tr><td>HTTP Request sampler</td><td>un paso request</td></tr>
+<tr><td>Regular Expression / JSON Extractor</td><td>un extract (<code>regex:</code> o <code>path:</code>)</td></tr>
+<tr><td>Response Assertion</td><td>un assert</td></tr>
+<tr><td>CSV Data Set Config</td><td>un archivo de datos</td></tr>
+<tr><td>HTTP Cookie Manager</td><td>cookies por usuario (activadas por defecto)</td></tr>
+<tr><td>Constant Timer, Uniform Random Timer</td><td>pausa (think time)</td></tr>
+<tr><td>Constant Throughput Timer</td><td>ritmo (pacing), o una tasa de arribo</td></tr>
+<tr><td>If Controller</td><td>el paso <code>if</code></td></tr>
+<tr><td>User Defined Variables</td><td>un entorno</td></tr>
+<tr><td>Listeners, Aggregate Report</td><td>el reporte: veredicto, latencias, errores por paso</td></tr>
+<tr><td>BeanShell / JSR223</td><td>no, a propósito; lo que no se puede traducir se lista cuando importás un <code>.jmx</code></td></tr>
+</tbody>
+</table></div>
+<h2 id="artillery">Desde Artillery <a class="self" href="#artillery" aria-label="Desde Artillery">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Artillery</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td><code>config.target</code></td><td>el host de la pipeline, o un entorno</td></tr>
+<tr><td><code>phases</code> con <code>arrivalRate</code></td><td>etapas con <code>rate:</code> (el preset Tasa de arribo)</td></tr>
+<tr><td><code>phases</code> con <code>rampTo</code></td><td>etapas que van de una tasa a otra</td></tr>
+<tr><td><code>scenarios</code> con <code>weight</code></td><td>escenarios mezclados por peso</td></tr>
+<tr><td><code>flow</code></td><td>los pasos de una pipeline</td></tr>
+<tr><td><code>capture</code></td><td>un extract</td></tr>
+<tr><td>plugin <code>expect</code></td><td>asserts</td></tr>
+<tr><td><code>ensure</code></td><td>umbrales</td></tr>
+<tr><td><code>payload</code></td><td>un archivo de datos</td></tr>
+<tr><td><code>before</code> / <code>after</code></td><td>bloques <code>before</code> / <code>after</code></td></tr>
+<tr><td><code>think</code></td><td>pausa (think time), o un paso <code>wait</code></td></tr>
+<tr><td><code>config.environments</code></td><td>entornos</td></tr>
+<tr><td>processors, hooks</td><td>no, a propósito; se listan cuando importás</td></tr>
+</tbody>
+</table></div>
+<h2 id="streams-from">Streams <a class="self" href="#streams-from" aria-label="Streams">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Herramienta</th><th scope="col">Ultraman</th></tr></thead>
+<tbody>
+<tr><td>El request WebSocket de Postman</td><td>una request de stream en el área Requests (<strong>Nuevo WebSocket o SSE</strong>)</td></tr>
+<tr><td>Los mensajes guardados de Postman</td><td>la pestaña <strong>Mensajes</strong> de la request</td></tr>
+<tr><td>k6 <code>ws.connect</code>, <code>socket.on(&#39;message&#39;)</code></td><td>un paso <code>websocket</code> y un <code>receive</code></td></tr>
+<tr><td>El engine <code>ws</code> de Artillery: <code>send</code>, <code>match</code></td><td>un paso <code>send</code> y un <code>receive</code> con <code>where</code></td></tr>
+<tr><td>Gatling <code>ws(&quot;x&quot;).connect</code>, <code>await.on(check)</code></td><td>lo mismo: <code>websocket</code>, <code>receive</code> con <code>where</code></td></tr>
+<tr><td>Los WebSocket Samplers de JMeter: open, write, read, close</td><td>los cuatro pasos: <code>websocket</code>, <code>send</code>, <code>receive</code>, <code>close</code></td></tr>
+<tr><td>SSE con un plugin o un script</td><td>un paso <code>sse</code> y un <code>receive</code> con <code>where: { event: price }</code></td></tr>
+</tbody>
+</table></div>
+<p>Lo que no está: reconexiones automáticas (conectá de nuevo, o escribí el reintento como pasos), Socket.IO, compresión de WebSocket y un mock para streams.</p>
+<h2 id="own-words">Palabras que son solo de Ultraman <a class="self" href="#own-words" aria-label="Palabras que son solo de Ultraman">#</a></h2>
+<ul>
+<li><strong>Pipeline</strong>: un flujo de pasos visibles; el mismo archivo es un test funcional, un escenario de carga y un check de CI.</li>
+<li><strong>Bloque</strong>: una pieza reutilizable de una pipeline (un login).</li>
+<li><strong>Veredicto</strong>: la frase del reporte: aguantó, se encoló, se rompió, o <code>limited</code> cuando tu computadora fue el límite.</li>
+<li><strong>Copia vinculada</strong>: una request de colección dentro de una pipeline que recuerda de dónde vino.</li>
+<li><strong>Consentimiento</strong>: tu sí explícito antes de que Ultraman mande algo sensible a un lugar nuevo: un secreto a un host al que nunca fue, o un archivo de fuera del proyecto. Ultraman pregunta una vez por caso y no manda nada hasta que respondés (<a href="security.html#consent">Seguridad y consentimiento</a>).</li>
+<li><strong>Carpeta de confianza</strong>: una carpeta de proyecto en la que le dijiste a Ultraman que confíe, en esta máquina. En una carpeta en la que no confiaste no manda nada desde la ventana y no corre git (<a href="security.html#trusted-folders">carpetas de confianza</a>).</li>
+<li><strong>Bóveda</strong>: el almacén cifrado en tu computadora donde viven los secretos, que se abre con tu contraseña maestra y nunca se pone en el repo (<a href="security.html#vault">la bóveda</a>).</li>
+</ul>
+<h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
+<ul>
+<li><strong>Vos:</strong> nada se convierte en código que corre: los scripts de Postman, JMeter o Artillery se listan como &quot;needs a hand&quot; y nunca se ejecutan (<a href="importing.html#safety">importar</a>).</li>
+<li><strong>Vos:</strong> los valores secretos importados nunca terminan en un archivo; van a la bóveda o los dejan para que los cargues vos (<a href="security.html#vault">la bóveda</a>).</li>
+<li><strong>Tu equipo:</strong> lo que traés se vuelve YAML en git, así quienes revisan lo ven como un diff.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="agents.html"><small>Anterior</small><span>Agentes (MCP)</span></a><a rel="next" href="faq.html"><small>Siguiente</small><span>Preguntas</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+</body>
+</html>

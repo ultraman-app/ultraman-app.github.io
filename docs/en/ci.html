@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>CI · Ultraman docs</title>
+<meta name="description" content="Ultraman runs in a build pipeline with the same pipelines you use on your machine, writes a JUnit report and fails the job when a step or a threshold fails…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/ci.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/ci.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/ci.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/ci.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/ci.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/ci.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/ci.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/ci.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html" aria-current="page">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html" aria-current="page">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="ci">CI <a class="self" href="#ci" aria-label="CI">#</a></h1>
+<p>Ultraman runs in a build pipeline with the same pipelines you use on your machine, writes a JUnit report and fails the job when a step or a threshold fails. For GitHub Actions there is an action that also keeps secrets from going anywhere nobody approved. For other systems you install the command and call it.</p>
+<h2 id="github-action">The GitHub Action <a class="self" href="#github-action" aria-label="The GitHub Action">#</a></h2>
+<p><code>ultraman-app/run-action@v1</code> installs only the <code>ultraman</code> command on the runner (Linux, macOS or Windows), runs your pipelines or a load test and writes the JUnit report. It exits like <code>ultraman run</code>: 1 when a step or threshold fails, 2 when it couldn&#39;t run (a bad input, a missing value, a secret nobody allowed to go where a pipeline sends it).</p>
+<pre tabindex="0"><code>- uses: actions/checkout@v4
+  with:
+    persist-credentials: false
+- uses: ultraman-app/run-action@v1
+  env:
+    ULTRAMAN_SECRET_API_KEY: ${{ secrets.API_KEY }}
+  with:
+    args: --tag smoke
+    env: staging
+    allow: api_key=https://staging.example.com</code></pre>
+<p><code>persist-credentials: false</code> keeps the job&#39;s GitHub token out of the project folder; the action refuses to run next to it.</p>
+<h2 id="junit">The JUnit report <a class="self" href="#junit" aria-label="The JUnit report">#</a></h2>
+<p>The report is written even when the run fails. Upload it so the failures show on the job:</p>
+<pre tabindex="0"><code>- uses: ultraman-app/run-action@v1
+  id: ultraman
+  with:
+    pipelines: create order
+- uses: actions/upload-artifact@v4
+  if: always()
+  with:
+    name: ultraman-junit
+    path: ${{ steps.ultraman.outputs.junit }}
+    retention-days: 7</code></pre>
+<p>Without <code>if: always()</code> the upload is skipped exactly when you need it.</p>
+<h2 id="inputs">The action&#39;s inputs <a class="self" href="#inputs" aria-label="The action&#39;s inputs">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Input</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>pipelines</code></td><td>Pipelines to run, one per line. Leave it empty and use <code>args</code> for <code>--all</code>, <code>--tag X</code> or <code>--collection ID</code>.</td></tr>
+<tr><td><code>args</code></td><td>More flags for <code>ultraman run</code>: <code>--parallel 4</code>, <code>--bail</code>... They are split on spaces, so a value with a space can&#39;t go here.</td></tr>
+<tr><td><code>load</code></td><td>A load test to run instead; its thresholds decide the exit code.</td></tr>
+<tr><td><code>env</code></td><td>The environment (<code>ultraman/envs/&lt;env&gt;.yaml</code>).</td></tr>
+<tr><td><code>local-env</code></td><td>The environment&#39;s machine-only values. See <a href="ci.html#local-values">local values</a>.</td></tr>
+<tr><td><code>allow</code></td><td>Which secret may go to which origin. See <a href="ci.html#allow">allow</a>.</td></tr>
+<tr><td><code>yes</code></td><td><code>true</code> passes <code>--yes</code>. Default <code>false</code>. See <a href="ci.html#yes">yes</a>.</td></tr>
+<tr><td><code>working-directory</code></td><td>The folder that holds <code>ultraman/</code>. Default <code>.</code></td></tr>
+<tr><td><code>junit</code></td><td>The report&#39;s path inside it. Default <code>ultraman-junit.xml</code>.</td></tr>
+<tr><td><code>version</code></td><td>The Ultraman version to install, or <code>latest</code> (the default). Pin one for repeatable runs.</td></tr>
+</tbody>
+</table></div>
+<p>Outputs: <code>junit</code> (the report&#39;s path) and <code>exit-code</code> (0, 1 or 2).</p>
+<p>Each secret a pipeline uses as <code>{{secrets.name}}</code> comes from an <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code> variable (see <a href="cli.html#secrets">the terminal</a>): map your GitHub secrets onto them in the step&#39;s <code>env:</code>, only the ones the pipelines use. Ultraman writes <code>[secret:name]</code> in everything it prints and saves, and GitHub masks them in the log too. The action always runs the pipelines in its own process, never through an Ultraman already open on the runner.</p>
+<h2 id="allow">Where a secret may go: allow <a class="self" href="#allow" aria-label="Where a secret may go: allow">#</a></h2>
+<p>On your machine Ultraman asks before a secret goes to an origin for the first time. A runner has nobody to ask, so the workflow says it beforehand: <code>allow</code> lists, one per line, <code>name=origin</code> for each secret (a scheme, a host and a port if it isn&#39;t the default; no path, no trailing slash).</p>
+<pre tabindex="0"><code>allow: |
+  api_key=https://staging.example.com
+  admin_token=https://admin.staging.example.com</code></pre>
+<p>A pipeline that would send a secret anywhere else is refused before anything is sent (exit 2). So a pull request that changes a pipeline or an environment to point a secret at another host can&#39;t send it there. This protects your team&#39;s secrets from a changed file; it can&#39;t protect them from a changed workflow file, which runs whatever it says. GitHub gives no secrets to workflows from forks on <code>pull_request</code>; never check out a pull request&#39;s code under <code>pull_request_target</code> or <code>workflow_run</code> with your secrets around.</p>
+<h2 id="yes">yes: the risky way <a class="self" href="#yes" aria-label="yes: the risky way">#</a></h2>
+<p><code>yes: true</code> lets every secret go wherever the pipelines say, with nothing asked. Anyone who can change a pipeline or an environment in the branch being tested can then send your secrets to a server of theirs. Use it only for branches that only your team can push to, never for pull requests from forks, and prefer <code>allow</code>. If you want <code>allow</code>&#39;s protection, don&#39;t put <code>--yes</code> in <code>args</code> either.</p>
+<h2 id="files">Files a request sends <a class="self" href="#files" aria-label="Files a request sends">#</a></h2>
+<p>Only files under <code>ultraman/files/</code> go out without a yes (the desktop app copies the files you pick there). A body, multipart part, certificate or stream message read from anywhere else in the repository needs a yes the first time, and a runner has nobody to give it: the run stops with exit 2 before anything is sent. Keep the files your requests send in <code>ultraman/files/</code>. See <a href="security.html#files">Security and consent</a>.</p>
+<h2 id="load-in-ci">Load tests in CI <a class="self" href="#load-in-ci" aria-label="Load tests in CI">#</a></h2>
+<pre tabindex="0"><code>- uses: ultraman-app/run-action@v1
+  with:
+    load: checkout-peak
+    env: staging
+    allow: api_key=https://staging.example.com</code></pre>
+<p>The test&#39;s thresholds decide the exit code: it passes when they all held and the verdict is holds, queues or limited. See <a href="load.html">Load</a> for what they mean. Two points for a build machine:</p>
+<ul>
+<li>Load only an API of your own, and size the test for the runner: a shared runner is a small computer, and a verdict of limited says the numbers describe the runner, not the server.</li>
+<li><code>--baseline last</code> compares with the last report saved in <code>ultraman/loads/</code>, and a fresh runner has none, so it prints nothing. Keep the report you want to compare with (as an artifact or in a cache), restore it before the run and pass its path: <code>--baseline previous/load.json</code>. <code>--output load.json</code> writes the report to keep.</li>
+</ul>
+<h2 id="local-values">Values that live on a developer&#39;s machine <a class="self" href="#local-values" aria-label="Values that live on a developer&#39;s machine">#</a></h2>
+<p>Some environment values aren&#39;t in git: on each machine they live in <code>ultraman/local/envs/&lt;env&gt;.yaml</code>. On a runner the action writes that file from <code>local-env</code>, one <code>name: value</code> per line, and masks each value in the log first. Values are plain: no quotes, comments, multi-line values or other YAML; the action stops on one.</p>
+<pre tabindex="0"><code>with:
+  env: staging
+  local-env: |
+    tenant: acme
+    user: ${{ vars.TEST_USER }}</code></pre>
+<p>A credential belongs in an <code>ULTRAMAN_SECRET_*</code> variable instead: those are hidden in the reports too, while <code>local-env</code> values are hidden only in the log.</p>
+<h2 id="other-ci">Other CI systems <a class="self" href="#other-ci" aria-label="Other CI systems">#</a></h2>
+<aside class="note"><p>Outside GitHub Actions there is no <code>allow</code>: <code>--yes</code> is everything or nothing. Run it only on branches your team controls.</p></aside>
+<p>Everything the action does is the <code>ultraman</code> command plus a few rules. On GitLab, Jenkins, CircleCI or your own runner:</p>
+<ol>
+<li><strong>Install only the command.</strong> On Linux and macOS: <code>curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli</code> (add <code>--version 0.6.2</code> to pin one) and make sure <code>~/.local/bin</code> is on the <code>PATH</code>. On Windows: <code>$env:ULTRAMAN_CLI_ONLY = 1; irm https://ultraman-app.github.io/install.ps1 | iex</code>. The installer checks the release&#39;s signed checksums and carries its own Node.</li>
+<li><strong>Give it the secrets</strong> as masked variables named <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code>.</li>
+<li><strong>Run it.</strong> The exit code gates the job:</li>
+</ol>
+<pre tabindex="0"><code>ultraman run --all --env ci --yes --junit reports/ultraman.xml</code></pre>
+<ol>
+<li><strong>Choose `--yes` knowingly.</strong> A runner has no terminal, so a secret going to an origin, a file from outside <code>ultraman/files/</code> or an untrusted folder all need <code>--yes</code>. The command line has no equivalent of <code>allow</code>: <code>--yes</code> is everything or nothing, with the same risk as <code>yes: true</code> above. Add <code>--local</code> on a shared runner.</li>
+<li><strong>Machine-only values</strong> (<code>ultraman/local/envs/</code>) aren&#39;t in git: provide them as CI variables or write the file in a script.</li>
+<li><strong>The report.</strong> Point your system at the file. Examples, which you should check against your system&#39;s documentation:</li>
+</ol>
+<pre tabindex="0"><code># GitLab CI (.gitlab-ci.yml)
+ultraman:
+  script:
+    - curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli
+    - export PATH=&quot;$HOME/.local/bin:$PATH&quot;
+    - ultraman run --all --env ci --yes --junit reports/ultraman.xml
+  artifacts:
+    reports:
+      junit: reports/ultraman.xml</code></pre>
+<p>In Jenkins the <code>junit</code> step reads the file (<code>junit testResults: &#39;reports/ultraman.xml&#39;</code>), run in a <code>post { always { } }</code> block so a failed run is still reported.</p>
+<p>Load tests work the same way: <code>ultraman run --load checkout-peak --env staging --yes --junit load.xml --output load.json</code>.</p>
+<nav class="pager"><a rel="prev" href="cli.html"><small>Previous</small><span>The terminal</span></a><a rel="next" href="team.html"><small>Next</small><span>Working as a team</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

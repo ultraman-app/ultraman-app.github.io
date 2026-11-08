@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Format reference (YAML) · Ultraman docs</title>
+<meta name="description" content="Everything lives as YAML under ultraman/ in the user&#39;s project. Unknown keys are errors: write only what&#39;s listed. Variables: {{env.x}} (the environment)…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/reference.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html" aria-current="page">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html" aria-current="page">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="reference">Format reference (YAML) <a class="self" href="#reference" aria-label="Format reference (YAML)">#</a></h1>
+<p>Everything lives as YAML under <code>ultraman/</code> in the user&#39;s project. Unknown keys are errors: write only what&#39;s listed. Variables: <code>{{env.x}}</code> (the environment), <code>{{secrets.x}}</code> (a secret: usable, never visible), <code>{{x}}</code> (an input, an extract or a collection variable).</p>
+<p>Durations are written two ways, by field. In <strong>pipelines, steps, options and stream files</strong> every time is a plain integer of milliseconds (<code>timeout: 10000</code>, <code>wait: 500</code>, <code>listen: 2000</code>); <code>10s</code> is an error there. In <strong>load tests</strong> (<code>for</code>, <code>pacing</code>, <code>thinkTime</code>, thresholds, <code>maxWait</code>, <code>apdex</code>) a duration is text such as <code>500ms</code>, <code>30s</code>, <code>1.5m</code> or <code>1h</code>, and a bare number there is <strong>seconds</strong>, so <code>p95: 500</code> means 500 seconds: write the unit. A <code>wait</code> step is milliseconds; a load test&#39;s <code>thinkTime</code> is a duration (<code>2s</code>).</p>
+<p>Required and allowed keys:</p>
+<ul>
+<li>A pipeline or block needs <code>name</code>, <code>host</code> and <code>steps</code>. The only other top-level keys are <code>description</code>, <code>tags</code>, <code>auth</code>, <code>options</code>, <code>headers</code>, <code>inputs</code> and <code>exports</code>.</li>
+<li>A <code>request</code> step needs <code>method</code> and <code>path</code>. The path has no <code>?</code> (put the query in <code>query</code>), and every <code>:param</code> in it needs a key in <code>params</code> (and every key in <code>params</code> a <code>:param</code>).</li>
+<li>A request has one body key at most: <code>json</code>, <code>body</code>, <code>form</code>, <code>multipart</code> or <code>file</code>.</li>
+<li>In a step&#39;s <code>query</code>, <code>headers</code>, <code>form</code> and <code>multipart</code>, a key that starts with <code>~</code> is a disabled row: it is kept in the file and not sent (<code>~x-debug: &quot;1&quot;</code>).</li>
+</ul>
+<h2 id="pipeline-ultraman-pipelines-id-yaml-and-block-ultraman-blocks-id-yaml">Pipeline (<code>ultraman/pipelines/&lt;id&gt;.yaml</code>) and block (<code>ultraman/blocks/&lt;id&gt;.yaml</code>) <a class="self" href="#pipeline-ultraman-pipelines-id-yaml-and-block-ultraman-blocks-id-yaml" aria-label="Pipeline (ultraman/pipelines/&lt;id&gt;.yaml) and block (ultraman/blocks/&lt;id&gt;.yaml)">#</a></h2>
+<pre tabindex="0"><code>name: create order                # the id comes from the name (slug)
+description: log in and create an order
+tags: [orders]
+host: &quot;{{env.api}}&quot;               # every request&#39;s path goes after it
+auth: { bearer: &quot;{{token}}&quot; }     # or { basic: { user, password } }, { apiKey: { name, value, in: header|query } }; per step `auth: none`
+headers: { x-tenant: acme }       # sent by every request (a step&#39;s own header wins)
+inputs: [user]                    # values the run asks for (a block&#39;s are filled with `use … with`)
+exports: [token]                  # a block&#39;s values the caller gets
+options: { timeout: 10000, redirects: 5, maxSize: 5242880, http2: false }   # plainHttp / ca relax TLS: the user is warned
+steps: [ ... ]</code></pre>
+<h3 id="steps-each-starts-with-its-kind">Steps (each starts with its kind) <a class="self" href="#steps-each-starts-with-its-kind" aria-label="Steps (each starts with its kind)">#</a></h3>
+<pre tabindex="0"><code>- request: login                  # a name others refer to as $login
+  description: optional
+  method: POST                    # GET POST PUT PATCH DELETE HEAD OPTIONS or a custom token
+  path: /users/:id                # :id comes from params
+  params: { id: &quot;{{user_id}}&quot; }
+  query: { tag: [a, b] }          # a list repeats the key
+  headers: { Content-Type: text/plain }
+  json: { user: &quot;{{env.test_user}}&quot; }   # one body: json | body (text) | form | multipart | file
+  # form: { name: Ana, tag: [a, b] }
+  # multipart: { comment: hi, logo: { file: ultraman/files/logo.png, type: image/png } }
+  # file: ultraman/files/note.txt # from ultraman/files/ it goes unasked; any other file asks once
+  idempotent: true                # under load, reports whether it always answered the same
+  # idempotent: { ignore: [$.updatedAt, $.meta.requestId] }   # the same, leaving out the fields that change
+
+- extract: token                  # sets {{token}}
+  from: $login
+  path: $.token                   # JSONPath; or header: location; or regex: &#39;id=&quot;(\d+)&quot;&#39; (group 1)
+  optional: true                  # nothing found = unset, not a failure
+
+- assert: status                  # see &quot;Checks&quot;
+  of: $login
+  equals: 200
+
+- wait: 500                       # milliseconds
+
+- repeat: 3                       # or a list as text: repeat: &quot;{{ids}}&quot; with as: id
+  steps: [ ... ]
+
+- if: { exists: coupon }          # or { equals: [a, b] }, { matches: [text, /re/] }; no else
+                                 # a condition, an assert, a `where` or a `regex` never reads a secret, a value made
+                                 # from one (a block&#39;s export, an extract of an echo) or an echo of one: refused
+  steps: [ ... ]
+
+- use: login                      # a block, with its inputs
+  with: { user: &quot;{{env.test_user}}&quot; }
+
+- parallel: queries               # branches run at once; later steps wait for all
+  branches:
+    - - request: me
+        method: GET
+        path: /me
+    - - request: slow
+        method: GET
+        path: /slow</code></pre>
+<h3 id="stream-steps-websocket-and-sse">Stream steps (WebSocket and SSE) <a class="self" href="#stream-steps-websocket-and-sse" aria-label="Stream steps (WebSocket and SSE)">#</a></h3>
+<p>A stream is opened by a <code>websocket</code> or <code>sse</code> step, named like a request: others refer to it as <code>$live</code>, which is the handshake (<code>assert: status of: $live equals: 101</code> works). <code>send</code> writes a message (WebSocket only), <code>receive</code> waits for the next message on the stream that matches a small <code>where</code>, and <code>close</code> ends it; a stream left open is closed when the run (or a load iteration) ends. A received message is a response: <code>$order</code> has the message text as its body, and its stream fields are read like headers (<code>event</code> and <code>id</code> on SSE, <code>type</code> on WebSocket). The block below lists the steps one after another, as they would sit in a pipeline.</p>
+<pre tabindex="0"><code>- websocket: live                # opens a WebSocket; others refer to it as $live (the handshake)
+  path: /live                    # after the pipeline&#39;s host: https is wss, http is ws (or a whole ws(s):// URL)
+  query: { room: orders }
+  headers: { x-client: ultraman }
+  auth: { bearer: &quot;{{token}}&quot; }  # on the upgrade request (default: the pipeline&#39;s)
+  protocols: [v2.json]           # Sec-WebSocket-Protocol, in order of preference; a token, or a template that renders to one
+                                 # ({{secrets.x}} allowed, asked and redacted like a header: some proxies log subprotocols, so prefer
+                                 # an Authorization header when the server accepts one)
+  options: { timeout: 10000, maxMessage: 1048576, ping: 15000 }   # ms, bytes, ms (0 = never ping)
+
+- send: live                     # one message on $live (WebSocket only)
+  json: { subscribe: orders }    # or text: hello, or file: ultraman/files/frame.bin (binary)
+
+- receive: order                 # the next message on $live that matches `where`; becomes $order
+  from: $live
+  where: { path: $.type, equals: order.created }   # optional: any message without it
+  timeout: 5000                  # ms to wait (default: options.timeout)
+
+- extract: order_id              # a received message is a response: extract and assert as usual
+  from: $order
+  path: $.id
+
+- assert: equals
+  of: $order
+  path: $.status
+  equals: new
+
+- close: live                    # optional: code 1000; the run closes what&#39;s left open
+  code: 1000
+  reason: done
+
+- sse: prices                    # opens a Server-Sent Events stream (GET, accept: text/event-stream)
+  path: /prices
+  headers: { last-event-id: &quot;{{last_id}}&quot; }   # resuming is yours, not automatic
+  options: { timeout: 10000, maxEvent: 65536, maxSize: 52428800 }
+
+- receive: tick
+  from: $prices
+  where: { event: price }        # SSE: by event name; `path` + `equals`, `contains` and `matches` read the data
+  timeout: 3000</code></pre>
+<p><code>where</code> is at most one of <code>{ path, equals }</code>, <code>{ path, exists: true }</code>, <code>{ contains }</code> and <code>{ matches }</code>, plus <code>event</code> (SSE only, alone or with one of the others). Messages that arrive and don&#39;t match are passed over and counted, never looked at again: a <code>receive</code> is the next match from where the last one left off. A failed <code>receive</code> shows the last three it passed over. <code>repeat: 10</code> around a <code>receive</code> collects ten messages; a <code>parallel</code> with a <code>receive</code> in one branch and a <code>send</code> in the other is &quot;wait for the push while I act&quot;.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">stream option</th><th scope="col">on</th><th scope="col">default</th><th scope="col">means</th></tr></thead>
+<tbody>
+<tr><td><code>timeout</code></td><td>both</td><td>30000</td><td>the handshake, and a <code>receive</code>&#39;s default wait</td></tr>
+<tr><td><code>maxMessage</code></td><td>websocket</td><td>1048576</td><td>one message, in bytes; a bigger one ends the stream</td></tr>
+<tr><td><code>ping</code></td><td>websocket</td><td>15000</td><td>a ping after this many ms of quiet; 0 never pings</td></tr>
+<tr><td><code>maxEvent</code></td><td>sse</td><td>65536</td><td>one line or one event&#39;s data, in bytes</td></tr>
+<tr><td><code>maxSize</code></td><td>sse</td><td>52428800 (5 MB in a load)</td><td>the whole stream; past it the stream ends with a note</td></tr>
+<tr><td><code>idle</code></td><td>both</td><td>0 (none)</td><td>ms without any frame or line before the stream is dropped</td></tr>
+</tbody>
+</table></div>
+<p><code>plainHttp</code> (needed for <code>ws:</code> outside localhost) and <code>ca</code> apply to the handshake as to any request.</p>
+<h3 id="checks-assert">Checks (<code>assert</code>) <a class="self" href="#checks-assert" aria-label="Checks (assert)">#</a></h3>
+<p>Every assert has <code>of: $step</code>. Besides that it reads a <code>path</code> of the JSON body, a response <code>header</code>, or neither (the whole body); the &quot;reads&quot; column says what each check allows. The expected value goes in the key of the &quot;compares with&quot; column, and only that one: <code>equals:</code> for <code>status</code> and <code>equals</code>, <code>value:</code> for the rest. The other key is an error.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">check</th><th scope="col">compares with</th><th scope="col">reads</th><th scope="col">passes when</th></tr></thead>
+<tbody>
+<tr><td><code>status</code></td><td><code>equals:</code></td><td>nothing (a <code>path</code> is accepted and ignored; a <code>header</code> is an error)</td><td>the HTTP status is it</td></tr>
+<tr><td><code>equals</code></td><td><code>equals:</code></td><td>a path or a header, or the whole body</td><td>the value is the one given</td></tr>
+<tr><td><code>notEquals</code></td><td><code>value:</code></td><td>a path or a header, or the whole body</td><td>the value isn&#39;t the one given</td></tr>
+<tr><td><code>contains</code></td><td><code>value:</code></td><td>a path or a header, or the whole body</td><td>the value is it or contains it; without either, the body&#39;s text contains it</td></tr>
+<tr><td><code>lessThan</code>, <code>greaterThan</code></td><td><code>value:</code></td><td>a path or a header, or none</td><td>the number is below (above) it; with none, the duration in ms</td></tr>
+<tr><td><code>exists</code>, <code>notExists</code></td><td>no value (one is an error)</td><td>exactly one of path or header</td><td>the path finds a value or the header is there (or isn&#39;t)</td></tr>
+<tr><td><code>matches</code></td><td><code>value:</code></td><td>a path or a header, or the whole body</td><td>the text matches a regex (<code>/^ord_/i</code> with flags i, m, s, u)</td></tr>
+<tr><td><code>type</code></td><td><code>value:</code></td><td>a path (a header is an error)</td><td><code>string</code>, <code>number</code>, <code>boolean</code>, <code>object</code>, <code>array</code> or <code>null</code></td></tr>
+<tr><td><code>schema</code></td><td><code>value:</code></td><td>a path (a header is an error)</td><td>a JSON Schema inline or a <code>.json</code> file in the project</td></tr>
+</tbody>
+</table></div>
+<p>A path and a header together are an error, except where the table says exactly one is needed.</p>
+<h3 id="functions-inside">Functions inside <code>{{ }}</code> <a class="self" href="#functions-inside" aria-label="Functions inside {{ }}">#</a></h3>
+<p><code>random.uuid</code>, <code>random.email</code>, <code>random.int</code>, <code>random.int(1, 100)</code>, <code>random.string(16)</code>, <code>random.name</code>, <code>random.phone</code>, <code>random.pick(&#39;a&#39;, &#39;b&#39;)</code>, <code>now.iso</code>, <code>now.ms</code>, <code>now.s</code>, <code>counter</code>, <code>counter.vu</code>, <code>hmac.sha256(secrets.key, body)</code>, <code>hmac.sha1(…)</code>, <code>sha256(x)</code>, <code>base64(x)</code>, <code>urlencode(x)</code>. In a load: <code>{{vu.id}}</code>, <code>{{iteration}}</code>. No nesting, no scripts.</p>
+<h2 id="collections-requests-area">Collections (Requests area) <a class="self" href="#collections-requests-area" aria-label="Collections (Requests area)">#</a></h2>
+<p><code>ultraman/requests/&lt;collection&gt;/collection.yaml</code>:</p>
+<pre tabindex="0"><code>name: shop
+host: &quot;{{env.api}}&quot;
+auth: { bearer: &quot;{{token}}&quot; }     # optional, like a pipeline&#39;s
+headers: { x-tenant: acme }       # optional
+variables: { user: ana }          # starting values for {{user}}</code></pre>
+<p>A request, <code>ultraman/requests/&lt;collection&gt;/&lt;folders…&gt;/&lt;id&gt;.yaml</code> (save_request takes this whole file):</p>
+<pre tabindex="0"><code>request: me                       # its id comes from this name
+method: GET
+path: /me
+auth: { bearer: &quot;{{token}}&quot; }
+checks:                           # extract / assert about this same request: no from / of
+  - assert: status
+    equals: 200
+  - extract: user_id
+    path: $.id
+notes: free text</code></pre>
+<p>A stream is a request file whose first key is <code>websocket</code> or <code>sse</code> instead of <code>request</code> (<code>save_request</code> takes it the same way, and <code>send_saved_request</code> and <strong>Run collection</strong> play it):</p>
+<pre tabindex="0"><code>websocket: live
+path: /live
+protocols: [v2.json]
+messages:                        # ready to send from the panel (WebSocket only); templates allowed
+  - name: subscribe orders
+    json: { subscribe: orders }
+  - name: ping
+    text: ping
+listen: 2000                     # how long a collection run (or the agent) listens after sending the messages
+checks:                          # about the handshake: status, header
+  - assert: status
+    equals: 101
+notes: free text</code></pre>
+<pre tabindex="0"><code>sse: prices
+path: /prices
+listen: 3000
+checks:
+  - assert: status
+    equals: 200</code></pre>
+<p>Run as part of a collection, the file is four steps: connect, each saved message as a <code>send</code>, a <code>receive</code> that listens <code>listen</code> ms (a timeout there isn&#39;t a failure) and a close. A stream request has no mock.</p>
+<h2 id="environments-ultraman-envs-id-yaml-shared-ultraman-local-envs-id-yaml-this-machine">Environments (<code>ultraman/envs/&lt;id&gt;.yaml</code>, shared; <code>ultraman/local/envs/&lt;id&gt;.yaml</code>, this machine) <a class="self" href="#environments-ultraman-envs-id-yaml-shared-ultraman-local-envs-id-yaml-this-machine" aria-label="Environments (ultraman/envs/&lt;id&gt;.yaml, shared; ultraman/local/envs/&lt;id&gt;.yaml, this machine)">#</a></h2>
+<p>Plain <code>name: value</code> text. A secret goes as a reference (<code>token: &quot;{{secrets.token}}&quot;</code>), never as its value. <code>options:</code> holds the same request options as a pipeline.</p>
+<h2 id="load-tests-ultraman-load-tests-id-yaml">Load tests (<code>ultraman/load-tests/&lt;id&gt;.yaml</code>) <a class="self" href="#load-tests-ultraman-load-tests-id-yaml" aria-label="Load tests (ultraman/load-tests/&lt;id&gt;.yaml)">#</a></h2>
+<pre tabindex="0"><code>name: checkout peak
+description: optional             # text
+before: { block: seed, with: { n: 10 } }    # once per test (after: the same, at the end)
+scenarios:
+  - pipeline: checkout            # the pipeline&#39;s name
+    weight: 3                     # with shared top-level stages, users are split by weight
+    from: 0                       # users at the start
+    stages:                       # users: go to N over a time; or rate: N iterations per second (open model)
+      - { users: 50, for: 1m, name: ramp }
+      - { users: 50, for: 5m }
+      - { users: 0, for: 30s }
+    maxUsers: 200                 # rate stages: the pool&#39;s cap
+    iterations: 10                # per user (users stages only)
+    thinkTime: { min: 1s, max: 3s }   # or a single duration
+    pacing: 5s                    # an iteration takes at least this
+    cookies: true                 # a jar per virtual user
+    setup: { block: login, with: { user: ana } }   # once per user
+    data: { file: ultraman/local/data/users.csv, as: data, each: user, onEnd: recycle, order: sequence }
+    inputs: { region: eu }
+    responses: auto               # auto | discard | keep (bodies kept under load)
+    maxSize: 5242880              # bytes of one response kept under load
+thresholds:                       # the run fails (exit 1) past these
+  p95: 500ms
+  errors: 1%
+  steps: { login: { p95: 200ms } }
+  warn: { p95: 300ms }            # warnings, not failures
+apdex: { satisfied: 300ms, tolerating: 1200ms }   # or apdex: true</code></pre>
+<p>Limits: a test has at most 10 scenarios and 50 stages per scenario; <code>users</code> is 0 to 1000, <code>rate</code> 0 to 1000 iterations per second, <code>iterations</code> 1 to 1,000,000; no scenario lasts over 3600 s (1 h); and at no second may the planned users add up to over 1000. Stages are all <code>users</code> or all <code>rate</code> in a scenario, and a rate scenario takes no <code>iterations</code>. A stage needs <code>for</code> and one of <code>users</code> or <code>rate</code>. Secrets are never written in <code>inputs</code>.</p>
+<p>Exit codes of <code>ultraman run --load</code>: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or the run was stopped; <strong>2</strong> the test never started (a file that doesn&#39;t parse, a missing pipeline, input or secret).</p>
+<p>Thresholds: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>, <code>failedIterations</code>, <code>minRps</code>, <code>apdex</code> (0 to 1), <code>maxWait</code>, <code>streamErrors</code> (a percentage of the connections: streams the server closed mid-run and dropped messages), <code>steps</code> (per step name: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>; a <code>receive</code> or a <code>websocket</code>/<code>sse</code> step by its name) and <code>warn</code> (the same, as warnings).</p>
+<nav class="pager"><a rel="prev" href="faq.html"><small>Previous</small><span>Questions</span></a><span></span></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

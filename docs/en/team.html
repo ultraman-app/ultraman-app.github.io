@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Working as a team · Ultraman docs</title>
+<meta name="description" content="Everything a team shares is a file under ultraman/, so your tests travel with your code and a change to a test shows up in a pull request like any other change.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/team.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/team.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/team.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/team.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/team.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/team.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/team.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/team.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html" aria-current="page">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html" aria-current="page">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="team">Working as a team <a class="self" href="#team" aria-label="Working as a team">#</a></h1>
+<p>Everything a team shares is a file under <code>ultraman/</code>, so your tests travel with your code and a change to a test shows up in a pull request like any other change.</p>
+<h2 id="sync">Sync <a class="self" href="#sync" aria-label="Sync">#</a></h2>
+<p>If the project is in a git repo with a remote, the top bar says how many files are left to sync (&quot;2 changes not synced&quot;) and offers <strong>Sync</strong>. Saving (Ctrl+S) only writes to your disk; nothing reaches the remote until you sync.</p>
+<p>Sync touches six folders, and only those: <code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code>, <code>ultraman/envs/</code>, <code>ultraman/requests/</code> (the collections), <code>ultraman/load-tests/</code> and <code>ultraman/files/</code> (the files requests send). It commits them (the panel lists the files and a message you can edit), fetches the remote&#39;s changes, merges them, pushes and reloads. The rest of your repo, your other uncommitted changes and what you have staged are left alone. It uses your system&#39;s git and your own credentials; the app never asks for a password.</p>
+<h2 id="conflicts">Conflicts <a class="self" href="#conflicts" aria-label="Conflicts">#</a></h2>
+<p>If a pipeline changed on your disk and on the remote, a dialog shows both versions side by side, as steps or as YAML. Choose <strong>Keep mine</strong>, <strong>Use the remote&#39;s</strong>, or <strong>Save mine as a copy</strong>. Esc cancels and changes nothing.</p>
+<h2 id="errors">When sync fails <a class="self" href="#errors" aria-label="When sync fails">#</a></h2>
+<p>Sync shows the reason and what git said. The usual ones:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Message</th><th scope="col">What to do</th></tr></thead>
+<tbody>
+<tr><td>The branch … has no remote configured</td><td>Push it once: <code>git push -u origin &lt;branch&gt;</code></td></tr>
+<tr><td>You have unpushed commits that touch files outside ultraman/</td><td>They&#39;re yours and Ultraman doesn&#39;t push them: <code>git push</code>, then sync again</td></tr>
+<tr><td>The remote rejected the push</td><td>A protected branch or no permission. Your changes stay committed locally: push them through a branch and a pull request</td></tr>
+<tr><td>Couldn&#39;t fetch the remote&#39;s</td><td>Network or credentials: try <code>git fetch</code> in the terminal</td></tr>
+<tr><td>Git doesn&#39;t know who you are</td><td><code>git config --global user.name &quot;Your name&quot;</code> and <code>git config --global user.email you@email</code></td></tr>
+<tr><td>There&#39;s an unfinished merge or rebase</td><td>Finish it or abort it in the terminal</td></tr>
+</tbody>
+</table></div>
+<h2 id="on-disk">Changed on disk <a class="self" href="#on-disk" aria-label="Changed on disk">#</a></h2>
+<p>If you <code>git pull</code> in a terminal, or change a YAML with another editor, the window notices by itself. If the pipeline you have open had unsaved changes, it says &quot;It changed on disk while you were editing it&quot; and offers <strong>Reload</strong>.</p>
+<h2 id="personal">What stays personal <a class="self" href="#personal" aria-label="What stays personal">#</a></h2>
+<p>Your secrets, this machine&#39;s environment values, the history, past runs and load reports are never synced. Each person sets their own secrets in their own vault.</p>
+<h2 id="trusted">Trusted folders <a class="self" href="#trusted" aria-label="Trusted folders">#</a></h2>
+<p>A folder is trusted per person, on that machine. In a folder you haven&#39;t trusted, Ultraman sends nothing from the window and runs no git, so there is no sync until you trust it. That protects you when you open a repo you just cloned from someone else. Trusting is your decision and stays on your computer: it is never stored in the project.</p>
+<h2 id="reviews">In pull requests <a class="self" href="#reviews" aria-label="In pull requests">#</a></h2>
+<p>Because pipelines and load tests are YAML, a change to a test shows as a readable diff: which step changed, which threshold moved. A linked request in a pipeline says where it came from (<code>from: shop/orders/create</code>).</p>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<ul>
+<li><strong>Your team:</strong> only those six folders are committed and pushed; secrets, local values, history and reports stay on each machine (<a href="security.html#stored">what is stored</a>).</li>
+<li><strong>You:</strong> a folder you haven&#39;t trusted sends nothing and runs no git (<a href="security.html#trusted-folders">trusted folders</a>).</li>
+<li><strong>Your team:</strong> a test change is a readable diff, so a new host or header can&#39;t slip in unseen.</li>
+<li><strong>CI:</strong> the same files run in your pipeline with their own secrets (<a href="ci.html#github-action">CI</a>).</li>
+</ul>
+<nav class="pager"><a rel="prev" href="ci.html"><small>Previous</small><span>CI</span></a><a rel="next" href="agents.html"><small>Next</small><span>Agents (MCP)</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

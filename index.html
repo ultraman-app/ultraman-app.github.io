@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ultraman: API test pipelines you can see, run and load-test</title>
-<meta name="description" content="Ultraman is a free desktop app for testing APIs: build a pipeline step by step, see every response, put it under load, mock it, run it in CI and hand it to your AI agent over MCP. Pipelines are YAML files in your repo.">
+<meta name="description" content="Ultraman is a desktop app for testing APIs: build a pipeline step by step, see every response, put it under load, mock it, run it in CI and hand it to your AI agent over MCP. Pipelines are YAML files in your repo.">
 <link rel="canonical" href="https://ultraman-app.github.io/">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#2E46FF">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Ultraman">
 <meta property="og:url" content="https://ultraman-app.github.io/">
 <meta property="og:title" content="Ultraman: API test pipelines you can see, run and load-test">
-<meta property="og:description" content="Build an API test the way you'd explain it, watch every step run, put it under load and let your agent use it. Free, local, files in your repo.">
+<meta property="og:description" content="Build an API test the way you'd explain it, watch every step run, put it under load and let your agent use it. Local, with the files in your repo.">
 <meta property="og:image" content="https://ultraman-app.github.io/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,21 +26,24 @@
   "@type": "SoftwareApplication",
   "name": "Ultraman",
   "url": "https://ultraman-app.github.io/",
-  "description": "A free desktop app for testing APIs with pipelines of visible steps: run them, load-test them, run them in CI and hand them to AI agents over MCP.",
+  "description": "A desktop app for testing APIs with pipelines of visible steps: run them, load-test them, run them in CI and hand them to AI agents over MCP.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Windows, macOS, Linux",
   "softwareVersion": "0.6.2",
-  "downloadUrl": "https://github.com/ultraman-app/ultraman-app.github.io/releases/latest",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  "downloadUrl": "https://github.com/ultraman-app/ultraman-app.github.io/releases/latest"
 }
 </script>
 <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
 <header class="hero">
+  <nav class="topnav" aria-label="Site">
+    <a href="docs/en/security.html">Security</a>
+    <a href="docs/en/index.html">Docs</a>
+  </nav>
   <div class="lanes" aria-hidden="true">
     <span class="lane top"></span>
     <span class="lane mid"><span class="word">Ultraman</span></span>
@@ -49,9 +52,9 @@
   <h1 class="sr">Ultraman</h1>
 
   <div class="intro">
-    <p class="lede">Build an API test the way you'd explain it: log in, create an order, check it shows up. Then watch every step run, put it under load, and let your agent use it.</p>
+    <p class="lede">Build an API test the way you'd explain it: log in, create an order, check it shows up. Send single requests like in Postman, then watch every step run, put it under load, and let your agent use it.</p>
 
-    <div class="install" data-os="mac">
+    <div class="install" id="install" data-os="mac">
       <div class="oses" role="tablist" aria-label="Your system">
         <button role="tab" id="tab-mac" aria-controls="cmd-mac" aria-selected="true" data-os="mac">macOS</button>
         <button role="tab" id="tab-linux" aria-controls="cmd-linux" aria-selected="false" data-os="linux">Linux</button>
@@ -72,8 +75,9 @@
         <code>irm https://ultraman-app.github.io/install.ps1 | iex</code>
         <button class="copy" type="button">Copy</button>
       </div>
-      <p class="fine">It installs the app and the <code>ultraman</code> command for your user, with everything they need inside. Free, no account, no admin rights. Your pipelines are plain files in your repo.</p>
+      <p class="fine">It installs the app and the <code>ultraman</code> command for your user, with everything they need inside, and checks each download against the release's signed checksums first. No account, no admin rights. <a href="docs/en/getting-started.html#install">Installing, updating and uninstalling</a></p>
     </div>
+    <p class="fine"><strong>Ultraman never sends anything in an unsafe way without your explicit consent.</strong> A secret goes only to a host you approved, a file only from the folder you share, and nothing at all from a folder you haven't trusted. <a href="docs/en/security.html#promise">How it keeps you and your team safe</a></p>
   </div>
 </header>
 
@@ -119,9 +123,8 @@
     <span class="k">path:</span> $[*].id
     <span class="k">value:</span> "{{order_id}}"</code></pre>
       <div class="copytext beside">
-        <p>Each step is a request, a value you take from a response, a check, a wait, a loop, or a block you reuse, like logging in. You build it in the window without writing YAML.</p>
-        <p>The YAML is what lands in git, next to your code. The team reviews it in a pull request, and the app syncs it with one button.</p>
-        <p>Coming from Postman? Import your collections and environments: folders, requests, auth and the usual test scripts come in as checks, and secret values go to the vault, never to a file.</p>
+        <p>Each step is a request, a value you take from a response, a check, a wait, a loop, a branch or a block you reuse, like logging in, and you build it in the window without writing YAML. The YAML lands in git next to your code, where the team reviews it in a pull request.</p>
+        <p class="more"><a href="docs/en/pipelines.html#steps">Read more about pipelines</a></p>
       </div>
     </div>
   </section>
@@ -129,7 +132,8 @@
   <section class="run">
     <div class="copytext">
       <h2>Run it and read what happened</h2>
-      <p>From the window or from a terminal, every step says what it did. A failed check shows what it expected and what came back, with the full response a click away. Secrets never reach the output or the history.</p>
+      <p>From the window or a terminal, every step says what it did, and a failed check shows what it expected and what came back. Secret values show as <code>[secret:name]</code> in the output and in the history.</p>
+      <p class="more"><a href="docs/en/pipelines.html#run">Read more about runs</a></p>
     </div>
     <pre class="narrated" tabindex="0" aria-label="The output of ultraman run create order"><code><span class="prompt">$ ultraman run "create order"</span>
 <span class="line"><span class="ok">  ✓</span> 1 request POST /auth/login · 200 · 16 ms</span>
@@ -146,7 +150,8 @@
   <section class="checks">
     <div class="copytext">
       <h2>Checks that write themselves</h2>
-      <p><b>Generate checks</b> reads the response on screen and proposes its status and each field's type. Add a pattern or a JSON Schema where you need more. After every send, if a field went missing or changed type since the last time, a banner says so before your frontend finds out.</p>
+      <p><b>Generate checks</b> reads the response on screen and proposes its status and each field's type; you add a pattern or a JSON Schema where you need more. After every send, if a field went missing or changed type since the last time, a banner says so before your frontend finds out.</p>
+      <p class="more"><a href="docs/en/requests.html#generate-checks">Read more about checks</a></p>
     </div>
     <div class="artifact">
       <pre class="yaml" tabindex="0" aria-label="A request's checks"><code><span class="c"># proposed by Generate checks</span>
@@ -170,7 +175,8 @@
   <section class="mock">
     <div class="copytext">
       <h2>A fake API from what you already sent</h2>
-      <p>Your frontend needs the API, and it's down, slow or not written yet. <code>ultraman mock</code> answers with the responses your sends got, per environment. What it has no recording for can go on to the real API. A route can play its recordings in order (pending, pending, done) or stay on the one you pin, and only pages on your own machine can call it.</p>
+      <p>Your frontend needs the API, and it's down, slow or not written yet: <code>ultraman mock</code> answers with the responses your sends got, and what it has no recording for can go on to the real API. Unless you say otherwise, it listens only on your machine and only pages on your machine can call it.</p>
+      <p class="more"><a href="docs/en/mock.html">Read more about the mock server</a></p>
     </div>
     <pre class="narrated" tabindex="0" aria-label="The output of ultraman mock with a proxy"><code><span class="prompt">$ ultraman mock --proxy https://staging.example.com</span>
 <span class="line">POST /auth/login ← shop/login · 18:15</span>
@@ -185,32 +191,59 @@
   <section class="load">
     <div class="copytext">
       <h2>Then see if it holds</h2>
-      <p>The same pipeline, run by many users at once: steady, ramping up, or in a spike. The report starts with a verdict in plain words, then the numbers behind it.</p>
+      <p>The same pipeline, run by many users at once: steady, ramping up, in a spike or at a rate of new arrivals per second. The report starts with a verdict in plain words, then the numbers behind it.</p>
+      <p class="more"><a href="docs/en/load.html#report">Read more about load tests</a></p>
     </div>
     <div class="verdict">
       <p class="vtitle">Holds</p>
       <p class="vtext">p95 was 44.8 ms with up to 20 users and 602 requests per second, without errors.</p>
-      <p class="vfoot">A 20-second ramp of <code>create order</code> against the demo API on a laptop: 4,040 runs, 12,120 requests.</p>
+      <p class="vfoot">One example run, against the demo API on a laptop: a 20-second ramp of <code>create order</code>, 4,040 runs, 12,120 requests. Your API and your machine give their own numbers.</p>
     </div>
   </section>
 
   <section class="ci">
     <div class="copytext">
       <h2>Run it in CI</h2>
-      <p>The same command installs only <code>ultraman</code> on a build machine. <code>--all</code> or <code>--tag smoke</code> picks the pipelines, <code>--parallel 4</code> runs four at once and <code>--junit</code> writes the report your CI shows. A failed check fails the job; secrets come from environment variables named <code>ULTRAMAN_SECRET_</code> plus the secret's name.</p>
-      <p>On your machine, <code>--watch</code> runs again on every save and <code>--every 5m</code> on a schedule, with a system notification when a run fails or passes again.</p>
+      <p>In GitHub Actions, <code>ultraman-app/run-action</code> runs your pipelines or a load test, writes a JUnit report and fails the job when a check or a threshold fails. Secrets come from your CI's secrets, and <code>allow</code> says which host each one may reach, so a changed pipeline can't send one anywhere else.</p>
+      <p class="more"><a href="docs/en/ci.html#github-action">Read more about CI</a></p>
     </div>
-    <pre class="snippet" tabindex="0" aria-label="A GitHub Actions job"><code><span class="k">- run:</span> curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli
-<span class="k">- run:</span> ultraman run --all --parallel 4 --junit results.xml --env staging
+    <pre class="snippet" tabindex="0" aria-label="A GitHub Actions job"><code><span class="k">- uses:</span> actions/checkout@v4
+  <span class="k">with:</span>
+    <span class="k">persist-credentials:</span> false
+<span class="k">- uses:</span> ultraman-app/run-action@v1
   <span class="k">env:</span>
-    <span class="k">ULTRAMAN_SECRET_PASSWORD:</span> ${{ secrets.API_PASSWORD }}</code></pre>
+    <span class="k">ULTRAMAN_SECRET_API_KEY:</span> ${{ secrets.API_KEY }}
+  <span class="k">with:</span>
+    <span class="k">args:</span> --tag smoke
+    <span class="k">env:</span> staging
+    <span class="k">allow:</span> api_key=https://staging.example.com</code></pre>
+  </section>
+
+  <section class="promise">
+    <div class="copytext">
+      <h2>Nothing unsafe goes out without your yes</h2>
+      <p>Ultraman never sends anything in an unsafe way without your explicit consent. The first time a secret would go to a new host, or a file from outside <code>ultraman/files</code> would be sent, it stops and asks, and in a folder you haven't trusted it runs no git and sends nothing.</p>
+      <p class="more"><a href="docs/en/security.html#promise">Read how it keeps you and your team safe</a></p>
+    </div>
+    <figure class="ask">
+      <div class="dialog">
+        <p class="asktitle">Send the secret <code>api_key</code> to <code>https://staging.example.com</code>?</p>
+        <p class="askbody">This sends your secret <code>api_key</code> to <code>https://staging.example.com</code>, where Ultraman hasn't sent it from this project before. If someone else wrote this request, check that the host is yours.</p>
+        <ul class="choices">
+          <li class="first">Use another value, just this once</li>
+          <li>Send it, just this once</li>
+          <li>Allow <code>https://staging.example.com</code> for this secret</li>
+        </ul>
+      </div>
+      <figcaption>What the window asks the first time a secret would go to a host it hasn't gone to from this project.</figcaption>
+    </figure>
   </section>
 
   <section class="vault">
     <div class="copytext">
       <h2>Your secrets stay locked</h2>
-      <p>Saved secrets are encrypted on your machine with a master password only you know. Nothing on disk opens them, so a program that copies the folder gets nothing it can use, and only the Ultraman window, or a terminal where you type the password, can unlock them. You can have this machine remember the password; the app tells you first what that costs on your system.</p>
-      <p>Environments work the same way: shared values go to git, your own stay on this machine, and a secret one leaves only a reference in the file while its value lives in the vault.</p>
+      <p>Saved secrets are encrypted on your machine under a master password only you know, and the vault locks again after 30 minutes without use. In an environment, shared values go to git, your own stay on this machine, and a secret leaves only a reference in the file.</p>
+      <p class="more"><a href="docs/en/security.html#vault">Read more about the vault</a></p>
     </div>
     <pre class="snippet" tabindex="0" aria-label="The secrets folder, and listing the secrets"><code><span class="k">$</span> ls ~/.ultraman
 secrets.enc  vault.json
@@ -222,26 +255,36 @@ api_token</code></pre>
   <section class="agent">
     <div class="copytext">
       <h2>Hand it to your agent</h2>
-      <p>Point Claude Code, Cursor or any MCP client at <code>ultraman mcp</code>. Your agent finds the pipelines you have, reuses your blocks to build new ones and runs them. Each call waits for your OK in the window, and it never sees a secret.</p>
+      <p>Point Claude Code or any MCP client at <code>ultraman mcp</code>: your agent finds your pipelines, reuses your blocks to build new ones and runs them. Each call waits for your OK in the window, and the agent can use a secret by name but never sees its value.</p>
+      <p class="more"><a href="docs/en/agents.html#connect">Read more about agents</a></p>
     </div>
     <pre class="snippet" tabindex="0" aria-label="An MCP client's configuration"><code>{
   <span class="k">"mcpServers"</span>: {
-    <span class="k">"ultraman"</span>: { <span class="k">"command"</span>: "ultraman", <span class="k">"args"</span>: ["mcp"] }
+    <span class="k">"ultraman"</span>: {
+      <span class="k">"command"</span>: "ultraman",
+      <span class="k">"args"</span>: ["mcp", "--project", "/path/to/your/repo"]
+    }
   }
 }</code></pre>
+  </section>
+
+  <section class="also">
+    <h2>Also in the docs</h2>
+    <ul>
+      <li><a href="docs/en/requests.html">Requests, collections and history</a></li>
+      <li><a href="docs/en/requests.html#streams">WebSocket and SSE streams</a></li>
+      <li><a href="docs/en/importing.html">Imports from Postman, OpenAPI, JMeter, Artillery and HAR</a></li>
+      <li><a href="docs/en/team.html">Working as a team with git</a></li>
+      <li><a href="docs/en/ci.html#other-ci">Other CI systems</a></li>
+      <li><a href="docs/en/why.html">Next to Postman, k6, JMeter and others</a></li>
+      <li><a href="docs/en/faq.html">Questions</a></li>
+    </ul>
   </section>
 
   <section class="small">
     <div>
       <h2>Why a download from the browser warns</h2>
-      <p>We don't pay for code signing yet. The commands above download with curl and PowerShell, which don't mark the file as coming from the internet, so macOS and Windows open it without asking. If you'd rather download the installer from the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest">releases page</a>, macOS asks you to allow it in System Settings, under Privacy &amp; Security, and Windows shows it behind More info, then Run anyway.</p>
-    </div>
-    <div>
-      <h2>Uninstall</h2>
-      <p>macOS: drag Ultraman out of <code>~/Applications</code> and delete <code>~/.local/share/ultraman</code> and <code>~/.local/bin/ultraman</code>.</p>
-      <p>Linux: delete <code>~/.local/share/ultraman</code>, <code>~/.local/bin/ultraman</code> and <code>~/.local/share/applications/ultraman.desktop</code>.</p>
-      <p>Windows: remove Ultraman from Settings, Apps, then delete <code>%LOCALAPPDATA%\ultraman-cli</code>.</p>
-      <p>Your saved secrets stay in <code>~/.ultraman</code> until you delete it too.</p>
+      <p>The installers aren't signed by Apple or Microsoft, so one downloaded with a browser from the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest">releases page</a> makes macOS and Windows ask before it opens. The commands above don't mark the download as coming from the internet, and they check its signature themselves. <a href="docs/en/getting-started.html#os-warning">What each system shows</a></p>
     </div>
   </section>
 </main>
@@ -249,6 +292,12 @@ api_token</code></pre>
 <footer>
   <svg class="mark" viewBox="0 0 24 18" width="24" height="18" aria-hidden="true"><path d="M0 0h24v3.5H9z"/><path d="M0 7.25h24v3.5H0z"/><path d="M0 14.5h15l9 3.5H0z"/></svg>
   <p>Ultraman, built on <a href="https://github.com/AbeOrigin/UltraTon">UltraTon</a>.</p>
+  <nav class="docs-links" aria-label="Docs">
+    <a href="docs/en/index.html">Docs</a>
+    <a href="docs/es/index.html" hreflang="es" lang="es">Español</a>
+    <a href="docs/pt/index.html" hreflang="pt" lang="pt">Português</a>
+  </nav>
+  <p><a href="docs/en/getting-started.html#uninstall">Uninstall</a></p>
   <p><a href="https://github.com/ultraman-app/ultraman-app.github.io/releases">All versions</a></p>
 </footer>
 

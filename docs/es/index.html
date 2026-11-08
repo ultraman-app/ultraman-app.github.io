@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Documentación de Ultraman</title>
+<meta name="description" content="Cómo funciona Ultraman, qué te da cada función y qué protege a tu equipo y a ti.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/es/index.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/index.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/index.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/index.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Saltar al contenido</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/index.html" lang="en" hreflang="en">English</a>
+<a href="../es/index.html" lang="es" hreflang="es" aria-current="true">Español</a>
+<a href="../pt/index.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menú</summary>
+<nav aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1>Documentación de Ultraman</h1>
+<p>Cómo funciona Ultraman, qué te da cada función y qué protege a tu equipo y a ti.</p>
+<ol class="toc">
+<li><a href="highlights.html">Lo que te da Ultraman</a><p>Ultraman prueba APIs HTTP, WebSocket y SSE incluidos: una sola app en tu computadora para requests sueltas, pruebas de varios pasos, carga y CI, todo guardado como archivos simples en tu propio repo de git. Ultraman nunca envía nada de forma insegura sin tu consentimiento explícito: un secreto va solo a un host que aprobaste, y una carpeta en la que no confiaste no envía nada.</p></li>
+<li><a href="why.html">Por qué Ultraman</a><p>Ultraman junta requests de API, flujos de prueba, tests de carga y checks de CI en una sola app local, guardados como archivos simples en tu propio repo de git. Esta página dice en qué se diferencia de las herramientas que quizás ya usás, y cuándo alguna de ellas es la mejor opción.</p></li>
+<li><a href="getting-started.html">Primeros pasos</a><p>Desde instalar Ultraman hasta tu primera request y tu primera pipeline, más cómo se actualiza, por qué tu sistema puede advertir sobre él y cómo desinstalarlo.</p></li>
+<li><a href="security.html">Seguridad y consentimiento</a><p>Qué pregunta Ultraman antes de enviar algo, cómo mantiene tus secretos fuera de la vista y qué deja en tus manos: las promesas que podés comprobar, para vos, tu equipo y tu CI. No hay telemetría, ni analíticas, ni reportes de fallos, ni cuenta.</p></li>
+<li><a href="requests.html">Requests</a><p>El área de Requests es donde armás, enviás y chequeás requests sueltas: colecciones con carpetas y requests, abiertas en pestañas, como en Postman. Lo distinto es que cada request lleva sus checks, y todo es un archivo simple en ultraman/requests/ que tu equipo comparte por git.</p></li>
+<li><a href="pipelines.html">Pipelines</a><p>Una pipeline es un flujo de requests y checks que se lee de arriba hacia abajo, guardado en ultraman/pipelines/&lt;nombre&gt;.yaml y que se corre desde la ventana o desde la terminal. Tiene un host, auth y headers opcionales para todas sus requests, inputs (valores que la corrida pide) y pasos. Nada queda escondido: lo que hace un paso es lo que dice su fila.</p></li>
+<li><a href="load.html">Carga</a><p>Carga (al lado de Correr) te dice cuántos usuarios, o cuánto tráfico, aguanta tu API antes de ponerse lenta o fallar. Abre la pantalla de carga de la pipeline que tenés en pantalla: cada usuario virtual corre la pipeline entera en loop, y si un paso falla, esa vuelta cuenta como error y el usuario arranca otra.</p></li>
+<li><a href="environments.html">Entornos y secretos</a><p>Los entornos hacen que las mismas requests corran contra local, staging o producción, y los secretos mantienen tokens y contraseñas en tu computadora, cifrados, fuera de git y fuera de todo log.</p></li>
+<li><a href="importing.html">Importar</a><p>Los botones al lado de Nueva colección (área Requests) traen lo que ya tenés: una exportación de Postman, una spec OpenAPI, un plan de JMeter, un script de Artillery o una grabación del navegador, así no arrancás de cero. No se sobrescribe nada del proyecto: un nombre que ya existe recibe -2. Al final, un resumen dice qué entró, qué se adaptó, qué necesita una mano y qué archivos se salteó.</p></li>
+<li><a href="mock.html">Servidor mock</a><p>El servidor mock contesta las requests a tu API con respuestas que ya grabaste, así un front end (o un test) puede trabajar mientras la API real está caída, lenta o todavía no existe. Corre en tu computadora y nadie más puede alcanzarlo a menos que vos lo decidas.</p></li>
+<li><a href="cli.html">La terminal</a><p>El comando ultraman corre tus pipelines y tests de carga desde una terminal, sirve el proyecto a otras herramientas y guarda secretos en la bóveda. Corrélo desde la carpeta del proyecto (o cualquier carpeta dentro). Para usarlo en una máquina de build, mirá CI.</p></li>
+<li><a href="ci.html">CI</a><p>Ultraman corre en un pipeline de build con las mismas pipelines que usás en tu máquina, escribe un reporte JUnit y hace fallar el job cuando falla un paso o un umbral. Para GitHub Actions hay una action que además evita que los secretos vayan a algún lado que nadie aprobó. Para otros sistemas instalás el comando y lo llamás.</p></li>
+<li><a href="team.html">Trabajar en equipo</a><p>Todo lo que comparte un equipo es un archivo bajo ultraman/, así que tus tests viajan con tu código y un cambio en un test aparece en un pull request como cualquier otro cambio.</p></li>
+<li><a href="agents.html">Agentes (MCP)</a><p>Un agente de IA (Claude Code, o cualquier otro cliente MCP) puede usar Ultraman a través de ultraman mcp. Puede hacer lo que hacés vos en la ventana: leer y escribir requests, pipelines y tests de carga, mandarlos y correrlos, importar, iniciar el servidor mock, leer reportes y compararlos. Vos aprobás cada llamada.</p></li>
+<li><a href="coming-from.html">Si venís de otra herramienta</a><p>Algunas ideas se llaman igual acá, otras tienen otro nombre, y unas pocas no existen a propósito.</p></li>
+<li><a href="faq.html">Preguntas</a><p>Respuestas cortas a lo que los equipos preguntan antes de adoptar Ultraman, incluidos los &quot;no&quot; honestos. Cada respuesta enlaza a la página que profundiza.</p></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a><p>Everything lives as YAML under ultraman/ in the user&#39;s project. Unknown keys are errors: write only what&#39;s listed. Variables: {{env.x}} (the environment), {{secrets.x}} (a secret: usable, never visible), {{x}} (an input, an extract or a collection variable).</p></li>
+</ol>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+</body>
+</html>

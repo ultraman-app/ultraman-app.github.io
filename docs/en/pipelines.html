@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Pipelines · Ultraman docs</title>
+<meta name="description" content="A pipeline is a flow of requests and checks you can read from top to bottom, saved in ultraman/pipelines/&lt;name&gt;.yaml and run from the window or the terminal…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/pipelines.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/pipelines.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/pipelines.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/pipelines.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/pipelines.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/pipelines.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/pipelines.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html" aria-current="page">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html" aria-current="page">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="pipelines">Pipelines <a class="self" href="#pipelines" aria-label="Pipelines">#</a></h1>
+<p>A pipeline is a flow of requests and checks you can read from top to bottom, saved in <code>ultraman/pipelines/&lt;name&gt;.yaml</code> and run from the window or the terminal. It has a host, optional auth and headers for all its requests, <strong>inputs</strong> (values the run asks for) and <strong>steps</strong>. Nothing in it is hidden: what a step does is what its row says.</p>
+<h2 id="steps">The steps <a class="self" href="#steps" aria-label="The steps">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Step</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td>request</td><td>sends an HTTP request; others refer to it as <code>$name</code></td></tr>
+<tr><td>extract</td><td>takes a value from a response (JSON path, header or regex) into <code>{{name}}</code></td></tr>
+<tr><td>assert</td><td>checks something about a response (see <a href="requests.html#checks">Checks</a>)</td></tr>
+<tr><td>wait</td><td>pauses some milliseconds</td></tr>
+<tr><td>repeat</td><td>runs its steps N times, or once per item of a list</td></tr>
+<tr><td>if</td><td>runs its steps only when a condition holds</td></tr>
+<tr><td>use</td><td>runs a <strong>block</strong> (a reusable pipeline) with its inputs</td></tr>
+<tr><td>parallel</td><td>runs branches at the same time; the next step waits for all</td></tr>
+<tr><td>websocket, sse</td><td>opens a stream; others refer to it as <code>$name</code> (the handshake)</td></tr>
+<tr><td>send</td><td>writes one message on a WebSocket</td></tr>
+<tr><td>receive</td><td>waits for the next message on a stream that matches a filter; others refer to it as <code>$name</code></td></tr>
+<tr><td>close</td><td>ends a stream (one left open is closed when the run ends)</td></tr>
+</tbody>
+</table></div>
+<p><strong>Add step</strong> explains each one. The <strong>+</strong> between two steps inserts one right there. <strong>From a collection…</strong> adds a collection request, with its checks, as a linked copy.</p>
+<h2 id="stream-steps">Streams in a pipeline <a class="self" href="#stream-steps" aria-label="Streams in a pipeline">#</a></h2>
+<p>A WebSocket or an SSE stream is four kinds of step you can see, in order: open it, send, wait for a message, close it. The pipeline&#39;s host serves the stream too (<code>https</code> becomes <code>wss</code>).</p>
+<pre tabindex="0"><code>steps:
+  - websocket: live
+    path: /live
+
+  - send: live
+    json: { subscribe: orders }
+
+  - receive: update
+    from: $live
+    where: { path: $.type, equals: order.updated }
+    timeout: 5000
+
+  - assert: equals
+    of: $update
+    path: $.status
+    equals: shipped
+
+  - close: live
+    code: 1000
+    reason: done</code></pre>
+<p><code>$live</code> is the handshake, so <code>assert: status of: $live equals: 101</code> works. A received message is a response like any other: its text is the body, and <code>extract</code> and <code>assert</code> read it with a JSON path. On SSE, the event&#39;s <code>event</code> and <code>id</code> are read like headers (<code>header: event</code>).</p>
+<p><code>receive</code> takes the <strong>next message that matches</strong> its <code>where</code>. The ones before it are passed over and counted, and a second <code>receive</code> starts after the first one&#39;s match. Without <code>where</code>, any message matches. If nothing matches in <code>timeout</code> ms (the stream&#39;s <code>options.timeout</code> if the step has none), the step fails and shows the last three messages it passed over.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col"><code>where</code></th><th scope="col">matches</th></tr></thead>
+<tbody>
+<tr><td><code>{ path: $.type, equals: order.created }</code></td><td>the JSON body has that value at the path</td></tr>
+<tr><td><code>{ path: $.id, exists: true }</code></td><td>the path finds something</td></tr>
+<tr><td><code>{ contains: shipped }</code></td><td>the text contains it</td></tr>
+<tr><td><code>{ matches: /^ord_/ }</code></td><td>the text matches a regex</td></tr>
+<tr><td><code>{ event: price }</code></td><td>SSE only: the event&#39;s name; it can go with one of the above</td></tr>
+</tbody>
+</table></div>
+<p><code>repeat: 10</code> around a <code>receive</code> collects ten messages. In a run, the <strong>Messages</strong> fold under the <code>websocket</code> or <code>sse</code> row lists everything the stream carried, both ways, so what arrived between steps is visible. A stream request from the Requests area can be added to a pipeline too (<strong>From a collection…</strong>).</p>
+<p><strong>A token in the subprotocol.</strong> Some servers (Kubernetes exec, some GraphQL-over-WebSocket gateways) take the token only in <code>Sec-WebSocket-Protocol</code>. For them <code>protocols</code> accepts a secret, <code>protocols: [v4.channel.k8s.io, &quot;{{secrets.kube_token}}&quot;]</code>, with the same yes as a header, and it shows as <code>[secret:kube_token]</code> everywhere. Prefer an <code>Authorization</code> header when the server takes one: proxies often log subprotocols. Details in the <a href="../en/reference.html" hreflang="en">format reference</a>.</p>
+<h2 id="inputs">Inputs <a class="self" href="#inputs" aria-label="Inputs">#</a></h2>
+<p><code>inputs: [user]</code> declares values the pipeline needs and doesn&#39;t have. <strong>Run</strong> asks for them in a dialog; in the terminal you pass them with <code>--input user=ana</code> (see <a href="cli.html#run">the terminal</a>), and a <a href="pipelines.html#blocks">block</a> gets them from <code>use … with</code>. A run with an input missing doesn&#39;t start. Inside the pipeline an input is a variable, <code>{{user}}</code>.</p>
+<h2 id="headers">Headers for every request <a class="self" href="#headers" aria-label="Headers for every request">#</a></h2>
+<p><code>headers:</code> on a pipeline (or on a block, or on a collection) is sent by all its requests. A step that sets the same header, in any casing, keeps its own. A block&#39;s headers are its own: the pipeline that calls it doesn&#39;t pass its headers into the block&#39;s requests. A secret in a shared header asks for its host&#39;s yes like one in a step.</p>
+<pre tabindex="0"><code>name: orders
+host: &quot;{{env.api}}&quot;
+headers: { x-tenant: acme }
+steps:
+  - request: list
+    method: GET
+    path: /orders</code></pre>
+<h2 id="parallel">At the same time <a class="self" href="#parallel" aria-label="At the same time">#</a></h2>
+<p><code>parallel</code> runs two or more branches at once and the next step waits for all of them. One branch failing doesn&#39;t stop the others: the <code>parallel</code> fails when they are all done. Two branches can&#39;t extract the same variable.</p>
+<pre tabindex="0"><code>- parallel: dashboard
+  branches:
+    - - request: me
+        method: GET
+        path: /me
+    - - request: orders
+        method: GET
+        path: /orders</code></pre>
+<h2 id="find">Find your way around <a class="self" href="#find" aria-label="Find your way around">#</a></h2>
+<p>Give a pipeline <strong>tags</strong> in <strong>Auth and options</strong> (Enter or a comma adds one) and they show as chips under its name; a click on a chip filters by it. Every sidebar has a <strong>Filter…</strong> box (a name, or <code>#tag</code>). <strong>Ctrl+P</strong> (Cmd+P on macOS) opens one box over pipelines, blocks and requests: type some letters of the name, or <code>#tag</code>, and Enter opens it.</p>
+<h2 id="diagram">List and diagram <a class="self" href="#diagram" aria-label="List and diagram">#</a></h2>
+<p>The <strong>List</strong> shows each step as one line, the way others refer to it. The <strong>Diagram</strong> draws the same steps with an arrow from the request that produces a value to the one that reads it, so the data flow is visible at a glance.</p>
+<h2 id="run">Running <a class="self" href="#run" aria-label="Running">#</a></h2>
+<p><strong>Run</strong> runs the pipeline top to bottom against the selected environment. Each step shows its status and time; a failed check shows the response that failed it. <strong>Watch</strong> reruns it when something changes, or on a timer. Past runs stay listed under the pipeline.</p>
+<h2 id="blocks">Blocks <a class="self" href="#blocks" aria-label="Blocks">#</a></h2>
+<p>A block is a pipeline meant to be reused: a login, a setup. It declares <code>inputs</code> and <code>exports</code>. A pipeline runs it with <code>use: login</code>, and gets its exports as variables.</p>
+<h2 id="helpers">Helpers <a class="self" href="#helpers" aria-label="Helpers">#</a></h2>
+<ul>
+<li><strong>Functions</strong> inside <code>{{ }}</code>: <code>random.uuid</code>, <code>random.email</code>, <code>random.int(1, 100)</code>, <code>now.iso</code>, <code>counter</code>, <code>base64(x)</code>, <code>hmac.sha256(secrets.key, body)</code> and more (see the <a href="../en/reference.html" hreflang="en">format reference</a>).</li>
+<li><strong>Regex extract</strong>: <code>regex: name=&quot;csrf&quot; value=&quot;([^&quot;]+)&quot;</code> takes group 1.</li>
+<li><strong>Optional extract</strong>: when nothing is found, the variable stays unset instead of failing.</li>
+<li><strong>`if`</strong>: runs its steps only when a condition holds. There is no else.</li>
+</ul>
+<p>Together they cover the usual &quot;token on the page, coupon maybe&quot; cases:</p>
+<pre tabindex="0"><code>- extract: csrf
+  from: $page
+  regex: &#39;name=&quot;csrf&quot; value=&quot;([^&quot;]+)&quot;&#39;
+
+- extract: coupon
+  from: $cart
+  path: $.coupon
+  optional: true
+
+- if: { exists: coupon }
+  steps:
+    - request: apply
+      method: POST
+      path: /cart/coupon
+      json: { code: &quot;{{coupon}}&quot; }</code></pre>
+<p>There are no scripts on purpose: what a step does is always visible, and a reviewer can read a pipeline in a pull request.</p>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<p>The <a href="security.html#promise">promise</a> applies here as everywhere. What this part adds:</p>
+<ul>
+<li><strong>You:</strong> a condition, a check or a regex never reads the content of a secret, or of a value made from one: a pipeline that would is refused instead of run, so a branch you take can&#39;t reveal a secret. See <a href="security.html#redaction">redaction</a>.</li>
+<li><strong>Your team:</strong> a pipeline from a folder you haven&#39;t trusted doesn&#39;t send anything from the window. See <a href="security.html#trusted-folders">trusted folders</a>.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="requests.html"><small>Previous</small><span>Requests</span></a><a rel="next" href="load.html"><small>Next</small><span>Load</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Requests · Documentação do Ultraman</title>
+<meta name="description" content="A área de Requests é onde você monta, envia e checa requests avulsas: coleções com pastas e requests, abertas em abas, como no Postman. A diferença é que cada…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/pt/requests.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/requests.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/requests.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/requests.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/requests.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Ir para o conteúdo</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/requests.html" lang="en" hreflang="en">English</a>
+<a href="../es/requests.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/requests.html" lang="pt" hreflang="pt" aria-current="true">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentação">
+<ul>
+<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="why.html">Por que o Ultraman</a></li>
+<li><a href="getting-started.html">Primeiros passos</a></li>
+<li><a href="security.html">Segurança e consentimento</a></li>
+<li><a href="requests.html" aria-current="page">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">O terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="faq.html">Perguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentação">
+<ul>
+<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="why.html">Por que o Ultraman</a></li>
+<li><a href="getting-started.html">Primeiros passos</a></li>
+<li><a href="security.html">Segurança e consentimento</a></li>
+<li><a href="requests.html" aria-current="page">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">O terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="faq.html">Perguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="requests">Requests <a class="self" href="#requests" aria-label="Requests">#</a></h1>
+<p>A área de Requests é onde você monta, envia e checa requests avulsas: coleções com pastas e requests, abertas em abas, como no Postman. A diferença é que cada request carrega seus <strong>checks</strong>, e tudo é um arquivo simples em <code>ultraman/requests/</code> que a sua equipe compartilha pelo git.</p>
+<h2 id="collections">Coleções e pastas <a class="self" href="#collections" aria-label="Coleções e pastas">#</a></h2>
+<p>Uma coleção tem um host e, se você quiser, auth, headers e <strong>variáveis</strong> (valores iniciais para <code>{{nome}}</code>). O menu dela cria requests e pastas, executa tudo, cria uma pipeline ou abre suas configurações. As requests podem ser renomeadas, movidas, duplicadas e adicionadas a uma pipeline.</p>
+<h2 id="send">Enviar <a class="self" href="#send" aria-label="Enviar">#</a></h2>
+<p><strong>Enviar</strong> (Ctrl/Cmd+Enter) envia a request no ambiente escolhido. A resposta mostra o status, o tempo, o tamanho, os headers e o body; <strong>Tempos</strong> diz para onde foi o tempo (DNS, conexão, TLS, primeiro byte, total).</p>
+<ul>
+<li>As variáveis aparecem como chips: <code>{{env.x}}</code> do ambiente, <code>{{secrets.x}}</code> do cofre, <code>{{x}}</code> da sessão (o que uma request anterior extraiu) ou das variáveis da coleção. Ctrl+Space sugere.</li>
+<li>Se faltar um valor, um diálogo pede para esta sessão.</li>
+<li>Colar um comando <code>curl</code> no path o transforma na request.</li>
+</ul>
+<h2 id="editor">O editor de requests <a class="self" href="#editor" aria-label="O editor de requests">#</a></h2>
+<p>Uma request abre na primeira aba com conteúdo. As abas são <strong>Params</strong> (parâmetros de path como <code>:id</code>, e a query), <strong>Headers</strong>, <strong>Body</strong>, <strong>Auth</strong>, <strong>Opções</strong>, <strong>Checks</strong> e <strong>Notas</strong>. Uma linha que você desliga continua no arquivo mas não é enviada. Uma request <code>GET</code> ou <code>HEAD</code> não pode ter body.</p>
+<h2 id="body">Body <a class="self" href="#body" aria-label="Body">#</a></h2>
+<p>A aba <strong>Body</strong> tem seis modos. Cada um define o header <code>Content-Type</code> por você, a menos que você escreva um em <strong>Headers</strong> (o editor avisa que o seu vence, e que um header multipart escrito à mão perde o boundary).</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Modo</th><th scope="col">O que é enviado</th><th scope="col">Content-Type</th></tr></thead>
+<tbody>
+<tr><td>Nenhum</td><td>nenhum body</td><td>nenhum</td></tr>
+<tr><td>JSON</td><td>o JSON que você escreve, com <code>{{variáveis}}</code> dentro</td><td><code>application/json</code></td></tr>
+<tr><td>Texto</td><td>o texto como escrito (XML, CSV, qualquer coisa)</td><td><code>text/plain</code></td></tr>
+<tr><td>Form</td><td>pares <code>nome=valor</code>, codificados em URL; um nome pode se repetir</td><td><code>application/x-www-form-urlencoded</code></td></tr>
+<tr><td>Multipart</td><td>partes que são texto ou um arquivo</td><td><code>multipart/form-data</code></td></tr>
+<tr><td>Arquivo</td><td>os bytes de um arquivo</td><td>deduzido da extensão do arquivo</td></tr>
+</tbody>
+</table></div>
+<p>Uma request tem um body de cada vez. Um arquivo vem do projeto: se você escolhe um de outro lugar, o Ultraman oferece <strong>copiá-lo para o projeto</strong> (<code>ultraman/files/</code>, onde ele viaja com o git) ou <strong>deixá-lo fora</strong> (só nesta máquina). Um arquivo fora de <code>ultraman/files/</code> pede o seu sim na primeira vez que é enviado: veja <a href="security.html#files">arquivos</a>.</p>
+<h2 id="auth">Auth <a class="self" href="#auth" aria-label="Auth">#</a></h2>
+<p>A aba <strong>Auth</strong> oferece <strong>Herdada</strong>, <strong>Nenhum</strong>, <strong>Bearer</strong>, <strong>Basic</strong> e <strong>API key</strong> (um header ou um parâmetro de query, com o nome que você escolher). Uma coleção ou uma pipeline pode definir a auth uma vez; uma request a herda, define a sua própria, ou diz <strong>Nenhum</strong>. Os valores podem ser variáveis, em geral <code>{{secrets.x}}</code>, para que o token nunca fique no arquivo.</p>
+<p>Esses são os tipos que existem. Para uma API com token, faça login com uma request, <strong>extraia</strong> o token e use-o como bearer (<code>{{token}}</code>): isso cobre a maioria dos fluxos de login. Não há fluxos OAuth 2, certificados de cliente nem assinatura de requests.</p>
+<h2 id="options">Opções da request <a class="self" href="#options" aria-label="Opções da request">#</a></h2>
+<p><strong>Opções</strong> ajustam uma request: <strong>timeout</strong> (milissegundos, 30 000 por padrão, 0 para nenhum), <strong>redirects</strong> (quantos seguir, 10 por padrão, no máximo 20), <strong>tamanho máximo</strong> da resposta (50 MB), <strong>HTTP/2</strong>, <strong>HTTP simples</strong> (permitir <code>http:</code> para um host que não seja localhost) e uma <strong>CA própria</strong> (um arquivo <code>.pem</code> no projeto, aceito além das habituais, para um servidor com certificado próprio). HTTP simples e uma CA própria reduzem a proteção da conexão, então a janela avisa quando você os liga.</p>
+<p>Uma opção vazia herda, e o editor diz de onde, em cinza (&quot;30000 ms, por padrão&quot;). A ordem é: as <a href="environments.html#options">opções de request</a> do ambiente, depois as da pipeline ou da coleção, depois as da request. A mais próxima vence.</p>
+<p>Uma request também pode ser marcada como <strong>responde sempre o mesmo</strong>: isso só importa num <a href="load.html#idempotent">teste de carga</a>.</p>
+<h2 id="curl">Copiar como cURL <a class="self" href="#curl" aria-label="Copiar como cURL">#</a></h2>
+<p>Numa pipeline, o botão de terminal na linha de uma request a copia como um comando <code>curl</code>, com os valores que você tem na janela. Os segredos nunca são escritos: eles viram <code>${ULTRAMAN_SECRET_NAME}</code>, então o comando funciona num shell em que você define essa variável e é seguro colar num chat. O caminho inverso também funciona na área de Requests: cole um comando <code>curl</code> no path e ele vira a request.</p>
+<h2 id="redirects">Redirects e Tempos <a class="self" href="#redirects" aria-label="Redirects e Tempos">#</a></h2>
+<p>Uma resposta que foi redirecionada ganha uma aba <strong>Redirects</strong>: cada salto com seu status, a URL que respondeu e seus headers (o <code>location</code> para onde apontou, um <code>set-cookie</code> no caminho). <strong>Tempos</strong> diz para onde foi o tempo. Os redirects são seguidos até a opção <strong>redirects</strong>. Duas regras protegem você: quando um redirect vai para outra origem, os headers <code>authorization</code>, <code>cookie</code> e <code>proxy-authorization</code> são descartados, e um <code>307</code> ou <code>308</code> que enviaria um body com um segredo para outra origem não é seguido (a resposta mostrada é esse redirect, com para onde ele apontava). Veja <a href="security.html#redirects">redirects</a>.</p>
+<h2 id="checks">Checks <a class="self" href="#checks" aria-label="Checks">#</a></h2>
+<p>Um check é um <strong>assert</strong> (a request tem que responder algo) ou um <strong>extract</strong> (guardar um valor para depois). Eles rodam em cada envio, e a aba <strong>Checks</strong> da resposta diz quais passaram.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Check</th><th scope="col">Passa quando</th></tr></thead>
+<tbody>
+<tr><td><code>status</code></td><td>o status HTTP é o indicado</td></tr>
+<tr><td><code>equals</code>, <code>notEquals</code></td><td>um valor é (ou não é) o indicado</td></tr>
+<tr><td><code>contains</code></td><td>um valor ou o body o contém</td></tr>
+<tr><td><code>lessThan</code>, <code>greaterThan</code></td><td>um número (ou o tempo em ms) está abaixo ou acima</td></tr>
+<tr><td><code>exists</code>, <code>notExists</code></td><td>um path JSON ou um header está presente</td></tr>
+<tr><td><code>matches</code></td><td>um texto bate com uma expressão regular</td></tr>
+<tr><td><code>type</code></td><td>um valor JSON é string, número, array…</td></tr>
+<tr><td><code>schema</code></td><td>um valor segue um JSON Schema</td></tr>
+</tbody>
+</table></div>
+<p>O jeito mais rápido de adicionar um: no body da resposta, passe o mouse sobre um valor e use o menu dele.</p>
+<h2 id="generate-checks">Gerar checks <a class="self" href="#generate-checks" aria-label="Gerar checks">#</a></h2>
+<p><strong>Gerar checks</strong> olha a resposta que está na tela e propõe checks para ela:</p>
+<ul>
+<li>que o status seja o que ela recebeu;</li>
+<li>para cada campo de primeiro nível do JSON (ou do primeiro item, se for uma lista), que ele <strong>exista</strong> e o seu <strong>tipo</strong>.</li>
+</ul>
+<p>Adiciona no máximo 30, pula os que a request já tem e não salva nada até você apertar <strong>Salvar</strong>: veja na aba <strong>Checks</strong> e apague os que não quiser. É um ponto de partida para um teste de contrato; valores que mudam a cada chamada (ids, datas, tokens) são checados pelo tipo, nunca pelo valor. Na área de Pipelines, o mesmo botão os adiciona como passos logo depois da request.</p>
+<h2 id="session">A sessão <a class="self" href="#session" aria-label="A sessão">#</a></h2>
+<p>Há uma sessão por ambiente. O que um check extrai (o <code>token</code> do login) fica disponível para a próxima request (<code>Authorization: Bearer {{token}}</code>). As variáveis da coleção são os valores iniciais.</p>
+<h2 id="history">Histórico <a class="self" href="#history" aria-label="Histórico">#</a></h2>
+<p>Cada envio fica no <strong>Histórico</strong> (ao lado de Coleções): o que foi enviado, a resposta, o tempo e os checks. Cada envio mostra o tempo habitual daquela request (&quot;212 ms · costuma levar 180 ms&quot;) e é marcado quando está mais lento. Uma entrada pode ser reaberta como foi enviada, ou comparada com outra lado a lado. O histórico é pessoal: nunca é sincronizado.</p>
+<h2 id="drift">Mudanças de contrato <a class="self" href="#drift" aria-label="Mudanças de contrato">#</a></h2>
+<p>Depois de um envio, se o envio anterior da mesma request também devolveu JSON, um aviso diz quais campos sumiram ou mudaram de tipo (<code>$.id: string → number</code>). <strong>Comparar</strong> abre os dois; <strong>Gerar checks</strong> transforma a forma atual em checks.</p>
+<h2 id="links">Cópias vinculadas <a class="self" href="#links" aria-label="Cópias vinculadas">#</a></h2>
+<p><strong>Adicionar a um pipeline…</strong> coloca uma request no fim de uma pipeline como cópia vinculada (ela lembra de onde veio). Quando você a muda num lugar, o Ultraman pergunta se deve atualizar as outras cópias. Uma request WebSocket ou SSE vai como seu passo connect vinculado (só o handshake: suas mensagens e sua escuta ficam na área de Requests) e a segue do mesmo jeito.</p>
+<h2 id="streams">Streams: WebSocket e SSE <a class="self" href="#streams" aria-label="Streams: WebSocket e SSE">#</a></h2>
+<p>Abra um stream WebSocket ou SSE numa aba como uma request: veja cada mensagem conforme chega, envie uma de um compositor, filtre e pause a lista, e guarde a sessão inteira no Histórico.</p>
+<p>O menu de uma coleção tem <strong>Novo WebSocket ou SSE</strong>. Uma request de stream é um arquivo como qualquer outro (<code>websocket: live</code> ou <code>sse: prices</code> como primeira chave), aberto numa aba com o mesmo layout de uma request. O seletor de método é uma escolha <strong>WebSocket | SSE</strong>, o path vai depois do host da coleção (<code>https</code> vira <code>wss</code>, <code>http</code> vira <code>ws</code>), e as abas são Params, Headers, Auth, Opções (inclusive as do stream: tamanho de mensagem, ping, ociosidade), <strong>Mensagens</strong>, Checks e Notas.</p>
+<p><strong>Conectar</strong> (Ctrl/Cmd+Enter) abre o stream e vira <strong>Desconectar</strong> enquanto estiver aberto. Embaixo, o painel do stream mostra uma pílula de estado (<code>connecting…</code>, <code>open 101</code>, <code>closed 1000</code>), um relógio, quantas mensagens foram em cada sentido, e três abas:</p>
+<ul>
+<li><strong>Mensagens</strong>: uma linha por mensagem, a mais nova embaixo, com a direção (↓ recebida, ↑ enviada), hora, tamanho e, no SSE, o nome <code>event</code> e o <code>id</code>. Clique numa linha para abri-la no visualizador do body. <strong>Filtrar</strong> esconde linhas por texto (ou <code>event:price</code> no SSE), <strong>Pausar</strong> para a lista enquanto as mensagens continuam contando, <strong>Limpar</strong> esvazia.</li>
+<li><strong>Handshake</strong>: os headers do servidor (e o protocolo que ele escolheu).</li>
+<li><strong>Checks</strong>: os checks da request rodam sobre o handshake (<code>status</code>, um header).</li>
+</ul>
+<p>Num WebSocket, o <strong>compositor</strong> embaixo da lista envia uma mensagem (texto ou JSON, Ctrl+Enter). Ele pode pegar uma das <strong>mensagens salvas</strong> da request, e <strong>Salvar como mensagem</strong> adiciona o texto do compositor à request. Uma mensagem com <code>{{secrets.x}}</code> é enviada com o valor e aparece como <code>[secret:x]</code>. Quando o cofre bloqueia, um stream que usou um segredo também fecha.</p>
+<p>O painel guarda as 500 mensagens mais novas, cada uma cortada em 64 KB. Quando o stream termina (você, o servidor ou um erro), a sessão inteira vira <strong>uma entrada no Histórico</strong>: o handshake, as mensagens e como terminou.</p>
+<p>Numa execução de coleção, em <code>ultraman run --collection</code> e quando um agente a envia, uma request de stream conecta, verifica o handshake, envia as mensagens salvas, <strong>escuta</strong> por <code>listen</code> ms (2 segundos, a menos que o arquivo diga outra coisa) e fecha. Um stream silencioso não é uma falha. Para esperar uma mensagem específica e checá-la, coloque o stream numa <a href="pipelines.html#stream-steps">pipeline</a>.</p>
+<p>Não há aqui: uma request de stream não tem mock, nem mudanças de contrato, nem reconexão (se o servidor derrubar você, Conecte de novo), e Socket.IO e WebSockets comprimidos (deflate) não são suportados (<a href="coming-from.html">Se você vem de outra ferramenta</a>).</p>
+<h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
+<p>A <a href="security.html#promise">promessa</a> vale aqui como em todo lugar. O que esta parte acrescenta:</p>
+<ul>
+<li><strong>Você e sua equipe:</strong> um body de arquivo sai sem perguntar só de <code>ultraman/files/</code>; qualquer outro arquivo pergunta antes. Veja <a href="security.html#files">arquivos</a>.</li>
+<li><strong>Você:</strong> um redirect para outra origem não leva suas credenciais junto. Veja <a href="security.html#redirects">redirects</a>.</li>
+<li><strong>Sua equipe:</strong> o histórico é pessoal e nunca é sincronizado, então respostas com dados reais ficam na sua máquina. Veja <a href="security.html#stored">onde as coisas ficam guardadas</a>.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="security.html"><small>Anterior</small><span>Segurança e consentimento</span></a><a rel="next" href="pipelines.html"><small>Seguinte</small><span>Pipelines</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+</body>
+</html>

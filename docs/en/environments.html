@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Environments and secrets · Ultraman docs</title>
+<meta name="description" content="Environments let the same requests run against local, staging or production, and secrets keep tokens and passwords on your computer, encrypted, out of git and…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/environments.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/environments.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/environments.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/environments.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/environments.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/environments.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/environments.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html" aria-current="page">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html" aria-current="page">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="environments">Environments and secrets <a class="self" href="#environments" aria-label="Environments and secrets">#</a></h1>
+<p>Environments let the same requests run against local, staging or production, and secrets keep tokens and passwords on your computer, encrypted, out of git and out of every log.</p>
+<h2 id="envs">Environments <a class="self" href="#envs" aria-label="Environments">#</a></h2>
+<p>An environment (local, staging, production) is a set of values: <code>api: https://staging.example.com</code>. Requests read them as <code>{{env.api}}</code>. Choose one with the selector at the top; <strong>Environments…</strong> at the bottom of that selector edits them: the environments on the left (<strong>New environment</strong>, <strong>Rename</strong>, <strong>Duplicate</strong>, <strong>Delete</strong>), the chosen one&#39;s variables on the right.</p>
+<p>Each value has two halves:</p>
+<ul>
+<li>the <strong>shared</strong> value, in <code>ultraman/envs/&lt;name&gt;.yaml</code>, synced through git;</li>
+<li>this <strong>machine&#39;s</strong> value, in <code>ultraman/local/envs/&lt;name&gt;.yaml</code>, never synced. Use it for what only applies to you.</li>
+</ul>
+<p>An empty machine value means &quot;same as shared&quot;. One with a value wins over the shared one everywhere: the window, the CLI and the agent. If an environment file doesn&#39;t parse, the panel shows the error and lets you fix it as text.</p>
+<h2 id="dotenv">Import a .env file <a class="self" href="#dotenv" aria-label="Import a .env file">#</a></h2>
+<p><strong>Import .env…</strong> reads a <code>.env</code> file (<code>KEY=value</code>, <code>export</code>, quotes, comments) into this machine&#39;s values. Nothing reaches the shared file, and so nothing reaches git, until you move it there yourself. A variable that is a secret keeps the value it has in the vault.</p>
+<h2 id="eye">See where a value comes from <a class="self" href="#eye" aria-label="See where a value comes from">#</a></h2>
+<p>The eye next to the environment selector opens a quick look at the chosen environment. Each variable says where its value comes from: <code>shared</code>, <code>local</code>, <code>vault</code> or <code>session</code>. A secret always shows as <code>●●●●</code>.</p>
+<p>Below, the <strong>session</strong> lists each value that steps extracted (or that you typed in a dialog), which step made it and which steps use it. The pencil edits this machine&#39;s value (empty goes back to the shared one). A session row, or the whole session, can be cleared; it comes back when the step that makes it runs again. The session is not saved: closing the window drops it.</p>
+<p>When a request needs a value the environment doesn&#39;t have, a dialog asks for it. A plain value can be kept for this session only, saved in the environment&#39;s shared file (it goes to git) or saved on this machine. A secret has a <strong>Save on this machine</strong> checkbox: checked, it goes to the vault and never to a file.</p>
+<h2 id="options">Request options <a class="self" href="#options" aria-label="Request options">#</a></h2>
+<p>An environment can also carry <strong>request options</strong>: timeouts, redirects, HTTP/2, plain http for an internal service without TLS, or a custom CA for a server with its own certificate. They live under <code>options:</code> in the environment file, shared or this machine&#39;s only, and never as a variable:</p>
+<pre tabindex="0"><code># ultraman/envs/internal.yaml
+api: http://billing.internal:8080
+options:
+  plainHttp: true</code></pre>
+<p>A request&#39;s own options win over its pipeline&#39;s (or collection&#39;s), which win over the environment&#39;s; the Options tab says where an inherited value comes from. Plain http and a custom CA both lower the protection of TLS: the window warns you when you turn them on. A CA file outside the project asks before its first use, like any file.</p>
+<h2 id="secrets">Secrets <a class="self" href="#secrets" aria-label="Secrets">#</a></h2>
+<p>A secret is a value that must not leave your computer: a token, a password, an API key. Requests use it as <code>{{secrets.token}}</code>, and its value:</p>
+<ul>
+<li>lives in a <strong>vault</strong> in your user folder, encrypted with your <strong>master password</strong>, never in the repo;</li>
+<li>shows as <code>[secret:token]</code> in responses, history, runs, exports and logs;</li>
+<li>goes only to hosts you said yes to: the first time a secret would go to a new host, Ultraman asks (see <a href="security.html#consent">Security and consent</a>).</li>
+</ul>
+<p>An environment value can point to a secret (<code>token: &quot;{{secrets.token}}&quot;</code>), so each environment can use its own. In the Environments panel, turn a variable into a secret and its value moves to the vault after a warning; the YAML keeps only the reference. The vault name defaults to <code>&lt;environment&gt;.&lt;variable&gt;</code> (for example <code>staging.token</code>) and you can change it. Your teammates set their own values in their own vaults. <strong>Rename</strong> moves the vault names that follow the environment&#39;s name when the vault is open.</p>
+<p>The first time a run needs a secret, the window asks for the master password: to create it, or to unlock the vault. The vault locks again after 30 idle minutes; the lock at the top locks it now, changes the password or forgets it. How it is encrypted and what it does and doesn&#39;t protect: <a href="security.html#vault">the vault</a>.</p>
+<aside class="note"><p>If you forget the master password, the secrets can&#39;t be recovered. <strong>Forgot it?</strong> deletes every saved secret after you type the confirmation; set them again afterwards.</p></aside>
+<h3 id="remember">Remember on this machine <a class="self" href="#remember" aria-label="Remember on this machine">#</a></h3>
+<p><strong>Remember on this machine</strong> is off by default and only exists in the desktop window. It keeps the vault&#39;s key in your system keychain so the vault opens without asking. It trades safety for convenience: on Windows and Linux other apps you run can read the keychain entry; on macOS the Keychain asks you first. The checkbox says so. The terminal never uses this key: the CLI asks for the master password itself.</p>
+<h2 id="ci-secrets">In CI <a class="self" href="#ci-secrets" aria-label="In CI">#</a></h2>
+<p>A runner has no vault: pass each secret as an environment variable, <code>ULTRAMAN_SECRET_TOKEN</code> for <code>token</code> (uppercase, anything that isn&#39;t a letter or digit becomes <code>_</code>). See <a href="cli.html">The terminal</a> and <a href="ci.html#local-values">CI</a> for values that only exist on one machine.</p>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<p>The <a href="security.html#promise">promise</a> applies here as everywhere. What this part adds:</p>
+<ul>
+<li><strong>Your team:</strong> the shared half of an environment is in git; this machine&#39;s values and the vault are not (<a href="security.html#stored">what is stored</a>).</li>
+<li><strong>CI:</strong> secrets come from <code>ULTRAMAN_SECRET_*</code> variables, so nothing sensitive lives in the repo (<a href="security.html#ci">CI</a>).</li>
+</ul>
+<nav class="pager"><a rel="prev" href="load.html"><small>Previous</small><span>Load</span></a><a rel="next" href="importing.html"><small>Next</small><span>Importing</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

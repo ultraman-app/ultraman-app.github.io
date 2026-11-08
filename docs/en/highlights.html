@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>What Ultraman gives you · Ultraman docs</title>
+<meta name="description" content="Ultraman tests HTTP APIs, WebSocket and SSE included: one app on your computer for single requests, multi-step tests, load and CI, all saved as plain files in…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/highlights.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/highlights.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/highlights.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/highlights.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/highlights.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/highlights.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/highlights.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/highlights.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html" aria-current="page">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html" aria-current="page">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="highlights">What Ultraman gives you <a class="self" href="#highlights" aria-label="What Ultraman gives you">#</a></h1>
+<p>Ultraman tests HTTP APIs, WebSocket and SSE included: one app on your computer for single requests, multi-step tests, load and CI, all saved as plain files in your own git repo. Ultraman never sends anything in an unsafe way without your explicit consent: a secret goes only to a host you approved, and a folder you haven&#39;t trusted sends nothing.</p>
+<p>Each part below says what it does for you and where to read more. If you&#39;d rather start from your role, jump to <a href="highlights.html#start">Where to start</a>.</p>
+<h2 id="pipelines">Pipelines you can see <a class="self" href="#pipelines" aria-label="Pipelines you can see">#</a></h2>
+<p>A <strong>pipeline</strong> is a test written as a list of steps: log in, take the token from the response, create an order, check that it shows up. You get a test you can read like a sentence: every step is a row (&quot;token ← $login $.token&quot;), and the same pipeline shows as a diagram, with an arrow from the request that produces a value to the one that uses it. It&#39;s saved as YAML in your repo, so a change to a test is reviewed in a pull request like any other code. → <a href="pipelines.html">Pipelines</a></p>
+<h2 id="requests">Requests like in Postman, with memory <a class="self" href="#requests" aria-label="Requests like in Postman, with memory">#</a></h2>
+<p>When you just want to try a call: collections, folders, tabs, <strong>Send</strong>. Each request keeps its own checks, and every send lands in the history with its timing, so you can see what an endpoint answered yesterday. When a response changes shape compared with the previous one, Ultraman tells you. WebSocket and SSE streams open in a tab of their own. → <a href="requests.html">Requests</a></p>
+<h2 id="load">Load testing for real <a class="self" href="#load" aria-label="Load testing for real">#</a></h2>
+<p>The pipeline you already have, run by many virtual users or at a fixed arrival rate: you learn how your API behaves under load without writing a second test. Ramps, holds, think time, per-user data and cookies, several scenarios mixed by weight, up to 8 threads on one machine. The report gives a <strong>verdict</strong> in words (it held, it queued, it rejected requests…) and says so when your own computer, not the API, was the limit. → <a href="load.html">Load</a></p>
+<h2 id="importing">Bring what you already have <a class="self" href="#importing" aria-label="Bring what you already have">#</a></h2>
+<p>You don&#39;t start from zero: Postman collections and environments, OpenAPI documents, JMeter plans, Artillery scripts and traffic recorded in your browser become collections, pipelines, environments and load tests. What can&#39;t be translated is listed, not lost. An import reads only the file you pick, and sends nothing. → <a href="importing.html">Importing</a></p>
+<h2 id="secrets">Your secrets go only where you said <a class="self" href="#secrets" aria-label="Your secrets go only where you said">#</a></h2>
+<p>Ultraman never sends anything in an unsafe way without your explicit consent. A secret, written <code>{{secrets.token}}</code>, lives in an encrypted vault on your computer, never in the repo. The first time a request would send it to a server you haven&#39;t approved for it, Ultraman asks; so does a file from outside the project&#39;s <code>ultraman/files/</code> folder. Where a secret&#39;s value would show (a response, the history, a run report, an export), you see <code>[secret:token]</code> instead. A folder you don&#39;t trust yet opens in restricted mode: it sends nothing and runs no git. That is what lets you open a pipeline a colleague wrote, or one from the internet, without it quietly sending your token somewhere else. What this can&#39;t cover is said plainly in <a href="security.html#limits">the limits</a>. → <a href="security.html">Security and consent</a>, <a href="environments.html">Environments and secrets</a></p>
+<h2 id="team">A team that shares through git <a class="self" href="#team" aria-label="A team that shares through git">#</a></h2>
+<p>Your team shares tests the way it shares code, with no account and no server in between: pipelines, collections, environments, load tests and the files requests send are all files under <code>ultraman/</code>. <strong>Sync</strong> commits and pushes only those, and shows conflicts side by side. Secrets, this machine&#39;s values and your history stay on your computer. → <a href="team.html">Working as a team</a></p>
+<h2 id="ci">The same tests in CI <a class="self" href="#ci" aria-label="The same tests in CI">#</a></h2>
+<p>The tests you run in the window can gate your build. <code>ultraman run</code> runs pipelines, a collection or a load test from a terminal, writes a JUnit report and exits with an error when a check or a threshold fails. In GitHub Actions, <code>ultraman-app/run-action</code> installs and runs it; you say which server each secret may go to. → <a href="ci.html">CI</a>, <a href="cli.html">The terminal</a></p>
+<h2 id="agents">Your agent can drive it <a class="self" href="#agents" aria-label="Your agent can drive it">#</a></h2>
+<p>An AI agent that speaks MCP (Claude Code, for one) can create requests, write pipelines, run them, start a load and read the reports, while you stay in charge: every call shows a card in the window and nothing happens until you approve it (read-only calls can be let through for the rest of a session). The agent can use your secrets by name but never sees their values. → <a href="agents.html">Agents (MCP)</a></p>
+<h2 id="mock">A fake API from what you already sent <a class="self" href="#mock" aria-label="A fake API from what you already sent">#</a></h2>
+<p>When the real API is down, slow or not built yet, the mock server answers with the responses you already recorded, so a front end or a test can keep working. It answers only on your computer unless you start it from the terminal and choose otherwise. → <a href="mock.html">Mock server</a></p>
+<h2 id="start">Where to start <a class="self" href="#start" aria-label="Where to start">#</a></h2>
+<p>Pick the row closest to you; each link opens the part that answers that question first.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">You are</th><th scope="col">Your first question</th><th scope="col">Read</th></tr></thead>
+<tbody>
+<tr><td>New to API testing</td><td>How do I send a request and check the answer?</td><td><a href="getting-started.html#first-request">Your first request</a>, <a href="requests.html#checks">Checks</a>, <a href="requests.html#generate-checks">Generate checks</a></td></tr>
+<tr><td>Developer building an API</td><td>How do I try my endpoints while I build them, and keep what I tried?</td><td><a href="getting-started.html#first-request">Your first request</a>, <a href="requests.html#history">History</a>, <a href="pipelines.html#run">Running a pipeline</a>, <a href="mock.html">Mock server</a></td></tr>
+<tr><td>Front-end developer</td><td>Can I work while the API is down or not built yet?</td><td><a href="mock.html">Mock server</a>, <a href="requests.html">Requests</a></td></tr>
+<tr><td>QA</td><td>How do I turn my checks into a regression suite?</td><td><a href="pipelines.html#steps">The steps</a>, <a href="pipelines.html#blocks">Blocks</a>, <a href="importing.html">Importing</a>, <a href="mock.html">Mock server</a></td></tr>
+<tr><td>DevOps or SRE</td><td>How do I run it in CI and fail the build?</td><td><a href="ci.html">CI</a>, <a href="ci.html#allow">Allowing secrets in CI</a>, <a href="ci.html#load-in-ci">Load in CI</a>, <a href="cli.html">The terminal</a></td></tr>
+<tr><td>Performance tester</td><td>Can it replace my load tool?</td><td><a href="load.html">Load</a>, <a href="load.html#report">The report</a>, <a href="why.html#not-for">Where another tool fits better</a></td></tr>
+<tr><td>Tech lead</td><td>How does my team share and review tests?</td><td><a href="why.html">Why Ultraman</a>, <a href="team.html">Working as a team</a>, <a href="team.html#reviews">In pull requests</a></td></tr>
+<tr><td>Security</td><td>Can I trust it with our credentials?</td><td><a href="security.html#promise">The promise</a>, <a href="security.html#leaves-your-machine">What leaves your machine</a>, <a href="security.html#agents">Agents</a>, <a href="security.html#limits">Limits</a></td></tr>
+<tr><td>Coming from Postman, JMeter or Artillery</td><td>What is my tool&#39;s word called here?</td><td><a href="coming-from.html">Coming from another tool</a>, <a href="importing.html">Importing</a></td></tr>
+</tbody>
+</table></div>
+<p>Still deciding? <a href="faq.html">Questions</a> has short answers to what people ask first, the honest &quot;no&quot;s included.</p>
+<nav class="pager"><span></span><a rel="next" href="why.html"><small>Next</small><span>Why Ultraman</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>
