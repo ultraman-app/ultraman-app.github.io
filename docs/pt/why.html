@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Por que o Ultraman · Documentação do Ultraman</title>
-<meta name="description" content="O Ultraman reúne requests de API, fluxos de teste, testes de carga e checks de CI num só app local, salvos como arquivos simples no seu próprio repositório…">
+<meta name="description" content="O Ultraman junta requests de API, fluxos de teste, testes de carga e checks de CI num só app local, salvos em arquivos simples no seu próprio repositório git…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/pt/why.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/why.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/why.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/why.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -28,7 +28,7 @@
 <details class="menu"><summary>Menu</summary>
 <nav aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html" aria-current="page">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -40,16 +40,16 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
 <nav class="side" aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html" aria-current="page">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -61,84 +61,84 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="why">Por que o Ultraman <a class="self" href="#why" aria-label="Por que o Ultraman">#</a></h1>
-<p>O Ultraman reúne requests de API, fluxos de teste, testes de carga e checks de CI num só app local, salvos como arquivos simples no seu próprio repositório git. Esta página diz como isso difere das ferramentas que você talvez já use, e quando uma delas é a melhor escolha.</p>
-<h2 id="idea">A ideia em resumo <a class="self" href="#idea" aria-label="A ideia em resumo">#</a></h2>
-<p>O Ultraman serve a uma equipe que guarda seus testes de API junto do código, os revisa em pull requests, e quer que um só arquivo sirva como teste manual, check de CI e cenário de carga.</p>
+<p>O Ultraman junta requests de API, fluxos de teste, testes de carga e checks de CI num só app local, salvos em arquivos simples no seu próprio repositório git. Esta página mostra em que ele difere das ferramentas que você talvez já use, e quando uma delas é a melhor escolha.</p>
+<h2 id="idea">A ideia em poucas palavras <a class="self" href="#idea" aria-label="A ideia em poucas palavras">#</a></h2>
+<p>O Ultraman combina com uma equipe que mantém os testes de API junto do código, revisa esses testes em pull requests e quer que um único arquivo sirva de teste manual, de check no CI e de cenário de carga.</p>
 <ul>
-<li><strong>Um arquivo, três usos.</strong> Uma <a href="coming-from.html#own-words">pipeline</a>, uma lista de passos visíveis, é um teste que você roda na janela, um check no CI e um cenário num teste de carga.</li>
-<li><strong>Nada escondido em código.</strong> Os passos são requests, extracts, checks, esperas, repetições e ramos que você consegue ler. O que um passo faz está sempre na tela e no diff.</li>
-<li><strong>O seu repositório git é o lugar compartilhado.</strong> Sem conta e sem workspace: <strong>Sincronizar</strong> faz commit só das pastas do Ultraman, e uma mudança num teste se revisa como qualquer mudança em código.</li>
-<li><strong>Os segredos continuam seus.</strong> Um segredo vive num cofre criptografado no seu computador e vai só para hosts a que você disse sim.</li>
+<li><strong>Um arquivo, três usos.</strong> Uma <a href="coming-from.html#own-words">pipeline</a>, uma lista de passos visíveis, é ao mesmo tempo um teste que você executa na janela, um check no CI e um cenário num teste de carga.</li>
+<li><strong>Nada escondido em código.</strong> Os passos são requests, extracts, checks, esperas, repetições e ramificações que você consegue ler. O que cada passo faz está sempre na tela e no diff.</li>
+<li><strong>O seu repositório git é o lugar em comum.</strong> Sem conta e sem workspace: <strong>Sincronizar</strong> faz commit só das pastas do Ultraman, e a mudança num teste é revisada como qualquer mudança de código.</li>
+<li><strong>Os segredos continuam seus.</strong> Um segredo fica num cofre criptografado no seu computador e só vai para os hosts a que você disse sim.</li>
 </ul>
-<p>As comparações abaixo tratam de abordagem e foram conferidas na documentação de cada ferramenta em novembro de 2026. As ferramentas mudam: a documentação delas diz o que fazem hoje.</p>
+<p>As comparações abaixo tratam da abordagem e foram conferidas na documentação de cada ferramenta em novembro de 2026. Ferramentas mudam: o que elas fazem hoje está na documentação delas.</p>
 <h2 id="postman">Postman <a class="self" href="#postman" aria-label="Postman">#</a></h2>
-<p>O Postman é uma plataforma de API ampla, construída em torno de workspaces de equipe. O Ultraman cobre a parte dela que envia e testa requests HTTP, e acrescenta fluxos, carga e CI que vivem no seu repositório.</p>
+<p>O Postman é uma plataforma de API ampla, construída em torno de workspaces de equipe. O Ultraman cobre a parte dele que envia e testa requests HTTP, e soma fluxos, carga e CI que ficam no seu repositório.</p>
 <ul>
-<li><strong>Onde os testes vivem.</strong> Coleções, pipelines, ambientes e testes de carga são arquivos YAML dentro de <code>ultraman/</code>, e o git é o único jeito de compartilhá-los. Um pull request mostra exatamente o que mudou. Veja <a href="team.html">Trabalho em equipe</a>.</li>
-<li><strong>Checks sem scripts.</strong> O Postman roda JavaScript antes e depois de uma request. No Ultraman um check é um passo que você lê (&quot;status é 201&quot;, &quot;<code>$.id</code> existe&quot;), e um valor vai de uma resposta para a request seguinte por um extract visível. Veja <a href="requests.html#checks">Checks</a>.</li>
-<li><strong>Fluxos que você vê.</strong> Uma pipeline aparece como lista e como diagrama, com uma seta do passo que produz um valor até o passo que o usa. Veja <a href="pipelines.html">Pipelines</a>.</li>
-<li><strong>Carga a partir do mesmo arquivo.</strong> O Postman também consegue rodar uma coleção com muitos usuários virtuais. No Ultraman um teste de carga é um arquivo no repositório, com etapas, dados e cookies por usuário, um modelo de taxa de chegada, controles enquanto roda, e um veredito que avisa quando o limite foi o seu próprio computador. Veja <a href="load.html">Carga</a>.</li>
+<li><strong>Onde os testes ficam.</strong> Coleções, pipelines, ambientes e testes de carga são arquivos YAML dentro de <code>ultraman/</code>, e o git é a única forma de compartilhá-los. Um pull request mostra exatamente o que mudou. Veja <a href="team.html">Trabalho em equipe</a>.</li>
+<li><strong>Checks sem scripts.</strong> O Postman executa JavaScript antes e depois de uma request. No Ultraman, um check é um passo que você lê (&quot;status é 201&quot;, &quot;<code>$.id</code> existe&quot;), e um valor passa de uma resposta para a request seguinte por um extract visível. Veja <a href="requests.html#checks">Checks</a>.</li>
+<li><strong>Fluxos que você enxerga.</strong> Uma pipeline aparece como lista e como diagrama, com uma seta do passo que gera um valor até o passo que o usa. Veja <a href="pipelines.html">Pipelines</a>.</li>
+<li><strong>Carga a partir do mesmo arquivo.</strong> O Postman também consegue executar uma coleção com muitos usuários virtuais. No Ultraman, um teste de carga é um arquivo no repositório, com etapas, dados e cookies por usuário, um modelo de taxa de chegada, controles durante a execução e um veredito que avisa quando o limite foi o seu próprio computador. Veja <a href="load.html">Carga</a>.</li>
 </ul>
-<p>Onde o Postman é a melhor escolha: muito mais protocolos (GraphQL, gRPC, Socket.IO, MQTT, SOAP e outros); scripts para qualquer lógica que você consiga escrever em JavaScript; e colaboração hospedada, em que uma empresa inteira compartilha e discute o trabalho em workspaces.</p>
+<p>Onde o Postman se sai melhor: muito mais protocolos (gRPC, Socket.IO, MQTT e outros); scripts para qualquer lógica que dê para escrever em JavaScript; e colaboração hospedada, em que uma empresa inteira compartilha e discute o trabalho em workspaces.</p>
 <h2 id="request-clients">Bruno, Insomnia e Hoppscotch <a class="self" href="#request-clients" aria-label="Bruno, Insomnia e Hoppscotch">#</a></h2>
-<p>Estes são clientes de requests: você monta, organiza e envia requests, e também as executa por linha de comando. O Bruno compartilha o ponto de partida do Ultraman, coleções como arquivos de texto que você guarda no git.</p>
+<p>Estes são clientes de requests: você monta, organiza e envia requests, e também pode executá-las pela linha de comando. O Bruno parte do mesmo ponto que o Ultraman: coleções em arquivos de texto que você guarda no git.</p>
 <ul>
-<li><strong>Um fluxo acima da request.</strong> No Ultraman, passar um valor de uma resposta para a request seguinte é um passo que você consegue ler, não um script, e o fluxo inteiro se desenha como diagrama. Veja <a href="pipelines.html#steps">Pipelines</a>.</li>
-<li><strong>Carga no mesmo app.</strong> A pipeline que você envia à mão também roda sob carga, com um veredito em palavras. Não há uma segunda ferramenta nem um segundo formato para manter em sincronia. Veja <a href="load.html">Carga</a>.</li>
-<li><strong>Segredos com consentimento.</strong> Os segredos vêm de um cofre criptografado, aparecem como <code>[secret:name]</code> em toda resposta, entrada de histórico e exportação, e o primeiro envio para um host novo pergunta a você. Veja <a href="security.html#consent">Segurança e consentimento</a>.</li>
+<li><strong>Um fluxo acima da request.</strong> No Ultraman, passar um valor de uma resposta para a request seguinte é um passo que dá para ler, não um script, e o fluxo inteiro vira um diagrama. Veja <a href="pipelines.html#steps">Pipelines</a>.</li>
+<li><strong>Carga no mesmo app.</strong> A pipeline que você envia à mão também executa sob carga, com um veredito por extenso. Não há uma segunda ferramenta nem um segundo formato para manter em sincronia. Veja <a href="load.html">Carga</a>.</li>
+<li><strong>Segredos com consentimento.</strong> Os segredos vêm de um cofre criptografado, aparecem como <code>[secret:name]</code> em toda resposta, entrada do histórico e exportação, e o primeiro envio para um host novo pede a sua confirmação. Veja <a href="security.html#consent">Segurança e consentimento</a>.</li>
 <li><strong>Mudanças de forma.</strong> O Ultraman avisa quando a forma de uma resposta muda em relação à última vez que você a enviou. Veja <a href="requests.html#drift">Mudanças de contrato</a>.</li>
 </ul>
-<p>Onde eles são a melhor escolha: requests GraphQL e gRPC (Bruno e Insomnia), Socket.IO e MQTT (Hoppscotch); scripts em JavaScript nos três; o Hoppscotch roda no navegador sem nada para instalar, e pode ser hospedado nos seus próprios servidores; o Insomnia tem plugins.</p>
+<p>Onde eles se saem melhor: requests gRPC (Bruno e Insomnia), Socket.IO e MQTT (Hoppscotch); scripts em JavaScript nos três; o Hoppscotch funciona no navegador sem instalar nada e pode ser hospedado nos seus próprios servidores; o Insomnia tem plugins.</p>
 <h2 id="k6">k6 <a class="self" href="#k6" aria-label="k6">#</a></h2>
-<p>O k6 é uma ferramenta de teste de carga em que um teste é um programa em JavaScript ou TypeScript. As duas ferramentas oferecem modelos fechados (um número de usuários virtuais) e abertos (uma taxa de chegada), e limiares que fazem um build de CI falhar.</p>
+<p>O k6 é uma ferramenta de teste de carga em que o teste é um programa em JavaScript ou TypeScript. As duas ferramentas oferecem modelos fechados (um número de usuários virtuais) e abertos (uma taxa de chegada), além de limiares que fazem um build de CI falhar.</p>
 <ul>
-<li><strong>Sem código.</strong> No Ultraman um teste de carga é um arquivo YAML curto que nomeia uma pipeline e suas etapas. Você monta a pipeline numa janela e a testa um passo por vez antes de pôr carga nela. Veja <a href="load.html#shape">O formato da carga</a>.</li>
-<li><strong>Um arquivo para todo uso.</strong> A pipeline que você carrega é a que você envia à mão e roda no CI, então uma mudança chega aos três de uma vez.</li>
-<li><strong>Um veredito em palavras.</strong> O relatório diz se a API aguentou, enfileirou, rejeitou ou quebrou, e diz <code>limited</code> quando o gargalo foi o seu próprio computador, em vez de culpar a API. Veja <a href="load.html#report">O relatório</a>.</li>
-<li><strong>Conduza enquanto roda.</strong> Adicione ou remova usuários, pause e retome sem parar; depois compare o relatório com um anterior ou veja a tendência das últimas execuções. Veja <a href="load.html#live">Enquanto roda</a>.</li>
+<li><strong>Sem código.</strong> No Ultraman, um teste de carga é um arquivo YAML curto que indica uma pipeline e as etapas dela. Você monta a pipeline numa janela e a testa passo a passo antes de colocar carga nela. Veja <a href="load.html#shape">O formato da carga</a>.</li>
+<li><strong>Um arquivo para tudo.</strong> A pipeline que você põe sob carga é a mesma que você envia à mão e executa no CI, então uma mudança chega aos três de uma vez.</li>
+<li><strong>Um veredito por extenso.</strong> O relatório diz se a API aguentou, enfileirou, rejeitou ou quebrou, e diz <code>limited</code> quando o gargalo foi o seu próprio computador, em vez de pôr a culpa na API. Veja <a href="load.html#report">O relatório</a>.</li>
+<li><strong>Comande durante a execução.</strong> Adicione ou remova usuários, pause e retome sem parar; depois, compare o relatório com um anterior ou veja a tendência das últimas execuções. Veja <a href="load.html#live">Durante a execução</a>.</li>
 </ul>
-<p>Onde o k6 é a melhor escolha: lógica de qualquer tipo, escrita como código; gRPC, e mais protocolos por extensões; testes de performance por um navegador de verdade; e carga distribuída em muitas máquinas (no Kubernetes, ou no Grafana Cloud).</p>
+<p>Onde o k6 se sai melhor: lógica de qualquer tipo, escrita em código; gRPC, e mais protocolos por meio de extensões; testes de performance com um navegador de verdade; e carga distribuída por muitas máquinas (no Kubernetes ou no Grafana Cloud).</p>
 <h2 id="jmeter">JMeter <a class="self" href="#jmeter" aria-label="JMeter">#</a></h2>
 <p>O JMeter é uma ferramenta de teste de carga em Java, com um editor desktop para planos de teste e um modo de linha de comando para executá-los.</p>
 <ul>
-<li><strong>Arquivos legíveis.</strong> Um teste de carga do Ultraman são poucas linhas de YAML que se revisam num pull request. Um plano do JMeter é um arquivo <code>.jmx</code>; o Ultraman importa um e lista o que não consegue traduzir. Veja <a href="importing.html#jmeter">Do JMeter</a>.</li>
-<li><strong>O mesmo fluxo para testes funcionais e de carga.</strong> A pipeline sob carga é a que o seu CI roda a cada mudança.</li>
-<li><strong>Um relatório que se explica.</strong> Um veredito em palavras, para onde foi o tempo, erros por passo com uma request falha guardada para cada um, limiares que aprovam ou reprovam a execução. Veja <a href="load.html#report">O relatório</a>.</li>
-<li><strong>Segredos fora dos arquivos.</strong> Um segredo vive num cofre criptografado e nunca é escrito nos arquivos que você commita. Veja <a href="security.html#vault">O cofre</a>.</li>
+<li><strong>Arquivos legíveis.</strong> Um teste de carga do Ultraman tem poucas linhas de YAML, fáceis de revisar num pull request. Um plano do JMeter é um arquivo <code>.jmx</code>; o Ultraman o importa e lista o que não consegue converter. Veja <a href="importing.html#jmeter">Do JMeter</a>.</li>
+<li><strong>O mesmo fluxo para teste funcional e de carga.</strong> A pipeline sob carga é a mesma que o seu CI executa a cada mudança.</li>
+<li><strong>Um relatório que se explica.</strong> Um veredito por extenso, onde o tempo foi gasto, erros por passo com uma request com falha guardada para cada um, limiares que aprovam ou reprovam a execução. Veja <a href="load.html#report">O relatório</a>.</li>
+<li><strong>Segredos fora dos arquivos.</strong> Um segredo fica num cofre criptografado e nunca é gravado nos arquivos que você commita. Veja <a href="security.html#vault">O cofre</a>.</li>
 </ul>
-<p>Onde o JMeter é a melhor escolha: muito mais protocolos (bancos de dados via JDBC, JMS, LDAP, FTP, e-mail, TCP); scripts em Groovy e outras linguagens da JVM; testes distribuídos, em que um controlador comanda muitas máquinas remotas; e plugins.</p>
+<p>Onde o JMeter se sai melhor: muito mais protocolos (bancos de dados via JDBC, JMS, LDAP, FTP, e-mail, TCP); scripts em Groovy e outras linguagens da JVM; testes distribuídos, em que um controlador comanda muitas máquinas remotas; e plugins.</p>
 <h2 id="artillery">Artillery <a class="self" href="#artillery" aria-label="Artillery">#</a></h2>
-<p>O Artillery descreve testes em YAML, com lógica própria em JavaScript. É o mais próximo do formato do Ultraman: um script do Artillery é importado, as fases viram etapas, <code>capture</code> vira um extract e <code>ensure</code> vira limiares. Veja <a href="coming-from.html#artillery">Se você vem do Artillery</a>.</p>
+<p>O Artillery descreve testes em YAML, com lógica própria em JavaScript. É o formato mais próximo do Ultraman: um script do Artillery pode ser importado, as fases viram etapas, <code>capture</code> vira um extract e <code>ensure</code> vira limiares. Veja <a href="coming-from.html#artillery">Se você vem do Artillery</a>.</p>
 <ul>
 <li><strong>Uma janela em volta do YAML.</strong> O diagrama, Enviar para um passo só, Gerar checks, o histórico, uma área de Requests para explorar a API e um servidor mock local, tudo sobre os mesmos arquivos. Veja <a href="pipelines.html#diagram">Lista e diagrama</a>.</li>
-<li><strong>Os relatórios ficam com você.</strong> Cada relatório de carga é guardado na sua máquina; compare-o com um anterior, veja a tendência ou exporte-o como HTML ou CSV, sem nenhum serviço para se cadastrar. Veja <a href="load.html#report">O relatório</a>.</li>
+<li><strong>Os relatórios ficam com você.</strong> Cada relatório de carga fica guardado na sua máquina; compare com um anterior, veja a tendência ou exporte em HTML ou CSV, sem precisar se cadastrar em nenhum serviço. Veja <a href="load.html#report">O relatório</a>.</li>
 <li><strong>Segredos com consentimento.</strong> Os segredos vêm de um cofre criptografado e precisam do seu sim para cada host novo. Veja <a href="security.html#consent">Segurança e consentimento</a>.</li>
-<li><strong>Um arquivo, três usos.</strong> O cenário que você carrega é uma pipeline que você também roda à mão e no CI.</li>
+<li><strong>Um arquivo, três usos.</strong> O cenário que você põe sob carga é uma pipeline que você também executa à mão e no CI.</li>
 </ul>
-<p>Onde o Artillery é a melhor escolha: lógica própria em JavaScript com qualquer pacote npm; Socket.IO; carga por navegadores de verdade com Playwright; testes distribuídos em serviços de nuvem (AWS Lambda, AWS Fargate, Azure Container Instances); um painel hospedado para equipes; e plugins.</p>
-<h2 id="not-for">Quando escolher outra coisa <a class="self" href="#not-for" aria-label="Quando escolher outra coisa">#</a></h2>
+<p>Onde o Artillery se sai melhor: lógica própria em JavaScript com qualquer pacote npm; Socket.IO; carga com navegadores de verdade via Playwright; testes distribuídos em serviços de nuvem (AWS Lambda, AWS Fargate, Azure Container Instances); um painel hospedado para equipes; e plugins.</p>
+<h2 id="not-for">Quando escolher outra ferramenta <a class="self" href="#not-for" aria-label="Quando escolher outra ferramenta">#</a></h2>
 <p>O Ultraman não é a ferramenta certa se você precisa de:</p>
 <ul>
-<li>lógica escrita em código: o Ultraman não tem scripts, de propósito (veja <a href="faq.html#scripts">Por que sem scripts</a>);</li>
-<li>gRPC, um cliente GraphQL dedicado, Socket.IO, MQTT, bancos de dados ou outros protocolos: o Ultraman fala HTTP, WebSocket e SSE (veja <a href="faq.html#protocols">Quais protocolos</a>);</li>
-<li>carga a partir de várias máquinas ou da nuvem: o Ultraman gera carga a partir de um computador, em até 8 threads (veja <a href="load.html#workers">Mais de uma thread</a>);</li>
-<li>carga por navegadores de verdade;</li>
-<li>contas, papéis e permissões num workspace hospedado: o controle de acesso do Ultraman é o seu repositório git (veja <a href="faq.html#permissions">Permissões</a>);</li>
+<li>lógica escrita em código: o Ultraman não tem scripts, de propósito (veja <a href="faq.html#scripts">Por que não há scripts</a>);</li>
+<li>gRPC, Socket.IO, MQTT, bancos de dados ou outros protocolos: o Ultraman fala HTTP (inclusive GraphQL), WebSocket e SSE (veja <a href="faq.html#protocols">Quais protocolos</a>);</li>
+<li>carga gerada de várias máquinas ou da nuvem: o Ultraman gera carga a partir de um só computador, em até 8 threads (veja <a href="load.html#workers">Mais de uma thread</a>);</li>
+<li>carga com navegadores de verdade;</li>
+<li>contas, papéis e permissões num workspace hospedado: no Ultraman, o controle de acesso é o seu repositório git (veja <a href="faq.html#permissions">Permissões</a>);</li>
 <li>fluxos OAuth2, certificados de cliente, AWS SigV4 ou NTLM (veja <a href="faq.html#auth">Autenticação</a>);</li>
-<li>uma ferramenta no navegador sem nada para instalar.</li>
+<li>uma ferramenta no navegador, sem nada para instalar.</li>
 </ul>
-<nav class="pager"><a rel="prev" href="highlights.html"><small>Anterior</small><span>O que o Ultraman te dá</span></a><a rel="next" href="getting-started.html"><small>Seguinte</small><span>Primeiros passos</span></a></nav>
+<nav class="pager"><a rel="prev" href="highlights.html"><small>Anterior</small><span>O que o Ultraman oferece</span></a><a rel="next" href="getting-started.html"><small>Seguinte</small><span>Primeiros passos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

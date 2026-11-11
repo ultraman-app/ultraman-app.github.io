@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Agentes (MCP) · Documentação do Ultraman</title>
-<meta name="description" content="Um agente de IA (Claude Code, ou qualquer outro cliente MCP) pode usar o Ultraman por meio de ultraman mcp. Ele pode fazer o que você faz na janela: ler e…">
+<meta name="description" content="Um agente de IA (o Claude Code ou qualquer outro cliente MCP) pode usar o Ultraman através de ultraman mcp. Ele faz o mesmo que você faz na janela: lê e…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/pt/agents.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/agents.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/agents.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/agents.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -28,7 +28,7 @@
 <details class="menu"><summary>Menu</summary>
 <nav aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -40,16 +40,16 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html" aria-current="page">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
 <nav class="side" aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -61,58 +61,58 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html" aria-current="page">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="agents">Agentes (MCP) <a class="self" href="#agents" aria-label="Agentes (MCP)">#</a></h1>
-<p>Um agente de IA (Claude Code, ou qualquer outro cliente MCP) pode usar o Ultraman por meio de <code>ultraman mcp</code>. Ele pode fazer o que você faz na janela: ler e escrever requests, pipelines e testes de carga, enviá-los e executá-los, importar, iniciar o servidor mock, ler relatórios e compará-los. Você aprova cada chamada.</p>
-<h2 id="connect">Conecte <a class="self" href="#connect" aria-label="Conecte">#</a></h2>
-<p><code>ultraman mcp</code> é um servidor MCP por stdio. No Claude Code:</p>
+<p>Um agente de IA (o Claude Code ou qualquer outro cliente MCP) pode usar o Ultraman através de <code>ultraman mcp</code>. Ele faz o mesmo que você faz na janela: lê e escreve requests, pipelines e testes de carga, envia e executa, importa, inicia o servidor mock, lê relatórios e compara. Cada chamada passa pela sua aprovação.</p>
+<h2 id="connect">Conectar <a class="self" href="#connect" aria-label="Conectar">#</a></h2>
+<p><code>ultraman mcp</code> é um servidor MCP via stdio. No Claude Code:</p>
 <pre tabindex="0"><code>claude mcp add ultraman -- ultraman mcp --project &lt;your project folder&gt;</code></pre>
-<p>Qualquer outro cliente MCP aceita a mesma coisa nas suas próprias configurações: um servidor stdio cujo comando é <code>ultraman</code> e cujos argumentos são <code>mcp --project &lt;your project folder&gt;</code>. Sem <code>--project</code>, o projeto é a pasta de onde você o inicia (ou a mais próxima acima dela que tenha <code>ultraman/</code>).</p>
-<p>Duas coisas precisam ser verdade, ou cada ferramenta responde &quot;open Ultraman on this project to approve the agent&#39;s requests&quot;:</p>
+<p>Em qualquer outro cliente MCP, a configuração é a mesma, nas opções do próprio cliente: um servidor stdio com o comando <code>ultraman</code> e os argumentos <code>mcp --project &lt;your project folder&gt;</code>. Sem <code>--project</code>, o projeto é a pasta de onde você o inicia (ou a mais próxima acima dela que tenha <code>ultraman/</code>).</p>
+<p>Duas condições precisam valer; senão, toda ferramenta responde &quot;open Ultraman on this project to approve the agent&#39;s requests&quot;:</p>
 <ul>
-<li>a janela do Ultraman está aberta nesse projeto, porque é ali que você aprova;</li>
+<li>a janela do Ultraman está aberta nesse projeto, porque é nela que você aprova;</li>
 <li>a pasta é confiável na janela (<a href="security.html#trusted-folders">pastas confiáveis</a>).</li>
 </ul>
 <h2 id="cards">Você aprova cada chamada <a class="self" href="#cards" aria-label="Você aprova cada chamada">#</a></h2>
-<p>Cada coisa que o agente pede aparece como um cartão no canto inferior direito: quem pede, o quê, e o detalhe (numa mudança, o diff). <strong>Aprovar</strong> ou <strong>Rejeitar</strong> (com um motivo que o agente lê). Pedidos só de leitura podem ser aprovados &quot;sempre&quot;; isso dura apenas a sessão atual do agente, e só enquanto o Ultraman continuar aberto.</p>
-<p>O que executa (uma pipeline, uma request, uma carga) tem dois cartões: um para iniciar, e outro para entregar o resultado ao agente. O cartão de entrega avisa quando o resultado leva tokens, cookies ou headers de autenticação. Se você rejeita uma entrega, é definitivo.</p>
-<p>Uma chamada dura no máximo uns 50 segundos, porque a maioria dos clientes corta uma chamada de ferramenta aos 60: uma execução longa continua e o agente pede o resultado depois. Enquanto um cartão espera por você, o agente recebe um aviso de progresso a cada 5 segundos. Toda request é registrada em <code>ultraman/mcp/</code>, que o git ignora.</p>
-<p>Um stream WebSocket ou SSE é enviado uma vez (<code>send_stream</code>, ou uma request de stream salva): ele abre, envia as mensagens do cartão, escuta pelo tempo do cartão (30 segundos no máximo), fecha, e a entrega traz o handshake e as mensagens nos dois sentidos (as primeiras 50, cada uma cortada em 4 KB). O agente não tem uma sessão ao vivo: para uma que fique aberta, use a janela.</p>
+<p>Cada pedido do agente aparece como um cartão no canto inferior direito: quem pede, o quê e os detalhes (numa alteração, o diff). Escolha <strong>Aprovar</strong> ou <strong>Rejeitar</strong> (com um motivo, que o agente lê). Pedidos só de leitura podem ser aprovados para &quot;sempre&quot;; isso vale só para a sessão atual do agente, e só enquanto o Ultraman continuar aberto.</p>
+<p>O que executa algo (uma pipeline, uma request, uma carga) tem dois cartões: um para iniciar e outro para entregar o resultado ao agente. O cartão de entrega avisa quando o resultado traz tokens, cookies ou headers de autenticação. Se você rejeitar uma entrega, não tem volta.</p>
+<p>Uma chamada dura no máximo uns 50 segundos, porque a maioria dos clientes corta uma chamada de ferramenta aos 60: uma execução longa segue ativa, e o agente pede o resultado depois. Enquanto um cartão espera por você, o agente recebe um aviso de progresso a cada 5 segundos. Todo pedido fica registrado em <code>ultraman/mcp/</code>, que o git ignora.</p>
+<p>Um stream WebSocket ou SSE é enviado de uma vez só (<code>send_stream</code>, ou uma request de stream salva): ele abre, envia as mensagens do cartão, escuta pelo tempo indicado no cartão (no máximo 30 segundos) e fecha; a entrega traz o handshake e as mensagens nos dois sentidos (as 50 primeiras, cada uma cortada em 4 KB). Com <code>graphql</code>, vira uma subscription GraphQL: o cartão mostra a query, a operação e o payload de <code>connection_init</code> como foram escritos (um segredo aparece como a sua referência), e só uma subscription pode sair; a entrega traz os payloads dos eventos. O agente não tem sessão ao vivo: para uma que fique aberta, use a janela.</p>
 <h2 id="tools">O que ele pode fazer <a class="self" href="#tools" aria-label="O que ele pode fazer">#</a></h2>
-<p>As ferramentas vêm em áreas que correspondem às da janela:</p>
+<p>As ferramentas se dividem nas mesmas áreas da janela:</p>
 <ul>
-<li><strong>Pipelines e blocos:</strong> listar, ler, salvar e executar; ler execuções passadas; transformar um arquivo HAR ou entradas do histórico numa pipeline proposta.</li>
-<li><strong>Requests:</strong> listar, ler e salvar coleções e requests, movê-las e organizá-las, incluir uma numa pipeline, enviar uma request salva com seus checks, executar uma coleção, enviar uma request avulsa, ler o histórico.</li>
+<li><strong>Pipelines e blocos:</strong> listar, ler, salvar e executar; ler execuções anteriores; transformar um arquivo HAR ou entradas do histórico numa proposta de pipeline.</li>
+<li><strong>Requests:</strong> listar, ler e salvar coleções e requests, mover e organizar, adicionar uma a uma pipeline, enviar uma request salva com os seus checks, executar uma coleção, enviar uma request avulsa (inclusive GraphQL: o resultado lista os erros da resposta), ler o schema de uma request GraphQL (<code>get_graphql_schema</code>, um envio como qualquer outro) e ler o histórico.</li>
 <li><strong>Streams:</strong> envios únicos de WebSocket e SSE.</li>
-<li><strong>Carga:</strong> listar, ler e salvar testes de carga, executar um, ler relatórios, comparar dois, tendência, exportar.</li>
-<li><strong>Projeto:</strong> listar e salvar ambientes, listar segredos (só os nomes), importar um arquivo do Postman, OpenAPI, JMeter ou Artillery, ler a referência do formato YAML.</li>
-<li><strong>Servidor mock:</strong> estado, iniciar, parar, reiniciar, fixar uma gravação.</li>
+<li><strong>Carga:</strong> listar, ler e salvar testes de carga, executar um, ler relatórios, comparar dois, ver a tendência e exportar.</li>
+<li><strong>Projeto:</strong> listar e salvar ambientes, listar segredos (só os nomes), importar um arquivo do Postman, OpenAPI, JMeter ou Artillery, atualizar uma coleção a partir de uma spec OpenAPI mais nova (<code>update_collection_from_openapi</code>) e ler a referência do formato YAML.</li>
+<li><strong>Servidor mock:</strong> estado, iniciar, parar, reiniciar e fixar uma gravação.</li>
 </ul>
-<p>Uma escrita mostra seu diff (ou o arquivo novo inteiro) no cartão. Um salvamento que liga http simples ou uma CA própria é sinalizado em vermelho.</p>
+<p>Uma escrita mostra o diff (ou o arquivo novo inteiro) no cartão. Um salvamento que ativa http sem criptografia ou uma CA própria aparece destacado em vermelho.</p>
 <h2 id="limits">O que ele não pode fazer <a class="self" href="#limits" aria-label="O que ele não pode fazer">#</a></h2>
-<p>De propósito, o agente não pode ver nem definir o valor de um segredo, desbloquear o cofre, dar sim a um consentimento, confiar numa pasta, sincronizar com o git, nem apagar nada. Isso fica com você, na janela. Ele pode usar <code>{{secrets.x}}</code>; o valor nunca chega a ele, e os resultados são ocultados antes de serem entregues a ele.</p>
-<p>Uma coisa não é um segredo: um token que um passo extrai de uma resposta (por exemplo o <code>access_token</code> de um login) é só dado, então volta ao agente. É por isso que o cartão de entrega destaca tokens, cookies e headers de autenticação antes de você aprovar.</p>
-<h2 id="ask">Perguntando as coisas a ele <a class="self" href="#ask" aria-label="Perguntando as coisas a ele">#</a></h2>
-<p>O agente lê este mesmo manual (<code>get_manual</code>) e a referência do formato YAML (<code>get_reference</code>), então você pode perguntar &quot;como executo isto com 50 usuários?&quot; ou &quot;faça uma pipeline que faz login e cria um pedido&quot; e ele vai propor a mudança para você aprovar. O que um resultado diz é entregue a ele como dado para ler, não como instruções para seguir.</p>
-<aside class="note"><p>A aprovação protege o que passa pelo canal MCP. Um agente com um shell (o Claude Code tem um) também pode ler os arquivos do seu projeto ou executar <code>ultraman run</code> por conta própria: isso está fora do alcance do Ultraman. Trate os cartões como consentimento, não como uma sandbox, e dê a um agente só o acesso que você daria a um colega.</p></aside>
+<p>De propósito, o agente não consegue ver nem definir o valor de um segredo, desbloquear o cofre, dar um sim de consentimento, confiar numa pasta, sincronizar com o git nem apagar nada. Isso fica com você, na janela. Ele pode usar <code>{{secrets.x}}</code>, mas o valor nunca chega até ele, e os resultados são ocultados antes de serem entregues.</p>
+<p>Tem uma coisa que não é segredo: um token que um passo extrai de uma resposta (por exemplo, o <code>access_token</code> de um login) é só um dado, então volta para o agente. Por isso o cartão de entrega destaca tokens, cookies e headers de autenticação antes de você aprovar.</p>
+<h2 id="ask">Pedindo coisas a ele <a class="self" href="#ask" aria-label="Pedindo coisas a ele">#</a></h2>
+<p>O agente lê este mesmo manual (<code>get_manual</code>) e a referência do formato YAML (<code>get_reference</code>). Então você pode perguntar &quot;como executo isto com 50 usuários?&quot; ou pedir &quot;crie uma pipeline que faz login e cria um pedido&quot;, e ele vai propor a mudança para você aprovar. O que um resultado diz é entregue a ele como dado para ler, não como instrução a seguir.</p>
+<aside class="note"><p>A aprovação protege o que passa pelo canal MCP. Um agente com shell (o Claude Code tem um) também pode ler os arquivos do seu projeto ou executar <code>ultraman run</code> por conta própria, e isso está fora do alcance do Ultraman. Trate os cartões como consentimento, não como sandbox, e dê a um agente só o acesso que você daria a um colega.</p></aside>
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
 <ul>
 <li><strong>Você:</strong> nada do que o agente pede acontece até você aprovar o cartão, e uma entrega rejeitada continua rejeitada (<a href="security.html#agents">agentes</a>).</li>
-<li><strong>Você:</strong> o agente nunca vê o valor de um segredo e não pode desbloquear o cofre, dar um consentimento, confiar numa pasta, sincronizar nem apagar (<a href="security.html#redaction">a ocultação</a>).</li>
-<li><strong>Você:</strong> o agente não pode se aprovar: uma decisão precisa da janela (<a href="security.html#local-server">servidor local</a>).</li>
-<li><strong>Seu time:</strong> as requests do agente são registradas em <code>ultraman/mcp/</code>, só na sua máquina.</li>
-<li><strong>Limite:</strong> um agente com seu próprio shell está fora dos cartões (<a href="security.html#limits">limites</a>).</li>
+<li><strong>Você:</strong> o agente nunca vê o valor de um segredo e não consegue desbloquear o cofre, dar consentimento, confiar numa pasta, sincronizar nem apagar (<a href="security.html#redaction">a ocultação</a>).</li>
+<li><strong>Você:</strong> o agente não consegue aprovar a si mesmo: uma decisão exige a janela (<a href="security.html#local-server">servidor local</a>).</li>
+<li><strong>Sua equipe:</strong> os pedidos do agente ficam registrados em <code>ultraman/mcp/</code>, só na sua máquina.</li>
+<li><strong>Limite:</strong> um agente com shell próprio fica fora do alcance dos cartões (<a href="security.html#limits">limites</a>).</li>
 </ul>
-<nav class="pager"><a rel="prev" href="team.html"><small>Anterior</small><span>Trabalhando em time</span></a><a rel="next" href="coming-from.html"><small>Seguinte</small><span>Se você vem de outra ferramenta</span></a></nav>
+<nav class="pager"><a rel="prev" href="team.html"><small>Anterior</small><span>Trabalho em equipe</span></a><a rel="next" href="coming-from.html"><small>Seguinte</small><span>Vindo de outra ferramenta</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -115,6 +115,7 @@
 </ul>
 <p>An agent can&#39;t save, send or run anything in a folder you haven&#39;t trusted. Your trusted folders are kept in your Ultraman folder (<code>~/.ultraman/trust.json</code>), never in the project.</p>
 <p>Trust isn&#39;t a blank check: in a trusted folder, a secret still asks before it goes to a new origin, and a file from outside <code>ultraman/files/</code> still asks before it goes out.</p>
+<p>The sample project is the one folder trusted without asking, because it is Ultraman&#39;s own content and is rebuilt clean each time it opens.</p>
 <p><strong>Who it protects:</strong> you, when you open a repository someone else wrote. Git runs what a repository&#39;s own settings say, so Ultraman doesn&#39;t run it there until you trust the folder.</p>
 <h2 id="vault">The vault <a class="self" href="#vault" aria-label="The vault">#</a></h2>
 <p>Secret values live in a vault on your computer: <code>vault.json</code> and <code>secrets.enc</code> in <code>~/.ultraman/</code> (or the folder <code>ULTRAMAN_HOME</code> names). They are never in the project, so git never carries them: a project holds only references like <code>{{secrets.token}}</code>.</p>
@@ -202,6 +203,6 @@
 <nav class="pager"><a rel="prev" href="getting-started.html"><small>Previous</small><span>Getting started</span></a><a rel="next" href="requests.html"><small>Next</small><span>Requests</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

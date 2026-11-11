@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -28,7 +28,7 @@
 <details class="menu"><summary>Menu</summary>
 <nav aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -40,16 +40,16 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
 <nav class="side" aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -61,37 +61,38 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="pipelines">Pipelines <a class="self" href="#pipelines" aria-label="Pipelines">#</a></h1>
-<p>Uma pipeline é um fluxo de requests e checks que você lê de cima para baixo, salvo em <code>ultraman/pipelines/&lt;nome&gt;.yaml</code> e executado pela janela ou pelo terminal. Ela tem um host, auth e headers opcionais para todas as suas requests, <strong>inputs</strong> (valores que a execução pede) e <strong>passos</strong>. Nada nela fica escondido: o que um passo faz é o que a linha dele diz.</p>
+<p>Uma pipeline é um fluxo de requests e checks que você lê de cima para baixo, salvo em <code>ultraman/pipelines/&lt;nome&gt;.yaml</code> e executado pela janela ou pelo terminal. Ela tem um host, auth e headers opcionais para todas as requests, <strong>inputs</strong> (valores que a execução pede) e <strong>passos</strong>. Nada fica escondido: o que um passo faz é o que a linha dele diz.</p>
 <h2 id="steps">Os passos <a class="self" href="#steps" aria-label="Os passos">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Passo</th><th scope="col">O que faz</th></tr></thead>
 <tbody>
-<tr><td>request</td><td>envia uma request HTTP; os outros se referem a ela como <code>$nome</code></td></tr>
-<tr><td>extract</td><td>pega um valor de uma resposta (path JSON, header ou regex) e guarda em <code>{{nome}}</code></td></tr>
-<tr><td>assert</td><td>checa algo de uma resposta (veja <a href="requests.html#checks">Checks</a>)</td></tr>
-<tr><td>wait</td><td>espera alguns milissegundos</td></tr>
-<tr><td>repeat</td><td>roda seus passos N vezes, ou uma vez por item de uma lista</td></tr>
-<tr><td>if</td><td>roda seus passos só quando uma condição é verdadeira</td></tr>
-<tr><td>use</td><td>roda um <strong>bloco</strong> (uma pipeline reutilizável) com seus inputs</td></tr>
-<tr><td>parallel</td><td>roda ramos ao mesmo tempo; o passo seguinte espera todos</td></tr>
-<tr><td>websocket, sse</td><td>abre um stream; os outros se referem a ele como <code>$nome</code> (o handshake)</td></tr>
+<tr><td>request</td><td>envia uma request HTTP; os outros passos se referem a ela como <code>$nome</code></td></tr>
+<tr><td>extract</td><td>tira um valor de uma resposta (path JSON, header ou regex) e guarda em <code>{{nome}}</code></td></tr>
+<tr><td>assert</td><td>confere algo numa resposta (veja <a href="requests.html#checks">Checks</a>)</td></tr>
+<tr><td>wait</td><td>pausa por alguns milissegundos</td></tr>
+<tr><td>repeat</td><td>executa os passos dele N vezes, ou uma vez para cada item de uma lista</td></tr>
+<tr><td>if</td><td>executa os passos dele só quando uma condição é verdadeira</td></tr>
+<tr><td>use</td><td>executa um <strong>bloco</strong> (uma pipeline reutilizável) com os inputs dele</td></tr>
+<tr><td>parallel</td><td>executa ramos ao mesmo tempo; o passo seguinte espera todos terminarem</td></tr>
+<tr><td>websocket, sse</td><td>abre um stream; os outros passos se referem a ele como <code>$nome</code> (o handshake)</td></tr>
 <tr><td>send</td><td>escreve uma mensagem num WebSocket</td></tr>
-<tr><td>receive</td><td>espera a próxima mensagem de um stream que atende a um filtro; os outros se referem a ela como <code>$nome</code></td></tr>
-<tr><td>close</td><td>encerra um stream (um que ficar aberto é fechado quando a execução terminar)</td></tr>
+<tr><td>receive</td><td>espera a próxima mensagem de um stream que passe num filtro; os outros passos se referem a ela como <code>$nome</code></td></tr>
+<tr><td>close</td><td>encerra um stream (um stream que ficar aberto é fechado quando a execução termina)</td></tr>
 </tbody>
 </table></div>
-<p><strong>Adicionar passo</strong> explica cada um. O <strong>+</strong> entre dois passos insere um exatamente ali. <strong>De uma coleção…</strong> adiciona uma request de uma coleção, com seus checks, como cópia vinculada.</p>
+<p><strong>Adicionar passo</strong> explica cada um. O <strong>+</strong> entre dois passos insere um ali mesmo. <strong>De uma coleção…</strong> adiciona uma request de uma coleção, com os checks dela, como cópia vinculada.</p>
+<p><strong>GraphQL.</strong> Um passo request pode levar um body GraphQL, editado do mesmo jeito que na área de Requests (veja <a href="requests.html#graphql">GraphQL</a>); um passo vinculado usa o schema da coleção dele. A lista mostra o nome da operação (<code>POST /graphql · Order</code>), e uma resposta com <code>errors</code> faz o passo falhar, mesmo com um 200.</p>
 <h2 id="stream-steps">Streams numa pipeline <a class="self" href="#stream-steps" aria-label="Streams numa pipeline">#</a></h2>
-<p>Um stream WebSocket ou SSE são quatro tipos de passo que você enxerga, em ordem: abrir, enviar, esperar uma mensagem, fechar. O host da pipeline também atende o stream (<code>https</code> vira <code>wss</code>).</p>
+<p>Um stream WebSocket ou SSE vira quatro tipos de passo à vista, nesta ordem: abrir, enviar, esperar uma mensagem e fechar. O host da pipeline também serve o stream (<code>https</code> vira <code>wss</code>).</p>
 <pre tabindex="0"><code>steps:
   - websocket: live
     path: /live
@@ -112,8 +113,8 @@
   - close: live
     code: 1000
     reason: done</code></pre>
-<p><code>$live</code> é o handshake, então <code>assert: status of: $live equals: 101</code> funciona. Uma mensagem recebida é uma resposta como qualquer outra: o texto dela é o body, e <code>extract</code> e <code>assert</code> o leem com um path JSON. No SSE, o <code>event</code> e o <code>id</code> do evento são lidos como headers (<code>header: event</code>).</p>
-<p><code>receive</code> pega a <strong>próxima mensagem que atende</strong> ao seu <code>where</code>. As anteriores são puladas e contadas, e um segundo <code>receive</code> começa depois da mensagem que o primeiro encontrou. Sem <code>where</code>, qualquer mensagem serve. Se nada atender em <code>timeout</code> ms (o <code>options.timeout</code> do stream, se o passo não tiver um), o passo falha e mostra as últimas três mensagens que pulou.</p>
+<p><code>$live</code> é o handshake, então <code>assert: status of: $live equals: 101</code> funciona. Uma mensagem recebida é uma resposta como qualquer outra: o texto dela é o body, e <code>extract</code> e <code>assert</code> leem esse texto com um path JSON. No SSE, o <code>event</code> e o <code>id</code> do evento são lidos como headers (<code>header: event</code>).</p>
+<p><code>receive</code> pega a <strong>próxima mensagem que atende</strong> ao <code>where</code> dele. As mensagens anteriores são puladas e contadas, e um segundo <code>receive</code> começa depois da mensagem que o primeiro pegou. Sem <code>where</code>, qualquer mensagem serve. Se nenhuma atender em <code>timeout</code> ms (o <code>options.timeout</code> do stream, se o passo não tiver um), o passo falha e mostra as três últimas mensagens que pulou. Um <code>timeout</code> de 0 espera sem limite, até uma mensagem atender, o stream terminar ou você parar a execução.</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col"><code>where</code></th><th scope="col">atende quando</th></tr></thead>
 <tbody>
@@ -121,15 +122,39 @@
 <tr><td><code>{ path: $.id, exists: true }</code></td><td>o path encontra algo</td></tr>
 <tr><td><code>{ contains: shipped }</code></td><td>o texto contém isso</td></tr>
 <tr><td><code>{ matches: /^ord_/ }</code></td><td>o texto bate com uma regex</td></tr>
-<tr><td><code>{ event: price }</code></td><td>só SSE: o nome do evento; pode ir junto com um dos anteriores</td></tr>
+<tr><td><code>{ event: price }</code></td><td>só no SSE: o nome do evento; pode ir junto com um dos anteriores</td></tr>
 </tbody>
 </table></div>
-<p><code>repeat: 10</code> em volta de um <code>receive</code> junta dez mensagens. Numa execução, a dobra <strong>Mensagens</strong> sob a linha <code>websocket</code> ou <code>sse</code> lista tudo o que o stream carregou, nos dois sentidos, então o que chegou entre os passos fica visível. Uma request de stream da área de Requests também pode ser adicionada a uma pipeline (<strong>De uma coleção…</strong>).</p>
-<p><strong>Um token no subprotocolo.</strong> Alguns servidores (Kubernetes exec, alguns gateways de GraphQL sobre WebSocket) aceitam o token só em <code>Sec-WebSocket-Protocol</code>. Para eles <code>protocols</code> aceita um segredo, <code>protocols: [v4.channel.k8s.io, &quot;{{secrets.kube_token}}&quot;]</code>, com o mesmo sim de um header, e ele aparece como <code>[secret:kube_token]</code> em todo lugar. Prefira um header <code>Authorization</code> quando o servidor aceitar um: proxies costumam registrar subprotocolos. Detalhes na <a href="../en/reference.html" hreflang="en">referência do formato</a>.</p>
+<p><code>repeat: 10</code> em volta de um <code>receive</code> junta dez mensagens. Numa execução, a seção recolhível <strong>Mensagens</strong> embaixo da linha <code>websocket</code> ou <code>sse</code> lista tudo o que passou pelo stream, nos dois sentidos, então dá para ver o que chegou entre um passo e outro. Uma request de stream da área de Requests também pode entrar numa pipeline (<strong>De uma coleção…</strong>).</p>
+<p><strong>Um token no subprotocolo.</strong> Alguns servidores (Kubernetes exec, alguns gateways de GraphQL sobre WebSocket) só aceitam o token em <code>Sec-WebSocket-Protocol</code>. Para esses casos, <code>protocols</code> aceita um segredo, <code>protocols: [v4.channel.k8s.io, &quot;{{secrets.kube_token}}&quot;]</code>, com o mesmo sim de um header, e ele aparece como <code>[secret:kube_token]</code> em todo lugar. Prefira um header <code>Authorization</code> quando o servidor aceitar: proxies costumam registrar os subprotocolos em log. Detalhes na <a href="../en/reference.html" hreflang="en">referência do formato</a>.</p>
+<h2 id="subscriptions">Subscriptions GraphQL <a class="self" href="#subscriptions" aria-label="Subscriptions GraphQL">#</a></h2>
+<p>Uma subscription GraphQL é um WebSocket com <code>graphql:</code> e passos <code>subscribe</code> visíveis sobre ele; os eventos dela são recebidos como mensagens.</p>
+<pre tabindex="0"><code>steps:
+  - websocket: live
+    path: /graphql
+    graphql:
+      init: { authorization: &quot;Bearer {{secrets.token}}&quot; }
+
+  - subscribe: orders
+    on: $live
+    graphql:
+      query: |
+        subscription { orderCreated { id total } }
+
+  - receive: order
+    from: $orders
+    where: { path: $.data.orderCreated.total, exists: true }
+    timeout: 5000
+
+  - close: orders
+
+  - close: live</code></pre>
+<p><code>graphql:</code> num passo <code>websocket</code> transforma esse passo num socket GraphQL: o Ultraman define o subprotocolo (<code>graphql-transport-ws</code>), envia <code>connection_init</code> com <code>init</code> como payload e espera a confirmação do servidor (<code>ackTimeout</code> ms; se você não definir, vale o timeout do passo). Cada <code>subscribe</code> inicia uma subscription nesse socket, e dá para ter várias no mesmo socket se precisar, cada uma com o seu <code>$nome</code>. Um <code>receive</code> de uma subscription pega o próximo evento dela que atende ao filtro: o body é o payload do evento (<code>{ data, errors }</code>), então <code>$.data.orderCreated.id</code> lê o valor. Um evento com <code>errors</code> faz o receive falhar, a menos que a subscription tenha <code>allowErrors: true</code>. <code>close: orders</code> encerra uma subscription; <code>close: live</code> encerra todas e fecha o socket, e o fim da execução faz o mesmo.</p>
+<p>As mensagens do próprio protocolo ficam por conta do Ultraman: um socket GraphQL não aceita <code>send</code>, e um <code>receive</code> aponta para uma subscription, não para o socket. A demo traz esta pipeline como <code>live orders (graphql)</code>.</p>
 <h2 id="inputs">Inputs <a class="self" href="#inputs" aria-label="Inputs">#</a></h2>
-<p><code>inputs: [user]</code> declara valores de que a pipeline precisa e que ela não tem. <strong>Executar</strong> pede esses valores num diálogo; no terminal você os passa com <code>--input user=ana</code> (veja <a href="cli.html#run">o terminal</a>), e um <a href="pipelines.html#blocks">bloco</a> os recebe de <code>use … with</code>. Uma execução com um input faltando não começa. Dentro da pipeline um input é uma variável, <code>{{user}}</code>.</p>
+<p><code>inputs: [user]</code> declara valores de que a pipeline precisa e que ela não tem. <strong>Executar</strong> pede esses valores num diálogo; no terminal, você os passa com <code>--input user=ana</code> (veja <a href="cli.html#run">o terminal</a>), e um <a href="pipelines.html#blocks">bloco</a> recebe os inputs de <code>use … with</code>. Uma execução com um input faltando não começa. Dentro da pipeline, um input é uma variável: <code>{{user}}</code>.</p>
 <h2 id="headers">Headers para todas as requests <a class="self" href="#headers" aria-label="Headers para todas as requests">#</a></h2>
-<p><code>headers:</code> numa pipeline (ou num bloco, ou numa coleção) é enviado por todas as suas requests. Um passo que define o mesmo header, com qualquer capitalização, mantém o dele. Os headers de um bloco são só do bloco: a pipeline que o chama não repassa os seus headers para as requests do bloco. Um segredo num header compartilhado pede o sim do host dele como um segredo num passo.</p>
+<p><code>headers:</code> numa pipeline (ou num bloco, ou numa coleção) é enviado por todas as requests dela. Um passo que define o mesmo header, com qualquer combinação de maiúsculas e minúsculas, fica com o dele. Os headers de um bloco são só do bloco: a pipeline que chama o bloco não repassa os headers dela para as requests do bloco. Um segredo num header compartilhado pede o sim do host dele, como um segredo num passo.</p>
 <pre tabindex="0"><code>name: orders
 host: &quot;{{env.api}}&quot;
 headers: { x-tenant: acme }
@@ -138,7 +163,7 @@ steps:
     method: GET
     path: /orders</code></pre>
 <h2 id="parallel">Ao mesmo tempo <a class="self" href="#parallel" aria-label="Ao mesmo tempo">#</a></h2>
-<p><code>parallel</code> roda dois ou mais ramos de uma vez e o passo seguinte espera todos. Um ramo que falha não para os outros: o <code>parallel</code> falha quando todos terminam. Dois ramos não podem extrair a mesma variável.</p>
+<p><code>parallel</code> executa dois ou mais ramos de uma vez, e o passo seguinte espera todos. Se um ramo falhar, os outros continuam: o <code>parallel</code> falha quando todos terminarem. Dois ramos não podem extrair a mesma variável.</p>
 <pre tabindex="0"><code>- parallel: dashboard
   branches:
     - - request: me
@@ -148,21 +173,21 @@ steps:
         method: GET
         path: /orders</code></pre>
 <h2 id="find">Para se achar <a class="self" href="#find" aria-label="Para se achar">#</a></h2>
-<p>Dê <strong>tags</strong> a uma pipeline em <strong>Auth e opções</strong> (Enter ou uma vírgula adiciona uma) e elas aparecem como chips embaixo do nome; um clique num chip filtra por ele. Toda barra lateral tem uma caixa <strong>Filtrar…</strong> (um nome, ou <code>#tag</code>). <strong>Ctrl+P</strong> (Cmd+P no macOS) abre uma caixa só sobre pipelines, blocos e requests: digite algumas letras do nome, ou <code>#tag</code>, e Enter abre.</p>
+<p>Dê <strong>tags</strong> a uma pipeline em <strong>Auth e opções</strong> (Enter ou vírgula adiciona uma) e elas aparecem como chips embaixo do nome; clicar num chip filtra por ele. Toda barra lateral tem uma caixa <strong>Filtrar…</strong> (um nome, ou <code>#tag</code>). <strong>Ctrl+P</strong> (Cmd+P no macOS) abre uma caixa única para pipelines, blocos e requests: digite algumas letras do nome, ou <code>#tag</code>, e aperte Enter para abrir.</p>
 <h2 id="diagram">Lista e diagrama <a class="self" href="#diagram" aria-label="Lista e diagrama">#</a></h2>
-<p>A <strong>Lista</strong> mostra cada passo em uma linha, do jeito que os outros se referem a ele. O <strong>Diagrama</strong> desenha os mesmos passos com uma seta da request que produz um valor até a que o lê, assim o fluxo dos dados fica visível de relance.</p>
+<p>A <strong>Lista</strong> mostra cada passo numa linha, do jeito que os outros passos se referem a ele. O <strong>Diagrama</strong> desenha os mesmos passos com uma seta da request que produz um valor até a que o lê, e assim o fluxo de dados aparece num relance.</p>
 <h2 id="run">Executando <a class="self" href="#run" aria-label="Executando">#</a></h2>
-<p><strong>Executar</strong> roda a pipeline de cima para baixo no ambiente escolhido. Cada passo mostra seu status e seu tempo; um check que falhou mostra a resposta que o fez falhar. <strong>Vigiar</strong> executa de novo quando algo muda, ou num temporizador. As execuções passadas ficam listadas embaixo da pipeline.</p>
+<p><strong>Executar</strong> percorre a pipeline de cima para baixo no ambiente selecionado. Cada passo mostra o status e o tempo; um check que falhou mostra a resposta que o derrubou. <strong>Vigiar</strong> executa de novo quando algo muda, ou de tempos em tempos. As execuções anteriores ficam listadas embaixo da pipeline.</p>
 <h2 id="blocks">Blocos <a class="self" href="#blocks" aria-label="Blocos">#</a></h2>
-<p>Um bloco é uma pipeline feita para ser reutilizada: um login, uma preparação. Ele declara <code>inputs</code> e <code>exports</code>. Uma pipeline o roda com <code>use: login</code> e recebe os exports dele como variáveis.</p>
+<p>Um bloco é uma pipeline feita para ser reaproveitada: um login, uma preparação. Ele declara <code>inputs</code> e <code>exports</code>. Uma pipeline executa o bloco com <code>use: login</code> e recebe os exports dele como variáveis.</p>
 <h2 id="helpers">Ajudantes <a class="self" href="#helpers" aria-label="Ajudantes">#</a></h2>
 <ul>
-<li><strong>Funções</strong> dentro de <code>{{ }}</code>: <code>random.uuid</code>, <code>random.email</code>, <code>random.int(1, 100)</code>, <code>now.iso</code>, <code>counter</code>, <code>base64(x)</code>, <code>hmac.sha256(secrets.key, body)</code> e mais (veja a <a href="../en/reference.html" hreflang="en">referência do formato</a>).</li>
+<li><strong>Funções</strong> dentro de <code>{{ }}</code>: <code>random.uuid</code>, <code>random.email</code>, <code>random.int(1, 100)</code>, <code>now.iso</code>, <code>counter</code>, <code>base64(x)</code>, <code>hmac.sha256(secrets.key, body)</code> e outras (veja a <a href="../en/reference.html" hreflang="en">referência do formato</a>).</li>
 <li><strong>Extract com regex</strong>: <code>regex: name=&quot;csrf&quot; value=&quot;([^&quot;]+)&quot;</code> pega o grupo 1.</li>
-<li><strong>Extract opcional</strong>: quando nada é encontrado, a variável fica sem valor em vez de falhar.</li>
-<li><strong>`if`</strong>: roda seus passos só quando uma condição é verdadeira. Não existe else.</li>
+<li><strong>Extract opcional</strong>: quando nada é encontrado, a variável fica sem valor em vez de dar falha.</li>
+<li><strong>`if`</strong>: executa os passos dele só quando uma condição é verdadeira. Não existe else.</li>
 </ul>
-<p>Juntos, cobrem os casos de sempre, &quot;token na página, cupom talvez&quot;:</p>
+<p>Juntos, eles cobrem os casos de sempre, do tipo &quot;token na página, talvez um cupom&quot;:</p>
 <pre tabindex="0"><code>- extract: csrf
   from: $page
   regex: &#39;name=&quot;csrf&quot; value=&quot;([^&quot;]+)&quot;&#39;
@@ -178,16 +203,16 @@ steps:
       method: POST
       path: /cart/coupon
       json: { code: &quot;{{coupon}}&quot; }</code></pre>
-<p>Não há scripts de propósito: o que um passo faz está sempre à vista, e quem revisa pode ler uma pipeline num pull request.</p>
+<p>Não há scripts, de propósito: o que um passo faz está sempre à vista, e quem revisa consegue ler uma pipeline num pull request.</p>
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
-<p>A <a href="security.html#promise">promessa</a> vale aqui como em todo lugar. O que esta parte acrescenta:</p>
+<p>A <a href="security.html#promise">promessa</a> vale aqui como em qualquer lugar. O que esta parte acrescenta:</p>
 <ul>
-<li><strong>Você:</strong> uma condição, um check ou uma regex nunca lê o conteúdo de um segredo, nem de um valor feito a partir de um: uma pipeline que leria é recusada em vez de executada, então um ramo que você toma não pode revelar um segredo. Veja <a href="security.html#redaction">a ocultação</a>.</li>
-<li><strong>Seu time:</strong> uma pipeline de uma pasta em que você não confiou não envia nada pela janela. Veja <a href="security.html#trusted-folders">pastas confiáveis</a>.</li>
+<li><strong>Você:</strong> uma condição, um check ou uma regex nunca lê o conteúdo de um segredo, nem de um valor gerado a partir de um: uma pipeline que tentasse isso é recusada em vez de executada, então o ramo que for seguido não pode revelar um segredo. Veja <a href="security.html#redaction">a ocultação</a>.</li>
+<li><strong>Sua equipe:</strong> uma pipeline de uma pasta em que você não confiou não envia nada pela janela. Veja <a href="security.html#trusted-folders">pastas confiáveis</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="requests.html"><small>Anterior</small><span>Requests</span></a><a rel="next" href="load.html"><small>Seguinte</small><span>Carga</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

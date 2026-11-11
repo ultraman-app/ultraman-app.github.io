@@ -1,0 +1,65 @@
+name: Bug report
+description: Something in Ultraman doesn't work as it should
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for telling us. English, Spanish or Portuguese are all fine.
+
+        Is it a security problem? Please don't post it here: [report it privately](https://github.com/ultraman-app/ultraman-app.github.io/security/advisories/new).
+  - type: input
+    id: version
+    attributes:
+      label: Ultraman version
+      description: In the window, the ? menu. In a terminal, `ultraman --version`.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "Windows 11, macOS 15, Ubuntu 24.04"
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen?
+      options:
+        - The window
+        - The CLI
+        - The MCP bridge
+        - The installer
+        - The CI action
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+    validations:
+      required: true
+  - type: checkboxes
+    id: secrets
+    attributes:
+      label: Before you send
+      options:
+        - label: I removed secrets and tokens from what I paste.
+          required: true

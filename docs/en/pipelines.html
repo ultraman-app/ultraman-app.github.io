@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -90,6 +90,7 @@
 </tbody>
 </table></div>
 <p><strong>Add step</strong> explains each one. The <strong>+</strong> between two steps inserts one right there. <strong>From a collection…</strong> adds a collection request, with its checks, as a linked copy.</p>
+<p><strong>GraphQL.</strong> A request step can carry a GraphQL body, edited the same way as in the Requests area (see <a href="requests.html#graphql">GraphQL</a>); a linked one uses its collection&#39;s schema. The list names its operation (<code>POST /graphql · Order</code>), and an answer with <code>errors</code> fails the step, even with a 200.</p>
 <h2 id="stream-steps">Streams in a pipeline <a class="self" href="#stream-steps" aria-label="Streams in a pipeline">#</a></h2>
 <p>A WebSocket or an SSE stream is four kinds of step you can see, in order: open it, send, wait for a message, close it. The pipeline&#39;s host serves the stream too (<code>https</code> becomes <code>wss</code>).</p>
 <pre tabindex="0"><code>steps:
@@ -113,7 +114,7 @@
     code: 1000
     reason: done</code></pre>
 <p><code>$live</code> is the handshake, so <code>assert: status of: $live equals: 101</code> works. A received message is a response like any other: its text is the body, and <code>extract</code> and <code>assert</code> read it with a JSON path. On SSE, the event&#39;s <code>event</code> and <code>id</code> are read like headers (<code>header: event</code>).</p>
-<p><code>receive</code> takes the <strong>next message that matches</strong> its <code>where</code>. The ones before it are passed over and counted, and a second <code>receive</code> starts after the first one&#39;s match. Without <code>where</code>, any message matches. If nothing matches in <code>timeout</code> ms (the stream&#39;s <code>options.timeout</code> if the step has none), the step fails and shows the last three messages it passed over.</p>
+<p><code>receive</code> takes the <strong>next message that matches</strong> its <code>where</code>. The ones before it are passed over and counted, and a second <code>receive</code> starts after the first one&#39;s match. Without <code>where</code>, any message matches. If nothing matches in <code>timeout</code> ms (the stream&#39;s <code>options.timeout</code> if the step has none), the step fails and shows the last three messages it passed over. A <code>timeout</code> of 0 waits with no limit, until a message matches, the stream ends or you stop the run.</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col"><code>where</code></th><th scope="col">matches</th></tr></thead>
 <tbody>
@@ -126,6 +127,30 @@
 </table></div>
 <p><code>repeat: 10</code> around a <code>receive</code> collects ten messages. In a run, the <strong>Messages</strong> fold under the <code>websocket</code> or <code>sse</code> row lists everything the stream carried, both ways, so what arrived between steps is visible. A stream request from the Requests area can be added to a pipeline too (<strong>From a collection…</strong>).</p>
 <p><strong>A token in the subprotocol.</strong> Some servers (Kubernetes exec, some GraphQL-over-WebSocket gateways) take the token only in <code>Sec-WebSocket-Protocol</code>. For them <code>protocols</code> accepts a secret, <code>protocols: [v4.channel.k8s.io, &quot;{{secrets.kube_token}}&quot;]</code>, with the same yes as a header, and it shows as <code>[secret:kube_token]</code> everywhere. Prefer an <code>Authorization</code> header when the server takes one: proxies often log subprotocols. Details in the <a href="../en/reference.html" hreflang="en">format reference</a>.</p>
+<h2 id="subscriptions">GraphQL subscriptions <a class="self" href="#subscriptions" aria-label="GraphQL subscriptions">#</a></h2>
+<p>A GraphQL subscription is a WebSocket with <code>graphql:</code> and visible <code>subscribe</code> steps on it; its events are received like messages.</p>
+<pre tabindex="0"><code>steps:
+  - websocket: live
+    path: /graphql
+    graphql:
+      init: { authorization: &quot;Bearer {{secrets.token}}&quot; }
+
+  - subscribe: orders
+    on: $live
+    graphql:
+      query: |
+        subscription { orderCreated { id total } }
+
+  - receive: order
+    from: $orders
+    where: { path: $.data.orderCreated.total, exists: true }
+    timeout: 5000
+
+  - close: orders
+
+  - close: live</code></pre>
+<p><code>graphql:</code> on a <code>websocket</code> step makes it a GraphQL socket: Ultraman sets the subprotocol (<code>graphql-transport-ws</code>), sends <code>connection_init</code> with <code>init</code> as its payload and waits for the server&#39;s acknowledgement (<code>ackTimeout</code> ms, the step&#39;s timeout unless you set one). Each <code>subscribe</code> starts a subscription on it, several on one socket if you need them, each with its own <code>$name</code>. A <code>receive</code> from a subscription takes its next event that matches: the body is the event&#39;s payload (<code>{ data, errors }</code>), so <code>$.data.orderCreated.id</code> reads it. An event with <code>errors</code> fails the receive unless the subscription has <code>allowErrors: true</code>. <code>close: orders</code> ends one subscription; <code>close: live</code> ends them all and closes the socket, and the end of the run does the same.</p>
+<p>The protocol&#39;s own messages are Ultraman&#39;s: a GraphQL socket takes no <code>send</code>, and a <code>receive</code> names a subscription, not the socket. The demo has this pipeline as <code>live orders (graphql)</code>.</p>
 <h2 id="inputs">Inputs <a class="self" href="#inputs" aria-label="Inputs">#</a></h2>
 <p><code>inputs: [user]</code> declares values the pipeline needs and doesn&#39;t have. <strong>Run</strong> asks for them in a dialog; in the terminal you pass them with <code>--input user=ana</code> (see <a href="cli.html#run">the terminal</a>), and a <a href="pipelines.html#blocks">block</a> gets them from <code>use … with</code>. A run with an input missing doesn&#39;t start. Inside the pipeline an input is a variable, <code>{{user}}</code>.</p>
 <h2 id="headers">Headers for every request <a class="self" href="#headers" aria-label="Headers for every request">#</a></h2>
@@ -188,6 +213,6 @@ steps:
 <nav class="pager"><a rel="prev" href="requests.html"><small>Previous</small><span>Requests</span></a><a rel="next" href="load.html"><small>Next</small><span>Load</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

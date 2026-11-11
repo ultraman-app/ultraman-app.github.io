@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Servidor mock · Documentación de Ultraman</title>
-<meta name="description" content="El servidor mock contesta las requests a tu API con respuestas que ya grabaste, así un front end (o un test) puede trabajar mientras la API real está caída…">
+<meta name="description" content="El servidor mock responde las requests a tu API con respuestas que ya grabaste. Así, un front end (o un test) puede seguir trabajando aunque la API real esté…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/es/mock.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/mock.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/mock.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/mock.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -42,7 +42,7 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
@@ -63,44 +63,44 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="mock">Servidor mock <a class="self" href="#mock" aria-label="Servidor mock">#</a></h1>
-<p>El servidor mock contesta las requests a tu API con respuestas que ya grabaste, así un front end (o un test) puede trabajar mientras la API real está caída, lenta o todavía no existe. Corre en tu computadora y nadie más puede alcanzarlo a menos que vos lo decidas.</p>
+<p>El servidor mock responde las requests a tu API con respuestas que ya grabaste. Así, un front end (o un test) puede seguir trabajando aunque la API real esté caída, vaya lenta o todavía no exista. Se ejecuta en tu computadora y nadie más puede acceder a él, salvo que tú lo decidas.</p>
 <h2 id="recordings">De dónde saca las respuestas <a class="self" href="#recordings" aria-label="De dónde saca las respuestas">#</a></h2>
-<p>Del <strong>Historial</strong>: cada request que mandaste es una grabación. En el <strong>Historial</strong>, abrí <strong>Servidor mock</strong>: lista las rutas que puede contestar (método y path, con parámetros de path) para el entorno elegido.</p>
+<p>Del <strong>Historial</strong>: cada request que enviaste es una grabación. En el <strong>Historial</strong>, abre <strong>Servidor mock</strong>: verás las rutas que puede responder (método y path, con parámetros de path) para el entorno elegido.</p>
 <h2 id="start">Iniciarlo <a class="self" href="#start" aria-label="Iniciarlo">#</a></h2>
-<p>Elegí un puerto e <strong>Iniciar</strong> (4300 por defecto). Solo contesta en esta máquina, y solo arranca en una <a href="security.html#trusted-folders">carpeta de confianza</a> (la terminal pregunta).</p>
+<p>Elige un puerto y pulsa <strong>Iniciar</strong> (por defecto, 4300). Solo responde en esta máquina y solo se inicia en una <a href="security.html#trusted-folders">carpeta de confianza</a> (la terminal te lo pregunta).</p>
 <ul>
-<li><strong>Demora grabada</strong> contesta tan lento como lo hizo la API real.</li>
-<li><strong>Reenviar el resto a</strong> manda a un host real lo que no tiene grabado.</li>
-<li>Una ruta con varias grabaciones contesta con la más nueva; <strong>fijá</strong> una en particular, o elegí <strong>En orden</strong> para recorrerlas una por una (<strong>Reiniciar secuencias</strong> empieza de nuevo).</li>
+<li><strong>Demora grabada</strong> responde con la misma lentitud que tuvo la API real.</li>
+<li><strong>Reenviar el resto a</strong> envía a un host real todo lo que no tiene grabado.</li>
+<li>Si una ruta tiene varias grabaciones, responde con la más reciente. Puedes <strong>fijar</strong> una en concreto, o elegir <strong>En orden</strong> para recorrerlas una por una (<strong>Reiniciar secuencias</strong> vuelve a empezar).</li>
 </ul>
-<h2 id="matching">Qué grabación contesta <a class="self" href="#matching" aria-label="Qué grabación contesta">#</a></h2>
-<p>Una request se empareja en este orden, y gana la primera coincidencia:</p>
+<h2 id="matching">Qué grabación responde <a class="self" href="#matching" aria-label="Qué grabación responde">#</a></h2>
+<p>Las requests se comparan en este orden, y gana la primera que coincida:</p>
 <ol>
-<li>el mismo método, path y query (el orden de los parámetros de la query no importa);</li>
+<li>el mismo método, path y query (el orden de los parámetros de la query da igual);</li>
 <li>el mismo método y path, con cualquier query;</li>
-<li>el template de path de la request: <code>/users/:userId/orders</code> contesta <code>/users/u_bob/orders</code> con la grabación de <code>u_ana</code>.</li>
+<li>el template de path de la request: <code>/users/:userId/orders</code> responde a <code>/users/u_bob/orders</code> con la grabación de <code>u_ana</code>.</li>
 </ol>
-<p>Sin coincidencia, el mock contesta <code>404</code> con las rutas conocidas. Si una ruta tiene varias grabaciones, contesta la más nueva, salvo que fijes una o elijas <strong>En orden</strong>. Solo se sirven las grabaciones del entorno elegido, y un envío nuevo se toma sin reiniciar. Cada respuesta lleva headers <code>x-ultraman-mock</code> que dicen qué grabación fue, y una respuesta demasiado grande o binaria se corta o queda vacía, con un header que lo dice. Las cookies y los tokens que puso la API real se sirven tal como se grabaron.</p>
+<p>Si nada coincide, el mock responde <code>404</code> con la lista de rutas conocidas. Si una ruta tiene varias grabaciones, responde la más reciente, a menos que fijes una o elijas <strong>En orden</strong>. Solo se sirven las grabaciones del entorno elegido, y un envío nuevo se incorpora sin reiniciar. Cada respuesta lleva headers <code>x-ultraman-mock</code> que indican de qué grabación salió. Una respuesta demasiado grande o binaria se recorta o queda vacía, con un header que lo indica. Las cookies y los tokens que estableció la API real se sirven tal como se grabaron.</p>
 <h2 id="cli">Desde la terminal <a class="self" href="#cli" aria-label="Desde la terminal">#</a></h2>
 <p><code>ultraman mock --env local --port 4300</code> inicia el mismo servidor sin la ventana; <code>--proxy &lt;url&gt;</code> reenvía el resto.</p>
-<p>Para que otras computadoras de tu red lo alcancen, la terminal tiene <code>--expose</code>. No está en la ventana y un agente no puede activarlo. Ultraman avisa que cualquiera en tu red puede leer las respuestas, que pueden tener datos reales, y espera un Enter (o <code>--yes</code>). Con <code>--proxy</code> también, avisa que cualquiera en tu red, y cualquier página web abierta ahí, podría llamar a esa API a través de esta máquina con el acceso de esta máquina. Lo seguro es dejar <code>--expose</code> afuera.</p>
+<p>Para que otras computadoras de tu red puedan acceder, la terminal ofrece <code>--expose</code>. No está en la ventana y un agente no puede activarlo. Ultraman advierte que cualquiera en tu red podrá leer las respuestas, que pueden contener datos reales, y espera a que pulses Enter (o a <code>--yes</code>). Si además usas <code>--proxy</code>, advierte que cualquiera en tu red, y cualquier página web abierta en ella, podría llamar a esa API a través de esta máquina y con los accesos de esta máquina. Lo seguro es no usar <code>--expose</code>.</p>
 <h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
 <ul>
-<li><strong>Vos:</strong> el mock escucha solo en <code>127.0.0.1</code> y contesta solo requests que nombran esta máquina. Una página web de otro sitio recibe un rechazo, así que un sitio que visitás no puede leer tus grabaciones ni alcanzar una API a través de <code>--proxy</code>.</li>
-<li><strong>Vos:</strong> <code>--proxy</code> reenvía solo a la dirección que das, y no agrega credenciales propias.</li>
-<li><strong>Tu equipo:</strong> las grabaciones salen de tu historial personal, que nunca se sincroniza. Los secretos que haya ahí ya están ocultos como <code>[secret:x]</code>. Ver <a href="security.html#stored">dónde se guarda cada cosa</a> y <a href="security.html#local-server">el servidor local</a>.</li>
-<li><strong>Vos:</strong> <code>--expose</code> es una decisión deliberada y advertida en la terminal. Ver <a href="security.html#limits">los límites</a>.</li>
+<li><strong>Tú:</strong> el mock escucha solo en <code>127.0.0.1</code> y solo responde a requests dirigidas a esta máquina. Una página web de otro sitio recibe un rechazo, así que un sitio que visites no puede leer tus grabaciones ni llegar a una API a través de <code>--proxy</code>.</li>
+<li><strong>Tú:</strong> <code>--proxy</code> reenvía solo a la dirección que indicas y no agrega credenciales propias.</li>
+<li><strong>Tu equipo:</strong> las grabaciones salen de tu historial personal, que nunca se sincroniza. Los secretos que contenga ya aparecen ocultos como <code>[secret:x]</code>. Consulta <a href="security.html#stored">dónde se guarda cada cosa</a> y <a href="security.html#local-server">el servidor local</a>.</li>
+<li><strong>Tú:</strong> <code>--expose</code> es una decisión deliberada, con advertencia en la terminal. Consulta <a href="security.html#limits">los límites</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="importing.html"><small>Anterior</small><span>Importar</span></a><a rel="next" href="cli.html"><small>Siguiente</small><span>La terminal</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

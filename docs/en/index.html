@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -80,7 +80,7 @@
 <li><a href="pipelines.html">Pipelines</a><p>A pipeline is a flow of requests and checks you can read from top to bottom, saved in ultraman/pipelines/&lt;name&gt;.yaml and run from the window or the terminal. It has a host, optional auth and headers for all its requests, inputs (values the run asks for) and steps. Nothing in it is hidden: what a step does is what its row says.</p></li>
 <li><a href="load.html">Load</a><p>Load (next to Run) tells you how many users, or how much traffic, your API can take before it slows down or fails. It opens the load screen of the pipeline on screen: each virtual user runs the whole pipeline in a loop, and if a step fails, that iteration counts as an error and the user starts another one.</p></li>
 <li><a href="environments.html">Environments and secrets</a><p>Environments let the same requests run against local, staging or production, and secrets keep tokens and passwords on your computer, encrypted, out of git and out of every log.</p></li>
-<li><a href="importing.html">Importing</a><p>The buttons next to New collection (Requests area) bring in what you already have: a Postman export, an OpenAPI spec, a JMeter plan, an Artillery script or a browser recording, so you don&#39;t start from zero. Nothing in the project is overwritten: a name that&#39;s taken gets -2. At the end, a summary says what came in, what was adapted, what needs a hand, and which files were skipped.</p></li>
+<li><a href="importing.html">Importing</a><p>The Import menu next to New collection (Requests area) brings in what you already have: a Postman export, an OpenAPI spec, a JMeter plan or an Artillery script; the one next to New pipeline (Pipelines area), a browser recording. So you don&#39;t start from zero. Nothing in the project is overwritten: a name that&#39;s taken gets -2. At the end, a summary says what came in, what was adapted, what needs a hand, and which files were skipped.</p></li>
 <li><a href="mock.html">Mock server</a><p>The mock server answers your API&#39;s requests with responses you already recorded, so a front end (or a test) can work while the real API is down, slow or not built yet. It runs on your computer and nobody else can reach it unless you choose.</p></li>
 <li><a href="cli.html">The terminal</a><p>The ultraman command runs your pipelines and load tests from a terminal, serves the project to other tools and keeps secrets in the vault. Run it from the project&#39;s folder (or any folder inside it). To use it on a build machine, see CI.</p></li>
 <li><a href="ci.html">CI</a><p>Ultraman runs in a build pipeline with the same pipelines you use on your machine, writes a JUnit report and fails the job when a step or a threshold fails. For GitHub Actions there is an action that also keeps secrets from going anywhere nobody approved. For other systems you install the command and call it.</p></li>
@@ -92,6 +92,6 @@
 </ol>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

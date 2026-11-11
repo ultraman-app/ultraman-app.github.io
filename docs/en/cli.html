@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/cli.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -82,6 +82,7 @@
 <tr><td><code>ultraman secret set &lt;name&gt;</code>, <code>list</code>, <code>rm &lt;name&gt;</code>, <code>password</code></td><td>Manages the vault.</td></tr>
 <tr><td><code>ultraman mock [--port 4300]</code></td><td>Serves your recorded history as a mock API. See <a href="mock.html">Mock server</a>.</td></tr>
 <tr><td><code>ultraman mcp [--project &lt;folder&gt;]</code></td><td>The bridge an AI agent connects to. See <a href="agents.html">Agents</a>.</td></tr>
+<tr><td><code>ultraman sample</code></td><td>Resets the sample project in Ultraman&#39;s own folder and prints its path. See <a href="getting-started.html#sample">the sample project</a>.</td></tr>
 <tr><td><code>ultraman --version</code></td><td>Prints the version.</td></tr>
 </tbody>
 </table></div>
@@ -107,6 +108,7 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--no-notify</code></td><td>With <code>--watch</code> or <code>--every</code>, no desktop notification when a run fails and when it passes again.</td></tr>
 <tr><td><code>--json</code></td><td>One JSON event per line on standard output, for other tools. No colors.</td></tr>
 <tr><td><code>--junit FILE</code></td><td>Writes a JUnit XML report. See <a href="cli.html#junit">JUnit</a>.</td></tr>
+<tr><td><code>--contract M</code></td><td><code>strict</code>, <code>warn</code> or <code>off</code>: over each collection&#39;s contract mode, so CI fails on what the spec doesn&#39;t document. See <a href="requests.html#contract">the contract</a>.</td></tr>
 <tr><td><code>--local</code></td><td>Runs in this process even when the window has the project open. See <a href="cli.html#one-engine">One engine</a>.</td></tr>
 <tr><td><code>--yes</code></td><td>Answers yes to every question. Read <a href="cli.html#consent">Consent in the terminal</a> first.</td></tr>
 </tbody>
@@ -164,6 +166,6 @@ ultraman run --collection shop --env staging</code></pre>
 <nav class="pager"><a rel="prev" href="mock.html"><small>Previous</small><span>Mock server</span></a><a rel="next" href="ci.html"><small>Next</small><span>CI</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

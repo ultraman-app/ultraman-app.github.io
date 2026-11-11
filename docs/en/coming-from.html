@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/coming-from.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -81,6 +81,8 @@
 <tr><td><code>{{variable}}</code></td><td><code>{{env.x}}</code>, <code>{{secrets.x}}</code> or <code>{{x}}</code> (session, collection variable)</td></tr>
 <tr><td>Tests (<code>pm.test</code>)</td><td>checks: assert and extract, no code</td></tr>
 <tr><td><code>pm.environment.set</code> from a response</td><td>an extract</td></tr>
+<tr><td>GraphQL request</td><td>a GraphQL body (<strong>New GraphQL request</strong>); an answer with <code>errors</code> fails the step</td></tr>
+<tr><td>GraphQL subscription</td><td><strong>Subscribe</strong> on a request whose operation is a subscription; <code>subscribe</code> steps in a pipeline</td></tr>
 <tr><td>Collection Runner</td><td><strong>Run</strong> in the collection&#39;s menu, or <code>ultraman run --collection</code></td></tr>
 <tr><td>Flows</td><td>pipelines</td></tr>
 <tr><td>Mock servers (cloud)</td><td>the mock server, local, from your history</td></tr>
@@ -137,10 +139,8 @@
 <tr><td>Postman&#39;s WebSocket request</td><td>a stream request in the Requests area (<strong>New WebSocket or SSE</strong>)</td></tr>
 <tr><td>Postman&#39;s saved messages</td><td>the request&#39;s <strong>Messages</strong> tab</td></tr>
 <tr><td>k6 <code>ws.connect</code>, <code>socket.on(&#39;message&#39;)</code></td><td>a <code>websocket</code> step and a <code>receive</code></td></tr>
-<tr><td>Artillery&#39;s <code>ws</code> engine: <code>send</code>, <code>match</code></td><td>a <code>send</code> step and a <code>receive</code> with <code>where</code></td></tr>
-<tr><td>Gatling <code>ws(&quot;x&quot;).connect</code>, <code>await.on(check)</code></td><td>the same: <code>websocket</code>, <code>receive</code> with <code>where</code></td></tr>
-<tr><td>JMeter&#39;s WebSocket Samplers: open, write, read, close</td><td>the four steps: <code>websocket</code>, <code>send</code>, <code>receive</code>, <code>close</code></td></tr>
-<tr><td>SSE through a plugin or a script</td><td>an <code>sse</code> step and a <code>receive</code> with <code>where: { event: price }</code></td></tr>
+<tr><td>Artillery&#39;s <code>ws</code> engine: <code>connect</code>, <code>send</code></td><td>a <code>websocket</code> step and a <code>send</code> step</td></tr>
+<tr><td>Gatling <code>ws(&quot;x&quot;).connect</code>, <code>await(...).on(check)</code></td><td>the same: <code>websocket</code>, <code>receive</code> with <code>where</code></td></tr>
 </tbody>
 </table></div>
 <p>Not here: automatic reconnects (connect again, or write the retry as steps), Socket.IO, WebSocket compression, and a mock for streams.</p>
@@ -163,6 +163,6 @@
 <nav class="pager"><a rel="prev" href="agents.html"><small>Previous</small><span>Agents (MCP)</span></a><a rel="next" href="faq.html"><small>Next</small><span>Questions</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

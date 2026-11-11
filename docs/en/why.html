@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/why.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -88,7 +88,7 @@
 <li><strong>Flows you can see.</strong> A pipeline shows as a list and as a diagram, with an arrow from the step that produces a value to the step that uses it. See <a href="pipelines.html">Pipelines</a>.</li>
 <li><strong>Load from the same file.</strong> Postman can also run a collection with many virtual users. In Ultraman a load test is a file in the repo, with stages, per-user data and cookies, an arrival-rate model, controls while it runs, and a verdict that says when your own computer was the limit. See <a href="load.html">Load</a>.</li>
 </ul>
-<p>Where Postman is the better choice: many more protocols (GraphQL, gRPC, Socket.IO, MQTT, SOAP and others); scripts for any logic you can write in JavaScript; and hosted collaboration, where a whole company shares and discusses work in workspaces.</p>
+<p>Where Postman is the better choice: many more protocols (gRPC, Socket.IO, MQTT and others); scripts for any logic you can write in JavaScript; and hosted collaboration, where a whole company shares and discusses work in workspaces.</p>
 <h2 id="request-clients">Bruno, Insomnia and Hoppscotch <a class="self" href="#request-clients" aria-label="Bruno, Insomnia and Hoppscotch">#</a></h2>
 <p>These are request clients: you build, organize and send requests, and run them from a command line too. Bruno shares Ultraman&#39;s starting point, collections as plain-text files you keep in git.</p>
 <ul>
@@ -97,7 +97,7 @@
 <li><strong>Secrets with consent.</strong> Secrets come from an encrypted vault, show as <code>[secret:name]</code> in every response, history entry and export, and the first send to a new host asks you. See <a href="security.html#consent">Security and consent</a>.</li>
 <li><strong>Changes of shape.</strong> Ultraman warns when a response&#39;s shape changes compared with the last time you sent it. See <a href="requests.html#drift">Contract drift</a>.</li>
 </ul>
-<p>Where they are the better choice: GraphQL and gRPC requests (Bruno and Insomnia), Socket.IO and MQTT (Hoppscotch); JavaScript scripts in all three; Hoppscotch runs in a browser with nothing to install, and can be hosted on your own servers; Insomnia has plugins.</p>
+<p>Where they are the better choice: gRPC requests (Bruno and Insomnia), Socket.IO and MQTT (Hoppscotch); JavaScript scripts in all three; Hoppscotch runs in a browser with nothing to install, and can be hosted on your own servers; Insomnia has plugins.</p>
 <h2 id="k6">k6 <a class="self" href="#k6" aria-label="k6">#</a></h2>
 <p>k6 is a load testing tool where a test is a JavaScript or TypeScript program. Both tools offer closed models (a number of virtual users) and open models (an arrival rate), and thresholds that fail a CI build.</p>
 <ul>
@@ -129,7 +129,7 @@
 <p>Ultraman is not the right tool if you need:</p>
 <ul>
 <li>logic written in code: Ultraman has no scripts, on purpose (see <a href="faq.html#scripts">Why no scripts</a>);</li>
-<li>gRPC, a dedicated GraphQL client, Socket.IO, MQTT, databases or other protocols: Ultraman speaks HTTP, WebSocket and SSE (see <a href="faq.html#protocols">Which protocols</a>);</li>
+<li>gRPC, Socket.IO, MQTT, databases or other protocols: Ultraman speaks HTTP (GraphQL included), WebSocket and SSE (see <a href="faq.html#protocols">Which protocols</a>);</li>
 <li>load from several machines or from the cloud: Ultraman generates load from one computer, on up to 8 threads (see <a href="load.html#workers">More than one thread</a>);</li>
 <li>load through real browsers;</li>
 <li>accounts, roles and permissions in a hosted workspace: Ultraman&#39;s access control is your git repo (see <a href="faq.html#permissions">Permissions</a>);</li>
@@ -139,6 +139,6 @@
 <nav class="pager"><a rel="prev" href="highlights.html"><small>Previous</small><span>What Ultraman gives you</span></a><a rel="next" href="getting-started.html"><small>Next</small><span>Getting started</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -124,12 +124,12 @@
 <li><strong>Pipelines</strong>: multi-step flows, the diagram, Run and Load.</li>
 <li><strong>Requests</strong>: collections like in Postman, tabs, Send, history and the mock server.</li>
 </ul>
-<p>Switch between them at the top. The environment selector next to them chooses which environment (local, staging…) everything runs against; the eye shows its values.</p>
+<p>Switch between them at the top. The top bar also holds an <strong>Open…</strong> field (Ctrl/Cmd+P) to jump to anything by name, and the environment button: click it to see the chosen environment&#39;s values and to pick another (it has a colour of its own, and <code>prod</code> or <code>live</code> names always show in the warning colour). The <strong>?</strong> button opens the manual, the shortcuts and <strong>About Ultraman</strong> (the version, the licence and the third-party notices). A pipeline&#39;s Run, Load, Save and ⋯ live in its header; a request&#39;s Save sits beside its name.</p>
 <h2 id="first-request">Your first request <a class="self" href="#first-request" aria-label="Your first request">#</a></h2>
 <ol>
 <li>Go to <strong>Requests</strong> and click <strong>New collection</strong>. Give it a name and a host, like <code>https://api.example.com</code>. Later you can replace that with <code>{{env.api}}</code>, so it changes with the environment (see <a href="environments.html">Environments</a>).</li>
 <li>In the collection&#39;s menu, <strong>New request</strong>. Write the method and the path.</li>
-<li>Press <strong>Send</strong> (or Ctrl/Cmd+Enter). The response shows below.</li>
+<li>Press <strong>Send</strong> (or Ctrl/Cmd+Enter). The response shows below (beside the request on a wide window).</li>
 <li>In the response, hover a value: its menu adds a check (assert) or takes the value into a variable (extract).</li>
 <li><strong>Save</strong> (Ctrl/Cmd+S).</li>
 </ol>
@@ -139,6 +139,16 @@
 <li>Or in <strong>Pipelines</strong>, <strong>New pipeline</strong> and <strong>Add step</strong>.</li>
 <li><strong>Run</strong> runs it top to bottom; each step shows its result in place.</li>
 </ol>
+<h2 id="sample">The sample project <a class="self" href="#sample" aria-label="The sample project">#</a></h2>
+<p>Not sure where to start? On first open, Welcome offers <strong>See the sample project</strong>. The same project is in the project menu as <strong>Open the sample project</strong>, and in a terminal as <code>ultraman sample</code> (it prints the folder&#39;s path).</p>
+<p>It&#39;s a small shop: four pipelines (browse products, place an order, check an order, and a flaky endpoint that fails on purpose, so you can see a red step and why), a <code>shop</code> collection, an environment, a load test, and runs, a load report and history already there, so every screen shows data before you run anything.</p>
+<p>The sample&#39;s requests go to <code>https://shop.example</code>. That address is answered by a small shop inside Ultraman: no port to start, and nothing is sent to the network. Any other host goes out as usual.</p>
+<ul>
+<li>The sample lives in Ultraman&#39;s own folder (<code>~/.ultraman/sample/</code>, or under <code>ULTRAMAN_HOME</code>). It starts clean every time you open it, so changes don&#39;t stay.</li>
+<li>It isn&#39;t a git repo, so Sync is off there, and it comes with no secrets: none of its own requests use the vault.</li>
+<li>The top bar marks it <strong>Sample project</strong>. <strong>Start your own project</strong> picks a folder of your own.</li>
+<li>Its load numbers aren&#39;t a benchmark: the shop answers inside Ultraman, with a simulated delay.</li>
+</ul>
 <h2 id="keys">Keys worth knowing <a class="self" href="#keys" aria-label="Keys worth knowing">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Key</th><th scope="col">What</th></tr></thead>
@@ -147,9 +157,24 @@
 <tr><td>Ctrl/Cmd+Enter</td><td>send the request</td></tr>
 <tr><td>Ctrl/Cmd+S</td><td>save</td></tr>
 <tr><td>?</td><td>all the shortcuts</td></tr>
-<tr><td>F1</td><td>this manual</td></tr>
+<tr><td>F1</td><td>this manual (Ctrl/Cmd+F inside it searches the whole text)</td></tr>
+<tr><td>Ctrl/Cmd + and −</td><td>make the window bigger or smaller</td></tr>
+<tr><td>Ctrl/Cmd+0</td><td>back to the automatic size</td></tr>
+<tr><td>Ctrl/Cmd+,</td><td>settings</td></tr>
 </tbody>
 </table></div>
+<h2 id="settings">Settings <a class="self" href="#settings" aria-label="Settings">#</a></h2>
+<p>The gear in the top bar (or Ctrl/Cmd+,) opens <strong>Settings</strong>. Each row applies as soon as you pick it:</p>
+<ul>
+<li><strong>Size:</strong> Automatic follows the window&#39;s width; or fix it at 90, 100, 110, 125 or 150 %.</li>
+<li><strong>Density:</strong> Comfortable or Compact spacing.</li>
+<li><strong>Code:</strong> the size of bodies, JSON, YAML and the step editor, from 80 to 150 %.</li>
+<li><strong>Theme:</strong> System follows your computer&#39;s light or dark setting as it changes; or choose Dark, Light or Contrast.</li>
+<li><strong>Motion:</strong> System follows your computer&#39;s reduced-motion setting; or choose Normal or Reduced.</li>
+<li><strong>Wide windows:</strong> Side by side puts a request and its response next to each other on a very wide window; Stacked keeps the response below.</li>
+<li><strong>Language:</strong> English, Spanish or Portuguese.</li>
+</ul>
+<p>These are kept on this computer only: not in the project and not synced by git. <strong>Reset</strong> puts size, density, code, theme, motion and the wide-window choice back to their defaults and leaves the language as it is.</p>
 <h2 id="update">Updates <a class="self" href="#update" aria-label="Updates">#</a></h2>
 <p>When the window opens, Ultraman asks GitHub whether a newer release exists, at most once a day. That question is all that goes out: GitHub sees your IP address, nothing about you or your projects. The <code>ultraman</code> command on its own, in a terminal or in CI, never asks.</p>
 <ul>
@@ -186,9 +211,15 @@
 <li>If you turned on <a href="environments.html#remember">Remember on this machine</a>, the vault&#39;s key is in your system&#39;s keychain: choose <strong>Forget the password on this machine</strong> in the vault&#39;s menu before uninstalling, or delete the <code>io.github.ultraman-app</code> entry from the keychain.</li>
 <li>Your projects&#39; <code>ultraman/</code> folders are yours: uninstalling doesn&#39;t touch them.</li>
 </ul>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<ul>
+<li><strong>Nothing about the shop leaves your machine:</strong> it answers <code>shop.example</code> inside Ultraman, and that name never reaches the network, not even a DNS lookup. Any other host goes out as usual, with the same questions. See <a href="security.html#leaves-your-machine">what leaves your computer</a>.</li>
+<li><strong>Nothing is kept:</strong> the sample is copied again each time it opens, and nothing in it is pushed anywhere, since it has no git sync. See <a href="security.html#trusted-folders">trusted folders</a>.</li>
+<li><strong>No secrets:</strong> the sample comes with none, and none of its own requests use your vault. See <a href="security.html#vault">the vault</a>.</li>
+</ul>
 <nav class="pager"><a rel="prev" href="why.html"><small>Previous</small><span>Why Ultraman</span></a><a rel="next" href="security.html"><small>Next</small><span>Security and consent</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

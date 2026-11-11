@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/ultraman-app/ultraman-app.github.io/security/advisories/new
+    about: Please don't open a public issue. Report it privately; only the maintainers see it.
+  - name: Documentation
+    url: https://ultraman-app.github.io/docs/
+    about: How to use Ultraman, in English, Spanish and Portuguese.

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Carga · Documentação do Ultraman</title>
-<meta name="description" content="Carga (ao lado de Executar) diz quantos usuários, ou quanto tráfego, sua API aguenta antes de ficar lenta ou falhar. Ela abre a tela de carga da pipeline que…">
+<meta name="description" content="Carga (ao lado de Executar) mostra quantos usuários, ou quanto tráfego, a sua API aguenta antes de ficar lenta ou começar a falhar. Abre a tela de carga da…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/pt/load.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/load.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/load.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -28,7 +28,7 @@
 <details class="menu"><summary>Menu</summary>
 <nav aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -40,16 +40,16 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
 <nav class="side" aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -61,93 +61,99 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="load">Carga <a class="self" href="#load" aria-label="Carga">#</a></h1>
-<p><strong>Carga</strong> (ao lado de Executar) diz quantos usuários, ou quanto tráfego, sua API aguenta antes de ficar lenta ou falhar. Ela abre a tela de carga da pipeline que está na tela: cada usuário virtual roda a pipeline inteira em loop, e se um passo falha, aquela volta conta como erro e o usuário começa outra.</p>
-<aside class="note"><p>Envie carga só para uma API sua, ou para uma que você tenha permissão de testar. A tela de carga mostra o alvo antes de você começar e diz o mesmo.</p></aside>
+<p><strong>Carga</strong> (ao lado de Executar) mostra quantos usuários, ou quanto tráfego, a sua API aguenta antes de ficar lenta ou começar a falhar. Abre a tela de carga da pipeline que você está vendo: cada usuário virtual executa a pipeline inteira em loop e, se um passo falha, aquela iteração conta como erro e o usuário começa outra.</p>
+<aside class="note"><p>Só mande carga para uma API sua ou para uma que você tenha permissão para testar. A tela de carga mostra o alvo antes de você começar e lembra a mesma coisa.</p></aside>
 <h2 id="test-file">Um teste de carga é um arquivo <a class="self" href="#test-file" aria-label="Um teste de carga é um arquivo">#</a></h2>
-<p>A configuração vive em <code>ultraman/load-tests/&lt;nome&gt;.yaml</code>, compartilhada pelo git, assim o mesmo teste roda igual para todos. Na primeira vez, Carga cria um com 10 usuários durante 30 segundos.</p>
+<p>As configurações ficam em <code>ultraman/load-tests/&lt;nome&gt;.yaml</code>, compartilhado pelo git, então o mesmo teste executa do mesmo jeito para todo mundo. Na primeira vez, <strong>Carga</strong> cria um com 10 usuários por 30 segundos.</p>
+<p>Uma pipeline pode ter vários testes. <strong>Novo teste…</strong> salva o que está na tela com outro nome, e <strong>Apagar</strong> remove o teste selecionado. O teste da própria pipeline, que é o que <strong>Carga</strong> abre, não pode ser apagado pela janela. As alterações que você não salvou continuam lá quando você volta à tela de carga, e fechar a janela pergunta antes.</p>
+<p>Os <strong>Limiares</strong> são linhas embaixo da forma da carga: um limite para o teste inteiro ou para uma request, como p95, erros ou requests/s, que reprova a execução ou só avisa. Um tempo precisa da unidade (<code>500ms</code>, <code>2s</code>).</p>
 <h2 id="shape">A forma da carga <a class="self" href="#shape" aria-label="A forma da carga">#</a></h2>
 <p>Os presets desenham os usuários previstos enquanto você digita:</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Preset</th><th scope="col">Forma</th></tr></thead>
 <tbody>
-<tr><td>Constante</td><td>os mesmos usuários o tempo todo</td></tr>
-<tr><td>Subida e sustentação</td><td>cresce, se mantém, desce (o thread group do JMeter)</td></tr>
-<tr><td>Rampa</td><td>cresce de 0 até os usuários</td></tr>
+<tr><td>Constante</td><td>os mesmos usuários do começo ao fim</td></tr>
+<tr><td>Subida e sustentação</td><td>sobe, se mantém, desce (o thread group do JMeter)</td></tr>
+<tr><td>Rampa</td><td>sobe de 0 até o número de usuários</td></tr>
 <tr><td>Pico</td><td>uma base e um pico repentino</td></tr>
 <tr><td>Taxa de chegada</td><td>N iterações novas por segundo, demore o que a API demorar (o arrivalRate do Artillery)</td></tr>
-<tr><td>Personalizado</td><td>suas próprias etapas</td></tr>
+<tr><td>Personalizado</td><td>as suas próprias etapas</td></tr>
 </tbody>
 </table></div>
-<p><strong>Usuários</strong> (modelo fechado) responde &quot;aguenta essa quantidade de gente?&quot;. <strong>Taxa de chegada</strong> (modelo aberto) responde &quot;aguenta esse tráfego?&quot;: se a API fica lenta, as chegadas continuam vindo, como em produção.</p>
-<p>Com taxa de chegada, cada chegada é um usuário novo que roda uma iteração. <strong>Máximo de usuários</strong> (<code>maxUsers</code>, 100 se o teste não disser outra coisa, no máximo 1000) é quantos podem estar vivos ao mesmo tempo. Uma chegada que encontra todos ocupados é <strong>descartada</strong>, nunca enfileirada, e o relatório a conta. Se mais de 1% das chegadas é descartado, o veredito diz que a taxa não foi alcançada. O relatório então tem duas latências: o <strong>tempo de serviço</strong> (do envio até a resposta) e o <strong>tempo de resposta</strong>, contado desde quando a chegada estava prevista, de modo que uma largada lenta neste computador aparece nele.</p>
+<p><strong>Usuários</strong> (modelo fechado) responde &quot;aguenta essa quantidade de pessoas?&quot;. <strong>Taxa de chegada</strong> (modelo aberto) responde &quot;aguenta esse tráfego?&quot;: se a API fica lenta, as chegadas continuam vindo, como em produção.</p>
+<p>Com taxa de chegada, cada chegada é um usuário novo que executa uma iteração. <strong>Máximo de usuários</strong> (<code>maxUsers</code>, 100 se o teste não disser outro valor, no máximo 1000) é quantos podem estar vivos ao mesmo tempo. A chegada que encontra todos ocupados é <strong>descartada</strong>, nunca entra numa fila, e o relatório conta isso. Se mais de 1% das chegadas for descartado, o veredito diz que a taxa não foi alcançada. O relatório traz então duas latências: o <strong>tempo de serviço</strong> (do envio até a resposta) e o <strong>tempo de resposta</strong>, contado a partir do momento em que a chegada estava prevista, então uma largada lenta neste computador aparece nele.</p>
 <h2 id="per-user">Por usuário <a class="self" href="#per-user" aria-label="Por usuário">#</a></h2>
 <p>Em <strong>Mais</strong>:</p>
 <ul>
-<li><strong>Bloco de preparação</strong>: roda uma vez por usuário antes da primeira volta (fazer login uma vez por usuário).</li>
-<li><strong>Antes e depois</strong>: um bloco uma vez por teste (carregar dados, limpar).</li>
-<li><strong>Cookies</strong>: cada usuário tem o seu próprio pote de cookies.</li>
-<li><strong>Arquivo de dados</strong>: um CSV ou JSON dentro do projeto; cada linha são os valores de um usuário (ou de uma volta).</li>
-<li><strong>Pausa</strong> e <strong>ritmo</strong>: pausas entre voltas, e um tempo mínimo por volta.</li>
-<li><strong>Respostas</strong>: por padrão só ficam os bodies que um check ou extract lê, para economizar memória.</li>
+<li><strong>Bloco de preparação</strong>: executa uma vez por usuário, antes da primeira iteração (para fazer login uma vez por usuário).</li>
+<li><strong>Antes e depois</strong>: um bloco que executa uma vez por teste (carregar dados, limpar).</li>
+<li><strong>Cookies</strong>: cada usuário guarda os seus próprios cookies.</li>
+<li><strong>Arquivo de dados</strong>: um CSV ou JSON dentro do projeto; cada linha traz os valores de um usuário (ou de uma iteração).</li>
+<li><strong>Pausa, máximo</strong> e <strong>ritmo</strong>: uma pausa aleatória entre a <strong>pausa entre iterações</strong> (ao lado dos usuários) e este máximo, e um tempo mínimo por iteração.</li>
+<li><strong>Respostas</strong>: por padrão, só ficam guardados os bodies que um check ou extract lê, para economizar memória.</li>
 </ul>
-<h2 id="live">Enquanto roda <a class="self" href="#live" aria-label="Enquanto roda">#</a></h2>
-<p>Indicadores e gráficos ao vivo mostram requests por segundo, latência, erros e usuários. <strong>−N</strong>, <strong>+N</strong>, <strong>Manter</strong> e <strong>Retomar</strong> mudam a carga sem parar. A faixa <strong>Este computador</strong> vigia a sua própria máquina: se o gerador for o gargalo, o veredito diz <code>limited</code> em vez de culpar a API.</p>
+<h2 id="live">Durante a execução <a class="self" href="#live" aria-label="Durante a execução">#</a></h2>
+<p>Indicadores e gráficos ao vivo mostram requests por segundo, latência, erros e usuários. <strong>−N</strong>, <strong>+N</strong>, <strong>Manter</strong> e <strong>Retomar</strong> mudam a carga sem parar o teste. A faixa <strong>Este computador</strong> acompanha a sua própria máquina: se o gargalo for o gerador, o veredito diz <code>limited</code> em vez de pôr a culpa na API.</p>
 <h2 id="verdicts">O veredito <a class="self" href="#verdicts" aria-label="O veredito">#</a></h2>
-<p>O relatório começa com um veredito em palavras. Eles são:</p>
+<p>O relatório começa com um veredito em palavras. São estes:</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Veredito</th><th scope="col">Em palavras simples</th><th scope="col">Mais ou menos quando</th></tr></thead>
 <tbody>
-<tr><td>Aguenta</td><td>a API deu conta</td><td>menos de 1% das iterações falhou e a latência não subiu conforme os usuários cresceram</td></tr>
-<tr><td>Enfileira</td><td>a API ficou mais lenta em vez de falhar</td><td>o p95 do último quinto do teste é mais de cinco vezes o do primeiro quinto e pelo menos 50 ms maior, e as requests por segundo pararam de crescer com os usuários; num teste de taxa de chegada, também quando mais de 1% das chegadas foi descartado</td></tr>
-<tr><td>Rejeita</td><td>a API respondeu erros</td><td>mais de 1% das iterações falhou; diz quando os erros começaram e com quantos usuários</td></tr>
-<tr><td>Quebrada</td><td>o problema é a pipeline ou o endereço, não a carga</td><td>as primeiras 20 iterações falharam todas; &quot;O destino recusa conexões&quot; quando o servidor não está acessível</td></tr>
-<tr><td>Poucas iterações</td><td>não há o bastante para concluir</td><td>menos de 20 iterações rodaram; aumente o tempo ou os usuários</td></tr>
-<tr><td>Limitado</td><td>este computador foi o limite, então os números dizem pouco sobre a API</td><td>a thread, a memória ou as conexões do próprio Ultraman estavam no limite</td></tr>
-<tr><td>Protegido</td><td>o Ultraman parou o teste para proteger este computador</td><td>a memória estava acabando; o que foi medido até ali está no relatório</td></tr>
+<tr><td>Aguenta</td><td>a API deu conta</td><td>menos de 1% das iterações falhou e a latência não subiu conforme os usuários aumentaram</td></tr>
+<tr><td>Enfileira</td><td>a API ficou mais lenta em vez de falhar</td><td>o p95 do último quinto do teste passa de cinco vezes o do primeiro quinto e é pelo menos 50 ms maior, e as requests por segundo pararam de crescer junto com os usuários; num teste de taxa de chegada, também quando mais de 1% das chegadas foi descartado</td></tr>
+<tr><td>Rejeita</td><td>a API respondeu com erros</td><td>mais de 1% das iterações falhou; ele diz quando os erros começaram e com quantos usuários</td></tr>
+<tr><td>Quebrada</td><td>o problema é a pipeline ou o endereço, não a carga</td><td>todas as 20 primeiras iterações falharam; &quot;O destino recusa conexões&quot; quando o servidor não está acessível</td></tr>
+<tr><td>Poucas iterações</td><td>pouco para tirar conclusões</td><td>executaram menos de 20 iterações; aumente o tempo ou os usuários</td></tr>
+<tr><td>Limitado</td><td>o limite foi este computador, então os números dizem pouco sobre a API</td><td>a thread, a memória ou as conexões do próprio Ultraman chegaram ao limite</td></tr>
+<tr><td>Protegido</td><td>o Ultraman parou o teste para proteger este computador</td><td>a memória estava acabando; o que ele mediu até ali está no relatório</td></tr>
 </tbody>
 </table></div>
-<p>Uma carga nunca diz &quot;aguenta&quot; num computador que estava no limite: diz Limitado. A faixa <strong>Este computador</strong> mostra o motivo.</p>
+<p>Uma carga nunca diz &quot;aguenta&quot; num computador que estava no limite: diz Limitado. A faixa <strong>Este computador</strong> mostra o porquê.</p>
 <h2 id="report">O relatório <a class="self" href="#report" aria-label="O relatório">#</a></h2>
-<p>No fim, um veredito em palavras (aguentou, enfileirou, quebrou…), as latências (p50, p95, p99, máx), o throughput, os erros por passo com uma request falha guardada para cada um, para onde foi o tempo e APDEX se o teste pedir.</p>
+<p>No fim, vêm um veredito em palavras (aguentou, enfileirou, quebrou…), as latências (p50, p95, p99, máx.), o throughput, os erros por passo com uma request com falha guardada para cada um, para onde foi o tempo e o APDEX, se o teste pedir.</p>
 <ul>
 <li>Os <strong>limiares</strong> (<code>p95: 500ms</code>, <code>errors: 1%</code>) aprovam ou reprovam a execução; os níveis <code>warn</code> só avisam.</li>
-<li><strong>Comparar com</strong> coloca um relatório contra um anterior; <strong>Tendência</strong> mostra as últimas execuções do teste.</li>
-<li><strong>Exportar</strong> escreve uma página HTML autocontida ou arquivos CSV.</li>
+<li><strong>Comparar com</strong> compara um relatório com um anterior; <strong>Cargas anteriores</strong> mostra as últimas execuções do teste em três linhas (p95, requests/s, erros).</li>
+<li><strong>Exportar</strong> (no cabeçalho do relatório) gera uma página HTML autocontida ou arquivos CSV.</li>
 </ul>
+<p><strong>GraphQL.</strong> Uma resposta com <code>errors</code> conta como request com falha, mesmo com um 200 e também com <code>responses: discard</code> (o body é lido para achar os erros e depois descartado). Todas as operações vão para a mesma URL, mas o relatório é por passo: dê a cada passo GraphQL o nome da operação dele, e cada um ganha a sua própria linha.</p>
 <h2 id="idempotent">Respostas que não podem mudar <a class="self" href="#idempotent" aria-label="Respostas que não podem mudar">#</a></h2>
-<p>Nas <strong>Opções</strong> de uma request, <strong>responde sempre o mesmo</strong> marca uma request que deve dar a mesma resposta toda vez (uma página de produto, uma consulta). Sob carga, cada resposta, status e body, é comparada com a primeira da mesma request. Uma diferente faz aquela iteração falhar, e o relatório mostra quantas vezes e as duas respostas. <strong>Ignorar campos</strong> (<code>$.timestamp, $.meta.requestId</code>) deixa de fora o que muda de propósito. No YAML é <code>idempotent: true</code> ou <code>idempotent: { ignore: [$.timestamp] }</code>. Quando um teste descarta os bodies das respostas, não há o que comparar, e o relatório diz &quot;not compared&quot;.</p>
+<p>Nas <strong>Opções</strong> de uma request, <strong>responde sempre o mesmo</strong> marca uma request que deve dar sempre a mesma resposta (uma página de produto, uma consulta). Sob carga, cada resposta, status e body, é comparada com a primeira da mesma request. Se vier diferente, aquela iteração falha, e o relatório mostra quantas vezes isso aconteceu e as duas respostas. <strong>Ignorar campos</strong> (<code>$.timestamp, $.meta.requestId</code>) deixa de fora o que muda de propósito. No YAML, fica <code>idempotent: true</code> ou <code>idempotent: { ignore: [$.timestamp] }</code>. Quando um teste descarta os bodies das respostas, não há o que comparar, e o relatório diz &quot;sem comparar&quot;.</p>
 <h2 id="load-streams">Streams sob carga <a class="self" href="#load-streams" aria-label="Streams sob carga">#</a></h2>
-<p>Uma pipeline com passos <code>websocket</code> ou <code>sse</code> é um cenário de carga como qualquer outro: cada iteração abre a sua própria conexão, roda <code>send</code> e <code>receive</code> nela e a fecha (ou o motor a fecha no fim da iteração). Dez usuários que seguram um socket por vinte segundos cada um esperando três atualizações são um <code>repeat</code> em volta de um <code>receive</code>; a demo tem esse teste como <code>live orders</code>.</p>
-<p>Com streams no teste, o relatório ganha uma faixa <strong>Streams</strong> embaixo dos indicadores: conexões abertas, quantas estavam abertas ao mesmo tempo e quantas ainda abertas no fim (deveria ser 0), mensagens recebidas e enviadas, mensagens por segundo, quantos streams o servidor fechou (com o código de fechamento mais comum) e quantas mensagens um limite de tamanho deixou de fora. O gráfico de Usuários desenha as conexões abertas como uma linha pontilhada. Uma linha <code>receive</code> na tabela de passos informa o <strong>tempo até a mensagem</strong>, a latência do stream, com seu próprio p95 e taxa de erro.</p>
+<p>Uma pipeline com passos <code>websocket</code> ou <code>sse</code> é um cenário de carga como qualquer outro: cada iteração abre a sua própria conexão, executa <code>send</code> e <code>receive</code> nela e fecha a conexão (ou o motor fecha no fim da iteração). Dez usuários que seguram um socket por vinte segundos, cada um esperando três atualizações, viram um <code>repeat</code> em volta de um <code>receive</code>; a demo tem esse teste como <code>live orders</code>.</p>
+<p>Com streams no teste, o relatório ganha uma faixa <strong>Streams</strong> embaixo dos indicadores: conexões abertas, quantas ficaram abertas ao mesmo tempo e quantas ainda estavam abertas no fim (deveria ser 0), mensagens recebidas e enviadas, mensagens por segundo, quantos streams o servidor fechou (com o código de fechamento mais comum) e quantas mensagens ficaram de fora por um limite de tamanho. O gráfico de Usuários desenha as conexões abertas como uma linha pontilhada. Uma linha <code>receive</code> na tabela de passos mostra o <strong>tempo até a mensagem</strong>, a latência do stream, com p95 e taxa de erro próprios.</p>
+<p>Quando a pipeline só abre streams (nenhuma request própria foi executada; um login no bloco de preparação não conta), o relatório começa por eles: os indicadores mostram o <strong>tempo até a mensagem</strong> do <code>receive</code> com mais correspondências (o handshake, quando não há <code>receive</code>), as mensagens por segundo e as mensagens; os dois primeiros gráficos são esse p95 e as mensagens por segundo; e o veredito vai na mesma linha. Ele diz <strong>Enfileira</strong> quando o tempo até uma mensagem cresce enquanto as mensagens por segundo não acompanham os usuários, e <strong>limited</strong> informa as mensagens por segundo que alcançou. Uma carga com requests mantém os indicadores de requests.</p>
 <ul>
-<li><code>streamErrors: 0%</code> é um limiar sobre as conexões que o servidor fechou durante a execução e as mensagens que descartou; <code>steps: { update: { p95: 3s } }</code> limita um <code>receive</code> pelo nome.</li>
-<li>Cada stream guarda no máximo 1 MB em buffer sob carga, e o leitor espera quando ele enche.</li>
+<li><code>streamErrors: 0%</code> é um limiar sobre as conexões que o servidor fechou no meio da execução, os handshakes que falharam e as mensagens descartadas, em relação às conexões tentadas; <code>steps: { update: { p95: 3s } }</code> limita um <code>receive</code> pelo nome.</li>
+<li>Sob carga, cada stream guarda no máximo 1 MB em buffer (menos quando o limite por resposta da carga é menor; uma nota diz qual), e o leitor espera quando o buffer enche.</li>
+<li>Com vários workers, o pico de conexões abertas é contado uma vez por segundo, por isso aparece como <strong>≥ N</strong>: no mínimo N.</li>
 <li><strong>Exportar</strong> e <code>--csv</code> acrescentam <code>-streams.csv</code> com os números da faixa.</li>
-<li>O veredito <code>limited</code> vale aqui também: uma contagem de conexões é um limite da máquina como qualquer outro.</li>
+<li>O veredito <code>limited</code> vale aqui também: o número de conexões é um limite da máquina como qualquer outro.</li>
+<li>Um socket GraphQL é uma só conexão, não importa quantas subscriptions ele tenha: a faixa ganha <strong>Assinaturas GraphQL</strong>, uma linha <code>subscribe</code> mostra o tempo para enviá-la e o <code>receive</code> de uma subscription mostra o tempo até o próximo evento dela.</li>
 </ul>
 <h2 id="scenarios">Vários cenários <a class="self" href="#scenarios" aria-label="Vários cenários">#</a></h2>
-<p>Um teste pode misturar pipelines: três pessoas navegando para cada uma que fecha a compra. Cada cenário tem suas próprias etapas, ou compartilham as do teste divididas por peso. O relatório tem uma linha e um veredito por cenário.</p>
+<p>Um teste pode misturar pipelines: três pessoas navegando para cada uma que finaliza a compra. Cada cenário tem as próprias etapas, ou todos dividem as etapas do teste conforme o peso. O relatório tem uma linha e um veredito por cenário.</p>
 <h2 id="workers">Mais de uma thread <a class="self" href="#workers" aria-label="Mais de uma thread">#</a></h2>
-<p>Por padrão uma carga roda numa thread. Quando a faixa <strong>Este computador</strong> mostra a thread no limite e o veredito diz <code>limited</code>, espalhe os usuários por mais threads: <code>--workers N</code> (1 a 8) em <code>ultraman run --load</code>, ou a variável de ambiente <code>ULTRAMAN_LOAD_WORKERS</code>; os relatórios se juntam num só. Um teste com um bloco antes ou depois roda numa thread.</p>
+<p>Por padrão, uma carga é executada numa thread só. Quando a faixa <strong>Este computador</strong> mostra a thread no limite e o veredito diz <code>limited</code>, distribua os usuários por mais threads: <code>--workers N</code> (de 1 a 8) em <code>ultraman run --load</code>, ou a variável de ambiente <code>ULTRAMAN_LOAD_WORKERS</code>; os relatórios se juntam num só. Um teste com bloco antes ou depois é executado numa thread só.</p>
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
-<p>A <a href="security.html#promise">promessa</a> vale aqui como em todo lugar. O que esta parte acrescenta:</p>
+<p>A <a href="security.html#promise">promessa</a> vale aqui como em qualquer lugar. O que esta parte acrescenta:</p>
 <ul>
-<li><strong>Quem é dono da API:</strong> o alvo é mostrado antes de o teste começar, com um lembrete para testar só uma API sua.</li>
-<li><strong>Você:</strong> freios seguram ou param usuários quando o seu computador está sobrecarregado ou com pouca memória, em vez de travá-lo.</li>
-<li><strong>Seu time:</strong> um teste de carga nunca guarda um segredo; os <code>inputs</code> dele não podem levar valores <code>secrets.</code> ou <code>env.</code>. Os relatórios em <code>ultraman/loads/</code> ficam na sua máquina. Veja <a href="security.html#stored">onde as coisas ficam guardadas</a>.</li>
+<li><strong>Quem é dono da API:</strong> o alvo aparece antes de o teste começar, com um lembrete para testar só uma API sua.</li>
+<li><strong>Você:</strong> freios seguram ou param usuários quando o seu computador fica sobrecarregado ou com pouca memória, em vez de deixá-lo travar.</li>
+<li><strong>Sua equipe:</strong> um teste de carga nunca guarda um segredo; os <code>inputs</code> dele não podem levar valores <code>secrets.</code> nem <code>env.</code>. Os relatórios em <code>ultraman/loads/</code> ficam na sua máquina. Veja <a href="security.html#stored">onde as coisas ficam guardadas</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Anterior</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Seguinte</small><span>Ambientes e segredos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

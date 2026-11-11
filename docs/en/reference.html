@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://ultraman-app.github.io/docs/en/reference.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -92,10 +92,15 @@ steps: [ ... ]</code></pre>
   params: { id: &quot;{{user_id}}&quot; }
   query: { tag: [a, b] }          # a list repeats the key
   headers: { Content-Type: text/plain }
-  json: { user: &quot;{{env.test_user}}&quot; }   # one body: json | body (text) | form | multipart | file
+  json: { user: &quot;{{env.test_user}}&quot; }   # one body: json | body (text) | form | multipart | file | graphql
   # form: { name: Ana, tag: [a, b] }
   # multipart: { comment: hi, logo: { file: ultraman/files/logo.png, type: image/png } }
   # file: ultraman/files/note.txt # from ultraman/files/ it goes unasked; any other file asks once
+  # graphql:                      # POST only; sent as JSON { query, variables, operationName }
+  #   query: &quot;query Order($id: ID!) { order(id: $id) { status } }&quot;   # sent as written: no {{ }} in it
+  #   variables: { id: &quot;{{order_id}}&quot; }   # rendered like json
+  #   operationName: Order        # when the query has several operations
+  #   allowErrors: true           # without it, an answer with `errors` fails the step (even a 200)
   idempotent: true                # under load, reports whether it always answered the same
   # idempotent: { ignore: [$.updatedAt, $.meta.requestId] }   # the same, leaving out the fields that change
 
@@ -175,7 +180,7 @@ steps: [ ... ]</code></pre>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">stream option</th><th scope="col">on</th><th scope="col">default</th><th scope="col">means</th></tr></thead>
 <tbody>
-<tr><td><code>timeout</code></td><td>both</td><td>30000</td><td>the handshake, and a <code>receive</code>&#39;s default wait</td></tr>
+<tr><td><code>timeout</code></td><td>both</td><td>30000</td><td>the handshake, and a <code>receive</code>&#39;s default wait; 0 waits with no limit</td></tr>
 <tr><td><code>maxMessage</code></td><td>websocket</td><td>1048576</td><td>one message, in bytes; a bigger one ends the stream</td></tr>
 <tr><td><code>ping</code></td><td>websocket</td><td>15000</td><td>a ping after this many ms of quiet; 0 never pings</td></tr>
 <tr><td><code>maxEvent</code></td><td>sse</td><td>65536</td><td>one line or one event&#39;s data, in bytes</td></tr>
@@ -184,6 +189,30 @@ steps: [ ... ]</code></pre>
 </tbody>
 </table></div>
 <p><code>plainHttp</code> (needed for <code>ws:</code> outside localhost) and <code>ca</code> apply to the handshake as to any request.</p>
+<h3 id="graphql-subscriptions">GraphQL subscriptions <a class="self" href="#graphql-subscriptions" aria-label="GraphQL subscriptions">#</a></h3>
+<p>A <code>websocket</code> with <code>graphql:</code> speaks <code>graphql-transport-ws</code>: Ultraman sets the subprotocol (no <code>protocols</code> with it), sends <code>connection_init</code> and waits for the ack, and its frames are Ultraman&#39;s (no <code>send</code> on it, no <code>receive</code> from it). <code>subscribe</code> starts a subscription (its own <code>$name</code>); <code>receive</code> from it takes the next event whose payload matches, and an event with <code>errors</code> fails it unless <code>allowErrors: true</code>. <code>close</code> on a subscription completes it; on the socket, it completes every subscription and closes. GraphQL over SSE (graphql-sse) isn&#39;t supported yet.</p>
+<pre tabindex="0"><code>- websocket: gql
+  path: /graphql
+  graphql:
+    init: { authorization: &quot;Bearer {{secrets.token}}&quot; }   # the connection_init payload (optional)
+    ackTimeout: 5000             # ms to wait for connection_ack (default: options.timeout)
+
+- subscribe: orders              # a subscription on $gql; others refer to it as $orders
+  on: $gql
+  graphql:
+    query: |                     # sent as written; values go in variables
+      subscription Orders($min: Float) { orderCreated(min: $min) { id total } }
+    variables: { min: 10 }
+    allowErrors: true            # optional: an event with errors passes
+
+- receive: order                 # the next event of $orders; its body is the payload ({ data, errors? })
+  from: $orders
+  where: { path: $.data.orderCreated.id, exists: true }
+  timeout: 5000
+
+- close: orders                  # complete for this subscription
+
+- close: gql                     # completes what&#39;s left and closes the socket</code></pre>
 <h3 id="checks-assert">Checks (<code>assert</code>) <a class="self" href="#checks-assert" aria-label="Checks (assert)">#</a></h3>
 <p>Every assert has <code>of: $step</code>. Besides that it reads a <code>path</code> of the JSON body, a response <code>header</code>, or neither (the whole body); the &quot;reads&quot; column says what each check allows. The expected value goes in the key of the &quot;compares with&quot; column, and only that one: <code>equals:</code> for <code>status</code> and <code>equals</code>, <code>value:</code> for the rest. The other key is an error.</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -209,15 +238,22 @@ steps: [ ... ]</code></pre>
 host: &quot;{{env.api}}&quot;
 auth: { bearer: &quot;{{token}}&quot; }     # optional, like a pipeline&#39;s
 headers: { x-tenant: acme }       # optional
-variables: { user: ana }          # starting values for {{user}}</code></pre>
+variables: { user: ana }          # starting values for {{user}}
+contract: { openapi: files/shop.yaml, mode: warn }   # optional: the OpenAPI spec its answers are checked against (a
+                                  # file under files/, a path on the host or a URL); strict fails a run&#39;s step
+graphql: { schema: files/shop.graphql, subscriptions: /graphql/ws }   # optional: the schema its GraphQL requests use (a file
+                                  # under files/) and where its subscriptions open their socket (default: the request&#39;s path)</code></pre>
 <p>A request, <code>ultraman/requests/&lt;collection&gt;/&lt;folders…&gt;/&lt;id&gt;.yaml</code> (save_request takes this whole file):</p>
 <pre tabindex="0"><code>request: me                       # its id comes from this name
 method: GET
 path: /me
 auth: { bearer: &quot;{{token}}&quot; }
+operation: GET /me                # optional: the OpenAPI operation it came from ({ key: GET /me, id: getMe } with an
+                                  # operationId); an import writes it, Update from the spec matches by it
 checks:                           # extract / assert about this same request: no from / of
   - assert: status
     equals: 200
+    source: openapi               # optional: a check the spec owns (Update from the spec may replace it)
   - extract: user_id
     path: $.id
 notes: free text</code></pre>
@@ -274,10 +310,10 @@ thresholds:                       # the run fails (exit 1) past these
 apdex: { satisfied: 300ms, tolerating: 1200ms }   # or apdex: true</code></pre>
 <p>Limits: a test has at most 10 scenarios and 50 stages per scenario; <code>users</code> is 0 to 1000, <code>rate</code> 0 to 1000 iterations per second, <code>iterations</code> 1 to 1,000,000; no scenario lasts over 3600 s (1 h); and at no second may the planned users add up to over 1000. Stages are all <code>users</code> or all <code>rate</code> in a scenario, and a rate scenario takes no <code>iterations</code>. A stage needs <code>for</code> and one of <code>users</code> or <code>rate</code>. Secrets are never written in <code>inputs</code>.</p>
 <p>Exit codes of <code>ultraman run --load</code>: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or the run was stopped; <strong>2</strong> the test never started (a file that doesn&#39;t parse, a missing pipeline, input or secret).</p>
-<p>Thresholds: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>, <code>failedIterations</code>, <code>minRps</code>, <code>apdex</code> (0 to 1), <code>maxWait</code>, <code>streamErrors</code> (a percentage of the connections: streams the server closed mid-run and dropped messages), <code>steps</code> (per step name: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>; a <code>receive</code> or a <code>websocket</code>/<code>sse</code> step by its name) and <code>warn</code> (the same, as warnings).</p>
+<p>Thresholds: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>, <code>failedIterations</code>, <code>minRps</code>, <code>apdex</code> (0 to 1), <code>maxWait</code>, <code>streamErrors</code> (a percentage of the connections tried: streams the server closed mid-run, failed handshakes and dropped messages), <code>steps</code> (per step name: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>; a <code>receive</code> or a <code>websocket</code>/<code>sse</code> step by its name) and <code>warn</code> (the same, as warnings).</p>
 <nav class="pager"><a rel="prev" href="faq.html"><small>Previous</small><span>Questions</span></a><span></span></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

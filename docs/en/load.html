@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -74,6 +74,8 @@
 <aside class="note"><p>Send load only to an API of your own, or one you have permission to test. The load screen shows the target before you start and says the same.</p></aside>
 <h2 id="test-file">A load test is a file <a class="self" href="#test-file" aria-label="A load test is a file">#</a></h2>
 <p>Its settings live in <code>ultraman/load-tests/&lt;name&gt;.yaml</code>, shared through git, so the same test runs the same way for everyone. The first time, Load creates one with 10 users for 30 seconds.</p>
+<p>A pipeline can have several tests. <strong>New test…</strong> saves what&#39;s on screen under a new name, and <strong>Delete</strong> removes the selected test. The pipeline&#39;s own test, the one Load opens, can&#39;t be deleted from the window. Edits you haven&#39;t saved are still there when you come back to the load screen, and closing the window asks first.</p>
+<p><strong>Thresholds</strong> are rows under the shape: a limit on the whole test or on one request, such as p95, errors or requests/s, that either fails the run or only warns. A time needs its unit (<code>500ms</code>, <code>2s</code>).</p>
 <h2 id="shape">The shape of the load <a class="self" href="#shape" aria-label="The shape of the load">#</a></h2>
 <p>The presets draw the planned users as you type:</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -96,7 +98,7 @@
 <li><strong>Before and after</strong>: a block once per test (seed data, clean up).</li>
 <li><strong>Cookies</strong>: each user has its own cookie jar.</li>
 <li><strong>Data file</strong>: a CSV or JSON inside the project; each row is one user&#39;s (or one iteration&#39;s) values.</li>
-<li><strong>Think time</strong> and <strong>pacing</strong>: pauses between iterations, and a minimum time per iteration.</li>
+<li><strong>Pause, max</strong> and <strong>pacing</strong>: a random pause between the <strong>pause between iterations</strong> (beside the users) and this maximum, and a minimum time per iteration.</li>
 <li><strong>Responses</strong>: by default only the bodies a check or extract reads are kept, to save memory.</li>
 </ul>
 <h2 id="live">While it runs <a class="self" href="#live" aria-label="While it runs">#</a></h2>
@@ -120,19 +122,23 @@
 <p>At the end, a verdict in words (it held, it queued, it broke…), the latencies (p50, p95, p99, max), throughput, errors per step with one failed request kept for each, where the time went, and APDEX if the test asks for it.</p>
 <ul>
 <li><strong>Thresholds</strong> (<code>p95: 500ms</code>, <code>errors: 1%</code>) pass or fail the run; <code>warn</code> levels only warn.</li>
-<li><strong>Compare with</strong> puts a report against an earlier one; <strong>Trend</strong> shows the last runs of the test.</li>
-<li><strong>Export</strong> writes a self-contained HTML page or CSV files.</li>
+<li><strong>Compare with</strong> puts a report against an earlier one; <strong>Previous loads</strong> shows the last runs of the test as three lines (p95, requests/s, errors).</li>
+<li><strong>Export</strong> (in the report&#39;s header) writes a self-contained HTML page or CSV files.</li>
 </ul>
+<p><strong>GraphQL.</strong> An answer with <code>errors</code> is a failed request, even with a 200, and also with <code>responses: discard</code> (the body is read for its errors, then dropped). Every operation goes to the same URL, but the report is per step: name each GraphQL step after its operation and each gets its own row.</p>
 <h2 id="idempotent">Responses that must not change <a class="self" href="#idempotent" aria-label="Responses that must not change">#</a></h2>
 <p>In a request&#39;s <strong>Options</strong>, <strong>always answers the same</strong> marks a request that should give the same answer every time (a product page, a lookup). Under load each answer, status and body, is compared with the first one for the same request. A different one fails that iteration, and the report shows how many times and the two answers. <strong>Ignore fields</strong> (<code>$.timestamp, $.meta.requestId</code>) leaves out what changes on purpose. In YAML it is <code>idempotent: true</code> or <code>idempotent: { ignore: [$.timestamp] }</code>. When a test discards response bodies, there is nothing to compare, and the report says &quot;not compared&quot;.</p>
 <h2 id="load-streams">Streams under load <a class="self" href="#load-streams" aria-label="Streams under load">#</a></h2>
 <p>A pipeline with <code>websocket</code> or <code>sse</code> steps is a load scenario like any other: each iteration opens its own connection, runs <code>send</code> and <code>receive</code> on it, and closes it (or the engine does at the iteration&#39;s end). Ten users who hold a socket for twenty seconds each waiting for three updates is a <code>repeat</code> around a <code>receive</code>; the demo has that test as <code>live orders</code>.</p>
 <p>With streams in the test, the report gains a <strong>Streams</strong> strip under the tiles: connections opened, how many were open at once and still open at the end (should be 0), messages received and sent, messages per second, how many streams the server closed (with the most common close code) and how many messages a size cap left out. The Users chart draws the open connections as a dotted line. A <code>receive</code> row in the steps table reports the <strong>time to the message</strong>, the stream&#39;s latency, with its own p95 and error rate.</p>
+<p>When the pipeline only opens streams (no request of its own ran; a login in the setup doesn&#39;t count), the report leads with them: the tiles show the <strong>time to the message</strong> of the <code>receive</code> with the most matches (the handshake when there is no <code>receive</code>), messages per second and messages; the first two charts are that p95 and the messages per second; and the verdict says the same. It <strong>queues</strong> when the time to a message grows while the messages per second don&#39;t keep up with the users, and <strong>limited</strong> names the messages per second it reached. A load with requests keeps the request tiles.</p>
 <ul>
-<li><code>streamErrors: 0%</code> is a threshold on the connections the server closed mid-run and the messages it dropped; <code>steps: { update: { p95: 3s } }</code> bounds one <code>receive</code> by its name.</li>
-<li>Each stream buffers at most 1 MB under load, and the reader waits when that&#39;s full.</li>
+<li><code>streamErrors: 0%</code> is a threshold on the connections the server closed mid-run, the handshakes that failed and the messages it dropped, over the connections tried; <code>steps: { update: { p95: 3s } }</code> bounds one <code>receive</code> by its name.</li>
+<li>Each stream buffers at most 1 MB under load (less when the load&#39;s limit per response is lower; a note says which), and the reader waits when that&#39;s full.</li>
+<li>With several workers the peak of open connections is counted once a second, so it reads <strong>≥ N</strong>: at least N.</li>
 <li><strong>Export</strong> and <code>--csv</code> add <code>-streams.csv</code> with the strip&#39;s numbers.</li>
 <li>The <code>limited</code> verdict applies here too: a connection count is a machine limit like any other.</li>
+<li>A GraphQL socket is one connection however many subscriptions it holds: the strip adds <strong>GraphQL subscriptions</strong>, a <code>subscribe</code> row reports the time to send it, and a subscription&#39;s <code>receive</code> the time to its next event.</li>
 </ul>
 <h2 id="scenarios">Several scenarios <a class="self" href="#scenarios" aria-label="Several scenarios">#</a></h2>
 <p>A test can mix pipelines: three people browsing for each one checking out. Each scenario has its own stages, or they share the test&#39;s stages split by weight. The report has a row and a verdict per scenario.</p>
@@ -148,6 +154,6 @@
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Previous</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Next</small><span>Environments and secrets</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

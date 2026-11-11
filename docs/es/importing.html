@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Importar · Documentación de Ultraman</title>
-<meta name="description" content="Los botones al lado de Nueva colección (área Requests) traen lo que ya tenés: una exportación de Postman, una spec OpenAPI, un plan de JMeter, un script de…">
+<meta name="description" content="El menú Importar junto a Nueva colección (área de Requests) trae lo que ya tienes: una exportación de Postman, una spec OpenAPI, un plan de JMeter o un script…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/es/importing.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/importing.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/importing.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/importing.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -42,7 +42,7 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
@@ -63,37 +63,47 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="importing">Importar <a class="self" href="#importing" aria-label="Importar">#</a></h1>
-<p>Los botones al lado de <strong>Nueva colección</strong> (área Requests) traen lo que ya tenés: una exportación de Postman, una spec OpenAPI, un plan de JMeter, un script de Artillery o una grabación del navegador, así no arrancás de cero. No se sobrescribe nada del proyecto: un nombre que ya existe recibe <code>-2</code>. Al final, un resumen dice qué entró, qué se adaptó, qué necesita una mano y qué archivos se salteó.</p>
+<p>El menú <strong>Importar</strong> junto a <strong>Nueva colección</strong> (área de Requests) trae lo que ya tienes: una exportación de Postman, una spec OpenAPI, un plan de JMeter o un script de Artillery; el que está junto a <strong>Nueva pipeline</strong> (área de Pipelines) trae una grabación del navegador. Así no empiezas desde cero. No se sobrescribe nada del proyecto: si un nombre ya existe, se le agrega <code>-2</code>. Al final, un resumen indica qué entró, qué se adaptó, qué hay que terminar a mano y qué archivos se omitieron.</p>
 <h2 id="postman">Desde Postman <a class="self" href="#postman" aria-label="Desde Postman">#</a></h2>
-<p>El botón de importar toma colecciones (v2.0, v2.1), entornos y globales exportados de Postman. Carpetas, requests, bodies, auth (bearer, basic, API key), variables y descripciones entran como estaban. Los secretos de los entornos van a la bóveda, nunca a un archivo. Los scripts de test comunes (status, equals, includes, tiempo de respuesta, <code>pm.environment.set</code>) pasan a ser checks; el resto queda en las <strong>Notas</strong> de la request.</p>
+<p><strong>Importar › Postman</strong> toma colecciones (v2.0, v2.1), entornos y variables globales exportados de Postman. Las carpetas, las requests, los bodies (los GraphQL, con su query y sus variables), la auth (bearer, basic, API key), las variables y las descripciones llegan tal como estaban. Los secretos de los entornos van a la bóveda, nunca a un archivo. Los scripts de test habituales (status, equals, includes, tiempo de respuesta, <code>pm.environment.set</code>) se convierten en checks; el resto queda en las <strong>Notas</strong> de la request.</p>
 <h2 id="openapi">Desde OpenAPI <a class="self" href="#openapi" aria-label="Desde OpenAPI">#</a></h2>
-<p><strong>API</strong> toma un documento OpenAPI 3 (JSON o YAML) y arma una colección: una request por operación, con bodies de ejemplo y checks de contrato (status y forma de la respuesta).</p>
+<p><strong>Importar › OpenAPI</strong> toma un documento OpenAPI 3 (JSON o YAML) y crea una colección: una request por operación, con bodies de ejemplo y checks de contrato (status y forma de la respuesta).</p>
+<h2 id="openapi-update">Actualizar desde una spec más nueva <a class="self" href="#openapi-update" aria-label="Actualizar desde una spec más nueva">#</a></h2>
+<p>Cuando la spec de la API cambia (un equipo que la genera a partir del código la regenera a menudo), no la vuelvas a importar: abre el menú de la colección › <strong>Actualizar desde la spec…</strong> y elige el documento más nuevo. Una vista previa muestra qué cambia (<code>2 nuevas · 5 actualizadas · 1 fuera de la spec · 0 necesitan una mano</code>), cada request se despliega para mostrar sus cambios y no se escribe nada hasta que haces clic en <strong>Aplicar</strong>.</p>
+<p>Cada operación conserva su archivo de request, así que la request conserva su historial, la referencia de la deriva y las respuestas del mock. Ultraman encuentra la request por la operación que la importación guardó en ella (<code>operation:</code> en el archivo); si no, por su <code>operationId</code> (así sigue una ruta que cambió de lugar) y, por último, por método y ruta. Si dos requests reclaman la misma operación, se listan para que lo resuelvas tú: nunca se adivina.</p>
+<ul>
+<li><strong>Lo que cambia la spec:</strong> los checks que escribió (marcados con <code>source: openapi</code>), la descripción, la ruta cuando el <code>operationId</code> cambió de lugar y los parámetros nuevos (con sus valores de ejemplo).</li>
+<li><strong>Lo que conservas tú:</strong> el nombre, el body, los headers, la auth, las opciones, tus propios checks, las notas y los valores que les diste a los parámetros.</li>
+<li><strong>Las operaciones nuevas</strong> entran tal como las escribe la importación. <strong>Las que ya no están en la spec</strong> se quedan, con una línea en sus notas y una marca en el árbol; bórralas tú si quieres.</li>
+</ul>
+<p>Una colección importada antes de que existiera esta función se empareja por método y ruta; los checks de schema que copió aquella importación se listan, y la vista previa ofrece quitarlos.</p>
 <h2 id="jmeter">Desde JMeter <a class="self" href="#jmeter" aria-label="Desde JMeter">#</a></h2>
-<p><strong>JMX</strong> toma un plan <code>.jmx</code>: una pipeline por Thread Group, un bloque de preparación a partir de un Once Only Controller, un entorno a partir de las User Defined Variables, y un test de carga con un escenario por grupo. Lo que no se traduce (scripts, algunos controllers) se lista como &quot;needs a hand&quot; con su texto.</p>
+<p><strong>Importar › JMeter (.jmx)</strong> toma un plan <code>.jmx</code>: una pipeline por Thread Group, un bloque de preparación a partir de un Once Only Controller, un entorno a partir de las User Defined Variables y una prueba de carga con un escenario por grupo. Lo que no tiene traducción (scripts, algunos controllers) se lista en &quot;Hay que terminarlo a mano&quot;, con su texto.</p>
 <h2 id="artillery">Desde Artillery <a class="self" href="#artillery" aria-label="Desde Artillery">#</a></h2>
-<p><strong>ART</strong> toma un script de Artillery (<code>.yml</code> o <code>.json</code>): pipelines, bloques before/after, entornos y un test de carga con sus fases como etapas y pesos. Los processors y hooks se listan, no se corren.</p>
+<p><strong>Importar › Artillery</strong> toma un script de Artillery (<code>.yml</code> o <code>.json</code>): pipelines, bloques before/after, entornos y una prueba de carga con sus fases como etapas y pesos. Los processors y hooks se listan, no se ejecutan.</p>
 <h2 id="from-traffic">Desde tráfico grabado <a class="self" href="#from-traffic" aria-label="Desde tráfico grabado">#</a></h2>
-<p><strong>Desde un archivo HAR…</strong> (área Pipelines) convierte una grabación del navegador en una pipeline. En Chrome o Firefox: DevTools › Network › clic derecho › <strong>Save all as HAR</strong>. Ultraman se queda con las llamadas a la API, encuentra los valores que una respuesta le da a la siguiente (un id, un token) y los convierte en extracts visibles, así la pipeline funciona de nuevo en vez de repetir valores viejos.</p>
-<aside class="note"><p>Una grabación puede contener contraseñas y tokens: Ultraman reemplaza por <code>{{secrets.x}}</code> los que conoce de tu bóveda, pero leé la propuesta antes de guardar.</p></aside>
+<p><strong>Importar › Desde un archivo HAR…</strong> (área de Pipelines) convierte una grabación del navegador en una pipeline. En Chrome o Firefox: DevTools › Network › clic derecho › <strong>Save all as HAR</strong>. Ultraman conserva las llamadas a la API, detecta los valores que una respuesta le pasa a la siguiente (un id, un token) y los convierte en extracts visibles, para que la pipeline vuelva a funcionar en lugar de repetir valores viejos.</p>
+<aside class="note"><p>Una grabación puede contener contraseñas y tokens: Ultraman reemplaza por <code>{{secrets.x}}</code> los que conoce de tu bóveda, pero lee la propuesta antes de guardar.</p></aside>
 <h2 id="never">Lo que una importación nunca hace <a class="self" href="#never" aria-label="Lo que una importación nunca hace">#</a></h2>
-<p>Una importación solo lee el archivo que elegiste y escribe archivos en tu proyecto. Nunca manda una request, nunca lee ningún otro archivo de tu disco, nunca baja una dirección nombrada dentro del archivo (un <code>$ref</code> de OpenAPI a una URL se anota, no se sigue), nunca expande entidades XML en un <code>.jmx</code> y nunca corre un script: los test scripts de Postman, los processors de JMeter y los hooks de Artillery se listan en &quot;needs a hand&quot; con su texto, y solo los casos comunes y simples pasan a ser checks.</p>
-<aside class="note"><p>Un archivo de otra persona puede contener cualquier cosa, pero importarlo es tan seguro como abrirlo como texto. Revisá lo que entró antes de correrlo: la primera corrida es la que manda.</p></aside>
+<p>Una importación solo lee el archivo que elegiste y escribe archivos en tu proyecto. Nunca envía una request, nunca lee otros archivos de tu disco, nunca descarga una dirección indicada dentro del archivo (un <code>$ref</code> de OpenAPI a una URL se anota, pero no se sigue), nunca expande entidades XML en un <code>.jmx</code> y nunca ejecuta un script: los test scripts de Postman, los processors de JMeter y los hooks de Artillery se listan en &quot;Hay que terminarlo a mano&quot;, con su texto, y solo los casos habituales y sencillos se convierten en checks.</p>
+<aside class="note"><p>Un archivo ajeno puede contener cualquier cosa, pero importarlo es tan seguro como abrirlo como texto. Revisa lo que entró antes de ejecutarlo: la primera ejecución es la que envía.</p></aside>
 <h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
 <ul>
-<li><strong>Vos:</strong> importar no manda nada ni corre nada; la primera request sale solo cuando la mandás o la corrés, con el sí habitual para cualquier secreto. Ver <a href="security.html#consent">consentimiento</a>.</li>
-<li><strong>Vos y tu equipo:</strong> los valores secretos de un entorno de Postman van a la bóveda, nunca a un archivo del proyecto. En un HAR, los valores que coinciden con tu bóveda pasan a ser <code>{{secrets.x}}</code>; leé la propuesta antes de guardar, ya que una grabación puede tener contraseñas que nunca guardaste. Ver <a href="security.html#vault">la bóveda</a>.</li>
-<li><strong>Vos:</strong> una pipeline que vino de afuera igual no puede leer un secreto en un check, ni mandar sin que lo pidas un archivo de fuera de <code>ultraman/files/</code>. Ver <a href="security.html#files">archivos</a>.</li>
+<li><strong>Tú:</strong> importar no envía ni ejecuta nada; la primera request sale solo cuando la envías o la ejecutas, con el sí de siempre para cualquier secreto. Consulta <a href="security.html#consent">consentimiento</a>.</li>
+<li><strong>Tú y tu equipo:</strong> los valores secretos de un entorno de Postman van a la bóveda, nunca a un archivo del proyecto. En un HAR, los valores que coinciden con tu bóveda se convierten en <code>{{secrets.x}}</code>; lee la propuesta antes de guardar, porque una grabación puede contener contraseñas que nunca guardaste. Consulta <a href="security.html#vault">la bóveda</a>.</li>
+<li><strong>Tú:</strong> Actualizar desde la spec solo escribe dentro de la carpeta de esa colección y nunca borra una request ni su historial; si hay una request abierta con cambios sin guardar, se te indica antes de aplicar.</li>
+<li><strong>Tú:</strong> una pipeline que vino de fuera sigue sin poder leer un secreto en un check ni enviar sin preguntar un archivo que esté fuera de <code>ultraman/files/</code>. Consulta <a href="security.html#files">archivos</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="environments.html"><small>Anterior</small><span>Entornos y secretos</span></a><a rel="next" href="mock.html"><small>Siguiente</small><span>Servidor mock</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

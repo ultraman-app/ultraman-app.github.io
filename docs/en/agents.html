@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/agents.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -84,15 +84,15 @@
 <p>Each thing the agent asks for shows as a card at the bottom right: who asks, what, and the detail (for a change, the diff). <strong>Approve</strong> or <strong>Reject</strong> (with a reason the agent reads). Read-only requests can be approved &quot;always&quot;; that lasts for the agent&#39;s current session only, and only while Ultraman stays open.</p>
 <p>What runs (a pipeline, a request, a load) has two cards: one to start it, and one to deliver the result to the agent. The delivery card warns when the result carries tokens, cookies or authentication headers. If you reject a delivery, that is final.</p>
 <p>A call lasts at most about 50 seconds, because most clients cut a tool call at 60: a long run keeps going and the agent asks for its result later. While a card waits for you, the agent gets a progress notice every 5 seconds. Every request is logged in <code>ultraman/mcp/</code>, which git ignores.</p>
-<p>A WebSocket or SSE stream is sent once (<code>send_stream</code>, or a saved stream request): it opens, sends the messages on the card, listens for the time on the card (30 seconds at most), closes, and the delivery has the handshake and the messages both ways (the first 50, each cut to 4 KB). The agent has no live session: for one that stays open, use the window.</p>
+<p>A WebSocket or SSE stream is sent once (<code>send_stream</code>, or a saved stream request): it opens, sends the messages on the card, listens for the time on the card (30 seconds at most), closes, and the delivery has the handshake and the messages both ways (the first 50, each cut to 4 KB). With <code>graphql</code> it is a GraphQL subscription instead: the card shows the query, the operation and the <code>connection_init</code> payload as written (a secret as its reference), and only a subscription goes; the delivery has the events&#39; payloads. The agent has no live session: for one that stays open, use the window.</p>
 <h2 id="tools">What it can do <a class="self" href="#tools" aria-label="What it can do">#</a></h2>
 <p>The tools come in areas that match the window:</p>
 <ul>
 <li><strong>Pipelines and blocks:</strong> list, read, save and run them; read past runs; turn a HAR file or history entries into a proposed pipeline.</li>
-<li><strong>Requests:</strong> list, read and save collections and requests, move and organize them, add one to a pipeline, send a saved request with its checks, run a collection, send an ad-hoc request, read the history.</li>
+<li><strong>Requests:</strong> list, read and save collections and requests, move and organize them, add one to a pipeline, send a saved request with its checks, run a collection, send an ad-hoc request (a GraphQL one too: its result lists the answer&#39;s errors), read a GraphQL request&#39;s schema (<code>get_graphql_schema</code>, a send like any other), read the history.</li>
 <li><strong>Streams:</strong> one-shot WebSocket and SSE sends.</li>
 <li><strong>Load:</strong> list, read and save load tests, run one, read reports, compare two, trend, export.</li>
-<li><strong>Project:</strong> list and save environments, list secrets (names only), import a Postman, OpenAPI, JMeter or Artillery file, read the YAML format reference.</li>
+<li><strong>Project:</strong> list and save environments, list secrets (names only), import a Postman, OpenAPI, JMeter or Artillery file, update a collection from a newer OpenAPI spec (<code>update_collection_from_openapi</code>), read the YAML format reference.</li>
 <li><strong>Mock server:</strong> status, start, stop, reset, pin a recording.</li>
 </ul>
 <p>A write shows its diff (or the whole new file) on the card. A save that turns on plain http or a custom CA is flagged in red.</p>
@@ -113,6 +113,6 @@
 <nav class="pager"><a rel="prev" href="team.html"><small>Previous</small><span>Working as a team</span></a><a rel="next" href="coming-from.html"><small>Next</small><span>Coming from another tool</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

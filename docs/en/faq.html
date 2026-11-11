@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/faq.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -86,11 +86,11 @@
 <h3 id="scripts">Can I write scripts? <a class="self" href="#scripts" aria-label="Can I write scripts?">#</a></h3>
 <p>No, on purpose: what a step does is always on screen, and a reviewer reads it in a diff without running anything. Instead there are asserts, extracts (by JSON path, header or regex), <code>if</code> and <code>repeat</code> steps, reusable blocks, and functions inside <code>{{ }}</code> such as <code>random.uuid</code>, <code>now.iso</code>, <code>base64(x)</code> and <code>hmac.sha256(secrets.key, body)</code>. When you import, common Postman test scripts become checks; other scripts are listed for you, never run. See <a href="pipelines.html#helpers">Helpers</a>.</p>
 <h3 id="protocols">Which protocols does it speak? <a class="self" href="#protocols" aria-label="Which protocols does it speak?">#</a></h3>
-<p>HTTP and HTTPS, WebSocket and Server-Sent Events (SSE). Streams work as requests in the Requests area, as pipeline steps and under load. Not supported: Socket.IO, compressed WebSockets, automatic reconnects (connect again, or write the retry as steps) and a mock for streams. See <a href="requests.html#streams">Streams</a>.</p>
+<p>HTTP and HTTPS (GraphQL included), WebSocket and Server-Sent Events (SSE). Streams work as requests in the Requests area, as pipeline steps and under load. Not supported: Socket.IO, compressed WebSockets, automatic reconnects (connect again, or write the retry as steps) and a mock for streams. See <a href="requests.html#streams">Streams</a>.</p>
 <h3 id="grpc">Does it do gRPC? <a class="self" href="#grpc" aria-label="Does it do gRPC?">#</a></h3>
 <p>No. Ultraman tests HTTP APIs, including WebSocket and SSE streams; for gRPC, pick a tool that supports it (see <a href="why.html#not-for">When to pick something else</a>).</p>
 <h3 id="graphql">Does it do GraphQL? <a class="self" href="#graphql" aria-label="Does it do GraphQL?">#</a></h3>
-<p>There is no dedicated GraphQL support: no schema, no query editor. A GraphQL query is an HTTP POST with a JSON body, so you can send it like any request and check the result. A GraphQL server often answers 200 even when the query failed, so add an assert that <code>$.errors</code> doesn&#39;t exist. See <a href="requests.html#checks">Checks</a>.</p>
+<p>Yes: a request can carry a GraphQL body, with completion from the API&#39;s schema (loaded from the server or saved in the project), and an answer with <code>errors</code> fails the step even when the status is 200, under load too. Subscriptions work over <code>graphql-transport-ws</code>, in the Requests area and as pipeline steps. Not yet: GraphQL over SSE, GET and persisted queries, batching and file uploads. See <a href="requests.html#graphql">GraphQL</a>.</p>
 <h3 id="auth">Which kinds of authentication? <a class="self" href="#auth" aria-label="Which kinds of authentication?">#</a></h3>
 <p>Bearer token, basic auth and API key (in a header or in the query string), set on a request, a collection or a pipeline. <code>ca</code> trusts your own server certificate authority. There are no client certificates (mTLS), OAuth2 flows, AWS SigV4 or NTLM. For an API that hands out tokens, a login step, an extract of the token and a bearer auth that uses it cover the usual case. See <a href="pipelines.html#steps">Pipelines</a>.</p>
 <h3 id="import">Can I bring my existing work? <a class="self" href="#import" aria-label="Can I bring my existing work?">#</a></h3>
@@ -114,6 +114,6 @@
 <nav class="pager"><a rel="prev" href="coming-from.html"><small>Previous</small><span>Coming from another tool</span></a><a rel="next" href="../en/reference.html"><small>Next</small><span>Format reference (YAML)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

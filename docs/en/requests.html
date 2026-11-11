@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/requests.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -83,7 +83,7 @@
 <h2 id="editor">The request editor <a class="self" href="#editor" aria-label="The request editor">#</a></h2>
 <p>A request opens on its first tab with content. The tabs are <strong>Params</strong> (path parameters such as <code>:id</code>, and the query), <strong>Headers</strong>, <strong>Body</strong>, <strong>Auth</strong>, <strong>Options</strong>, <strong>Checks</strong> and <strong>Notes</strong>. A row you switch off stays in the file but isn&#39;t sent. A <code>GET</code> or <code>HEAD</code> request can&#39;t have a body.</p>
 <h2 id="body">Body <a class="self" href="#body" aria-label="Body">#</a></h2>
-<p>The <strong>Body</strong> tab has six modes. Each sets the <code>Content-Type</code> header for you, unless you write one in <strong>Headers</strong> (the editor warns that yours wins, and that a hand-written multipart header loses its boundary).</p>
+<p>The <strong>Body</strong> tab has seven modes. Each sets the <code>Content-Type</code> header for you, unless you write one in <strong>Headers</strong> (the editor warns that yours wins, and that a hand-written multipart header loses its boundary).</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Mode</th><th scope="col">What is sent</th><th scope="col">Content-Type</th></tr></thead>
 <tbody>
@@ -93,6 +93,7 @@
 <tr><td>Form</td><td><code>name=value</code> pairs, URL-encoded; a name can repeat</td><td><code>application/x-www-form-urlencoded</code></td></tr>
 <tr><td>Multipart</td><td>parts that are text or a file</td><td><code>multipart/form-data</code></td></tr>
 <tr><td>File</td><td>the bytes of one file</td><td>guessed from the file&#39;s extension</td></tr>
+<tr><td>GraphQL</td><td>a query, its variables and operation name, as JSON (see <a href="requests.html#graphql">GraphQL</a>)</td><td><code>application/json</code></td></tr>
 </tbody>
 </table></div>
 <p>A request has one body at a time. A file comes from the project: if you pick one from somewhere else, Ultraman offers to <strong>copy it into the project</strong> (<code>ultraman/files/</code>, where it travels with git) or to <strong>keep it outside</strong> (only on this machine). A file outside <code>ultraman/files/</code> asks your yes the first time it is sent: see <a href="security.html#files">files</a>.</p>
@@ -134,8 +135,22 @@
 <p>There&#39;s one session per environment. What a check extracts (the login&#39;s <code>token</code>) is there for the next request (<code>Authorization: Bearer {{token}}</code>). The collection&#39;s variables are the starting values.</p>
 <h2 id="history">History <a class="self" href="#history" aria-label="History">#</a></h2>
 <p>Every send lands in <strong>History</strong> (next to Collections): what was sent, the response, the time and the checks. Each send shows the usual time for that request (&quot;212 ms · usually 180 ms&quot;) and is marked when it&#39;s slower. An entry can be reopened as sent, or compared with another one side by side. The history is personal: never synced.</p>
+<p>History is a screen of its own: a table, newest first and by day, that you can search (a name, a URL or a status) and filter by method, status and environment; the sidebar narrows it to one collection. The chosen send opens beside the table, what went out over what came back (side by side on a wide screen). <strong>Open as sent</strong> puts it back in its tab; <strong>⋯</strong> clears the history.</p>
 <h2 id="drift">Contract drift <a class="self" href="#drift" aria-label="Contract drift">#</a></h2>
 <p>After a send, if the previous send of the same request returned JSON too, a banner says which fields disappeared or changed type (<code>$.id: string → number</code>). <strong>Compare</strong> opens both; <strong>Generate checks</strong> turns the current shape into checks.</p>
+<h2 id="contract">OpenAPI contract <a class="self" href="#contract" aria-label="OpenAPI contract">#</a></h2>
+<p>A collection can name the OpenAPI spec its API promises: <strong>Contract</strong> in its settings, or in <code>collection.yaml</code>:</p>
+<pre tabindex="0"><code>contract:
+  openapi: files/shop-openapi.yaml   # a file under files/, or /openapi.json (a path on the host), or a whole URL
+  mode: warn                         # warn (the default) or strict</code></pre>
+<p>Then every answer of its requests is checked against its operation in the current spec: a Send, a collection run, a pipeline step linked to one of its requests, an agent&#39;s run and the CLI. The operation is the one the import stored in the request (<code>operation:</code>), or else the one its method and path match. What the spec doesn&#39;t document shows as a warning: <code>status 500 isn&#39;t documented for GET /orders/{id}</code>, <code>$.total: expected number, got null</code>, <code>not in the spec: POST /orders/bulk</code>. A body that isn&#39;t JSON, or an answer with no JSON schema, has nothing to check.</p>
+<ul>
+<li><strong>Where it shows:</strong> beside the status (<code>Contract: 2 warnings</code>), the list above the body, on the run&#39;s row and in the history. The terminal prints a line under the step.</li>
+<li><strong>strict</strong> fails a run&#39;s step with the first warning (JUnit carries it). A Send still shows the warnings: it has no step to fail. <code>--contract strict|warn|off</code> in the CLI goes over the file&#39;s mode, so CI can turn it on without an edit.</li>
+<li><strong>A file</strong> is read again when it changes. <strong>A path or a URL</strong> is fetched like one of the collection&#39;s requests (its host, auth, headers and secrets, with the same yeses), once per run; the window&#39;s sends keep it until <strong>Reload spec</strong>. If it can&#39;t be read, that is one warning, never a failed step.</li>
+<li><strong>Not under load:</strong> a load test doesn&#39;t check the contract.</li>
+<li>With a contract, <strong>Update from the spec</strong> writes no schema checks (the contract covers them) and, when the contract is a file, writes the newer spec there.</li>
+</ul>
 <h2 id="links">Linked copies <a class="self" href="#links" aria-label="Linked copies">#</a></h2>
 <p><strong>Add to pipeline…</strong> puts a request at the end of a pipeline as a linked copy (it remembers where it came from). When you change it in one place, Ultraman asks whether to update the other copies. A WebSocket or SSE request goes as its linked connect step (the handshake only: its messages and listening stay in the Requests area) and follows it the same way.</p>
 <h2 id="streams">Streams: WebSocket and SSE <a class="self" href="#streams" aria-label="Streams: WebSocket and SSE">#</a></h2>
@@ -151,16 +166,28 @@
 <p>The panel keeps the newest 500 messages, each cut at 64 KB. When the stream ends (you, the server, an error), the whole session becomes <strong>one entry in History</strong>: its handshake, its messages and how it ended.</p>
 <p>In a collection run, in <code>ultraman run --collection</code> and when an agent sends it, a stream request connects, checks the handshake, sends its saved messages, <strong>listens</strong> for <code>listen</code> ms (2 seconds unless the file says otherwise) and closes. A quiet stream isn&#39;t a failure. To wait for a particular message and check it, put the stream in a <a href="pipelines.html#stream-steps">pipeline</a>.</p>
 <p>Not here: a stream request has no mock, no drift and no reconnect (if the server drops you, Connect again), and Socket.IO and compressed (deflate) WebSockets aren&#39;t supported (<a href="coming-from.html">Coming from another tool</a>).</p>
+<h2 id="graphql">GraphQL <a class="self" href="#graphql" aria-label="GraphQL">#</a></h2>
+<p>Send GraphQL queries and mutations with completion from the API&#39;s schema, and catch the errors a server returns with a 200.</p>
+<p>A collection&#39;s menu has <strong>New GraphQL request</strong>, and any request&#39;s Body has a <strong>GraphQL</strong> mode (always POST). It holds the query, the <strong>Variables</strong> (JSON, with <code>{{variables}}</code> inside strings, like a JSON body), an operation picker when the query defines several, and <strong>An answer with errors passes</strong>.</p>
+<p><strong>The schema.</strong> <strong>Load schema</strong> asks the server for its schema by sending the request itself with the introspection query: the same URL, headers, auth and secrets, and the same questions as a Send. With a schema, the editor completes fields and arguments, shows a field&#39;s description in the completion list, and marks what the schema doesn&#39;t have. <strong>Save to project</strong> keeps it as <code>ultraman/files/&lt;collection&gt;.graphql</code> and names it in <code>collection.yaml</code>: every GraphQL request of that collection uses it, and git shares it with your team. A schema you only loaded lasts until you close the window. Without a schema, the editor still highlights the query.</p>
+<p><strong>Errors.</strong> A GraphQL server often answers 200 with an <code>errors</code> list. The response shows <code>1 GraphQL error</code> (or <code>N GraphQL errors</code>) next to the status and lists each message, with its path, above the body. In a run, a collection run and under load, a step whose answer has <code>errors</code> <strong>fails</strong> with the first message, whatever the status; under load each one counts as a failed request. <strong>An answer with errors passes</strong> (<code>allowErrors: true</code>) is for an API that answers partial data on purpose.</p>
+<p>The query is sent as written: <code>{{...}}</code> in it isn&#39;t replaced, so values go in the variables. The <strong>Sent</strong> tab and History show the query as you wrote it and the variables as they went out (a secret as <code>[secret:x]</code>).</p>
+<p><strong>Subscriptions.</strong> When the operation is a <code>subscription</code>, the request shows <strong>Subscribe</strong> instead of Send. Ultraman opens a WebSocket that speaks <code>graphql-transport-ws</code> on the request&#39;s URL (<code>https</code> becomes <code>wss</code>), or on the collection&#39;s <code>graphql: { subscriptions: /graphql/ws }</code> path when the server serves subscriptions apart, and starts the subscription. The stream panel lists each <code>next</code> as a row, red when it carries errors. <strong>Unsubscribe</strong> ends the subscription and keeps the socket open; <strong>Disconnect</strong> closes it. The session becomes one entry in History. In a collection run and when an agent sends it, a subscription listens for 2 seconds and closes, and its checks read its first <code>next</code>. To wait for particular events and check them, use <a href="pipelines.html#subscriptions">subscribe steps</a>.</p>
+<p>Not here yet: GraphQL over SSE (graphql-sse), the older <code>subscriptions-transport-ws</code> protocol, GET requests and persisted queries, batching and file uploads.</p>
 <h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
 <p>The <a href="security.html#promise">promise</a> applies here as everywhere. What this part adds:</p>
 <ul>
 <li><strong>You and your team:</strong> a file body goes unasked only from <code>ultraman/files/</code>; any other file asks first. See <a href="security.html#files">files</a>.</li>
 <li><strong>You:</strong> a redirect to another origin doesn&#39;t carry your credentials along. See <a href="security.html#redirects">redirects</a>.</li>
 <li><strong>Your team:</strong> the history is personal and never synced, so responses with real data stay on your machine. See <a href="security.html#stored">where things are stored</a>.</li>
+<li><strong>You:</strong> a contract URL is fetched like the collection&#39;s own requests: its secrets ask the same yes, it&#39;s refused in a folder you haven&#39;t trusted, and the warnings quote the answer only after its secrets are hidden. A contract file is read only from <code>ultraman/files/</code>, never through a link. See <a href="security.html#consent">consent</a>.</li>
+<li><strong>You:</strong> GraphQL variables are a body: a secret in them asks the same yes as anywhere and shows as <code>[secret:x]</code>, and <strong>Load schema</strong> is a send, with the same questions. See <a href="security.html#consent">consent</a>.</li>
+<li><strong>Your team:</strong> a schema is read only from <code>ultraman/files/</code>, never through a link, and its descriptions and a server&#39;s error messages show as plain text. See <a href="security.html#files">files</a>.</li>
+<li><strong>You:</strong> a subscription&#39;s variables and <code>connection_init</code> payload are messages: a secret in them asks the same yes as a header, shows as <code>[secret:x]</code>, and a server that echoes it back gets it redacted. See <a href="security.html#consent">consent</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="security.html"><small>Previous</small><span>Security and consent</span></a><a rel="next" href="pipelines.html"><small>Next</small><span>Pipelines</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

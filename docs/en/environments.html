@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -72,7 +72,7 @@
 <h1 id="environments">Environments and secrets <a class="self" href="#environments" aria-label="Environments and secrets">#</a></h1>
 <p>Environments let the same requests run against local, staging or production, and secrets keep tokens and passwords on your computer, encrypted, out of git and out of every log.</p>
 <h2 id="envs">Environments <a class="self" href="#envs" aria-label="Environments">#</a></h2>
-<p>An environment (local, staging, production) is a set of values: <code>api: https://staging.example.com</code>. Requests read them as <code>{{env.api}}</code>. Choose one with the selector at the top; <strong>Environments…</strong> at the bottom of that selector edits them: the environments on the left (<strong>New environment</strong>, <strong>Rename</strong>, <strong>Duplicate</strong>, <strong>Delete</strong>), the chosen one&#39;s variables on the right.</p>
+<p>An environment (local, staging, production) is a set of values: <code>api: https://staging.example.com</code>. Requests read them as <code>{{env.api}}</code>. Click the environment at the top to see it and choose another in its list; <strong>Environments…</strong> at the end of that list edits them, on a screen of its own: the environments on the left (<strong>New environment</strong>), the chosen one on the right with its variables and request options. Its header has the way back to where you were, <strong>Save</strong> (with a dot while something is unsaved) and <strong>⋯</strong> with <strong>Rename…</strong>, <strong>Duplicate…</strong> and <strong>Delete environment…</strong>.</p>
 <p>Each value has two halves:</p>
 <ul>
 <li>the <strong>shared</strong> value, in <code>ultraman/envs/&lt;name&gt;.yaml</code>, synced through git;</li>
@@ -82,7 +82,7 @@
 <h2 id="dotenv">Import a .env file <a class="self" href="#dotenv" aria-label="Import a .env file">#</a></h2>
 <p><strong>Import .env…</strong> reads a <code>.env</code> file (<code>KEY=value</code>, <code>export</code>, quotes, comments) into this machine&#39;s values. Nothing reaches the shared file, and so nothing reaches git, until you move it there yourself. A variable that is a secret keeps the value it has in the vault.</p>
 <h2 id="eye">See where a value comes from <a class="self" href="#eye" aria-label="See where a value comes from">#</a></h2>
-<p>The eye next to the environment selector opens a quick look at the chosen environment. Each variable says where its value comes from: <code>shared</code>, <code>local</code>, <code>vault</code> or <code>session</code>. A secret always shows as <code>●●●●</code>.</p>
+<p>Clicking the environment at the top opens a quick look at it. Each variable says where its value comes from: <code>shared</code>, <code>local</code>, <code>vault</code> or <code>session</code>. A secret always shows as <code>●●●●</code>.</p>
 <p>Below, the <strong>session</strong> lists each value that steps extracted (or that you typed in a dialog), which step made it and which steps use it. The pencil edits this machine&#39;s value (empty goes back to the shared one). A session row, or the whole session, can be cleared; it comes back when the step that makes it runs again. The session is not saved: closing the window drops it.</p>
 <p>When a request needs a value the environment doesn&#39;t have, a dialog asks for it. A plain value can be kept for this session only, saved in the environment&#39;s shared file (it goes to git) or saved on this machine. A secret has a <strong>Save on this machine</strong> checkbox: checked, it goes to the vault and never to a file.</p>
 <h2 id="options">Request options <a class="self" href="#options" aria-label="Request options">#</a></h2>
@@ -115,6 +115,6 @@ options:
 <nav class="pager"><a rel="prev" href="load.html"><small>Previous</small><span>Load</span></a><a rel="next" href="importing.html"><small>Next</small><span>Importing</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

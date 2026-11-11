@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Requests · Documentação do Ultraman</title>
-<meta name="description" content="A área de Requests é onde você monta, envia e checa requests avulsas: coleções com pastas e requests, abertas em abas, como no Postman. A diferença é que cada…">
+<meta name="description" content="Na área de Requests você monta, envia e confere requests avulsas: coleções com pastas e requests, abertas em abas, como no Postman. A diferença é que cada…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/pt/requests.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/requests.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/requests.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/requests.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -28,7 +28,7 @@
 <details class="menu"><summary>Menu</summary>
 <nav aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -40,16 +40,16 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
 <nav class="side" aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -61,106 +61,133 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="requests">Requests <a class="self" href="#requests" aria-label="Requests">#</a></h1>
-<p>A área de Requests é onde você monta, envia e checa requests avulsas: coleções com pastas e requests, abertas em abas, como no Postman. A diferença é que cada request carrega seus <strong>checks</strong>, e tudo é um arquivo simples em <code>ultraman/requests/</code> que a sua equipe compartilha pelo git.</p>
+<p>Na área de Requests você monta, envia e confere requests avulsas: coleções com pastas e requests, abertas em abas, como no Postman. A diferença é que cada request leva os seus <strong>checks</strong>, e tudo é um arquivo simples em <code>ultraman/requests/</code> que a sua equipe compartilha pelo git.</p>
 <h2 id="collections">Coleções e pastas <a class="self" href="#collections" aria-label="Coleções e pastas">#</a></h2>
-<p>Uma coleção tem um host e, se você quiser, auth, headers e <strong>variáveis</strong> (valores iniciais para <code>{{nome}}</code>). O menu dela cria requests e pastas, executa tudo, cria uma pipeline ou abre suas configurações. As requests podem ser renomeadas, movidas, duplicadas e adicionadas a uma pipeline.</p>
+<p>Uma coleção tem um host e, se você quiser, auth, headers e <strong>variáveis</strong> (valores iniciais para <code>{{nome}}</code>). Pelo menu dela você cria requests e pastas, executa tudo, cria uma pipeline ou abre as configurações. Dá para renomear, mover e duplicar requests, e também adicioná-las a uma pipeline.</p>
 <h2 id="send">Enviar <a class="self" href="#send" aria-label="Enviar">#</a></h2>
-<p><strong>Enviar</strong> (Ctrl/Cmd+Enter) envia a request no ambiente escolhido. A resposta mostra o status, o tempo, o tamanho, os headers e o body; <strong>Tempos</strong> diz para onde foi o tempo (DNS, conexão, TLS, primeiro byte, total).</p>
+<p><strong>Enviar</strong> (Ctrl/Cmd+Enter) envia a request no ambiente selecionado. A resposta mostra status, tempo, tamanho, headers e body; <strong>Tempos</strong> mostra para onde foi o tempo (DNS, conexão, TLS, primeiro byte, total).</p>
 <ul>
-<li>As variáveis aparecem como chips: <code>{{env.x}}</code> do ambiente, <code>{{secrets.x}}</code> do cofre, <code>{{x}}</code> da sessão (o que uma request anterior extraiu) ou das variáveis da coleção. Ctrl+Space sugere.</li>
-<li>Se faltar um valor, um diálogo pede para esta sessão.</li>
-<li>Colar um comando <code>curl</code> no path o transforma na request.</li>
+<li>As variáveis aparecem como chips: <code>{{env.x}}</code> vem do ambiente, <code>{{secrets.x}}</code> do cofre e <code>{{x}}</code> da sessão (o que uma request anterior extraiu) ou das variáveis da coleção. Ctrl+Space sugere as variáveis.</li>
+<li>Se faltar um valor, um diálogo pede esse valor para esta sessão.</li>
+<li>Se você colar um comando <code>curl</code> no path, ele vira a request.</li>
 </ul>
 <h2 id="editor">O editor de requests <a class="self" href="#editor" aria-label="O editor de requests">#</a></h2>
-<p>Uma request abre na primeira aba com conteúdo. As abas são <strong>Params</strong> (parâmetros de path como <code>:id</code>, e a query), <strong>Headers</strong>, <strong>Body</strong>, <strong>Auth</strong>, <strong>Opções</strong>, <strong>Checks</strong> e <strong>Notas</strong>. Uma linha que você desliga continua no arquivo mas não é enviada. Uma request <code>GET</code> ou <code>HEAD</code> não pode ter body.</p>
+<p>A request abre na primeira aba que tem conteúdo. As abas são <strong>Params</strong> (parâmetros de path como <code>:id</code>, e a query), <strong>Headers</strong>, <strong>Body</strong>, <strong>Auth</strong>, <strong>Opções</strong>, <strong>Checks</strong> e <strong>Notas</strong>. Uma linha desligada continua no arquivo, mas não é enviada. Uma request <code>GET</code> ou <code>HEAD</code> não pode ter body.</p>
 <h2 id="body">Body <a class="self" href="#body" aria-label="Body">#</a></h2>
-<p>A aba <strong>Body</strong> tem seis modos. Cada um define o header <code>Content-Type</code> por você, a menos que você escreva um em <strong>Headers</strong> (o editor avisa que o seu vence, e que um header multipart escrito à mão perde o boundary).</p>
+<p>A aba <strong>Body</strong> tem sete modos. Cada um define o header <code>Content-Type</code> sozinho, a não ser que você escreva um em <strong>Headers</strong> (o editor avisa que o seu prevalece e que um header multipart escrito à mão perde o boundary).</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Modo</th><th scope="col">O que é enviado</th><th scope="col">Content-Type</th></tr></thead>
 <tbody>
 <tr><td>Nenhum</td><td>nenhum body</td><td>nenhum</td></tr>
 <tr><td>JSON</td><td>o JSON que você escreve, com <code>{{variáveis}}</code> dentro</td><td><code>application/json</code></td></tr>
-<tr><td>Texto</td><td>o texto como escrito (XML, CSV, qualquer coisa)</td><td><code>text/plain</code></td></tr>
-<tr><td>Form</td><td>pares <code>nome=valor</code>, codificados em URL; um nome pode se repetir</td><td><code>application/x-www-form-urlencoded</code></td></tr>
-<tr><td>Multipart</td><td>partes que são texto ou um arquivo</td><td><code>multipart/form-data</code></td></tr>
-<tr><td>Arquivo</td><td>os bytes de um arquivo</td><td>deduzido da extensão do arquivo</td></tr>
+<tr><td>Texto</td><td>o texto tal como foi escrito (XML, CSV, o que for)</td><td><code>text/plain</code></td></tr>
+<tr><td>Form</td><td>pares <code>nome=valor</code>, codificados como URL; um nome pode se repetir</td><td><code>application/x-www-form-urlencoded</code></td></tr>
+<tr><td>Multipart</td><td>partes de texto ou de arquivo</td><td><code>multipart/form-data</code></td></tr>
+<tr><td>Arquivo</td><td>os bytes de um arquivo</td><td>deduzido pela extensão do arquivo</td></tr>
+<tr><td>GraphQL</td><td>uma query, as variáveis e o nome da operação, em JSON (veja <a href="requests.html#graphql">GraphQL</a>)</td><td><code>application/json</code></td></tr>
 </tbody>
 </table></div>
-<p>Uma request tem um body de cada vez. Um arquivo vem do projeto: se você escolhe um de outro lugar, o Ultraman oferece <strong>copiá-lo para o projeto</strong> (<code>ultraman/files/</code>, onde ele viaja com o git) ou <strong>deixá-lo fora</strong> (só nesta máquina). Um arquivo fora de <code>ultraman/files/</code> pede o seu sim na primeira vez que é enviado: veja <a href="security.html#files">arquivos</a>.</p>
+<p>Uma request tem um body só por vez. O arquivo vem do projeto: se você escolher um de outro lugar, o Ultraman oferece <strong>Copiar para o projeto</strong> (<code>ultraman/files/</code>, onde ele vai junto com o git) ou <strong>Deixar fora</strong> (só nesta máquina). Um arquivo fora de <code>ultraman/files/</code> pede o seu sim na primeira vez que for enviado: veja <a href="security.html#files">arquivos</a>.</p>
 <h2 id="auth">Auth <a class="self" href="#auth" aria-label="Auth">#</a></h2>
-<p>A aba <strong>Auth</strong> oferece <strong>Herdada</strong>, <strong>Nenhum</strong>, <strong>Bearer</strong>, <strong>Basic</strong> e <strong>API key</strong> (um header ou um parâmetro de query, com o nome que você escolher). Uma coleção ou uma pipeline pode definir a auth uma vez; uma request a herda, define a sua própria, ou diz <strong>Nenhum</strong>. Os valores podem ser variáveis, em geral <code>{{secrets.x}}</code>, para que o token nunca fique no arquivo.</p>
-<p>Esses são os tipos que existem. Para uma API com token, faça login com uma request, <strong>extraia</strong> o token e use-o como bearer (<code>{{token}}</code>): isso cobre a maioria dos fluxos de login. Não há fluxos OAuth 2, certificados de cliente nem assinatura de requests.</p>
+<p>A aba <strong>Auth</strong> oferece <strong>Herdada</strong>, <strong>Nenhum</strong>, <strong>Bearer</strong>, <strong>Basic</strong> e <strong>API key</strong> (num header ou num parâmetro de query, com o nome que você escolher). Uma coleção ou uma pipeline pode definir a auth uma vez só; a request herda essa auth, define a sua ou fica com <strong>Nenhum</strong>. Os valores podem ser variáveis, em geral <code>{{secrets.x}}</code>, para o token nunca ficar no arquivo.</p>
+<p>Os tipos são só esses. Para uma API com token, faça login com uma request, <strong>extraia</strong> o token e use-o como bearer (<code>{{token}}</code>): isso resolve a maioria dos fluxos de login. Não há fluxos OAuth 2, certificados de cliente nem assinatura de requests.</p>
 <h2 id="options">Opções da request <a class="self" href="#options" aria-label="Opções da request">#</a></h2>
-<p><strong>Opções</strong> ajustam uma request: <strong>timeout</strong> (milissegundos, 30 000 por padrão, 0 para nenhum), <strong>redirects</strong> (quantos seguir, 10 por padrão, no máximo 20), <strong>tamanho máximo</strong> da resposta (50 MB), <strong>HTTP/2</strong>, <strong>HTTP simples</strong> (permitir <code>http:</code> para um host que não seja localhost) e uma <strong>CA própria</strong> (um arquivo <code>.pem</code> no projeto, aceito além das habituais, para um servidor com certificado próprio). HTTP simples e uma CA própria reduzem a proteção da conexão, então a janela avisa quando você os liga.</p>
-<p>Uma opção vazia herda, e o editor diz de onde, em cinza (&quot;30000 ms, por padrão&quot;). A ordem é: as <a href="environments.html#options">opções de request</a> do ambiente, depois as da pipeline ou da coleção, depois as da request. A mais próxima vence.</p>
-<p>Uma request também pode ser marcada como <strong>responde sempre o mesmo</strong>: isso só importa num <a href="load.html#idempotent">teste de carga</a>.</p>
+<p>As <strong>Opções</strong> ajustam uma request: <strong>timeout</strong> (em milissegundos; 30 000 por padrão, 0 para sem limite), <strong>redirects</strong> (quantos seguir; 10 por padrão, no máximo 20), <strong>tamanho máximo</strong> da resposta (50 MB), <strong>HTTP/2</strong>, <strong>HTTP simples</strong> (permite <code>http:</code> para um host que não seja localhost) e <strong>CA própria</strong> (um arquivo <code>.pem</code> do projeto, aceito além das CAs de sempre, para um servidor com certificado próprio). HTTP simples e CA própria diminuem a proteção da conexão, por isso a janela avisa quando você liga uma delas.</p>
+<p>Uma opção vazia é herdada, e o editor mostra em cinza de onde ela vem (&quot;30000 ms, por padrão&quot;). A ordem é: as <a href="environments.html#options">opções de request</a> do ambiente, depois as da pipeline ou da coleção, depois as da própria request. Vale a mais próxima.</p>
+<p>A request também pode ser marcada como <strong>responde sempre o mesmo</strong>: isso só faz diferença num <a href="load.html#idempotent">teste de carga</a>.</p>
 <h2 id="curl">Copiar como cURL <a class="self" href="#curl" aria-label="Copiar como cURL">#</a></h2>
-<p>Numa pipeline, o botão de terminal na linha de uma request a copia como um comando <code>curl</code>, com os valores que você tem na janela. Os segredos nunca são escritos: eles viram <code>${ULTRAMAN_SECRET_NAME}</code>, então o comando funciona num shell em que você define essa variável e é seguro colar num chat. O caminho inverso também funciona na área de Requests: cole um comando <code>curl</code> no path e ele vira a request.</p>
+<p>Numa pipeline, o botão de terminal na linha de uma request copia essa request como comando <code>curl</code>, com os valores que estão na janela. Os segredos nunca são escritos: viram <code>${ULTRAMAN_SECRET_NAME}</code>, então o comando funciona num shell onde essa variável estiver definida e pode ser colado num chat com segurança. O caminho inverso também funciona na área de Requests: cole um comando <code>curl</code> no path e ele vira a request.</p>
 <h2 id="redirects">Redirects e Tempos <a class="self" href="#redirects" aria-label="Redirects e Tempos">#</a></h2>
-<p>Uma resposta que foi redirecionada ganha uma aba <strong>Redirects</strong>: cada salto com seu status, a URL que respondeu e seus headers (o <code>location</code> para onde apontou, um <code>set-cookie</code> no caminho). <strong>Tempos</strong> diz para onde foi o tempo. Os redirects são seguidos até a opção <strong>redirects</strong>. Duas regras protegem você: quando um redirect vai para outra origem, os headers <code>authorization</code>, <code>cookie</code> e <code>proxy-authorization</code> são descartados, e um <code>307</code> ou <code>308</code> que enviaria um body com um segredo para outra origem não é seguido (a resposta mostrada é esse redirect, com para onde ele apontava). Veja <a href="security.html#redirects">redirects</a>.</p>
+<p>Uma resposta redirecionada ganha a aba <strong>Redirects</strong>: cada salto com o status, a URL que respondeu e os headers (o <code>location</code> para onde apontou, um <code>set-cookie</code> no caminho). <strong>Tempos</strong> mostra para onde foi o tempo. Os redirects são seguidos até o limite da opção <strong>redirects</strong>. Duas regras protegem você: quando um redirect vai para outra origem, os headers <code>authorization</code>, <code>cookie</code> e <code>proxy-authorization</code> são descartados; e um <code>307</code> ou <code>308</code> que mandaria para outra origem um body com um segredo não é seguido (a resposta mostrada é o próprio redirect, com o destino dele). Veja <a href="security.html#redirects">redirects</a>.</p>
 <h2 id="checks">Checks <a class="self" href="#checks" aria-label="Checks">#</a></h2>
-<p>Um check é um <strong>assert</strong> (a request tem que responder algo) ou um <strong>extract</strong> (guardar um valor para depois). Eles rodam em cada envio, e a aba <strong>Checks</strong> da resposta diz quais passaram.</p>
+<p>Um check é um <strong>assert</strong> (a request precisa responder algo) ou um <strong>extract</strong> (guarda um valor para depois). Eles executam a cada envio, e a aba <strong>Checks</strong> da resposta mostra quais passaram.</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Check</th><th scope="col">Passa quando</th></tr></thead>
 <tbody>
-<tr><td><code>status</code></td><td>o status HTTP é o indicado</td></tr>
-<tr><td><code>equals</code>, <code>notEquals</code></td><td>um valor é (ou não é) o indicado</td></tr>
-<tr><td><code>contains</code></td><td>um valor ou o body o contém</td></tr>
-<tr><td><code>lessThan</code>, <code>greaterThan</code></td><td>um número (ou o tempo em ms) está abaixo ou acima</td></tr>
+<tr><td><code>status</code></td><td>o status HTTP é o informado</td></tr>
+<tr><td><code>equals</code>, <code>notEquals</code></td><td>um valor é (ou não é) o informado</td></tr>
+<tr><td><code>contains</code></td><td>um valor ou o body contém o que foi informado</td></tr>
+<tr><td><code>lessThan</code>, <code>greaterThan</code></td><td>um número (ou o tempo em ms) fica abaixo ou acima</td></tr>
 <tr><td><code>exists</code>, <code>notExists</code></td><td>um path JSON ou um header está presente</td></tr>
 <tr><td><code>matches</code></td><td>um texto bate com uma expressão regular</td></tr>
 <tr><td><code>type</code></td><td>um valor JSON é string, número, array…</td></tr>
 <tr><td><code>schema</code></td><td>um valor segue um JSON Schema</td></tr>
 </tbody>
 </table></div>
-<p>O jeito mais rápido de adicionar um: no body da resposta, passe o mouse sobre um valor e use o menu dele.</p>
+<p>O jeito mais rápido de criar um: no body da resposta, passe o mouse sobre um valor e use o menu dele.</p>
 <h2 id="generate-checks">Gerar checks <a class="self" href="#generate-checks" aria-label="Gerar checks">#</a></h2>
-<p><strong>Gerar checks</strong> olha a resposta que está na tela e propõe checks para ela:</p>
+<p><strong>Gerar checks</strong> analisa a resposta que está na tela e sugere checks para ela:</p>
 <ul>
-<li>que o status seja o que ela recebeu;</li>
-<li>para cada campo de primeiro nível do JSON (ou do primeiro item, se for uma lista), que ele <strong>exista</strong> e o seu <strong>tipo</strong>.</li>
+<li>que o status seja o que veio;</li>
+<li>para cada campo de primeiro nível do JSON (ou do primeiro item, se for uma lista), que ele <strong>exista</strong> e qual é o seu <strong>tipo</strong>.</li>
 </ul>
-<p>Adiciona no máximo 30, pula os que a request já tem e não salva nada até você apertar <strong>Salvar</strong>: veja na aba <strong>Checks</strong> e apague os que não quiser. É um ponto de partida para um teste de contrato; valores que mudam a cada chamada (ids, datas, tokens) são checados pelo tipo, nunca pelo valor. Na área de Pipelines, o mesmo botão os adiciona como passos logo depois da request.</p>
+<p>Ele adiciona no máximo 30, pula os que a request já tem e não salva nada até você clicar em <strong>Salvar</strong>: confira os checks na aba <strong>Checks</strong> e apague os que não quiser. É um ponto de partida para um teste de contrato; valores que mudam a cada chamada (ids, datas, tokens) são checados pelo tipo, nunca pelo valor. Na área de Pipelines, o mesmo botão adiciona os checks como passos logo depois da request.</p>
 <h2 id="session">A sessão <a class="self" href="#session" aria-label="A sessão">#</a></h2>
-<p>Há uma sessão por ambiente. O que um check extrai (o <code>token</code> do login) fica disponível para a próxima request (<code>Authorization: Bearer {{token}}</code>). As variáveis da coleção são os valores iniciais.</p>
+<p>Existe uma sessão por ambiente. O que um check extrai (o <code>token</code> do login) fica lá para a próxima request (<code>Authorization: Bearer {{token}}</code>). As variáveis da coleção são os valores iniciais.</p>
 <h2 id="history">Histórico <a class="self" href="#history" aria-label="Histórico">#</a></h2>
-<p>Cada envio fica no <strong>Histórico</strong> (ao lado de Coleções): o que foi enviado, a resposta, o tempo e os checks. Cada envio mostra o tempo habitual daquela request (&quot;212 ms · costuma levar 180 ms&quot;) e é marcado quando está mais lento. Uma entrada pode ser reaberta como foi enviada, ou comparada com outra lado a lado. O histórico é pessoal: nunca é sincronizado.</p>
+<p>Todo envio vai para o <strong>Histórico</strong> (ao lado de <strong>Coleções</strong>): o que foi enviado, a resposta, o tempo e os checks. Cada envio mostra o tempo habitual daquela request (&quot;212 ms · costuma levar 180 ms&quot;) e ganha uma marca quando está mais lento. Dá para reabrir uma entrada como foi enviada ou compará-la lado a lado com outra. O histórico é pessoal: nunca é sincronizado.</p>
+<p>O histórico tem uma tela só dele: uma tabela, do mais novo para o mais antigo e agrupada por dia, onde você busca (por nome, URL ou status) e filtra por método, status e ambiente; a barra lateral restringe a tabela a uma coleção. O envio escolhido abre ao lado da tabela, com o que saiu em cima do que voltou (lado a lado numa tela larga). <strong>Abrir como foi enviada</strong> devolve o envio à aba dele; <strong>⋯</strong> limpa o histórico.</p>
 <h2 id="drift">Mudanças de contrato <a class="self" href="#drift" aria-label="Mudanças de contrato">#</a></h2>
-<p>Depois de um envio, se o envio anterior da mesma request também devolveu JSON, um aviso diz quais campos sumiram ou mudaram de tipo (<code>$.id: string → number</code>). <strong>Comparar</strong> abre os dois; <strong>Gerar checks</strong> transforma a forma atual em checks.</p>
-<h2 id="links">Cópias vinculadas <a class="self" href="#links" aria-label="Cópias vinculadas">#</a></h2>
-<p><strong>Adicionar a um pipeline…</strong> coloca uma request no fim de uma pipeline como cópia vinculada (ela lembra de onde veio). Quando você a muda num lugar, o Ultraman pergunta se deve atualizar as outras cópias. Uma request WebSocket ou SSE vai como seu passo connect vinculado (só o handshake: suas mensagens e sua escuta ficam na área de Requests) e a segue do mesmo jeito.</p>
-<h2 id="streams">Streams: WebSocket e SSE <a class="self" href="#streams" aria-label="Streams: WebSocket e SSE">#</a></h2>
-<p>Abra um stream WebSocket ou SSE numa aba como uma request: veja cada mensagem conforme chega, envie uma de um compositor, filtre e pause a lista, e guarde a sessão inteira no Histórico.</p>
-<p>O menu de uma coleção tem <strong>Novo WebSocket ou SSE</strong>. Uma request de stream é um arquivo como qualquer outro (<code>websocket: live</code> ou <code>sse: prices</code> como primeira chave), aberto numa aba com o mesmo layout de uma request. O seletor de método é uma escolha <strong>WebSocket | SSE</strong>, o path vai depois do host da coleção (<code>https</code> vira <code>wss</code>, <code>http</code> vira <code>ws</code>), e as abas são Params, Headers, Auth, Opções (inclusive as do stream: tamanho de mensagem, ping, ociosidade), <strong>Mensagens</strong>, Checks e Notas.</p>
-<p><strong>Conectar</strong> (Ctrl/Cmd+Enter) abre o stream e vira <strong>Desconectar</strong> enquanto estiver aberto. Embaixo, o painel do stream mostra uma pílula de estado (<code>connecting…</code>, <code>open 101</code>, <code>closed 1000</code>), um relógio, quantas mensagens foram em cada sentido, e três abas:</p>
+<p>Depois de um envio, se o envio anterior da mesma request também devolveu JSON, um aviso mostra quais campos sumiram ou mudaram de tipo (<code>$.id: string → number</code>). <strong>Comparar</strong> abre os dois; <strong>Gerar checks</strong> transforma o formato atual em checks.</p>
+<h2 id="contract">Contrato OpenAPI <a class="self" href="#contract" aria-label="Contrato OpenAPI">#</a></h2>
+<p>Uma coleção pode indicar a spec OpenAPI que a API dela promete cumprir: em <strong>Contrato</strong>, nas configurações, ou no <code>collection.yaml</code>:</p>
+<pre tabindex="0"><code>contract:
+  openapi: files/shop-openapi.yaml   # um arquivo dentro de files/, ou /openapi.json (um caminho no host), ou uma URL inteira
+  mode: warn                         # warn (o padrão) ou strict</code></pre>
+<p>A partir daí, toda resposta das requests dela é conferida contra a operação correspondente na spec atual: num envio, numa execução da coleção, num passo de pipeline vinculado a uma dessas requests, numa execução de um agente e na CLI. A operação é a que a importação guardou na request (<code>operation:</code>) ou, se não houver, a que bate com o método e o path. O que a spec não documenta aparece como aviso: <code>status 500 isn&#39;t documented for GET /orders/{id}</code>, <code>$.total: expected number, got null</code>, <code>not in the spec: POST /orders/bulk</code>. Um body que não é JSON, ou uma resposta sem schema JSON, não tem o que conferir.</p>
 <ul>
-<li><strong>Mensagens</strong>: uma linha por mensagem, a mais nova embaixo, com a direção (↓ recebida, ↑ enviada), hora, tamanho e, no SSE, o nome <code>event</code> e o <code>id</code>. Clique numa linha para abri-la no visualizador do body. <strong>Filtrar</strong> esconde linhas por texto (ou <code>event:price</code> no SSE), <strong>Pausar</strong> para a lista enquanto as mensagens continuam contando, <strong>Limpar</strong> esvazia.</li>
-<li><strong>Handshake</strong>: os headers do servidor (e o protocolo que ele escolheu).</li>
-<li><strong>Checks</strong>: os checks da request rodam sobre o handshake (<code>status</code>, um header).</li>
+<li><strong>Onde aparece:</strong> ao lado do status (<code>Contrato: 2 avisos</code>), na lista acima do body, na linha da execução e no histórico. O terminal imprime uma linha embaixo do passo.</li>
+<li><strong>strict</strong> faz o passo de uma execução falhar no primeiro aviso (o JUnit registra isso). Um envio continua mostrando os avisos: ele não tem passo para falhar. Na CLI, <code>--contract strict|warn|off</code> passa por cima do modo do arquivo, então o CI pode ligar o contrato sem editar nada.</li>
+<li><strong>Um arquivo</strong> é relido quando muda. <strong>Um caminho ou uma URL</strong> é buscado como uma das requests da coleção (com o host, a auth, os headers e os segredos dela, e os mesmos sins), uma vez por execução; os envios da janela guardam a spec até você clicar em <strong>Reler a spec</strong>. Se não der para ler, isso vira um aviso, nunca um passo com falha.</li>
+<li><strong>Sob carga, não:</strong> um teste de carga não confere o contrato.</li>
+<li>Com um contrato, <strong>Atualizar a partir da spec</strong> não escreve checks de schema (o contrato já cobre isso) e, quando o contrato é um arquivo, grava ali a spec mais nova.</li>
 </ul>
-<p>Num WebSocket, o <strong>compositor</strong> embaixo da lista envia uma mensagem (texto ou JSON, Ctrl+Enter). Ele pode pegar uma das <strong>mensagens salvas</strong> da request, e <strong>Salvar como mensagem</strong> adiciona o texto do compositor à request. Uma mensagem com <code>{{secrets.x}}</code> é enviada com o valor e aparece como <code>[secret:x]</code>. Quando o cofre bloqueia, um stream que usou um segredo também fecha.</p>
-<p>O painel guarda as 500 mensagens mais novas, cada uma cortada em 64 KB. Quando o stream termina (você, o servidor ou um erro), a sessão inteira vira <strong>uma entrada no Histórico</strong>: o handshake, as mensagens e como terminou.</p>
-<p>Numa execução de coleção, em <code>ultraman run --collection</code> e quando um agente a envia, uma request de stream conecta, verifica o handshake, envia as mensagens salvas, <strong>escuta</strong> por <code>listen</code> ms (2 segundos, a menos que o arquivo diga outra coisa) e fecha. Um stream silencioso não é uma falha. Para esperar uma mensagem específica e checá-la, coloque o stream numa <a href="pipelines.html#stream-steps">pipeline</a>.</p>
-<p>Não há aqui: uma request de stream não tem mock, nem mudanças de contrato, nem reconexão (se o servidor derrubar você, Conecte de novo), e Socket.IO e WebSockets comprimidos (deflate) não são suportados (<a href="coming-from.html">Se você vem de outra ferramenta</a>).</p>
-<h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
-<p>A <a href="security.html#promise">promessa</a> vale aqui como em todo lugar. O que esta parte acrescenta:</p>
+<h2 id="links">Cópias vinculadas <a class="self" href="#links" aria-label="Cópias vinculadas">#</a></h2>
+<p><strong>Adicionar a uma pipeline…</strong> coloca uma request no fim de uma pipeline como cópia vinculada (ela lembra de onde veio). Quando você muda uma das cópias, o Ultraman pergunta se deve atualizar as outras. Uma request WebSocket ou SSE entra como o passo connect vinculado a ela (só o handshake: as mensagens e a escuta ficam na área de Requests) e acompanha as mudanças do mesmo jeito.</p>
+<h2 id="streams">Streams: WebSocket e SSE <a class="self" href="#streams" aria-label="Streams: WebSocket e SSE">#</a></h2>
+<p>Abra um stream WebSocket ou SSE numa aba, como uma request: veja cada mensagem assim que ela chega, envie mensagens pelo compositor, filtre e pause a lista e guarde a sessão inteira no Histórico.</p>
+<p>O menu de uma coleção tem <strong>Novo WebSocket ou SSE</strong>. Uma request de stream é um arquivo como qualquer outro (com <code>websocket: live</code> ou <code>sse: prices</code> como primeira chave) e abre numa aba com o mesmo layout de uma request. O seletor de método vira uma escolha <strong>WebSocket | SSE</strong>, o path vem depois do host da coleção (<code>https</code> vira <code>wss</code>, <code>http</code> vira <code>ws</code>) e as abas são Params, Headers, Auth, Opções (incluindo as do próprio stream: tamanho de mensagem, ping, ociosidade), <strong>Mensagens</strong>, Checks e Notas.</p>
+<p><strong>Conectar</strong> (Ctrl/Cmd+Enter) abre o stream e vira <strong>Desconectar</strong> enquanto ele está aberto. Logo abaixo, o painel do stream mostra uma pílula de status (<code>connecting…</code>, <code>open 101</code>, <code>closed 1000</code>), um relógio, quantas mensagens foram em cada direção e três abas:</p>
 <ul>
-<li><strong>Você e sua equipe:</strong> um body de arquivo sai sem perguntar só de <code>ultraman/files/</code>; qualquer outro arquivo pergunta antes. Veja <a href="security.html#files">arquivos</a>.</li>
-<li><strong>Você:</strong> um redirect para outra origem não leva suas credenciais junto. Veja <a href="security.html#redirects">redirects</a>.</li>
+<li><strong>Mensagens</strong>: uma linha por mensagem, a mais nova embaixo, com a direção (↓ recebida, ↑ enviada), a hora, o tamanho e, no SSE, o nome do <code>event</code> e o <code>id</code>. Clique numa linha para abri-la no visualizador do body. <strong>Filtrar</strong> esconde linhas pelo texto (ou por <code>event:price</code> no SSE), <strong>Pausar</strong> congela a lista enquanto as mensagens continuam sendo contadas e <strong>Limpar</strong> esvazia a lista.</li>
+<li><strong>Handshake</strong>: os headers do servidor (e o protocolo que ele escolheu).</li>
+<li><strong>Checks</strong>: os checks da request, executados sobre o handshake (<code>status</code>, um header).</li>
+</ul>
+<p>Num WebSocket, o <strong>compositor</strong> embaixo da lista envia uma mensagem (texto ou JSON, Ctrl+Enter). Ele pode usar uma das <strong>mensagens salvas</strong> da request, e <strong>Salvar como mensagem</strong> adiciona o texto do compositor à request. Uma mensagem com <code>{{secrets.x}}</code> sai com o valor e aparece como <code>[secret:x]</code>. Quando o cofre é bloqueado, um stream que usou um segredo também é fechado.</p>
+<p>O painel guarda as 500 mensagens mais recentes, cada uma cortada em 64 KB. Quando o stream termina (por você, pelo servidor ou por um erro), a sessão inteira vira <strong>uma entrada no Histórico</strong>: o handshake, as mensagens e como terminou.</p>
+<p>Numa execução de coleção, em <code>ultraman run --collection</code> e quando um agente a envia, uma request de stream conecta, confere o handshake, envia as mensagens salvas, <strong>escuta</strong> por <code>listen</code> ms (2 segundos, a não ser que o arquivo diga outra coisa) e fecha. Um stream em silêncio não é uma falha. Para esperar uma mensagem específica e conferi-la, coloque o stream numa <a href="pipelines.html#stream-steps">pipeline</a>.</p>
+<p>O que não tem aqui: uma request de stream não tem mock, nem mudanças de contrato, nem reconexão (se o servidor derrubar você, clique em Conectar de novo), e Socket.IO e WebSockets comprimidos (deflate) não são suportados (<a href="coming-from.html">Se você vem de outra ferramenta</a>).</p>
+<h2 id="graphql">GraphQL <a class="self" href="#graphql" aria-label="GraphQL">#</a></h2>
+<p>Envie queries e mutations GraphQL com autocompletar a partir do schema da API, e pegue os erros que um servidor devolve junto com um 200.</p>
+<p>O menu de uma coleção tem <strong>Nova request GraphQL</strong>, e o Body de qualquer request tem um modo <strong>GraphQL</strong> (sempre POST). Nele ficam a query, as <strong>Variáveis</strong> (JSON, com <code>{{variáveis}}</code> dentro das strings, como num body JSON), um seletor de operação quando a query define mais de uma e <strong>Uma resposta com erros passa</strong>.</p>
+<p><strong>O schema.</strong> <strong>Carregar schema</strong> pede o schema ao servidor enviando a própria request com a query de introspecção: mesma URL, headers, auth e segredos, e as mesmas perguntas de um envio. Com o schema, o editor completa campos e argumentos, mostra a descrição do campo na lista de sugestões e marca o que não existe no schema. <strong>Salvar no projeto</strong> guarda o schema como <code>ultraman/files/&lt;coleção&gt;.graphql</code> e o registra no <code>collection.yaml</code>: todas as requests GraphQL daquela coleção passam a usá-lo, e o git o compartilha com a sua equipe. Um schema só carregado dura até você fechar a janela. Sem schema, o editor ainda destaca a sintaxe da query.</p>
+<p><strong>Erros.</strong> Um servidor GraphQL muitas vezes responde 200 com uma lista <code>errors</code>. A resposta mostra <code>1 erro GraphQL</code> (ou <code>N erros GraphQL</code>) ao lado do status e lista cada mensagem, com o path dela, acima do body. Numa execução, numa execução de coleção e sob carga, um passo cuja resposta tem <code>errors</code> <strong>falha</strong> com a primeira mensagem, seja qual for o status; sob carga, cada uma dessas respostas conta como uma request com falha. <strong>Uma resposta com erros passa</strong> (<code>allowErrors: true</code>) serve para uma API que devolve dados parciais de propósito.</p>
+<p>A query é enviada como está escrita: <code>{{...}}</code> dentro dela não é substituído, então os valores vão nas variáveis. A aba <strong>Enviado</strong> e o Histórico mostram a query como você escreveu e as variáveis como saíram (um segredo como <code>[secret:x]</code>).</p>
+<p><strong>Subscriptions.</strong> Quando a operação é uma <code>subscription</code>, a request mostra <strong>Assinar</strong> no lugar de Enviar. O Ultraman abre um WebSocket que fala <code>graphql-transport-ws</code> na URL da request (<code>https</code> vira <code>wss</code>), ou no path <code>graphql: { subscriptions: /graphql/ws }</code> da coleção quando o servidor atende as subscriptions em outro lugar, e inicia a subscription. O painel do stream mostra cada <code>next</code> como uma linha, em vermelho se vier com erros. <strong>Cancelar assinatura</strong> encerra a subscription e mantém o socket aberto; <strong>Desconectar</strong> fecha o socket. A sessão vira uma entrada no Histórico. Numa execução de coleção e quando um agente a envia, uma subscription escuta por 2 segundos e fecha, e os checks dela leem o primeiro <code>next</code>. Para esperar eventos específicos e conferi-los, use <a href="pipelines.html#subscriptions">passos subscribe</a>.</p>
+<p>Ainda não há: GraphQL sobre SSE (graphql-sse), o protocolo antigo <code>subscriptions-transport-ws</code>, requests GET e persisted queries, batching e upload de arquivos.</p>
+<h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
+<p>A <a href="security.html#promise">promessa</a> vale aqui como em qualquer lugar. O que esta parte acrescenta:</p>
+<ul>
+<li><strong>Você e sua equipe:</strong> um body de arquivo só sai sem perguntar se vier de <code>ultraman/files/</code>; qualquer outro arquivo pede antes. Veja <a href="security.html#files">arquivos</a>.</li>
+<li><strong>Você:</strong> um redirect para outra origem não leva as suas credenciais junto. Veja <a href="security.html#redirects">redirects</a>.</li>
 <li><strong>Sua equipe:</strong> o histórico é pessoal e nunca é sincronizado, então respostas com dados reais ficam na sua máquina. Veja <a href="security.html#stored">onde as coisas ficam guardadas</a>.</li>
+<li><strong>Você:</strong> a URL de um contrato é buscada como as próprias requests da coleção: os segredos dela pedem o mesmo sim, ela é recusada numa pasta em que você não confiou, e os avisos só citam a resposta depois que os segredos foram ocultados. Um arquivo de contrato só é lido de <code>ultraman/files/</code>, nunca através de um link. Veja <a href="security.html#consent">consentimento</a>.</li>
+<li><strong>Você:</strong> as variáveis GraphQL são um body: um segredo nelas pede o mesmo sim de qualquer outro lugar e aparece como <code>[secret:x]</code>, e <strong>Carregar schema</strong> é um envio, com as mesmas perguntas. Veja <a href="security.html#consent">consentimento</a>.</li>
+<li><strong>Sua equipe:</strong> um schema só é lido de <code>ultraman/files/</code>, nunca através de um link, e as descrições dele e as mensagens de erro de um servidor aparecem como texto simples. Veja <a href="security.html#files">arquivos</a>.</li>
+<li><strong>Você:</strong> as variáveis e o payload de <code>connection_init</code> de uma subscription são mensagens: um segredo neles pede o mesmo sim de um header, aparece como <code>[secret:x]</code> e, se o servidor devolver esse segredo, ele vem ocultado. Veja <a href="security.html#consent">consentimento</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="security.html"><small>Anterior</small><span>Segurança e consentimento</span></a><a rel="next" href="pipelines.html"><small>Seguinte</small><span>Pipelines</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Entornos y secretos · Documentación de Ultraman</title>
-<meta name="description" content="Los entornos hacen que las mismas requests corran contra local, staging o producción, y los secretos mantienen tokens y contraseñas en tu computadora…">
+<meta name="description" content="Con los entornos, las mismas requests se ejecutan contra local, staging o producción; con los secretos, los tokens y las contraseñas se quedan en tu…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/es/environments.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/environments.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/environments.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -42,7 +42,7 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
@@ -63,58 +63,58 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="environments">Entornos y secretos <a class="self" href="#environments" aria-label="Entornos y secretos">#</a></h1>
-<p>Los entornos hacen que las mismas requests corran contra local, staging o producción, y los secretos mantienen tokens y contraseñas en tu computadora, cifrados, fuera de git y fuera de todo log.</p>
+<p>Con los entornos, las mismas requests se ejecutan contra local, staging o producción; con los secretos, los tokens y las contraseñas se quedan en tu computadora, cifrados, fuera de git y fuera de cualquier log.</p>
 <h2 id="envs">Entornos <a class="self" href="#envs" aria-label="Entornos">#</a></h2>
-<p>Un entorno (local, staging, producción) es un conjunto de valores: <code>api: https://staging.example.com</code>. Las requests los leen como <code>{{env.api}}</code>. Elegís uno con el selector de arriba; <strong>Entornos…</strong>, al final de ese selector, los edita: los entornos a la izquierda (<strong>Nuevo entorno</strong>, <strong>Renombrar</strong>, <strong>Duplicar</strong>, <strong>Borrar</strong>), las variables del elegido a la derecha.</p>
+<p>Un entorno (local, staging, producción) es un conjunto de valores: <code>api: https://staging.example.com</code>. Las requests los leen como <code>{{env.api}}</code>. Haz clic en el entorno de arriba para verlo y elegir otro de su lista; <strong>Entornos…</strong>, al final de esa lista, abre su edición en una pantalla propia: los entornos a la izquierda (<strong>Nuevo entorno</strong>) y el elegido a la derecha, con sus variables y sus opciones de request. Su encabezado tiene el botón para volver a donde estabas, <strong>Guardar</strong> (con un punto mientras haya cambios sin guardar) y <strong>⋯</strong> con <strong>Renombrar…</strong>, <strong>Duplicar…</strong> y <strong>Borrar entorno…</strong>.</p>
 <p>Cada valor tiene dos mitades:</p>
 <ul>
-<li>el valor <strong>compartido</strong>, en <code>ultraman/envs/&lt;nombre&gt;.yaml</code>, sincronizado por git;</li>
-<li>el valor de <strong>esta máquina</strong>, en <code>ultraman/local/envs/&lt;nombre&gt;.yaml</code>, que nunca se sincroniza. Usalo para lo que solo aplica a vos.</li>
+<li>el valor <strong>compartido</strong>, en <code>ultraman/envs/&lt;nombre&gt;.yaml</code>, que se sincroniza por git;</li>
+<li>el valor de <strong>esta máquina</strong>, en <code>ultraman/local/envs/&lt;nombre&gt;.yaml</code>, que nunca se sincroniza. Úsalo para lo que solo te aplica a ti.</li>
 </ul>
-<p>Un valor de máquina vacío significa &quot;igual que el compartido&quot;. Uno con valor gana sobre el compartido en todos lados: la ventana, la CLI y el agente. Si un archivo de entorno no se puede leer, el panel muestra el error y te deja arreglarlo como texto.</p>
+<p>Un valor de máquina vacío significa &quot;igual que el compartido&quot;. Si tiene contenido, tiene prioridad sobre el compartido en todas partes: la ventana, la CLI y el agente. Si un archivo de entorno no se puede interpretar, el panel muestra el error y te deja corregirlo como texto.</p>
 <h2 id="dotenv">Importar un archivo .env <a class="self" href="#dotenv" aria-label="Importar un archivo .env">#</a></h2>
-<p><strong>Importar .env…</strong> lee un archivo <code>.env</code> (<code>KEY=value</code>, <code>export</code>, comillas, comentarios) a los valores de esta máquina. Nada llega al archivo compartido, y por lo tanto nada llega a git, hasta que lo pasás vos. Una variable que es un secreto conserva el valor que tiene en la bóveda.</p>
-<h2 id="eye">Ver de dónde viene un valor <a class="self" href="#eye" aria-label="Ver de dónde viene un valor">#</a></h2>
-<p>El ojo al lado del selector de entorno abre una mirada rápida al entorno elegido. Cada variable dice de dónde viene su valor: <code>compartido</code>, <code>local</code>, <code>bóveda</code> o <code>sesión</code>. Un secreto siempre se muestra como <code>●●●●</code>.</p>
-<p>Más abajo, la <strong>sesión</strong> lista cada valor que extrajeron los pasos (o que escribiste en un diálogo), qué paso lo hizo y qué pasos lo usan. El lápiz edita el valor de esta máquina (vacío vuelve al compartido). Se puede borrar una fila de la sesión, o la sesión entera; vuelve cuando corre de nuevo el paso que la produce. La sesión no se guarda: cerrar la ventana la descarta.</p>
-<p>Cuando una request necesita un valor que el entorno no tiene, un diálogo lo pide. Un valor común se puede guardar solo para esta sesión, en el archivo compartido del entorno (va a git) o en esta máquina. Un secreto tiene una casilla <strong>Guardar en este equipo</strong>: tildada, va a la bóveda y nunca a un archivo.</p>
-<h2 id="options">Opciones de las requests <a class="self" href="#options" aria-label="Opciones de las requests">#</a></h2>
-<p>Un entorno también puede llevar <strong>opciones de request</strong>: timeouts, redirecciones, HTTP/2, http plano para un servicio interno sin TLS, o una CA propia para un servidor con su propio certificado. Viven bajo <code>options:</code> en el archivo del entorno, compartido o solo de esta máquina, y nunca como variable:</p>
+<p><strong>Importar .env…</strong> lee un archivo <code>.env</code> (<code>KEY=value</code>, <code>export</code>, comillas, comentarios) y lo carga en los valores de esta máquina. Nada llega al archivo compartido, y por tanto nada llega a git, hasta que tú lo pases ahí. Una variable que es un secreto conserva el valor que tiene en la bóveda.</p>
+<h2 id="eye">De dónde viene cada valor <a class="self" href="#eye" aria-label="De dónde viene cada valor">#</a></h2>
+<p>Al hacer clic en el entorno de arriba se abre una vista rápida. Cada variable indica de dónde viene su valor: <code>compartido</code>, <code>local</code>, <code>bóveda</code> o <code>sesión</code>. Un secreto siempre se muestra como <code>●●●●</code>.</p>
+<p>Debajo, la <strong>sesión</strong> lista cada valor que extrajeron los pasos (o que escribiste en un diálogo), qué paso lo generó y qué pasos lo usan. El lápiz edita el valor de esta máquina (si lo dejas vacío, vuelve al compartido). Puedes borrar una fila de la sesión, o la sesión entera; el valor vuelve cuando se ejecuta de nuevo el paso que lo genera. La sesión no se guarda: al cerrar la ventana, se pierde.</p>
+<p>Cuando una request necesita un valor que el entorno no tiene, un diálogo te lo pide. Un valor normal se puede guardar solo para esta sesión, en el archivo compartido del entorno (va a git) o en esta máquina. Un secreto tiene una casilla <strong>Guardar en este equipo</strong>: si la marcas, va a la bóveda y nunca a un archivo.</p>
+<h2 id="options">Opciones de request <a class="self" href="#options" aria-label="Opciones de request">#</a></h2>
+<p>Un entorno también puede llevar <strong>opciones de request</strong>: timeouts, redirecciones, HTTP/2, HTTP plano para un servicio interno sin TLS o una CA propia para un servidor con su propio certificado. Van bajo <code>options:</code> en el archivo del entorno, el compartido o solo el de esta máquina, y nunca como variable:</p>
 <pre tabindex="0"><code># ultraman/envs/internal.yaml
 api: http://billing.internal:8080
 options:
   plainHttp: true</code></pre>
-<p>Las opciones propias de una request ganan sobre las de su pipeline (o colección), que ganan sobre las del entorno; la pestaña Opciones dice de dónde viene un valor heredado. El http plano y una CA propia bajan la protección de TLS: la ventana te avisa cuando los activás. Un archivo de CA fuera del proyecto pregunta antes de su primer uso, como cualquier archivo.</p>
+<p>Las opciones propias de una request tienen prioridad sobre las de su pipeline (o su colección), y estas sobre las del entorno; la pestaña Opciones indica de dónde viene un valor heredado. Tanto el HTTP plano como una CA propia reducen la protección de TLS: la ventana te avisa cuando los activas. Un archivo de CA que esté fuera del proyecto pregunta antes de usarse por primera vez, como cualquier archivo.</p>
 <h2 id="secrets">Secretos <a class="self" href="#secrets" aria-label="Secretos">#</a></h2>
 <p>Un secreto es un valor que no debe salir de tu computadora: un token, una contraseña, una API key. Las requests lo usan como <code>{{secrets.token}}</code>, y su valor:</p>
 <ul>
-<li>vive en una <strong>bóveda</strong> en tu carpeta de usuario, cifrada con tu <strong>contraseña maestra</strong>, nunca en el repo;</li>
-<li>se muestra como <code>[secret:token]</code> en respuestas, historial, corridas, exportaciones y logs;</li>
-<li>va solo a hosts a los que dijiste que sí: la primera vez que un secreto iría a un host nuevo, Ultraman pregunta (ver <a href="security.html#consent">Seguridad y consentimiento</a>).</li>
+<li>se guarda en una <strong>bóveda</strong> en tu carpeta de usuario, cifrada con tu <strong>contraseña maestra</strong>, nunca en el repo;</li>
+<li>se muestra como <code>[secret:token]</code> en respuestas, historial, ejecuciones, exportaciones y logs;</li>
+<li>solo va a los hosts a los que les diste el sí: la primera vez que un secreto fuera a ir a un host nuevo, Ultraman te pregunta (consulta <a href="security.html#consent">Seguridad y consentimiento</a>).</li>
 </ul>
-<p>Un valor de entorno puede apuntar a un secreto (<code>token: &quot;{{secrets.token}}&quot;</code>), así cada entorno puede usar el suyo. En el panel de Entornos, convertí una variable en secreto y su valor pasa a la bóveda después de un aviso; el YAML conserva solo la referencia. El nombre en la bóveda es por defecto <code>&lt;entorno&gt;.&lt;variable&gt;</code> (por ejemplo <code>staging.token</code>) y lo podés cambiar. Tus compañeros cargan sus propios valores en sus propias bóvedas. <strong>Renombrar</strong> mueve los nombres de la bóveda que siguen al nombre del entorno cuando la bóveda está abierta.</p>
-<p>La primera vez que una corrida necesita un secreto, la ventana pide la contraseña maestra: para crearla, o para abrir la bóveda. La bóveda se vuelve a cerrar después de 30 minutos sin uso; el candado de arriba la cierra ya, cambia la contraseña o la olvida. Cómo se cifra y qué protege y qué no: <a href="security.html#vault">la bóveda</a>.</p>
-<aside class="note"><p>Si olvidás la contraseña maestra, los secretos no se pueden recuperar. <strong>¿La olvidaste?</strong> borra todos los secretos guardados después de que escribas la confirmación; cargalos de nuevo después.</p></aside>
+<p>Un valor de entorno puede apuntar a un secreto (<code>token: &quot;{{secrets.token}}&quot;</code>), así cada entorno puede usar el suyo. En el panel de Entornos, convierte una variable en secreto y, tras un aviso, su valor pasa a la bóveda; el YAML solo conserva la referencia. El nombre en la bóveda es <code>&lt;entorno&gt;.&lt;variable&gt;</code> por defecto (por ejemplo <code>staging.token</code>), y puedes cambiarlo. Cada compañero de equipo guarda sus propios valores en su propia bóveda. <strong>Renombrar</strong> mueve los nombres de la bóveda que siguen el nombre del entorno, si la bóveda está abierta.</p>
+<p>La primera vez que una ejecución necesita un secreto, la ventana te pide la contraseña maestra: para crearla o para abrir la bóveda. La bóveda se vuelve a bloquear tras 30 minutos sin uso; el candado de arriba la bloquea al momento, cambia la contraseña o la olvida. Cómo se cifra y qué protege y qué no: <a href="security.html#vault">la bóveda</a>.</p>
+<aside class="note"><p>Si olvidas la contraseña maestra, los secretos no se pueden recuperar. <strong>¿La olvidaste?</strong> borra todos los secretos guardados después de que escribas la confirmación; después, vuelve a cargarlos.</p></aside>
 <h3 id="remember">Recordar en este equipo <a class="self" href="#remember" aria-label="Recordar en este equipo">#</a></h3>
-<p><strong>Recordar en este equipo</strong> viene apagado y solo existe en la ventana de escritorio. Guarda la clave de la bóveda en el llavero de tu sistema para que la bóveda se abra sin pedirte nada. Cambia seguridad por comodidad: en Windows y Linux otras apps que corrés pueden leer la entrada del llavero; en macOS el Llavero te pregunta antes. La casilla lo dice. La terminal nunca usa esta clave: la CLI pide ella misma la contraseña maestra.</p>
+<p><strong>Recordar en este equipo</strong> viene desactivado y solo existe en la ventana de escritorio. Guarda la clave de la bóveda en el llavero del sistema para que la bóveda se abra sin preguntarte. Cambia seguridad por comodidad: en Windows y Linux, otras aplicaciones que ejecutes pueden leer esa entrada del llavero; en macOS, el Llavero te pregunta antes. La casilla lo advierte. La terminal nunca usa esta clave: la CLI pide la contraseña maestra por su cuenta.</p>
 <h2 id="ci-secrets">En CI <a class="self" href="#ci-secrets" aria-label="En CI">#</a></h2>
-<p>Un runner no tiene bóveda: pasá cada secreto como variable de entorno, <code>ULTRAMAN_SECRET_TOKEN</code> para <code>token</code> (en mayúsculas, todo lo que no sea letra o dígito pasa a <code>_</code>). Ver <a href="cli.html">la terminal</a> y <a href="ci.html#local-values">CI</a> para los valores que solo existen en una máquina.</p>
+<p>Un runner no tiene bóveda: pasa cada secreto como variable de entorno, <code>ULTRAMAN_SECRET_TOKEN</code> para <code>token</code> (en mayúsculas; todo lo que no sea letra o dígito se convierte en <code>_</code>). Consulta <a href="cli.html">la terminal</a> y <a href="ci.html#local-values">CI</a> para los valores que solo existen en una máquina.</p>
 <h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
-<p>La <a href="security.html#promise">promesa</a> rige acá como en todos lados. Lo que suma esta parte:</p>
+<p>La <a href="security.html#promise">promesa</a> rige aquí como en todas partes. Esto es lo que agrega esta parte:</p>
 <ul>
-<li><strong>Tu equipo:</strong> la mitad compartida de un entorno está en git; los valores de esta máquina y la bóveda no (<a href="security.html#stored">qué se guarda</a>).</li>
-<li><strong>CI:</strong> los secretos vienen de variables <code>ULTRAMAN_SECRET_*</code>, así que nada sensible vive en el repo (<a href="security.html#ci">CI</a>).</li>
+<li><strong>Tu equipo:</strong> la mitad compartida de un entorno está en git; los valores de esta máquina y la bóveda, no (<a href="security.html#stored">qué se guarda</a>).</li>
+<li><strong>CI:</strong> los secretos vienen de variables <code>ULTRAMAN_SECRET_*</code>, así que en el repo no hay nada sensible (<a href="security.html#ci">CI</a>).</li>
 </ul>
 <nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="importing.html"><small>Siguiente</small><span>Importar</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

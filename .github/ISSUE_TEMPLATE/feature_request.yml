@@ -1,0 +1,31 @@
+name: Feature request
+description: An idea for Ultraman
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. English, Spanish or Portuguese are all fine.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The situation first, then what gets in the way.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you imagine it working. It is fine if you only have the problem.
+  - type: textarea
+    id: workaround
+    attributes:
+      label: What you do today
+  - type: checkboxes
+    id: secrets
+    attributes:
+      label: Before you send
+      options:
+        - label: I removed secrets and tokens from what I paste.
+          required: true

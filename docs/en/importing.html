@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Importing · Ultraman docs</title>
-<meta name="description" content="The buttons next to New collection (Requests area) bring in what you already have: a Postman export, an OpenAPI spec, a JMeter plan, an Artillery script or a…">
+<meta name="description" content="The Import menu next to New collection (Requests area) brings in what you already have: a Postman export, an OpenAPI spec, a JMeter plan or an Artillery…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/en/importing.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/importing.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/importing.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/importing.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -70,17 +70,26 @@
 </nav>
 <main id="docs-main">
 <h1 id="importing">Importing <a class="self" href="#importing" aria-label="Importing">#</a></h1>
-<p>The buttons next to <strong>New collection</strong> (Requests area) bring in what you already have: a Postman export, an OpenAPI spec, a JMeter plan, an Artillery script or a browser recording, so you don&#39;t start from zero. Nothing in the project is overwritten: a name that&#39;s taken gets <code>-2</code>. At the end, a summary says what came in, what was adapted, what needs a hand, and which files were skipped.</p>
+<p>The <strong>Import</strong> menu next to <strong>New collection</strong> (Requests area) brings in what you already have: a Postman export, an OpenAPI spec, a JMeter plan or an Artillery script; the one next to <strong>New pipeline</strong> (Pipelines area), a browser recording. So you don&#39;t start from zero. Nothing in the project is overwritten: a name that&#39;s taken gets <code>-2</code>. At the end, a summary says what came in, what was adapted, what needs a hand, and which files were skipped.</p>
 <h2 id="postman">From Postman <a class="self" href="#postman" aria-label="From Postman">#</a></h2>
-<p>The import button takes collections (v2.0, v2.1), environments and globals exported from Postman. Folders, requests, bodies, auth (bearer, basic, API key), variables and descriptions come in as they were. Environment secrets go to the vault, never to a file. Common test scripts (status, equals, includes, response time, <code>pm.environment.set</code>) become checks; the rest stays in the request&#39;s <strong>Notes</strong>.</p>
+<p><strong>Import › Postman</strong> takes collections (v2.0, v2.1), environments and globals exported from Postman. Folders, requests, bodies (GraphQL ones with their query and variables), auth (bearer, basic, API key), variables and descriptions come in as they were. Environment secrets go to the vault, never to a file. Common test scripts (status, equals, includes, response time, <code>pm.environment.set</code>) become checks; the rest stays in the request&#39;s <strong>Notes</strong>.</p>
 <h2 id="openapi">From OpenAPI <a class="self" href="#openapi" aria-label="From OpenAPI">#</a></h2>
-<p><strong>API</strong> takes an OpenAPI 3 document (JSON or YAML) and makes a collection: a request per operation, with example bodies and contract checks (status and response shape).</p>
+<p><strong>Import › OpenAPI</strong> takes an OpenAPI 3 document (JSON or YAML) and makes a collection: a request per operation, with example bodies and contract checks (status and response shape).</p>
+<h2 id="openapi-update">Update from a newer spec <a class="self" href="#openapi-update" aria-label="Update from a newer spec">#</a></h2>
+<p>When the API&#39;s spec changes (a team that generates it from the code regenerates it often), don&#39;t import it again: open the collection&#39;s menu › <strong>Update from the spec…</strong> and pick the newer document. A preview says what changes (<code>2 new · 5 updated · 1 gone · 0 need a hand</code>), each request unfolds into its changes, and nothing is written until you <strong>Apply</strong>.</p>
+<p>Each operation keeps its request file, so the request keeps its history, the drift baseline and the mock&#39;s answers. Ultraman finds the request by the operation the import stored in it (<code>operation:</code> in the file), then by its <code>operationId</code> (a path that moved is followed), then by method and path. Two requests that claim one operation are listed for you to sort out, never guessed.</p>
+<ul>
+<li><strong>The spec changes:</strong> the checks it wrote (marked <code>source: openapi</code>), the description, the path when the <code>operationId</code> moved, and new parameters (with their example values).</li>
+<li><strong>You keep:</strong> the name, body, headers, auth, options, your own checks, notes and the values you gave parameters.</li>
+<li><strong>New operations</strong> come in as the import writes them. <strong>Operations gone from the spec</strong> stay, with a line in their notes and a mark in the tree; delete them yourself if you want.</li>
+</ul>
+<p>A collection imported before this existed is matched by method and path; the schema checks that import copied are listed, and the preview offers to remove them.</p>
 <h2 id="jmeter">From JMeter <a class="self" href="#jmeter" aria-label="From JMeter">#</a></h2>
-<p><strong>JMX</strong> takes a <code>.jmx</code> plan: a pipeline per Thread Group, a setup block from a Once Only Controller, an environment from the User Defined Variables, and a load test with a scenario per group. What doesn&#39;t translate (scripts, some controllers) is listed as &quot;needs a hand&quot; with its text.</p>
+<p><strong>Import › JMeter (.jmx)</strong> takes a <code>.jmx</code> plan: a pipeline per Thread Group, a setup block from a Once Only Controller, an environment from the User Defined Variables, and a load test with a scenario per group. What doesn&#39;t translate (scripts, some controllers) is listed as &quot;needs a hand&quot; with its text.</p>
 <h2 id="artillery">From Artillery <a class="self" href="#artillery" aria-label="From Artillery">#</a></h2>
-<p><strong>ART</strong> takes an Artillery script (<code>.yml</code> or <code>.json</code>): pipelines, before/after blocks, environments and a load test with its phases as stages and weights. Processors and hooks are listed, not run.</p>
+<p><strong>Import › Artillery</strong> takes an Artillery script (<code>.yml</code> or <code>.json</code>): pipelines, before/after blocks, environments and a load test with its phases as stages and weights. Processors and hooks are listed, not run.</p>
 <h2 id="from-traffic">From recorded traffic <a class="self" href="#from-traffic" aria-label="From recorded traffic">#</a></h2>
-<p><strong>From a HAR file…</strong> (Pipelines area) turns a browser recording into a pipeline. In Chrome or Firefox: DevTools › Network › right click › <strong>Save all as HAR</strong>. Ultraman keeps the API calls, finds the values one response gives the next (an id, a token) and makes them visible extracts, so the pipeline works again instead of replaying old values.</p>
+<p><strong>Import › From a HAR file…</strong> (Pipelines area) turns a browser recording into a pipeline. In Chrome or Firefox: DevTools › Network › right click › <strong>Save all as HAR</strong>. Ultraman keeps the API calls, finds the values one response gives the next (an id, a token) and makes them visible extracts, so the pipeline works again instead of replaying old values.</p>
 <aside class="note"><p>A recording can contain passwords and tokens: Ultraman replaces the ones it knows from your vault with <code>{{secrets.x}}</code>, but read the proposal before saving.</p></aside>
 <h2 id="never">What an import never does <a class="self" href="#never" aria-label="What an import never does">#</a></h2>
 <p>An import only reads the file you chose and writes files into your project. It never sends a request, never reads any other file on your disk, never fetches an address named inside the file (an OpenAPI <code>$ref</code> to a URL is noted, not followed), never expands XML entities in a <code>.jmx</code> and never runs a script: Postman test scripts, JMeter processors and Artillery hooks are listed under &quot;needs a hand&quot; with their text, and only the common, plain cases become checks.</p>
@@ -89,11 +98,12 @@
 <ul>
 <li><strong>You:</strong> importing sends nothing and runs nothing; the first request goes out only when you send or run it, with the usual yes for any secret. See <a href="security.html#consent">consent</a>.</li>
 <li><strong>You and your team:</strong> secret values in a Postman environment go to the vault, never to a file in the project. In a HAR, values that match your vault become <code>{{secrets.x}}</code>; read the proposal before saving, since a recording can hold passwords you never stored. See <a href="security.html#vault">the vault</a>.</li>
+<li><strong>You:</strong> Update from the spec writes only inside that collection&#39;s folder and never deletes a request or its history; an open request with unsaved changes is named before you apply.</li>
 <li><strong>You:</strong> a pipeline that came from outside still can&#39;t read a secret into a check, or send a file from outside <code>ultraman/files/</code> unasked. See <a href="security.html#files">files</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="environments.html"><small>Previous</small><span>Environments and secrets</span></a><a rel="next" href="mock.html"><small>Next</small><span>Mock server</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

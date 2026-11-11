@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Ambientes e segredos · Documentação do Ultraman</title>
-<meta name="description" content="Os ambientes deixam as mesmas requests rodarem contra local, staging ou produção, e os segredos mantêm tokens e senhas no seu computador, criptografados, fora…">
+<meta name="description" content="Com os ambientes, as mesmas requests executam contra local, staging ou produção; os segredos guardam tokens e senhas no seu computador, criptografados, fora…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/pt/environments.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/environments.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/environments.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -28,7 +28,7 @@
 <details class="menu"><summary>Menu</summary>
 <nav aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -40,16 +40,16 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
 <nav class="side" aria-label="Documentação">
 <ul>
-<li><a href="highlights.html">O que o Ultraman te dá</a></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a></li>
 <li><a href="why.html">Por que o Ultraman</a></li>
 <li><a href="getting-started.html">Primeiros passos</a></li>
 <li><a href="security.html">Segurança e consentimento</a></li>
@@ -61,60 +61,60 @@
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
 <li><a href="ci.html">CI</a></li>
-<li><a href="team.html">Trabalhando em time</a></li>
+<li><a href="team.html">Trabalho em equipe</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Se você vem de outra ferramenta</a></li>
+<li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="environments">Ambientes e segredos <a class="self" href="#environments" aria-label="Ambientes e segredos">#</a></h1>
-<p>Os ambientes deixam as mesmas requests rodarem contra local, staging ou produção, e os segredos mantêm tokens e senhas no seu computador, criptografados, fora do git e de todo log.</p>
+<p>Com os ambientes, as mesmas requests executam contra local, staging ou produção; os segredos guardam tokens e senhas no seu computador, criptografados, fora do git e de qualquer log.</p>
 <h2 id="envs">Ambientes <a class="self" href="#envs" aria-label="Ambientes">#</a></h2>
-<p>Um ambiente (local, staging, produção) é um conjunto de valores: <code>api: https://staging.example.com</code>. As requests os leem como <code>{{env.api}}</code>. Escolha um no seletor no alto; <strong>Ambientes…</strong> no fim desse seletor os edita: os ambientes à esquerda (<strong>Novo ambiente</strong>, <strong>Renomear</strong>, <strong>Duplicar</strong>, <strong>Apagar</strong>), as variáveis do escolhido à direita.</p>
+<p>Um ambiente (local, staging, produção) é um conjunto de valores: <code>api: https://staging.example.com</code>. As requests leem esses valores como <code>{{env.api}}</code>. Clique no ambiente no topo para ver os valores e escolher outro na lista; <strong>Ambientes…</strong>, no fim da lista, abre a edição numa tela própria: os ambientes à esquerda (<strong>Novo ambiente</strong>) e o escolhido à direita, com as variáveis e as opções de request dele. O cabeçalho tem o caminho de volta para onde você estava, <strong>Salvar</strong> (com um ponto enquanto houver algo não salvo) e <strong>⋯</strong> com <strong>Renomear…</strong>, <strong>Duplicar…</strong> e <strong>Apagar ambiente…</strong>.</p>
 <p>Cada valor tem duas metades:</p>
 <ul>
 <li>o valor <strong>compartilhado</strong>, em <code>ultraman/envs/&lt;nome&gt;.yaml</code>, sincronizado pelo git;</li>
-<li>o valor <strong>desta máquina</strong>, em <code>ultraman/local/envs/&lt;nome&gt;.yaml</code>, nunca sincronizado. Use para o que vale só para você.</li>
+<li>o valor <strong>desta máquina</strong>, em <code>ultraman/local/envs/&lt;nome&gt;.yaml</code>, que nunca é sincronizado. Use-o para o que só vale para você.</li>
 </ul>
-<p>Um valor da máquina vazio quer dizer &quot;igual ao compartilhado&quot;. Um com valor vence o compartilhado em todo lugar: a janela, a CLI e o agente. Se um arquivo de ambiente não for lido, o painel mostra o erro e deixa você corrigi-lo como texto.</p>
+<p>Um valor da máquina vazio significa &quot;igual ao compartilhado&quot;. Se tiver valor, ele prevalece sobre o compartilhado em todo lugar: na janela, na CLI e no agente. Se um arquivo de ambiente não puder ser interpretado, o painel mostra o erro e deixa você corrigi-lo como texto.</p>
 <h2 id="dotenv">Importar um arquivo .env <a class="self" href="#dotenv" aria-label="Importar um arquivo .env">#</a></h2>
-<p><strong>Importar .env…</strong> lê um arquivo <code>.env</code> (<code>KEY=value</code>, <code>export</code>, aspas, comentários) para os valores desta máquina. Nada chega ao arquivo compartilhado, e portanto nada chega ao git, até você mesmo levá-lo para lá. Uma variável que é um segredo mantém o valor que tem no cofre.</p>
+<p><strong>Importar .env…</strong> lê um arquivo <code>.env</code> (<code>KEY=value</code>, <code>export</code>, aspas, comentários) para os valores desta máquina. Nada vai para o arquivo compartilhado, e portanto nada vai para o git, até você mesmo levar o valor para lá. Uma variável que é segredo mantém o valor que tem no cofre.</p>
 <h2 id="eye">Veja de onde vem um valor <a class="self" href="#eye" aria-label="Veja de onde vem um valor">#</a></h2>
-<p>O olho ao lado do seletor de ambiente abre uma espiada no ambiente escolhido. Cada variável diz de onde vem o seu valor: <code>shared</code>, <code>local</code>, <code>vault</code> ou <code>session</code>. Um segredo sempre aparece como <code>●●●●</code>.</p>
-<p>Embaixo, a <strong>sessão</strong> lista cada valor que os passos extraíram (ou que você digitou num diálogo), qual passo o fez e quais passos o usam. O lápis edita o valor desta máquina (vazio volta ao compartilhado). Uma linha da sessão, ou a sessão inteira, pode ser limpa; ela volta quando o passo que a produz roda de novo. A sessão não é salva: fechar a janela a descarta.</p>
-<p>Quando uma request precisa de um valor que o ambiente não tem, um diálogo o pede. Um valor comum pode ficar só para esta sessão, ser salvo no arquivo compartilhado do ambiente (vai para o git) ou ser salvo nesta máquina. Um segredo tem uma caixa <strong>Salvar nesta máquina</strong>: marcada, ele vai para o cofre e nunca para um arquivo.</p>
+<p>Clicar no ambiente no topo abre uma visão rápida dele. Cada variável mostra de onde vem o valor: <code>shared</code>, <code>local</code>, <code>vault</code> ou <code>session</code>. Um segredo sempre aparece como <code>●●●●</code>.</p>
+<p>Embaixo, a <strong>sessão</strong> lista cada valor que os passos extraíram (ou que você digitou num diálogo), qual passo o gerou e quais passos o usam. O lápis edita o valor desta máquina (vazio volta ao compartilhado). Dá para limpar uma linha da sessão ou a sessão inteira; o valor volta quando o passo que o gera executar de novo. A sessão não é salva: fechar a janela a descarta.</p>
+<p>Quando uma request precisa de um valor que o ambiente não tem, um diálogo pede esse valor. Um valor comum pode ficar só nesta sessão, ser salvo no arquivo compartilhado do ambiente (vai para o git) ou ser salvo nesta máquina. Um segredo tem a caixa <strong>Salvar nesta máquina</strong>: marcada, ele vai para o cofre e nunca para um arquivo.</p>
 <h2 id="options">Opções de request <a class="self" href="#options" aria-label="Opções de request">#</a></h2>
-<p>Um ambiente também pode levar <strong>opções de request</strong>: timeouts, redirecionamentos, HTTP/2, http simples para um serviço interno sem TLS, ou uma CA própria para um servidor com seu próprio certificado. Elas ficam em <code>options:</code> no arquivo do ambiente, compartilhado ou só desta máquina, e nunca como variável:</p>
+<p>Um ambiente também pode ter <strong>opções de request</strong>: timeouts, redirects, HTTP/2, http simples para um serviço interno sem TLS, ou uma CA própria para um servidor com certificado próprio. Elas ficam em <code>options:</code> no arquivo do ambiente, no compartilhado ou só no desta máquina, e nunca como variável:</p>
 <pre tabindex="0"><code># ultraman/envs/internal.yaml
 api: http://billing.internal:8080
 options:
   plainHttp: true</code></pre>
-<p>As opções da própria request vencem as da pipeline (ou da coleção), que vencem as do ambiente; a aba Opções diz de onde vem um valor herdado. Http simples e uma CA própria reduzem a proteção do TLS: a janela avisa quando você os liga. Um arquivo de CA fora do projeto pede permissão antes do primeiro uso, como qualquer arquivo.</p>
+<p>As opções da própria request prevalecem sobre as da pipeline (ou da coleção), que prevalecem sobre as do ambiente; a aba Opções diz de onde vem um valor herdado. Http simples e CA própria diminuem a proteção do TLS: a janela avisa quando você liga uma delas. Um arquivo de CA fora do projeto pede o seu sim antes do primeiro uso, como qualquer arquivo.</p>
 <h2 id="secrets">Segredos <a class="self" href="#secrets" aria-label="Segredos">#</a></h2>
-<p>Um segredo é um valor que não pode sair do seu computador: um token, uma senha, uma chave de API. As requests o usam como <code>{{secrets.token}}</code>, e o valor dele:</p>
+<p>Um segredo é um valor que não pode sair do seu computador: um token, uma senha, uma chave de API. As requests usam o segredo como <code>{{secrets.token}}</code>, e o valor dele:</p>
 <ul>
-<li>vive num <strong>cofre</strong> na sua pasta de usuário, criptografado com a sua <strong>senha mestra</strong>, nunca no repositório;</li>
-<li>aparece como <code>[secret:token]</code> nas respostas, no histórico, nas execuções, nas exportações e nos logs;</li>
-<li>vai só para hosts aos quais você disse sim: na primeira vez que um segredo for a um host novo, o Ultraman pergunta (veja <a href="security.html#consent">Segurança e consentimento</a>).</li>
+<li>fica num <strong>cofre</strong> na sua pasta de usuário, criptografado com a sua <strong>senha mestra</strong>, nunca no repositório;</li>
+<li>aparece como <code>[secret:token]</code> em respostas, histórico, execuções, exportações e logs;</li>
+<li>só vai para hosts aos quais você disse sim: na primeira vez que um segredo iria para um host novo, o Ultraman pergunta (veja <a href="security.html#consent">Segurança e consentimento</a>).</li>
 </ul>
-<p>Um valor de ambiente pode apontar para um segredo (<code>token: &quot;{{secrets.token}}&quot;</code>), então cada ambiente pode usar o seu. No painel de Ambientes, transforme uma variável em segredo e o valor dela vai para o cofre depois de um aviso; o YAML guarda só a referência. O nome no cofre é, por padrão, <code>&lt;ambiente&gt;.&lt;variável&gt;</code> (por exemplo <code>staging.token</code>) e você pode mudá-lo. Seus colegas definem os valores deles nos cofres deles. <strong>Renomear</strong> muda os nomes do cofre que seguem o nome do ambiente quando o cofre está aberto.</p>
-<p>Na primeira vez que uma execução precisa de um segredo, a janela pede a senha mestra: para criá-la, ou para desbloquear o cofre. O cofre bloqueia de novo depois de 30 minutos parado; o cadeado no alto o bloqueia agora, troca a senha ou a esquece. Como ele é criptografado e o que protege e não protege: <a href="security.html#vault">o cofre</a>.</p>
-<aside class="note"><p>Se você esquecer a senha mestra, os segredos não podem ser recuperados. <strong>Esqueceu?</strong> apaga todos os segredos salvos depois que você digita a confirmação; defina-os de novo em seguida.</p></aside>
+<p>Um valor de ambiente pode apontar para um segredo (<code>token: &quot;{{secrets.token}}&quot;</code>), e assim cada ambiente pode usar o seu. No painel de Ambientes, transforme uma variável em segredo e, depois de um aviso, o valor vai para o cofre; o YAML guarda só a referência. O nome no cofre é, por padrão, <code>&lt;ambiente&gt;.&lt;variável&gt;</code> (por exemplo, <code>staging.token</code>), e você pode mudá-lo. Seus colegas definem os próprios valores nos cofres deles. <strong>Renomear</strong> atualiza os nomes do cofre que acompanham o nome do ambiente, se o cofre estiver aberto.</p>
+<p>Na primeira vez que uma execução precisa de um segredo, a janela pede a senha mestra: para criá-la ou para desbloquear o cofre. O cofre bloqueia de novo depois de 30 minutos sem uso; o cadeado no topo bloqueia o cofre na hora, troca a senha ou a esquece. Como ele é criptografado e o que protege e o que não protege: <a href="security.html#vault">o cofre</a>.</p>
+<aside class="note"><p>Se você esquecer a senha mestra, não há como recuperar os segredos. <strong>Esqueceu?</strong> apaga todos os segredos salvos depois que você digita a confirmação; depois, defina-os de novo.</p></aside>
 <h3 id="remember">Lembrar neste computador <a class="self" href="#remember" aria-label="Lembrar neste computador">#</a></h3>
-<p><strong>Lembrar neste computador</strong> vem desligado e só existe na janela do desktop. Ele guarda a chave do cofre no chaveiro do seu sistema para que o cofre abra sem perguntar. Troca segurança por comodidade: no Windows e no Linux, outros apps que você executa podem ler a entrada do chaveiro; no macOS o Keychain pergunta antes. A caixa diz isso. O terminal nunca usa essa chave: a CLI pede a senha mestra por conta própria.</p>
+<p><strong>Lembrar neste computador</strong> vem desligado e só existe na janela do desktop. Ele guarda a chave do cofre no chaveiro do sistema, para o cofre abrir sem perguntar. É trocar segurança por comodidade: no Windows e no Linux, outros apps que você executa podem ler essa entrada do chaveiro; no macOS, o Keychain pergunta antes. A própria caixa avisa isso. O terminal nunca usa essa chave: a CLI pede a senha mestra por conta própria.</p>
 <h2 id="ci-secrets">No CI <a class="self" href="#ci-secrets" aria-label="No CI">#</a></h2>
-<p>Um runner não tem cofre: passe cada segredo como variável de ambiente, <code>ULTRAMAN_SECRET_TOKEN</code> para <code>token</code> (maiúsculas, tudo que não for letra ou dígito vira <code>_</code>). Veja <a href="cli.html">O terminal</a> e <a href="ci.html#local-values">CI</a> para valores que só existem numa máquina.</p>
+<p>Um runner não tem cofre: passe cada segredo como variável de ambiente, <code>ULTRAMAN_SECRET_TOKEN</code> para <code>token</code> (em maiúsculas, e tudo que não for letra ou dígito vira <code>_</code>). Veja <a href="cli.html">O terminal</a> e <a href="ci.html#local-values">CI</a> para valores que só existem numa máquina.</p>
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
-<p>A <a href="security.html#promise">promessa</a> vale aqui como em todo lugar. O que esta parte acrescenta:</p>
+<p>A <a href="security.html#promise">promessa</a> vale aqui como em qualquer lugar. O que esta parte acrescenta:</p>
 <ul>
-<li><strong>Seu time:</strong> a metade compartilhada de um ambiente está no git; os valores desta máquina e o cofre não estão (<a href="security.html#stored">o que fica guardado</a>).</li>
-<li><strong>CI:</strong> os segredos vêm de variáveis <code>ULTRAMAN_SECRET_*</code>, então nada sensível vive no repositório (<a href="security.html#ci">CI</a>).</li>
+<li><strong>Sua equipe:</strong> a metade compartilhada de um ambiente fica no git; os valores desta máquina e o cofre, não (<a href="security.html#stored">o que fica guardado</a>).</li>
+<li><strong>CI:</strong> os segredos vêm de variáveis <code>ULTRAMAN_SECRET_*</code>, então nada sensível fica no repositório (<a href="security.html#ci">CI</a>).</li>
 </ul>
 <nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="importing.html"><small>Seguinte</small><span>Importar</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

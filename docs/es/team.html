@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Trabajar en equipo · Documentación de Ultraman</title>
-<meta name="description" content="Todo lo que comparte un equipo es un archivo bajo ultraman/, así que tus tests viajan con tu código y un cambio en un test aparece en un pull request como…">
+<meta name="description" content="Todo lo que comparte un equipo es un archivo dentro de ultraman/. Así, tus pruebas viajan con tu código, y un cambio en una prueba aparece en un pull request…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/es/team.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/team.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/team.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/team.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=0.6.2">
+<link rel="stylesheet" href="../../docs.css?v=1.0.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -42,7 +42,7 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html" aria-current="page">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
@@ -63,50 +63,50 @@
 <li><a href="ci.html">CI</a></li>
 <li><a href="team.html" aria-current="page">Trabajar en equipo</a></li>
 <li><a href="agents.html">Agentes (MCP)</a></li>
-<li><a href="coming-from.html">Si venís de otra herramienta</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="team">Trabajar en equipo <a class="self" href="#team" aria-label="Trabajar en equipo">#</a></h1>
-<p>Todo lo que comparte un equipo es un archivo bajo <code>ultraman/</code>, así que tus tests viajan con tu código y un cambio en un test aparece en un pull request como cualquier otro cambio.</p>
+<p>Todo lo que comparte un equipo es un archivo dentro de <code>ultraman/</code>. Así, tus pruebas viajan con tu código, y un cambio en una prueba aparece en un pull request como cualquier otro cambio.</p>
 <h2 id="sync">Sincronizar <a class="self" href="#sync" aria-label="Sincronizar">#</a></h2>
-<p>Si el proyecto está en un repo git con remoto, la barra de arriba dice cuántos archivos faltan sincronizar (&quot;2 cambios sin sincronizar&quot;) y ofrece <strong>Sincronizar</strong>. Guardar (Ctrl+S) solo escribe en tu disco; nada llega al remoto hasta que sincronizás.</p>
-<p>Sincronizar toca seis carpetas, y solo esas: <code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code>, <code>ultraman/envs/</code>, <code>ultraman/requests/</code> (las colecciones), <code>ultraman/load-tests/</code> y <code>ultraman/files/</code> (los archivos que mandan las requests). Las commitea (el panel lista los archivos y un mensaje que podés editar), trae los cambios del remoto, los mergea, hace push y recarga. El resto de tu repo, tus otros cambios sin commitear y lo que tengas en staging no se tocan. Usa el git de tu sistema y tus propias credenciales; la app nunca pide una contraseña.</p>
+<p>Si el proyecto está en un repo git con un remoto, la barra superior indica cuántos archivos faltan por sincronizar (&quot;2 cambios sin sincronizar&quot;) y ofrece <strong>Sincronizar</strong>. Guardar (Ctrl+S) solo escribe en tu disco; nada llega al remoto hasta que sincronizas.</p>
+<p>La sincronización toca seis carpetas, y solo esas: <code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code>, <code>ultraman/envs/</code>, <code>ultraman/requests/</code> (las colecciones), <code>ultraman/load-tests/</code> y <code>ultraman/files/</code> (los archivos que envían las requests). Hace commit de ellas (el panel muestra los archivos y un mensaje que puedes editar), trae los cambios del remoto, los fusiona, hace push y recarga. El resto de tu repo, tus otros cambios sin commit y lo que tengas en staging quedan intactos. Usa el git de tu sistema y tus propias credenciales; la app nunca te pide una contraseña.</p>
 <h2 id="conflicts">Conflictos <a class="self" href="#conflicts" aria-label="Conflictos">#</a></h2>
-<p>Si una pipeline cambió en tu disco y en el remoto, un diálogo muestra las dos versiones lado a lado, como pasos o como YAML. Elegí <strong>Quedarme con la mía</strong>, <strong>Usar la del remoto</strong> o <strong>Guardar la mía como copia</strong>. Esc cancela y no cambia nada.</p>
+<p>Si una pipeline cambió tanto en tu disco como en el remoto, un diálogo muestra las dos versiones lado a lado, como pasos o como YAML. Elige <strong>Quedarme con la mía</strong>, <strong>Usar la del remoto</strong> o <strong>Guardar la mía como copia</strong>. Esc cancela sin cambiar nada.</p>
 <h2 id="errors">Cuando falla la sincronización <a class="self" href="#errors" aria-label="Cuando falla la sincronización">#</a></h2>
-<p>Sincronizar muestra el motivo y lo que dijo git. Los más comunes:</p>
+<p>La sincronización muestra el motivo y lo que respondió git. Los casos más comunes:</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Mensaje</th><th scope="col">Qué hacer</th></tr></thead>
 <tbody>
-<tr><td>The branch … has no remote configured</td><td>Hacé push una vez: <code>git push -u origin &lt;branch&gt;</code></td></tr>
-<tr><td>You have unpushed commits that touch files outside ultraman/</td><td>Son tuyos y Ultraman no los pushea: <code>git push</code>, y después sincronizá de nuevo</td></tr>
-<tr><td>The remote rejected the push</td><td>Una rama protegida o falta de permiso. Tus cambios quedan commiteados en local: pusheálos por una rama y un pull request</td></tr>
-<tr><td>Couldn&#39;t fetch the remote&#39;s</td><td>Red o credenciales: probá <code>git fetch</code> en la terminal</td></tr>
-<tr><td>Git doesn&#39;t know who you are</td><td><code>git config --global user.name &quot;Tu nombre&quot;</code> y <code>git config --global user.email vos@email</code></td></tr>
-<tr><td>There&#39;s an unfinished merge or rebase</td><td>Terminalo o abortalo en la terminal</td></tr>
+<tr><td>The branch … has no remote configured</td><td>Haz push una vez: <code>git push -u origin &lt;branch&gt;</code></td></tr>
+<tr><td>You have unpushed commits that touch files outside ultraman/</td><td>Son tuyos y Ultraman no los sube: <code>git push</code> y vuelve a sincronizar</td></tr>
+<tr><td>The remote rejected the push</td><td>Una rama protegida o falta de permisos. Tus cambios siguen en un commit local: súbelos con una rama y un pull request</td></tr>
+<tr><td>Couldn&#39;t fetch the remote&#39;s</td><td>Red o credenciales: prueba <code>git fetch</code> en la terminal</td></tr>
+<tr><td>Git doesn&#39;t know who you are</td><td><code>git config --global user.name &quot;Tu nombre&quot;</code> y <code>git config --global user.email tu@email</code></td></tr>
+<tr><td>There&#39;s an unfinished merge or rebase</td><td>Termínalo o cancélalo en la terminal</td></tr>
 </tbody>
 </table></div>
 <h2 id="on-disk">Cambió en el disco <a class="self" href="#on-disk" aria-label="Cambió en el disco">#</a></h2>
-<p>Si hacés <code>git pull</code> en una terminal, o cambiás un YAML con otro editor, la ventana lo nota sola. Si la pipeline que tenés abierta tenía cambios sin guardar, dice &quot;Cambió en disco mientras la editabas&quot; y ofrece <strong>Recargar</strong>.</p>
-<h2 id="personal">Qué queda personal <a class="self" href="#personal" aria-label="Qué queda personal">#</a></h2>
-<p>Tus secretos, los valores de entorno de esta máquina, el historial, las corridas anteriores y los reportes de carga nunca se sincronizan. Cada persona carga sus propios secretos en su propia bóveda.</p>
+<p>Si haces <code>git pull</code> en una terminal, o cambias un YAML con otro editor, la ventana lo detecta por sí sola. Si la pipeline que tienes abierta tenía cambios sin guardar, muestra &quot;Cambió en disco mientras la editabas.&quot; y ofrece <strong>Recargar</strong>.</p>
+<h2 id="personal">Qué es personal <a class="self" href="#personal" aria-label="Qué es personal">#</a></h2>
+<p>Tus secretos, los valores de entorno de esta máquina, el historial, las ejecuciones anteriores y los reportes de carga nunca se sincronizan. Cada persona guarda sus propios secretos en su propia bóveda.</p>
 <h2 id="trusted">Carpetas de confianza <a class="self" href="#trusted" aria-label="Carpetas de confianza">#</a></h2>
-<p>Una carpeta es de confianza por persona, en esa máquina. En una carpeta en la que no confiaste, Ultraman no manda nada desde la ventana y no corre git, así que no hay sincronización hasta que confíes. Eso te protege cuando abrís un repo que acabás de clonar de otra persona. Confiar es decisión tuya y queda en tu computadora: nunca se guarda en el proyecto.</p>
-<h2 id="reviews">En pull requests <a class="self" href="#reviews" aria-label="En pull requests">#</a></h2>
-<p>Como las pipelines y los tests de carga son YAML, un cambio en un test se ve como un diff legible: qué paso cambió, qué umbral se movió. Una request vinculada en una pipeline dice de dónde vino (<code>from: shop/orders/create</code>).</p>
+<p>La confianza en una carpeta es de cada persona, en su máquina. En una carpeta en la que no has confiado, Ultraman no envía nada desde la ventana ni ejecuta git, así que no hay sincronización hasta que confíes en ella. Eso te protege cuando abres un repo que acabas de clonar de otra persona. Confiar es decisión tuya y queda en tu computadora: nunca se guarda en el proyecto.</p>
+<h2 id="reviews">En los pull requests <a class="self" href="#reviews" aria-label="En los pull requests">#</a></h2>
+<p>Como las pipelines y las pruebas de carga son YAML, un cambio en una prueba se ve como un diff legible: qué paso cambió, qué umbral se movió. Una request vinculada en una pipeline indica de dónde viene (<code>from: shop/orders/create</code>).</p>
 <h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
 <ul>
-<li><strong>Tu equipo:</strong> solo esas seis carpetas se commitean y se pushean; los secretos, los valores locales, el historial y los reportes quedan en cada máquina (<a href="security.html#stored">qué se guarda</a>).</li>
-<li><strong>Vos:</strong> una carpeta en la que no confiaste no manda nada y no corre git (<a href="security.html#trusted-folders">carpetas de confianza</a>).</li>
-<li><strong>Tu equipo:</strong> un cambio en un test es un diff legible, así que un host o un header nuevo no puede colarse sin que se vea.</li>
-<li><strong>CI:</strong> los mismos archivos corren en tu pipeline con sus propios secretos (<a href="ci.html#github-action">CI</a>).</li>
+<li><strong>Tu equipo:</strong> solo esas seis carpetas se incluyen en el commit y el push; los secretos, los valores locales, el historial y los reportes se quedan en cada máquina (<a href="security.html#stored">qué se guarda</a>).</li>
+<li><strong>Tú:</strong> una carpeta en la que no has confiado no envía nada ni ejecuta git (<a href="security.html#trusted-folders">carpetas de confianza</a>).</li>
+<li><strong>Tu equipo:</strong> un cambio en una prueba es un diff legible, así que un host o un header nuevo no puede colarse sin que nadie lo vea.</li>
+<li><strong>CI:</strong> los mismos archivos se ejecutan en tu pipeline de CI con sus propios secretos (<a href="ci.html#github-action">CI</a>).</li>
 </ul>
 <nav class="pager"><a rel="prev" href="ci.html"><small>Anterior</small><span>CI</span></a><a rel="next" href="agents.html"><small>Siguiente</small><span>Agentes (MCP)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 0.6.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.0.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>
