@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/agents.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.0.1">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -36,6 +36,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="compare.html">Comparar dois ambientes</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
@@ -57,6 +58,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="compare.html">Comparar dois ambientes</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
@@ -90,6 +92,7 @@
 <ul>
 <li><strong>Pipelines e blocos:</strong> listar, ler, salvar e executar; ler execuções anteriores; transformar um arquivo HAR ou entradas do histórico numa proposta de pipeline.</li>
 <li><strong>Requests:</strong> listar, ler e salvar coleções e requests, mover e organizar, adicionar uma a uma pipeline, enviar uma request salva com os seus checks, executar uma coleção, enviar uma request avulsa (inclusive GraphQL: o resultado lista os erros da resposta), ler o schema de uma request GraphQL (<code>get_graphql_schema</code>, um envio como qualquer outro) e ler o histórico.</li>
+<li><strong>Comparar:</strong> executar uma pipeline, uma coleção ou uma request salva em dois ambientes, ou em um só contra o tipo de cada passo (<code>run_compare</code>); o resultado traz status e os caminhos que diferem, nunca um valor. Veja <a href="compare.html#agent">Comparar</a>.</li>
 <li><strong>Streams:</strong> envios únicos de WebSocket e SSE.</li>
 <li><strong>Carga:</strong> listar, ler e salvar testes de carga, executar um, ler relatórios, comparar dois, ver a tendência e exportar.</li>
 <li><strong>Projeto:</strong> listar e salvar ambientes, listar segredos (só os nomes), importar um arquivo do Postman, OpenAPI, JMeter ou Artillery, atualizar uma coleção a partir de uma spec OpenAPI mais nova (<code>update_collection_from_openapi</code>) e ler a referência do formato YAML.</li>
@@ -97,7 +100,7 @@
 </ul>
 <p>Uma escrita mostra o diff (ou o arquivo novo inteiro) no cartão. Um salvamento que ativa http sem criptografia ou uma CA própria aparece destacado em vermelho.</p>
 <h2 id="limits">O que ele não pode fazer <a class="self" href="#limits" aria-label="O que ele não pode fazer">#</a></h2>
-<p>De propósito, o agente não consegue ver nem definir o valor de um segredo, desbloquear o cofre, dar um sim de consentimento, confiar numa pasta, sincronizar com o git nem apagar nada. Isso fica com você, na janela. Ele pode usar <code>{{secrets.x}}</code>, mas o valor nunca chega até ele, e os resultados são ocultados antes de serem entregues.</p>
+<p>De propósito, o agente não consegue ver nem definir o valor de um segredo, desbloquear o cofre, dar um sim de consentimento, confiar numa pasta, sincronizar com o git nem apagar nada. Isso fica com você, na janela. A comparação dele (<code>run_compare</code>) também não consegue enviar um passo que não seja uma leitura para um ambiente marcado como produção, nem mudar essa marca. Ele pode usar <code>{{secrets.x}}</code>, mas o valor nunca chega até ele, e os resultados são ocultados antes de serem entregues.</p>
 <p>Tem uma coisa que não é segredo: um token que um passo extrai de uma resposta (por exemplo, o <code>access_token</code> de um login) é só um dado, então volta para o agente. Por isso o cartão de entrega destaca tokens, cookies e headers de autenticação antes de você aprovar.</p>
 <h2 id="ask">Pedindo coisas a ele <a class="self" href="#ask" aria-label="Pedindo coisas a ele">#</a></h2>
 <p>O agente lê este mesmo manual (<code>get_manual</code>) e a referência do formato YAML (<code>get_reference</code>). Então você pode perguntar &quot;como executo isto com 50 usuários?&quot; ou pedir &quot;crie uma pipeline que faz login e cria um pedido&quot;, e ele vai propor a mudança para você aprovar. O que um resultado diz é entregue a ele como dado para ler, não como instrução a seguir.</p>
@@ -105,6 +108,7 @@
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
 <ul>
 <li><strong>Você:</strong> nada do que o agente pede acontece até você aprovar o cartão, e uma entrega rejeitada continua rejeitada (<a href="security.html#agents">agentes</a>).</li>
+<li><strong>Você:</strong> um ambiente marcado como produção aparece em âmbar no cartão de cada execução ou envio para ele, com os passos que escrevem: enviar para lá pode expor dados reais e sensíveis. Só uma comparação recusa essas escritas (<a href="security.html#agents">agentes</a>).</li>
 <li><strong>Você:</strong> o agente nunca vê o valor de um segredo e não consegue desbloquear o cofre, dar consentimento, confiar numa pasta, sincronizar nem apagar (<a href="security.html#redaction">a ocultação</a>).</li>
 <li><strong>Você:</strong> o agente não consegue aprovar a si mesmo: uma decisão exige a janela (<a href="security.html#local-server">servidor local</a>).</li>
 <li><strong>Sua equipe:</strong> os pedidos do agente ficam registrados em <code>ultraman/mcp/</code>, só na sua máquina.</li>
@@ -113,6 +117,6 @@
 <nav class="pager"><a rel="prev" href="team.html"><small>Anterior</small><span>Trabalho em equipe</span></a><a rel="next" href="coming-from.html"><small>Seguinte</small><span>Vindo de outra ferramenta</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.0.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

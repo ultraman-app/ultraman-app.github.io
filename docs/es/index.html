@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.0.1">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -36,6 +36,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="compare.html">Comparar dos entornos</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">La terminal</a></li>
@@ -57,6 +58,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="compare.html">Comparar dos entornos</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">La terminal</a></li>
@@ -80,6 +82,7 @@
 <li><a href="pipelines.html">Pipelines</a><p>Una pipeline es un flujo de requests y checks que se lee de arriba abajo. Se guarda en ultraman/pipelines/&lt;nombre&gt;.yaml y se ejecuta desde la ventana o desde la terminal. Tiene un host, auth y headers opcionales para todas sus requests, inputs (valores que la ejecución pide) y pasos. No hay nada oculto: lo que hace un paso es lo que dice su fila.</p></li>
 <li><a href="load.html">Carga</a><p>Carga (junto a Ejecutar) te dice cuántos usuarios, o cuánto tráfico, aguanta tu API antes de volverse lenta o empezar a fallar. Abre la pantalla de carga de la pipeline que tienes en pantalla: cada usuario virtual ejecuta la pipeline completa en bucle, y si un paso falla, esa iteración cuenta como error y el usuario empieza otra.</p></li>
 <li><a href="environments.html">Entornos y secretos</a><p>Con los entornos, las mismas requests se ejecutan contra local, staging o producción; con los secretos, los tokens y las contraseñas se quedan en tu computadora, cifrados, fuera de git y fuera de cualquier log.</p></li>
+<li><a href="compare.html">Comparar dos entornos</a><p>Comparar ejecuta la misma pipeline en dos entornos y te dice, paso a paso, si responden igual: después de un despliegue, verifica que staging tenga la estructura y los datos replicados que tiene desarrollo. También puede verificar las respuestas de un entorno contra su tipo, un JSON Schema o la spec OpenAPI de la colección.</p></li>
 <li><a href="importing.html">Importar</a><p>El menú Importar junto a Nueva colección (área de Requests) trae lo que ya tienes: una exportación de Postman, una spec OpenAPI, un plan de JMeter o un script de Artillery; el que está junto a Nueva pipeline (área de Pipelines) trae una grabación del navegador. Así no empiezas desde cero. No se sobrescribe nada del proyecto: si un nombre ya existe, se le agrega -2. Al final, un resumen indica qué entró, qué se adaptó, qué hay que terminar a mano y qué archivos se omitieron.</p></li>
 <li><a href="mock.html">Servidor mock</a><p>El servidor mock responde las requests a tu API con respuestas que ya grabaste. Así, un front end (o un test) puede seguir trabajando aunque la API real esté caída, vaya lenta o todavía no exista. Se ejecuta en tu computadora y nadie más puede acceder a él, salvo que tú lo decidas.</p></li>
 <li><a href="cli.html">La terminal</a><p>El comando ultraman ejecuta tus pipelines y pruebas de carga desde una terminal, sirve el proyecto a otras herramientas y guarda secretos en la bóveda. Ejecútalo desde la carpeta del proyecto (o desde cualquier carpeta dentro de ella). Para usarlo en una máquina de build, consulta CI.</p></li>
@@ -92,6 +95,6 @@
 </ol>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.0.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

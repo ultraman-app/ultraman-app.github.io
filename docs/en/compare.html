@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Compare two environments · Ultraman docs</title>
+<meta name="description" content="Compare runs the same pipeline in two environments and tells you, step by step, whether they answer the same: after a deploy, check that staging has the…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/compare.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/compare.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/compare.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/compare.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/compare.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/compare.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/compare.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/compare.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="compare.html" aria-current="page">Compare two environments</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="compare.html" aria-current="page">Compare two environments</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="compare">Compare two environments <a class="self" href="#compare" aria-label="Compare two environments">#</a></h1>
+<p>Compare runs the same pipeline in two environments and tells you, step by step, whether they answer the same: after a deploy, check that staging has the structure and the replicated data that development has. It can also check one environment&#39;s answers against their type, a JSON Schema or the collection&#39;s OpenAPI spec.</p>
+<h2 id="what">What it answers <a class="self" href="#what" aria-label="What it answers">#</a></h2>
+<p>You mark the requests whose answers matter with a <code>compare:</code> block. A compare then runs the whole pipeline in the first environment, then in the second, each run with its own environment&#39;s values, its own login and its own secrets. For every marked step it says one of:</p>
+<ul>
+<li><strong>same</strong>: the two answers match (with <code>body: shape</code>, <strong>same shape</strong>);</li>
+<li><strong>N paths differ</strong>: the status, a header you named or the body differ, and where (the JSONPath of each place);</li>
+<li><strong>not compared</strong>, and why: one side didn&#39;t run the step, a side failed it, or the answer can&#39;t be compared.</li>
+</ul>
+<p>Steps without a block still run (a login feeds the steps after it) and show as &quot;not compared&quot;. Each side is saved as an ordinary run in <code>ultraman/runs/</code>. Nothing else is written: no diff file, no baseline.</p>
+<h2 id="block">The compare block <a class="self" href="#block" aria-label="The compare block">#</a></h2>
+<p>A request step in a pipeline, or a request of a collection, carries the block beside its other fields:</p>
+<pre tabindex="0"><code>- request: get order
+  method: GET
+  path: /orders/{{order_id}}
+  compare:
+    body: value                      # value | shape | none; the status is always compared
+    only: [$.id, $.status, $.total, $.items]   # just these fields; without it, everything
+    ignore: [$.updatedAt, $.meta.requestId]    # left out, also inside an only path
+    lists:
+      $.items: { match: sku }        # pair the items by this field
+      $.tags: { order: any }         # the same items, in any order
+    schema: files/order.schema.json  # the answer&#39;s type, for --compare schema
+    headers: [content-type]          # none by default
+    reuse: [order_id]                # see &quot;Asking for the same record&quot;</code></pre>
+<p><code>compare: {}</code> compares the status and the whole body by value. Every key is optional:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Key</th><th scope="col">What it does</th></tr></thead>
+<tbody>
+<tr><td><code>body</code></td><td><code>value</code>: the data must be the same. <code>shape</code>: the same fields with the same types, whatever their values. <code>none</code>: only the status and the headers you name.</td></tr>
+<tr><td><code>only</code></td><td>JSONPaths. Only these fields are compared; a path to an object or a list covers what is inside it.</td></tr>
+<tr><td><code>shape</code></td><td>JSONPaths compared by type only, inside a <code>body: value</code> compare: each must be there on both sides with the same type, and its value may differ. The rest of the body is compared by value. With <code>only</code>, a <code>shape</code> path counts as included. A path can&#39;t be in both <code>shape</code> and <code>ignore</code>, and <code>shape</code> doesn&#39;t go with <code>body: shape</code> or <code>none</code>.</td></tr>
+<tr><td><code>ignore</code></td><td>JSONPaths left out, in both modes, also inside an <code>only</code> path. A timestamp or a request id that changes on every call goes here.</td></tr>
+<tr><td><code>lists</code></td><td>In value mode a list is compared in order, because a changed order is a real difference. <code>match: &lt;field&gt;</code> pairs items by that field; <code>order: any</code> compares them as the same items in any order. Two items with the same <code>match</code> value pair in order among themselves, and the result says so.</td></tr>
+<tr><td><code>schema</code></td><td>A JSON Schema file under <code>ultraman/files/</code>: the step&#39;s type when you compare against types.</td></tr>
+<tr><td><code>headers</code></td><td>Header names to compare. <code>authorization</code>, <code>cookie</code>, <code>set-cookie</code>, <code>proxy-authorization</code> and <code>www-authenticate</code> are refused.</td></tr>
+<tr><td><code>reuse</code></td><td>Variable names the second environment takes from the first for this step.</td></tr>
+</tbody>
+</table></div>
+<p>The classic case for <code>shape</code> is an id or a timestamp: each environment makes its own, so the values differ, but the field must be there and keep its type:</p>
+<pre tabindex="0"><code>compare:
+  body: value
+  shape: [$.id, $.createdAt]   # there on both sides, same type; the values may differ
+  ignore: [$.meta.requestId]   # not compared at all</code></pre>
+<p>A pipeline step linked to a collection&#39;s request takes that request&#39;s block, like its other fields. The full format is in the <a href="../en/reference.html#reference" hreflang="en">format reference</a>.</p>
+<h2 id="cli">From the terminal <a class="self" href="#cli" aria-label="From the terminal">#</a></h2>
+<pre tabindex="0"><code>ultraman run &quot;order compare&quot; --compare local,staging
+ultraman run &quot;order compare&quot; --env local --compare schema
+ultraman run --tag smoke --compare dev,stg --junit reports/compare.xml</code></pre>
+<p><code>--compare a,b</code> names two different environments of the project; the first is the source for <code>reuse</code>. It works with a pipeline, <code>--all</code>, <code>--tag</code> or <code>--collection</code>; pipelines with no compared step are left out and named. A compare prints a table per pipeline once both sides have finished:</p>
+<pre tabindex="0"><code>order compare · local against staging
+  login       POST /auth/login    200  200   not compared
+  get order   GET  /orders/o-1    200  200   2 paths differ
+      $.total       local 59.9 · staging 61.4
+      $.items[1]    only in local
+1 of 1 compared step differs between local and staging.</code></pre>
+<p>At most 20 paths are listed under a row, then &quot;and N more&quot;. Values under a row are hidden and cut like any printed body. The other flags of <code>ultraman run</code> work as usual: <code>--input</code> goes to both sides, <code>--parallel</code> runs pipelines side by side (inside one, the two environments run one after the other), <code>--bail</code>, <code>--watch</code>, <code>--every</code> and <code>--contract</code>. <code>--env</code> doesn&#39;t go with <code>--compare a,b</code> (the pair names both), and <code>--load</code> is refused: nothing is compared under load. <code>--json</code> adds <code>side: 0</code> or <code>1</code> to each event and ends each pipeline with a <code>compare</code> line that has paths and no values.</p>
+<p>When the window has the project open, the compare runs in its engine and the window shows both runs, as with <a href="cli.html#one-engine">one engine</a>.</p>
+<h2 id="writes">Steps that write <a class="self" href="#writes" aria-label="Steps that write">#</a></h2>
+<p>A compare sends every step twice, once to each environment. A compared step that isn&#39;t GET, HEAD or OPTIONS (a POST that creates an order) would create data in both, so the terminal asks every time, naming the step and both environments, even when the rest of the run is already allowed. <code>a</code> (always) never covers this question, and neither does <code>--yes</code>. Without a terminal (CI), say it by name: <code>--allow-write dev,stg</code>.</p>
+<p>An environment with <strong>This is production</strong> ticked (see <a href="environments.html#envs">environments</a>) is stricter: any step that isn&#39;t a read, compared or only feeding the compare, is refused before anything is sent, unless <code>--allow-write</code> names that environment:</p>
+<pre tabindex="0"><code>Not run. &quot;create order&quot; is a POST and prod is a production environment:
+comparing it would create an order in stg and another in prod.
+
+Compare only the steps that read, or allow it by name: --allow-write prod</code></pre>
+<p>An environment that isn&#39;t ticked but points at a production environment&#39;s host counts as production too, in the terminal, the window and for an agent: a copy of prod&#39;s values saved under another name, an imported environment, or a host given as an input. The refusal names it (&quot;qa points at prod&#39;s host, a production environment&quot;), and <code>--allow-write qa</code> allows it by name. The host is compared whole, whatever its path, so an environment that shares production&#39;s host and differs only by its path counts as production as well. Only the hosts your pipelines and collections read decide it: a host every environment shares that only a step&#39;s path names (a login provider, a payment API) doesn&#39;t make them production.</p>
+<h2 id="exit">Exit codes <a class="self" href="#exit" aria-label="Exit codes">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Code</th><th scope="col">When</th></tr></thead>
+<tbody>
+<tr><td><strong>0</strong></td><td>Every compared step is the same, and both runs passed.</td></tr>
+<tr><td><strong>1</strong></td><td>A compared step differs, or a run&#39;s own check failed. Both are reported.</td></tr>
+<tr><td><strong>2</strong></td><td>Nothing was sent (a bad flag, a refused write, an unknown environment), or a compared step couldn&#39;t be compared and none differs (&quot;1 of 3 compared steps couldn&#39;t be compared&quot;): a step a side didn&#39;t reach, a body over its limit. The terminal then says each such step&#39;s reason.</td></tr>
+</tbody>
+</table></div>
+<p>A path that held a secret is &quot;not compared&quot; (see below), and it never makes a step differ on its own: a compare whose only open places were secrets still exits 0 when everything else is the same.</p>
+<h2 id="junit">In CI: JUnit <a class="self" href="#junit" aria-label="In CI: JUnit">#</a></h2>
+<p><code>--junit FILE</code> writes one test suite per pipeline, named <code>order compare · local against staging</code>, with <code>compare</code> in its properties and a test case per compared step:</p>
+<pre tabindex="0"><code>&lt;testcase classname=&quot;order compare · local against staging&quot; name=&quot;get order&quot; time=&quot;0.000&quot;&gt;
+  &lt;failure message=&quot;2 paths differ: $.total, $.items[1]&quot;&gt;&lt;/failure&gt;
+&lt;/testcase&gt;</code></pre>
+<p>A difference is a failure whose message has the count and up to 20 JSONPaths. A step a side&#39;s run failed is a failure that names the side; &quot;not compared&quot; is skipped; when a step couldn&#39;t be compared and none differs, an error case is added, so CI never reads it as a pass. The file carries no value and no body. See <a href="ci.html#compare">CI</a>.</p>
+<h2 id="type">Against a type <a class="self" href="#type" aria-label="Against a type">#</a></h2>
+<p><code>--compare schema</code> runs one environment (<code>--env</code>, or the project&#39;s only one) and checks each compared answer against its type: the block&#39;s <code>schema</code> file, or else the OpenAPI operation of the collection&#39;s <a href="requests.html#contract">contract</a>. An answer that isn&#39;t JSON (an HTML error page) doesn&#39;t match a schema file&#39;s type.</p>
+<pre tabindex="0"><code>order compare · local against each step&#39;s type
+  login       POST /auth/login    200   not compared
+  get order   GET  /orders/o-1    200   doesn&#39;t match the type Order at 2 paths
+      $.currency    missing: the type requires it
+      $.total       is a number, the type says string
+      $.id          not named by the type (allowed)
+1 of 1 compared step doesn&#39;t match its type in local.</code></pre>
+<p>The type&#39;s name is the schema&#39;s <code>title</code>, or else its file name. Fields the answer has and the type doesn&#39;t name are a note, never a difference, unless the schema says <code>additionalProperties: false</code>: an API that adds a field doesn&#39;t fail. Ultraman reads a subset of JSON Schema; the keywords it doesn&#39;t read (<code>patternProperties</code>, <code>prefixItems</code>, <code>if</code>/<code>then</code>, a <code>$ref</code> to another file…) are listed as &quot;not checked&quot; on the step, so a pass never claims more than was checked. With <code>--compare schema</code>, <code>--contract off</code> is refused: there the contract is the type.</p>
+<h2 id="reuse">Asking for the same record: reuse <a class="self" href="#reuse" aria-label="Asking for the same record: reuse">#</a></h2>
+<p>By default each environment uses its own values: its own login, its own ids. That is right for structure. To check that a record was replicated, the second environment has to ask for the first one&#39;s record:</p>
+<pre tabindex="0"><code>compare:
+  reuse: [order_id]   # in the second environment, this step is sent with the first one&#39;s order_id</code></pre>
+<p>Only that step takes the value; the second side&#39;s run goes on with its own. <code>--compare dev,stg</code> asks stg for dev&#39;s order. A value made from a secret is never carried, and a reused value can&#39;t move the request to another host: the step fails before it sends. The terminal&#39;s question names it (&quot;in stg: send dev&#39;s <code>order_id</code> (reuse)&quot;).</p>
+<h2 id="agent">The agent <a class="self" href="#agent" aria-label="The agent">#</a></h2>
+<p>An agent compares with <code>run_compare</code>, like a run: a card to start it and a card to deliver it (see <a href="agents.html#tools">agents</a>). It gets the verdict, each step&#39;s statuses and the JSONPaths that differ with their kind and JSON types, never a value: you see the values in the window or the terminal. The start card names each environment&#39;s host, the compared writes, <code>reuse</code> and a production environment (&quot;prod is a production environment: this reads real data&quot;).</p>
+<p>A side whose own check failed is named with the step that stopped it, not with the check&#39;s message, which can quote the answer. A field name that no file of the project names (an email used as a key, say) reaches the agent as its number in the result, <code>$.balances[field 2]</code>, since an answer&#39;s keys can be its data; the window and the terminal show the name.</p>
+<p>An agent&#39;s compare never sends a step that isn&#39;t a read to a production environment, and never uses <code>reuse</code> with a production environment as its source: there is no way for it to allow either, and such a compare is refused before any card, saying to run it from the window or the terminal. An environment that isn&#39;t marked but points at a production environment&#39;s host (a copy of its values, a step&#39;s absolute URL) counts as production here too. When an agent saves a <code>compare:</code> block, its card says what the block leaves out (&quot;compares only 2 fields&quot;, &quot;ignores 3 fields: …&quot;).</p>
+<h2 id="window">In the window <a class="self" href="#window" aria-label="In the window">#</a></h2>
+<p><strong>Compare with…</strong> beside <strong>Send</strong> sends the editor&#39;s draft, as <strong>Send</strong> does, and compares its answer:</p>
+<ul>
+<li><strong>Send it to another environment too:</strong> one request to each environment, each with its own values.</li>
+<li><strong>Against a type:</strong> the request&#39;s schema file, or the OpenAPI operation of its collection&#39;s contract.</li>
+<li><strong>My last send in</strong> an environment: nothing is sent; it compares your two latest sends there. The history stays on each computer, so a fresh CI runner has none: there, compare two environments or against the type.</li>
+</ul>
+<p>The result opens under the request: a head with each environment and its colour (a production one in amber), a sentence (&quot;The values differ at 2 paths.&quot;), and the paths that differ, read as breadcrumbs (<code>items › 2 › qty</code>, each JSONPath in its tooltip). <strong>Open the diff</strong> shows the two answers <strong>Side by side</strong> or <strong>Unified</strong>.</p>
+<p>Hover a value in an answer for <strong>Compare this field</strong>, <strong>Compare only its type</strong> or <strong>Ignore this field</strong>: each adds its path to the request&#39;s <code>compare:</code> block, and the request turns unsaved like any edit. <strong>Choose what to compare</strong> puts the answer in a pick mode: tick the fields, and <strong>Done</strong> writes <code>only</code>. With no answer yet, the fields come from the type; otherwise send it once first. The request&#39;s <strong>Options</strong> tab has a <strong>Compare</strong> section with the same rules: values or shape, the fields to compare, those compared by type only, those ignored, list rules, headers and a schema file.</p>
+<p>A pipeline (<strong>⋯ › Compare in two environments…</strong> in its header) or a collection (the same item in its <strong>⋯</strong> in the tree) runs in both environments and shows a row per compared step; <strong>Only what differs</strong> keeps the rest folded.</p>
+<p>Each environment uses its own values: a token one environment&#39;s login made never goes to the other. When the second environment hasn&#39;t made a value the request needs yet (its own login), the window asks before anything is sent and names who makes it: <strong>Send login in staging first</strong> sends it there, then compares.</p>
+<p>Before anything is sent, the window asks what the terminal asks: a secret or a file going to the second environment&#39;s host for the first time, and a compared step that writes, named with both environments and both URLs, with <strong>Compare the last answers instead</strong> (nothing is sent) as the first answer. A production environment says so in the question, and so does one that points at a production environment&#39;s host (&quot;qa points at prod&#39;s host, a production environment&quot;); the Compare menu marks it in amber too. Against a type, a step that writes in a production environment isn&#39;t sent from the window: compare it from the terminal with <code>--allow-write</code>.</p>
+<h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
+<ul>
+<li><strong>You:</strong> each environment&#39;s secrets go only to that environment&#39;s host, with the usual <a href="security.html#consent">consent</a>; one environment&#39;s secret never reaches the other.</li>
+<li><strong>You:</strong> both answers are hidden against every vault secret the project uses before they are compared or shown, and a place that held a secret is &quot;not compared&quot;, never &quot;same&quot; or &quot;different&quot; (<a href="security.html#redaction">redaction</a>). Plain values in <code>ultraman/local/envs/</code> are ordinary variables and aren&#39;t hidden: keep a sensitive value in the <a href="security.html#vault">vault</a>.</li>
+<li><strong>Your team:</strong> a compared write asks every time, and a production environment refuses every write unless you name it with <code>--allow-write</code>; an agent&#39;s compare can&#39;t write there at all (<a href="security.html#agents">agents</a>).</li>
+<li><strong>CI:</strong> a compare&#39;s results, in JUnit and in <code>--json</code>&#39;s <code>compare</code> line, list paths, kinds and types, not the values there. JUnit names a side whose check failed by its step only; the <code>--json</code> lines keep the check&#39;s message, as in any run (<a href="security.html#ci">in CI</a>).</li>
+<li><strong>Limit:</strong> the production box lives in a file under git: it guards against a careless write, not against someone who can push to the repository (<a href="security.html#limits">limits</a>).</li>
+</ul>
+<nav class="pager"><a rel="prev" href="environments.html"><small>Previous</small><span>Environments and secrets</span></a><a rel="next" href="importing.html"><small>Next</small><span>Importing</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

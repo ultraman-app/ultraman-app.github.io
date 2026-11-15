@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/agents.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.0.1">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -36,6 +36,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Load</a></li>
 <li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="compare.html">Compare two environments</a></li>
 <li><a href="importing.html">Importing</a></li>
 <li><a href="mock.html">Mock server</a></li>
 <li><a href="cli.html">The terminal</a></li>
@@ -57,6 +58,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Load</a></li>
 <li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="compare.html">Compare two environments</a></li>
 <li><a href="importing.html">Importing</a></li>
 <li><a href="mock.html">Mock server</a></li>
 <li><a href="cli.html">The terminal</a></li>
@@ -90,6 +92,7 @@
 <ul>
 <li><strong>Pipelines and blocks:</strong> list, read, save and run them; read past runs; turn a HAR file or history entries into a proposed pipeline.</li>
 <li><strong>Requests:</strong> list, read and save collections and requests, move and organize them, add one to a pipeline, send a saved request with its checks, run a collection, send an ad-hoc request (a GraphQL one too: its result lists the answer&#39;s errors), read a GraphQL request&#39;s schema (<code>get_graphql_schema</code>, a send like any other), read the history.</li>
+<li><strong>Compare:</strong> run a pipeline, a collection or a saved request in two environments, or in one against each step&#39;s type (<code>run_compare</code>); the result has statuses and the paths that differ, never a value. See <a href="compare.html#agent">Compare</a>.</li>
 <li><strong>Streams:</strong> one-shot WebSocket and SSE sends.</li>
 <li><strong>Load:</strong> list, read and save load tests, run one, read reports, compare two, trend, export.</li>
 <li><strong>Project:</strong> list and save environments, list secrets (names only), import a Postman, OpenAPI, JMeter or Artillery file, update a collection from a newer OpenAPI spec (<code>update_collection_from_openapi</code>), read the YAML format reference.</li>
@@ -97,7 +100,7 @@
 </ul>
 <p>A write shows its diff (or the whole new file) on the card. A save that turns on plain http or a custom CA is flagged in red.</p>
 <h2 id="limits">What it can&#39;t do <a class="self" href="#limits" aria-label="What it can&#39;t do">#</a></h2>
-<p>On purpose, the agent can&#39;t see or set a secret&#39;s value, unlock the vault, say yes to a consent, trust a folder, sync with git, or delete anything. Those stay with you, in the window. It can use <code>{{secrets.x}}</code>; the value never reaches it, and results are redacted before they are handed over.</p>
+<p>On purpose, the agent can&#39;t see or set a secret&#39;s value, unlock the vault, say yes to a consent, trust a folder, sync with git, or delete anything. Those stay with you, in the window. Its compare (<code>run_compare</code>) can&#39;t send a step that isn&#39;t a read to an environment marked production, and it can&#39;t change that mark. It can use <code>{{secrets.x}}</code>; the value never reaches it, and results are redacted before they are handed over.</p>
 <p>One thing is not a secret: a token that a step extracts from a response (for example a login&#39;s <code>access_token</code>) is just data, so it comes back to the agent. That is why the delivery card highlights tokens, cookies and authentication headers before you approve.</p>
 <h2 id="ask">Asking it things <a class="self" href="#ask" aria-label="Asking it things">#</a></h2>
 <p>The agent reads this same manual (<code>get_manual</code>) and the YAML format reference (<code>get_reference</code>), so you can ask it &quot;how do I run this with 50 users?&quot; or &quot;make a pipeline that logs in and creates an order&quot; and it will propose the change for you to approve. What a result says is handed to it as data to read, not as instructions to follow.</p>
@@ -105,6 +108,7 @@
 <h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
 <ul>
 <li><strong>You:</strong> nothing the agent asks for happens until you approve its card, and a rejected delivery stays rejected (<a href="security.html#agents">agents</a>).</li>
+<li><strong>You:</strong> an environment marked production is named in amber on the card of every run or send there, with the steps that write: a send there can expose real, sensitive data. Only a compare refuses those writes (<a href="security.html#agents">agents</a>).</li>
 <li><strong>You:</strong> the agent never sees a secret&#39;s value and can&#39;t unlock the vault, give a consent, trust a folder, sync or delete (<a href="security.html#redaction">redaction</a>).</li>
 <li><strong>You:</strong> the agent can&#39;t approve itself: a decision needs the window (<a href="security.html#local-server">local server</a>).</li>
 <li><strong>Your team:</strong> the agent&#39;s requests are logged in <code>ultraman/mcp/</code>, on your machine only.</li>
@@ -113,6 +117,6 @@
 <nav class="pager"><a rel="prev" href="team.html"><small>Previous</small><span>Working as a team</span></a><a rel="next" href="coming-from.html"><small>Next</small><span>Coming from another tool</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.0.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

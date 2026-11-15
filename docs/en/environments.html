@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.0.1">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -36,6 +36,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Load</a></li>
 <li><a href="environments.html" aria-current="page">Environments and secrets</a></li>
+<li><a href="compare.html">Compare two environments</a></li>
 <li><a href="importing.html">Importing</a></li>
 <li><a href="mock.html">Mock server</a></li>
 <li><a href="cli.html">The terminal</a></li>
@@ -57,6 +58,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Load</a></li>
 <li><a href="environments.html" aria-current="page">Environments and secrets</a></li>
+<li><a href="compare.html">Compare two environments</a></li>
 <li><a href="importing.html">Importing</a></li>
 <li><a href="mock.html">Mock server</a></li>
 <li><a href="cli.html">The terminal</a></li>
@@ -79,6 +81,11 @@
 <li>this <strong>machine&#39;s</strong> value, in <code>ultraman/local/envs/&lt;name&gt;.yaml</code>, never synced. Use it for what only applies to you.</li>
 </ul>
 <p>An empty machine value means &quot;same as shared&quot;. One with a value wins over the shared one everywhere: the window, the CLI and the agent. If an environment file doesn&#39;t parse, the panel shows the error and lets you fix it as text.</p>
+<p><strong>This is production</strong>, in the environment&#39;s <strong>Production</strong> card, marks an environment that holds real data. A production environment shows in amber (the top bar, this screen), a <a href="compare.html#writes">compare</a> sends it nothing but reads without your yes by name, and an <a href="compare.html#agent">agent&#39;s compare</a> can&#39;t write to it at all. The box is saved in the shared file, so your team sees the same, as a line of its own:</p>
+<pre tabindex="0"><code># ultraman/envs/prod.yaml
+production: true
+api: https://api.example.com</code></pre>
+<p>A new environment whose name has prod or live in it starts ticked; untick it if it doesn&#39;t hold real data. A file without the line (one made before the box existed) is read by its name the same way. Only the window and a hand edit of the file change it: an agent&#39;s save keeps what the file has.</p>
 <h2 id="dotenv">Import a .env file <a class="self" href="#dotenv" aria-label="Import a .env file">#</a></h2>
 <p><strong>Import .env…</strong> reads a <code>.env</code> file (<code>KEY=value</code>, <code>export</code>, quotes, comments) into this machine&#39;s values. Nothing reaches the shared file, and so nothing reaches git, until you move it there yourself. A variable that is a secret keeps the value it has in the vault.</p>
 <h2 id="eye">See where a value comes from <a class="self" href="#eye" aria-label="See where a value comes from">#</a></h2>
@@ -112,9 +119,9 @@ options:
 <li><strong>Your team:</strong> the shared half of an environment is in git; this machine&#39;s values and the vault are not (<a href="security.html#stored">what is stored</a>).</li>
 <li><strong>CI:</strong> secrets come from <code>ULTRAMAN_SECRET_*</code> variables, so nothing sensitive lives in the repo (<a href="security.html#ci">CI</a>).</li>
 </ul>
-<nav class="pager"><a rel="prev" href="load.html"><small>Previous</small><span>Load</span></a><a rel="next" href="importing.html"><small>Next</small><span>Importing</span></a></nav>
+<nav class="pager"><a rel="prev" href="load.html"><small>Previous</small><span>Load</span></a><a rel="next" href="compare.html"><small>Next</small><span>Compare two environments</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.0.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

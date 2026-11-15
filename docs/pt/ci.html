@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/ci.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.0.1">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -36,6 +36,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="compare.html">Comparar dois ambientes</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
@@ -57,6 +58,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html">Ambientes e segredos</a></li>
+<li><a href="compare.html">Comparar dois ambientes</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
@@ -136,6 +138,11 @@
 <li>Faça carga só contra uma API sua, e dimensione o teste para o runner: um runner compartilhado é um computador pequeno, e um veredito limitado diz que os números descrevem o runner, não o servidor.</li>
 <li><code>--baseline last</code> compara com o último relatório salvo em <code>ultraman/loads/</code>, e um runner novo não tem nenhum, então não aparece nada. Guarde o relatório que você quer usar na comparação (como artifact ou num cache), restaure-o antes da execução e passe o caminho dele: <code>--baseline previous/load.json</code>. <code>--output load.json</code> grava o relatório para guardar.</li>
 </ul>
+<h2 id="compare">Compare ambientes depois de um deploy <a class="self" href="#compare" aria-label="Compare ambientes depois de um deploy">#</a></h2>
+<p>Um job depois de um deploy pode conferir se o ambiente novo responde como o antigo, ou como o tipo dele:</p>
+<pre tabindex="0"><code>ultraman run --tag smoke --compare dev,stg --junit reports/compare.xml
+ultraman run --tag smoke --env stg --compare schema --junit reports/types.xml</code></pre>
+<p>Saída 1 significa uma diferença (ou uma execução que falhou), e 2 que nada pôde ser comparado, então nenhum dos dois passa em silêncio. Um runner não tem terminal para perguntar sobre um passo comparado que escreve: informe os ambientes com <code>--allow-write dev,stg</code>, ou compare só passos que leem. <code>--yes</code> não cobre isso. O arquivo JUnit lista os caminhos que diferem, não os valores de lá. Veja <a href="compare.html">Comparar</a>.</p>
 <h2 id="local-values">Valores que ficam na máquina de quem desenvolve <a class="self" href="#local-values" aria-label="Valores que ficam na máquina de quem desenvolve">#</a></h2>
 <p>Alguns valores de ambiente não vão para o git: em cada máquina, eles ficam em <code>ultraman/local/envs/&lt;env&gt;.yaml</code>. No runner, a action cria esse arquivo a partir de <code>local-env</code>, um <code>name: value</code> por linha, e antes mascara cada valor no log. Os valores são simples: nada de aspas, comentários, valores de várias linhas ou outros recursos de YAML; se aparecer um, a action para.</p>
 <pre tabindex="0"><code>with:
@@ -172,6 +179,6 @@ ultraman:
 <nav class="pager"><a rel="prev" href="cli.html"><small>Anterior</small><span>O terminal</span></a><a rel="next" href="team.html"><small>Seguinte</small><span>Trabalho em equipe</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.0.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

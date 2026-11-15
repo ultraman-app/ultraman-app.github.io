@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.0.1">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -36,6 +36,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html" aria-current="page">Ambientes e segredos</a></li>
+<li><a href="compare.html">Comparar dois ambientes</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
@@ -57,6 +58,7 @@
 <li><a href="pipelines.html">Pipelines</a></li>
 <li><a href="load.html">Carga</a></li>
 <li><a href="environments.html" aria-current="page">Ambientes e segredos</a></li>
+<li><a href="compare.html">Comparar dois ambientes</a></li>
 <li><a href="importing.html">Importar</a></li>
 <li><a href="mock.html">Servidor mock</a></li>
 <li><a href="cli.html">O terminal</a></li>
@@ -79,6 +81,11 @@
 <li>o valor <strong>desta máquina</strong>, em <code>ultraman/local/envs/&lt;nome&gt;.yaml</code>, que nunca é sincronizado. Use-o para o que só vale para você.</li>
 </ul>
 <p>Um valor da máquina vazio significa &quot;igual ao compartilhado&quot;. Se tiver valor, ele prevalece sobre o compartilhado em todo lugar: na janela, na CLI e no agente. Se um arquivo de ambiente não puder ser interpretado, o painel mostra o erro e deixa você corrigi-lo como texto.</p>
+<p><strong>Isto é produção</strong>, no cartão <strong>Produção</strong> do ambiente, marca um ambiente que guarda dados reais. Um ambiente de produção aparece em âmbar (na barra de cima e nesta tela), uma <a href="compare.html#writes">comparação</a> só envia para ele leituras sem o seu sim pelo nome, e a <a href="compare.html#agent">comparação de um agente</a> não consegue escrever nele. A caixa fica salva no arquivo compartilhado, então sua equipe vê o mesmo, numa linha própria:</p>
+<pre tabindex="0"><code># ultraman/envs/prod.yaml
+production: true
+api: https://api.example.com</code></pre>
+<p>Um ambiente novo cujo nome tem prod ou live começa marcado; desmarque se ele não guarda dados reais. Um arquivo sem a linha (feito antes de a caixa existir) é lido pelo nome do mesmo jeito. Só a janela e uma edição manual do arquivo mudam isso: o salvamento de um agente mantém o que o arquivo tem.</p>
 <h2 id="dotenv">Importar um arquivo .env <a class="self" href="#dotenv" aria-label="Importar um arquivo .env">#</a></h2>
 <p><strong>Importar .env…</strong> lê um arquivo <code>.env</code> (<code>KEY=value</code>, <code>export</code>, aspas, comentários) para os valores desta máquina. Nada vai para o arquivo compartilhado, e portanto nada vai para o git, até você mesmo levar o valor para lá. Uma variável que é segredo mantém o valor que tem no cofre.</p>
 <h2 id="eye">Veja de onde vem um valor <a class="self" href="#eye" aria-label="Veja de onde vem um valor">#</a></h2>
@@ -112,9 +119,9 @@ options:
 <li><strong>Sua equipe:</strong> a metade compartilhada de um ambiente fica no git; os valores desta máquina e o cofre, não (<a href="security.html#stored">o que fica guardado</a>).</li>
 <li><strong>CI:</strong> os segredos vêm de variáveis <code>ULTRAMAN_SECRET_*</code>, então nada sensível fica no repositório (<a href="security.html#ci">CI</a>).</li>
 </ul>
-<nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="importing.html"><small>Seguinte</small><span>Importar</span></a></nav>
+<nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="compare.html"><small>Seguinte</small><span>Comparar dois ambientes</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.0.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Comparar dos entornos · Documentación de Ultraman</title>
+<meta name="description" content="Comparar ejecuta la misma pipeline en dos entornos y te dice, paso a paso, si responden igual: después de un despliegue, verifica que staging tenga la…">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/es/compare.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/compare.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/compare.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/compare.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/compare.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+</head>
+<body>
+<a class="skip" href="#docs-main">Saltar al contenido</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/compare.html" lang="en" hreflang="en">English</a>
+<a href="../es/compare.html" lang="es" hreflang="es" aria-current="true">Español</a>
+<a href="../pt/compare.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menú</summary>
+<nav aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="compare.html" aria-current="page">Comparar dos entornos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="compare.html" aria-current="page">Comparar dos entornos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="compare">Comparar dos entornos <a class="self" href="#compare" aria-label="Comparar dos entornos">#</a></h1>
+<p>Comparar ejecuta la misma pipeline en dos entornos y te dice, paso a paso, si responden igual: después de un despliegue, verifica que staging tenga la estructura y los datos replicados que tiene desarrollo. También puede verificar las respuestas de un entorno contra su tipo, un JSON Schema o la spec OpenAPI de la colección.</p>
+<h2 id="what">Qué responde <a class="self" href="#what" aria-label="Qué responde">#</a></h2>
+<p>Marcas con un bloque <code>compare:</code> las requests cuyas respuestas importan. Una comparación ejecuta entonces toda la pipeline en el primer entorno y después en el segundo, cada ejecución con los valores, el login y los secretos de su propio entorno. Para cada paso marcado dice una de estas cosas:</p>
+<ul>
+<li><strong>igual</strong>: las dos respuestas coinciden (con <code>body: shape</code>, <strong>misma forma</strong>);</li>
+<li><strong>N rutas difieren</strong>: el estado, un header que nombraste o el cuerpo difieren, y dónde (el JSONPath de cada lugar);</li>
+<li><strong>no comparado</strong>, y por qué: un lado no ejecutó el paso, un lado lo falló, o la respuesta no se puede comparar.</li>
+</ul>
+<p>Los pasos sin bloque también se ejecutan (un login alimenta a los pasos que le siguen) y aparecen como &quot;no comparado&quot;. Cada lado se guarda como una ejecución normal en <code>ultraman/runs/</code>. No se escribe nada más: ni archivo de diferencias ni línea base.</p>
+<h2 id="block">El bloque compare <a class="self" href="#block" aria-label="El bloque compare">#</a></h2>
+<p>Un paso request de una pipeline, o una request de una colección, lleva el bloque junto a sus otros campos:</p>
+<pre tabindex="0"><code>- request: get order
+  method: GET
+  path: /orders/{{order_id}}
+  compare:
+    body: value                      # value | shape | none; el estado siempre se compara
+    only: [$.id, $.status, $.total, $.items]   # solo estos campos; sin esto, todo
+    ignore: [$.updatedAt, $.meta.requestId]    # se dejan fuera, también dentro de una ruta de only
+    lists:
+      $.items: { match: sku }        # empareja los elementos por este campo
+      $.tags: { order: any }         # los mismos elementos, en cualquier orden
+    schema: files/order.schema.json  # el tipo de la respuesta, para --compare schema
+    headers: [content-type]          # ninguno por defecto
+    reuse: [order_id]                # ver &quot;Pedir el mismo registro&quot;</code></pre>
+<p><code>compare: {}</code> compara el estado y todo el cuerpo por valor. Todas las claves son opcionales:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Clave</th><th scope="col">Qué hace</th></tr></thead>
+<tbody>
+<tr><td><code>body</code></td><td><code>value</code>: los datos deben ser los mismos. <code>shape</code>: los mismos campos con los mismos tipos, sin importar sus valores. <code>none</code>: solo el estado y los headers que nombres.</td></tr>
+<tr><td><code>only</code></td><td>JSONPaths. Solo se comparan estos campos; una ruta a un objeto o a una lista cubre lo que hay dentro.</td></tr>
+<tr><td><code>shape</code></td><td>JSONPaths que se comparan solo por tipo, dentro de una comparación <code>body: value</code>: cada uno debe estar en ambos lados con el mismo tipo, y su valor puede diferir. El resto del cuerpo se compara por valor. Con <code>only</code>, una ruta de <code>shape</code> cuenta como incluida. Una ruta no puede estar a la vez en <code>shape</code> e <code>ignore</code>, y <code>shape</code> no va con <code>body: shape</code> ni <code>none</code>.</td></tr>
+<tr><td><code>ignore</code></td><td>JSONPaths que se dejan fuera, en ambos modos, también dentro de una ruta de <code>only</code>. Una marca de tiempo o un id de request que cambia en cada llamada va aquí.</td></tr>
+<tr><td><code>lists</code></td><td>En modo valor una lista se compara en orden, porque un orden distinto es una diferencia real. <code>match: &lt;campo&gt;</code> empareja los elementos por ese campo; <code>order: any</code> los compara como los mismos elementos en cualquier orden. Dos elementos con el mismo valor de <code>match</code> se emparejan en orden entre sí, y el resultado lo dice.</td></tr>
+<tr><td><code>schema</code></td><td>Un archivo JSON Schema bajo <code>ultraman/files/</code>: el tipo del paso cuando comparas contra tipos.</td></tr>
+<tr><td><code>headers</code></td><td>Nombres de headers que se comparan. <code>authorization</code>, <code>cookie</code>, <code>set-cookie</code>, <code>proxy-authorization</code> y <code>www-authenticate</code> se rechazan.</td></tr>
+<tr><td><code>reuse</code></td><td>Nombres de variables que el segundo entorno toma del primero para este paso.</td></tr>
+</tbody>
+</table></div>
+<p>El caso clásico de <code>shape</code> es un id o una marca de tiempo: cada entorno genera la suya, así que los valores difieren, pero el campo debe estar y conservar su tipo:</p>
+<pre tabindex="0"><code>compare:
+  body: value
+  shape: [$.id, $.createdAt]   # están en ambos lados, mismo tipo; los valores pueden diferir
+  ignore: [$.meta.requestId]   # no se compara en absoluto</code></pre>
+<p>Un paso de pipeline vinculado a una request de una colección toma el bloque de esa request, como sus otros campos. El formato completo está en la <a href="../en/reference.html#reference" hreflang="en">referencia del formato</a>.</p>
+<h2 id="cli">Desde la terminal <a class="self" href="#cli" aria-label="Desde la terminal">#</a></h2>
+<pre tabindex="0"><code>ultraman run &quot;order compare&quot; --compare local,staging
+ultraman run &quot;order compare&quot; --env local --compare schema
+ultraman run --tag smoke --compare dev,stg --junit reports/compare.xml</code></pre>
+<p><code>--compare a,b</code> nombra dos entornos distintos del proyecto; el primero es la fuente de <code>reuse</code>. Funciona con una pipeline, <code>--all</code>, <code>--tag</code> o <code>--collection</code>; las pipelines sin ningún paso comparado se dejan fuera y se nombran. Una comparación imprime una tabla por pipeline cuando ambos lados terminaron:</p>
+<pre tabindex="0"><code>order compare · local against staging
+  login       POST /auth/login    200  200   not compared
+  get order   GET  /orders/o-1    200  200   2 paths differ
+      $.total       local 59.9 · staging 61.4
+      $.items[1]    only in local
+1 of 1 compared step differs between local and staging.</code></pre>
+<p>Bajo una fila se listan como máximo 20 rutas, y luego &quot;and N more&quot;. Los valores bajo una fila se ocultan y se recortan como cualquier cuerpo impreso. Los demás flags de <code>ultraman run</code> funcionan como siempre: <code>--input</code> va a ambos lados, <code>--parallel</code> ejecuta pipelines en paralelo (dentro de una, los dos entornos se ejecutan uno después del otro), <code>--bail</code>, <code>--watch</code>, <code>--every</code> y <code>--contract</code>. <code>--env</code> no va con <code>--compare a,b</code> (el par nombra ambos), y <code>--load</code> se rechaza: no se compara nada bajo carga. <code>--json</code> agrega <code>side: 0</code> o <code>1</code> a cada evento y cierra cada pipeline con una línea <code>compare</code> que trae rutas y ningún valor.</p>
+<p>Cuando la ventana tiene el proyecto abierto, la comparación se ejecuta en su motor y la ventana muestra ambas ejecuciones, como con <a href="cli.html#one-engine">un solo motor</a>.</p>
+<h2 id="writes">Pasos que escriben <a class="self" href="#writes" aria-label="Pasos que escriben">#</a></h2>
+<p>Una comparación envía cada paso dos veces, una a cada entorno. Un paso comparado que no es GET, HEAD ni OPTIONS (un POST que crea un pedido) crearía datos en ambos, así que la terminal pregunta cada vez, nombrando el paso y los dos entornos, aunque el resto de la ejecución ya esté permitido. <code>a</code> (siempre) nunca cubre esta pregunta, y <code>--yes</code> tampoco. Sin terminal (CI), dilo por nombre: <code>--allow-write dev,stg</code>.</p>
+<p>Un entorno con <strong>Esto es producción</strong> marcado (consulta <a href="environments.html#envs">entornos</a>) es más estricto: cualquier paso que no sea una lectura, comparado o que solo alimenta la comparación, se rechaza antes de enviar nada, a menos que <code>--allow-write</code> nombre ese entorno:</p>
+<pre tabindex="0"><code>Not run. &quot;create order&quot; is a POST and prod is a production environment:
+comparing it would create an order in stg and another in prod.
+
+Compare only the steps that read, or allow it by name: --allow-write prod</code></pre>
+<p>Un entorno sin marcar que apunta al host de un entorno de producción cuenta también como producción, en la terminal, en la ventana y para un agente: una copia de los valores de prod guardada con otro nombre, un entorno importado, o un host dado como input. El rechazo lo nombra (&quot;qa apunta al host de prod, un entorno de producción&quot;), y <code>--allow-write qa</code> lo permite por nombre. El host se compara entero, sea cual sea su ruta, así que un entorno que comparte el host de producción y solo difiere en la ruta cuenta como producción también. Solo deciden los hosts que leen tus pipelines y colecciones: un host que comparten todos los entornos y que solo nombra la ruta de un paso (un proveedor de login, una API de pagos) no los vuelve de producción.</p>
+<h2 id="exit">Códigos de salida <a class="self" href="#exit" aria-label="Códigos de salida">#</a></h2>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Código</th><th scope="col">Cuándo</th></tr></thead>
+<tbody>
+<tr><td><strong>0</strong></td><td>Todos los pasos comparados son iguales, y ambas ejecuciones pasaron.</td></tr>
+<tr><td><strong>1</strong></td><td>Un paso comparado difiere, o falló un check de una ejecución. Ambos se reportan.</td></tr>
+<tr><td><strong>2</strong></td><td>No se envió nada (un flag incorrecto, una escritura rechazada, un entorno desconocido), o un paso comparado no se pudo comparar y ninguno difiere (&quot;1 of 3 compared steps couldn&#39;t be compared&quot;): un paso que un lado no alcanzó, un cuerpo sobre su límite. La terminal dice entonces el motivo de cada uno de esos pasos.</td></tr>
+</tbody>
+</table></div>
+<p>Una ruta que tenía un secreto queda &quot;no comparado&quot; (ver abajo), y nunca hace que un paso difiera por sí sola: una comparación cuyos únicos lugares abiertos eran secretos igual sale con 0 si todo lo demás es igual.</p>
+<h2 id="junit">En CI: JUnit <a class="self" href="#junit" aria-label="En CI: JUnit">#</a></h2>
+<p><code>--junit FILE</code> escribe una suite de pruebas por pipeline, llamada <code>order compare · local against staging</code>, con <code>compare</code> en sus propiedades y un caso de prueba por cada paso comparado:</p>
+<pre tabindex="0"><code>&lt;testcase classname=&quot;order compare · local against staging&quot; name=&quot;get order&quot; time=&quot;0.000&quot;&gt;
+  &lt;failure message=&quot;2 paths differ: $.total, $.items[1]&quot;&gt;&lt;/failure&gt;
+&lt;/testcase&gt;</code></pre>
+<p>Una diferencia es un fallo cuyo mensaje trae la cuenta y hasta 20 JSONPaths. Un paso que falló en la ejecución de un lado es un fallo que nombra ese lado; &quot;no comparado&quot; se omite; cuando un paso no se pudo comparar y ninguno difiere, se agrega un caso de error, para que CI nunca lo lea como un éxito. El archivo no lleva ningún valor ni cuerpo. Consulta <a href="ci.html#compare">CI</a>.</p>
+<h2 id="type">Contra un tipo <a class="self" href="#type" aria-label="Contra un tipo">#</a></h2>
+<p><code>--compare schema</code> ejecuta un entorno (<code>--env</code>, o el único del proyecto) y verifica cada respuesta comparada contra su tipo: el archivo <code>schema</code> del bloque, o si no, la operación OpenAPI del <a href="requests.html#contract">contrato</a> de la colección. Una respuesta que no es JSON (una página de error HTML) no coincide con el tipo de un archivo de schema.</p>
+<pre tabindex="0"><code>order compare · local against each step&#39;s type
+  login       POST /auth/login    200   not compared
+  get order   GET  /orders/o-1    200   doesn&#39;t match the type Order at 2 paths
+      $.currency    missing: the type requires it
+      $.total       is a number, the type says string
+      $.id          not named by the type (allowed)
+1 of 1 compared step doesn&#39;t match its type in local.</code></pre>
+<p>El nombre del tipo es el <code>title</code> del schema, o si no, el nombre de su archivo. Los campos que la respuesta tiene y el tipo no nombra son una nota, nunca una diferencia, salvo que el schema diga <code>additionalProperties: false</code>: una API que agrega un campo no falla. Ultraman lee un subconjunto de JSON Schema; las palabras clave que no lee (<code>patternProperties</code>, <code>prefixItems</code>, <code>if</code>/<code>then</code>, un <code>$ref</code> a otro archivo…) aparecen como &quot;not checked&quot; en el paso, para que un éxito nunca afirme más de lo que se verificó. Con <code>--compare schema</code>, <code>--contract off</code> se rechaza: ahí el contrato es el tipo.</p>
+<h2 id="reuse">Pedir el mismo registro: reuse <a class="self" href="#reuse" aria-label="Pedir el mismo registro: reuse">#</a></h2>
+<p>Por defecto cada entorno usa sus propios valores: su propio login, sus propios ids. Eso es lo correcto para la estructura. Para verificar que un registro se replicó, el segundo entorno tiene que pedir el registro del primero:</p>
+<pre tabindex="0"><code>compare:
+  reuse: [order_id]   # en el segundo entorno, este paso se envía con el order_id del primero</code></pre>
+<p>Solo ese paso toma el valor; la ejecución del segundo lado sigue con los suyos. <code>--compare dev,stg</code> le pide a stg el pedido de dev. Un valor hecho a partir de un secreto nunca se traslada, y un valor reutilizado no puede llevar la request a otro host: el paso falla antes de enviar. La pregunta de la terminal lo nombra (&quot;in stg: send dev&#39;s <code>order_id</code> (reuse)&quot;).</p>
+<h2 id="agent">El agente <a class="self" href="#agent" aria-label="El agente">#</a></h2>
+<p>Un agente compara con <code>run_compare</code>, como una ejecución: una tarjeta para iniciarla y otra para entregarla (consulta <a href="agents.html#tools">agentes</a>). Recibe el veredicto, los estados de cada paso y los JSONPaths que difieren con su clase y sus tipos JSON, nunca un valor: los valores los ves tú en la ventana o en la terminal. La tarjeta de inicio nombra el host de cada entorno, las escrituras comparadas, <code>reuse</code> y un entorno de producción (&quot;prod is a production environment: this reads real data&quot;).</p>
+<p>Un lado cuya propia comprobación falló se nombra con el paso que lo detuvo, no con el mensaje de la comprobación, que puede citar la respuesta. Un nombre de campo que ningún archivo del proyecto nombra (un email usado como clave, por ejemplo) llega al agente como su número en el resultado, <code>$.balances[field 2]</code>, porque las claves de una respuesta pueden ser sus datos; la ventana y la terminal muestran el nombre.</p>
+<p>La comparación de un agente nunca envía a un entorno de producción un paso que no sea una lectura, y nunca usa <code>reuse</code> con un entorno de producción como fuente: no hay manera de que permita ninguno de los dos, y una comparación así se rechaza antes de cualquier tarjeta, diciendo que la ejecutes desde la ventana o la terminal. Un entorno que no está marcado pero apunta al host de un entorno de producción (una copia de sus valores, la URL absoluta de un paso) cuenta aquí también como producción. Cuando un agente guarda un bloque <code>compare:</code>, su tarjeta dice lo que el bloque deja fuera (&quot;compares only 2 fields&quot;, &quot;ignores 3 fields: …&quot;).</p>
+<h2 id="window">En la ventana <a class="self" href="#window" aria-label="En la ventana">#</a></h2>
+<p><strong>Comparar con…</strong> junto a <strong>Enviar</strong> envía el borrador del editor, como <strong>Enviar</strong>, y compara su respuesta:</p>
+<ul>
+<li><strong>Enviarla también a otro entorno:</strong> una request a cada entorno, cada una con sus propios valores.</li>
+<li><strong>Contra un tipo:</strong> el archivo de schema de la request, o la operación OpenAPI del contrato de su colección.</li>
+<li><strong>Mi último envío en</strong> un entorno: no se envía nada; compara tus dos últimos envíos ahí. El historial queda en cada computadora, así que un runner de CI nuevo no tiene ninguno: ahí compara dos entornos o contra el tipo.</li>
+</ul>
+<p>El resultado se abre bajo la request: un encabezado con cada entorno y su color (uno de producción en ámbar), una frase (&quot;The values differ at 2 paths.&quot;), y las rutas que difieren, leídas como migas de pan (<code>items › 2 › qty</code>, cada JSONPath en su tooltip). <strong>Abrir las diferencias</strong> muestra las dos respuestas <strong>Lado a lado</strong> o <strong>Unificada</strong>.</p>
+<p>Pasa sobre un valor de una respuesta para <strong>Comparar este campo</strong>, <strong>Comparar solo su tipo</strong> o <strong>Ignorar este campo</strong>: cada uno agrega su ruta al bloque <code>compare:</code> de la request, y la request queda sin guardar como con cualquier edición. <strong>Elegir qué comparar</strong> pone la respuesta en un modo de selección: marca los campos y <strong>Listo</strong> escribe <code>only</code>. Sin una respuesta todavía, los campos salen del tipo; si no, envíala una vez antes. La pestaña <strong>Opciones</strong> de la request tiene una sección <strong>Comparar</strong> con las mismas reglas: valores o forma, los campos que se comparan, los que se comparan solo por tipo, los ignorados, reglas de listas, headers y un archivo de schema.</p>
+<p>Una pipeline (<strong>⋯ › Comparar en dos entornos…</strong> en su encabezado) o una colección (el mismo ítem en su <strong>⋯</strong> del árbol) se ejecuta en ambos entornos y muestra una fila por paso comparado; <strong>Solo lo que difiere</strong> deja el resto plegado.</p>
+<p>Cada entorno usa sus propios valores: un token que hizo el login de un entorno nunca va al otro. Cuando el segundo entorno todavía no hizo un valor que la request necesita (su propio login), la ventana pregunta antes de enviar nada y nombra quién lo hace: <strong>Enviar login en staging primero</strong> lo envía ahí y luego compara.</p>
+<p>Antes de enviar nada, la ventana pregunta lo que pregunta la terminal: un secreto o un archivo que va por primera vez al host del segundo entorno, y un paso comparado que escribe, nombrado con ambos entornos y ambas URLs, con <strong>Comparar las últimas respuestas</strong> (no se envía nada) como primera respuesta. Un entorno de producción lo dice en la pregunta, y también uno que apunta al host de un entorno de producción («qa apunta al host de prod, un entorno de producción»); el menú Comparar lo marca además en ámbar. Contra un tipo, un paso que escribe en un entorno de producción no se envía desde la ventana: compáralo desde la terminal con <code>--allow-write</code>.</p>
+<h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
+<ul>
+<li><strong>Tú:</strong> los secretos de cada entorno van solo al host de ese entorno, con el <a href="security.html#consent">consentimiento</a> de siempre; el secreto de un entorno nunca llega al otro.</li>
+<li><strong>Tú:</strong> ambas respuestas se ocultan contra todos los secretos de la bóveda que usa el proyecto antes de compararse o mostrarse, y un lugar que tenía un secreto queda &quot;no comparado&quot;, nunca &quot;igual&quot; ni &quot;distinto&quot; (<a href="security.html#redaction">ocultamiento</a>). Los valores simples de <code>ultraman/local/envs/</code> son variables normales y no se ocultan: guarda un valor sensible en la <a href="security.html#vault">bóveda</a>.</li>
+<li><strong>Tu equipo:</strong> una escritura comparada pregunta cada vez, y un entorno de producción rechaza toda escritura a menos que la nombres con <code>--allow-write</code>; la comparación de un agente no puede escribir ahí en absoluto (<a href="security.html#agents">agentes</a>).</li>
+<li><strong>CI:</strong> los resultados de una comparación, en JUnit y en la línea <code>compare</code> de <code>--json</code>, listan rutas, clases y tipos, no los valores. JUnit nombra un lado cuya comprobación falló solo por su paso; las líneas de <code>--json</code> conservan el mensaje de la comprobación, como en cualquier ejecución (<a href="security.html#ci">en CI</a>).</li>
+<li><strong>Límite:</strong> la casilla de producción vive en un archivo bajo git: protege de una escritura descuidada, no de alguien que pueda hacer push al repositorio (<a href="security.html#limits">límites</a>).</li>
+</ul>
+<nav class="pager"><a rel="prev" href="environments.html"><small>Anterior</small><span>Entornos y secretos</span></a><a rel="next" href="importing.html"><small>Siguiente</small><span>Importar</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+</body>
+</html>
