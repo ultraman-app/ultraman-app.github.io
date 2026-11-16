@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/requests.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+<link rel="stylesheet" href="../../docs.css?v=1.1.2">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -102,6 +102,10 @@
 <h2 id="auth">Auth <a class="self" href="#auth" aria-label="Auth">#</a></h2>
 <p>La pestaña <strong>Auth</strong> ofrece <strong>Heredada</strong>, <strong>Ninguno</strong>, <strong>Bearer</strong>, <strong>Basic</strong> y <strong>API key</strong> (en un header o en un parámetro de query, con el nombre que elijas). Una colección o una pipeline puede definir la auth una sola vez; cada request la hereda, define la suya o elige <strong>Ninguno</strong>. Los valores pueden ser variables, normalmente <code>{{secrets.x}}</code>, para que el token nunca quede en el archivo.</p>
 <p>Esos son todos los tipos. Para una API con token, inicia sesión con una request, <strong>extrae</strong> el token y úsalo como bearer (<code>{{token}}</code>): así se cubren la mayoría de los flujos de login. No hay flujos OAuth 2, certificados de cliente ni firma de requests.</p>
+<h3 id="auth-from">Desde una request <a class="self" href="#auth-from" aria-label="Desde una request">#</a></h3>
+<p>En la ventana, la pestaña <strong>Auth</strong> de una request (o los ajustes de una colección) puede tomar un token bearer <strong>Desde una request</strong>: elige la request de login y la propiedad de su respuesta (de su última respuesta, o escrita como JSONPath). Ultraman escribe <code>auth: { bearer: &#39;{{token}}&#39; }</code> en la request o en la colección, y un check <code>extract</code> en el login. En una colección, el login recibe <strong>Ninguno</strong> como auth propia si no tenía, para que nunca envíe el bearer que él mismo genera. El archivo del login se escribe solo cuando su pestaña no tiene cambios sin guardar; si no, dice &quot;Guarda primero el login&quot;.</p>
+<p>Después, cuando envías y falta el token, o la respuesta es un 401, la ventana envía primero el login, en el mismo entorno, y luego tu request. Después de un 401 el token se renueva una sola vez: una request que solo lee (GET, HEAD, OPTIONS) se envía de nuevo sola, una que escribe espera a que la envíes otra vez (&quot;Token renovado: envía de nuevo&quot;), y un segundo 401 se muestra tal como llegó. Una ejecución de colección desde la ventana hace lo mismo con un token que falta, no con un 401 dentro de la ejecución. La primera vez para cada colección, entorno y login pregunta <strong>Enviar {login} y continuar</strong>, diciendo adónde va el login; en un entorno de producción pregunta siempre, con una advertencia.</p>
+<p>Es solo bearer, y solo en la ventana: la CLI, las pipelines y los agentes siguen usando un paso de login como antes.</p>
 <h2 id="options">Opciones de la request <a class="self" href="#options" aria-label="Opciones de la request">#</a></h2>
 <p><strong>Opciones</strong> ajusta una sola request: <strong>timeout</strong> (en milisegundos; 30 000 por defecto, 0 para no tener límite), <strong>redirects</strong> (cuántas redirecciones seguir; 10 por defecto, 20 como máximo), <strong>tamaño máximo</strong> de la respuesta (50 MB), <strong>HTTP/2</strong>, <strong>HTTP plano</strong> (permite <code>http:</code> hacia un host que no sea localhost) y una <strong>CA propia</strong> (un archivo <code>.pem</code> del proyecto en el que se confía además de las CA habituales, para un servidor con su propio certificado). El HTTP plano y una CA propia reducen la protección de la conexión, así que la ventana te avisa cuando los activas.</p>
 <p>Una opción vacía hereda su valor, y el editor indica en gris de dónde viene (&quot;30000 ms, por defecto&quot;). El orden es: las <a href="environments.html#options">opciones de request</a> del entorno, luego las de la pipeline o la colección y, por último, las de la request. Gana la más cercana.</p>
@@ -186,10 +190,11 @@
 <li><strong>Tú:</strong> las variables GraphQL son un body: un secreto en ellas pide el mismo sí que en cualquier otro lugar y se muestra como <code>[secret:x]</code>, y <strong>Cargar schema</strong> es un envío, con las mismas preguntas. Consulta <a href="security.html#consent">consentimiento</a>.</li>
 <li><strong>Tu equipo:</strong> un schema solo se lee de <code>ultraman/files/</code>, nunca a través de un enlace, y sus descripciones y los mensajes de error de un servidor se muestran como texto plano. Consulta <a href="security.html#files">archivos</a>.</li>
 <li><strong>Tú:</strong> las variables de una suscripción y el payload de <code>connection_init</code> son mensajes: un secreto en ellos pide el mismo sí que un header, se muestra como <code>[secret:x]</code> y, si un servidor lo devuelve, aparece oculto. Consulta <a href="security.html#consent">consentimiento</a>.</li>
+<li><strong>Tú:</strong> el único sí detrás de <strong>Enviar {login} y continuar</strong> se guarda en esta máquina (<code>~/.ultraman/trust.json</code>), nunca en el proyecto. Cualquier cambio en la request de login (su método, ruta, body, headers, extracts o lo que hereda de la colección), o en adónde va una vez completados los valores del entorno, vuelve a preguntar; un entorno de producción pregunta siempre, y ese sí no se guarda. El login va con los valores de su propia colección. Un token llega solo a la sesión de su propio entorno, y la ventana envía un login por ti solo para los nombres que lee una auth: cualquier otro valor que falte sigue preguntando.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="security.html"><small>Anterior</small><span>Seguridad y consentimiento</span></a><a rel="next" href="pipelines.html"><small>Siguiente</small><span>Pipelines</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+<link rel="stylesheet" href="../../docs.css?v=1.1.2">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -143,7 +143,7 @@
 </ol>
 <h2 id="sample">The sample project <a class="self" href="#sample" aria-label="The sample project">#</a></h2>
 <p>Not sure where to start? On first open, Welcome offers <strong>See the sample project</strong>. The same project is in the project menu as <strong>Open the sample project</strong>, and in a terminal as <code>ultraman sample</code> (it prints the folder&#39;s path).</p>
-<p>It&#39;s a small shop: four pipelines (browse products, place an order, check an order, and a flaky endpoint that fails on purpose, so you can see a red step and why), a <code>shop</code> collection, an environment, a load test, and runs, a load report and history already there, so every screen shows data before you run anything.</p>
+<p>It&#39;s a small shop: four pipelines (browse products, place an order, check an order, and a flaky endpoint that fails on purpose, so you can see a red step and why), a <code>shop</code> collection, two environments (<code>shop</code> and <code>staging</code>), a load test, and runs, a load report and history already there, so every screen shows data before you run anything.</p>
 <p>The sample&#39;s requests go to <code>https://shop.example</code>. That address is answered by a small shop inside Ultraman: no port to start, and nothing is sent to the network. Any other host goes out as usual.</p>
 <ul>
 <li>The sample lives in Ultraman&#39;s own folder (<code>~/.ultraman/sample/</code>, or under <code>ULTRAMAN_HOME</code>). It starts clean every time you open it, so changes don&#39;t stay.</li>
@@ -151,6 +151,16 @@
 <li>The top bar marks it <strong>Sample project</strong>. <strong>Start your own project</strong> picks a folder of your own.</li>
 <li>Its load numbers aren&#39;t a benchmark: the shop answers inside Ultraman, with a simulated delay.</li>
 </ul>
+<h3 id="sample-compare">Three things to try with Compare <a class="self" href="#sample-compare" aria-label="Three things to try with Compare">#</a></h3>
+<p><code>staging</code> is the same shop on the path <code>/stg</code>, with its own logins and orders and a few differences on purpose: the Grinder costs 54.9 there instead of 49.9, and there is a fourth product. Neither environment is production.</p>
+<ol>
+<li>Open the <strong>products</strong> request in the <code>shop</code> collection, then <strong>Compare with… › staging</strong>. It says &quot;The values differ at 2 paths.&quot; with nothing to set up: the request already carries <code>compare: { body: value }</code>.</li>
+<li>Open <strong>me</strong>, then <strong>Compare with… › My last send in shop</strong>. Nothing is sent: it compares the two sends the sample&#39;s history already holds, and <code>lastSeen</code> changes by itself. The window offers to ignore it; one click adds it and the result reads the same.</li>
+<li>On <strong>me</strong>, pick <strong>Compare with… › staging</strong>. staging says &quot;needs login&quot;: one yes sends <code>login</code> there, and then it compares.</li>
+</ol>
+<p>The same compare from a terminal, in the sample&#39;s folder:</p>
+<pre tabindex="0"><code>ultraman run &quot;browse products&quot; --compare shop,staging</code></pre>
+<p>See <a href="compare.html">Compare</a> for the rest.</p>
 <h2 id="keys">Keys worth knowing <a class="self" href="#keys" aria-label="Keys worth knowing">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Key</th><th scope="col">What</th></tr></thead>
@@ -217,12 +227,13 @@
 <h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
 <ul>
 <li><strong>Nothing about the shop leaves your machine:</strong> it answers <code>shop.example</code> inside Ultraman, and that name never reaches the network, not even a DNS lookup. Any other host goes out as usual, with the same questions. See <a href="security.html#leaves-your-machine">what leaves your computer</a>.</li>
+<li><strong>staging is the same shop:</strong> it is the path <code>/stg</code> on the same name, answered inside Ultraman with its own state, so comparing the two sends nothing to the network either. A subdomain such as <code>stg.shop.example</code> is still refused before any lookup.</li>
 <li><strong>Nothing is kept:</strong> the sample is copied again each time it opens, and nothing in it is pushed anywhere, since it has no git sync. See <a href="security.html#trusted-folders">trusted folders</a>.</li>
 <li><strong>No secrets:</strong> the sample comes with none, and none of its own requests use your vault. See <a href="security.html#vault">the vault</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="why.html"><small>Previous</small><span>Why Ultraman</span></a><a rel="next" href="security.html"><small>Next</small><span>Security and consent</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

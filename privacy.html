@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy: Ultraman</title>
+<meta name="description" content="Ultraman collects nothing: what stays on your computer, what goes over the network and what Claude receives through the plugin.">
+<link rel="canonical" href="https://ultraman-app.github.io/privacy.html">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2E46FF">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=6">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<main style="max-width:44rem;margin:0 auto;padding:48px var(--side,24px) 0">
+  <h1>Privacy Policy: Ultraman and its Claude plugin</h1>
+  <p><a href="./">Back to Ultraman</a></p>
+
+  <h2>What we collect</h2>
+  <p>Nothing. Ultraman has no accounts, no analytics and no telemetry. The plugin sends nothing to us.</p>
+
+  <h2>What stays on your computer</h2>
+  <p>Your project files (pipelines, requests, environments, run and load history) live in your own folder or git repository. Secret values live in an encrypted vault in your user folder (<code>~/.ultraman</code>), protected by a key only you hold. The MCP server talks only to the Ultraman app on the same computer.</p>
+
+  <h2>What goes over the network</h2>
+  <p>Only (1) the requests your own project defines, to the APIs you choose, after you approve them; and (2) at most once a day, an update check that reads the latest release from GitHub's public API (<code>api.github.com</code>). GitHub's own privacy policy applies to that request.</p>
+  <p>To turn the update check off, start Ultraman (and its CLI) with the environment variable <code>ULTRAMAN_NO_UPDATE_CHECK=1</code>; then nothing is requested.</p>
+
+  <h2>What Claude receives</h2>
+  <p>The results of the calls you approve, with secret values replaced by <code>[secret:name]</code>. What Claude does with them is governed by Anthropic's terms for your account.</p>
+
+  <h2>Sharing and sale</h2>
+  <p>We share and sell no data; we hold none.</p>
+
+  <h2>Retention</h2>
+  <p>Everything stays on your computer until you delete it; we keep nothing.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy: open an issue at <a href="https://github.com/ultraman-app/ultraman-app.github.io/issues">github.com/ultraman-app/ultraman-app.github.io/issues</a>. Last updated: November 2026.</p>
+</main>
+
+<footer>
+  <svg class="mark" viewBox="0 0 24 18" width="24" height="18" aria-hidden="true"><path d="M0 0h24v3.5H9z"/><path d="M0 7.25h24v3.5H0z"/><path d="M0 14.5h15l9 3.5H0z"/></svg>
+  <p>Ultraman, built on <a href="https://github.com/AbeOrigin/UltraTon">UltraTon</a>.</p>
+  <p><a href="privacy.html">Privacy</a></p>
+</footer>
+</body>
+</html>

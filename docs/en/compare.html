@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/compare.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+<link rel="stylesheet" href="../../docs.css?v=1.1.2">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -179,15 +179,45 @@ Compare only the steps that read, or allow it by name: --allow-write prod</code>
 <li><strong>Against a type:</strong> the request&#39;s schema file, or the OpenAPI operation of its collection&#39;s contract.</li>
 <li><strong>My last send in</strong> an environment: nothing is sent; it compares your two latest sends there. The history stays on each computer, so a fresh CI runner has none: there, compare two environments or against the type.</li>
 </ul>
+<p>The menu says what each environment needs before you pick it, without sending anything: <strong>needs login</strong> when a request of the collection makes the value the compare is missing, <strong>needs order_id</strong> when nothing makes it, and nothing when it is ready. It comes before the rest of the line (<strong>real data</strong>, <strong>asks before it writes</strong>).</p>
 <p>The result opens under the request: a head with each environment and its colour (a production one in amber), a sentence (&quot;The values differ at 2 paths.&quot;), and the paths that differ, read as breadcrumbs (<code>items › 2 › qty</code>, each JSONPath in its tooltip). <strong>Open the diff</strong> shows the two answers <strong>Side by side</strong> or <strong>Unified</strong>.</p>
-<p>Hover a value in an answer for <strong>Compare this field</strong>, <strong>Compare only its type</strong> or <strong>Ignore this field</strong>: each adds its path to the request&#39;s <code>compare:</code> block, and the request turns unsaved like any edit. <strong>Choose what to compare</strong> puts the answer in a pick mode: tick the fields, and <strong>Done</strong> writes <code>only</code>. With no answer yet, the fields come from the type; otherwise send it once first. The request&#39;s <strong>Options</strong> tab has a <strong>Compare</strong> section with the same rules: values or shape, the fields to compare, those compared by type only, those ignored, list rules, headers and a schema file.</p>
+<p>Hover a value in an answer for <strong>Compare this field</strong>, <strong>Compare only its type</strong> or <strong>Ignore this field</strong>: each adds its path to the request&#39;s <code>compare:</code> block, and the request turns unsaved like any edit. <strong>Choose what to compare</strong> puts the answer in a pick mode: tick the fields, and <strong>Done</strong> writes <code>only</code>. With no answer yet, the fields come from the type; otherwise send it once first. The request&#39;s <strong>Options</strong> tab has a <strong>Compare</strong> section with the same rules. It keeps three rows in sight: <strong>Compare the body&#39;s</strong> (values, shape or nothing), <strong>Fields to compare</strong> and <strong>Fields to ignore</strong>. The rest is behind <strong>More</strong>: the fields compared by type only, list rules, the answer&#39;s type, headers and <code>reuse</code> (shown only when the file has it). Closed, More says what it holds in a line of chips (&quot;1 list rule&quot;, &quot;type order&quot;), so nothing you set is out of sight; it opens by itself while something inside is invalid.</p>
 <p>A pipeline (<strong>⋯ › Compare in two environments…</strong> in its header) or a collection (the same item in its <strong>⋯</strong> in the tree) runs in both environments and shows a row per compared step; <strong>Only what differs</strong> keeps the rest folded.</p>
-<p>Each environment uses its own values: a token one environment&#39;s login made never goes to the other. When the second environment hasn&#39;t made a value the request needs yet (its own login), the window asks before anything is sent and names who makes it: <strong>Send login in staging first</strong> sends it there, then compares.</p>
 <p>Before anything is sent, the window asks what the terminal asks: a secret or a file going to the second environment&#39;s host for the first time, and a compared step that writes, named with both environments and both URLs, with <strong>Compare the last answers instead</strong> (nothing is sent) as the first answer. A production environment says so in the question, and so does one that points at a production environment&#39;s host (&quot;qa points at prod&#39;s host, a production environment&quot;); the Compare menu marks it in amber too. Against a type, a step that writes in a production environment isn&#39;t sent from the window: compare it from the terminal with <code>--allow-write</code>.</p>
+<h3 id="starting">The first compare: what should stay the same <a class="self" href="#starting" aria-label="The first compare: what should stay the same">#</a></h3>
+<p>A request with no <code>compare:</code> block would compare every field, ids and dates included, which reads as a wall of differences. So the first time you pick an environment or <strong>My last send in</strong> for such a request, the window asks <strong>What should stay the same?</strong>:</p>
+<ul>
+<li><strong>Same structure:</strong> the same fields and types; the values may differ. For checking what a deploy changed. It writes <code>compare: { body: shape }</code>.</li>
+<li><strong>Replicated data:</strong> the same values. For checking that data was copied. It writes <code>compare: { body: value }</code>.</li>
+</ul>
+<p>A card writes the block into the draft (the request turns unsaved, like any edit) and the compare goes on. <strong>Cancel</strong> sends nothing and writes nothing. The same two cards are at the top of <strong>Options</strong> while the request has no block. A request with any block, even <code>compare: {}</code>, never asks, and neither does a check against a type.</p>
+<h3 id="suggestion">Fields that change by themselves <a class="self" href="#suggestion" aria-label="Fields that change by themselves">#</a></h3>
+<p>Some fields change on every call: a creation time, a request id. After a compare that differs, the window offers them for <code>ignore</code> in one click, in a banner under the sentence:</p>
+<ul>
+<li>After <strong>My last send in</strong> an environment, it offers every body field whose value changed between those two sends: &quot;These 3 fields change by themselves: createdAt · requestId · meta › traceId.&quot;</li>
+<li>After a compare between two environments, it offers only the differences that also changed between two sends in the first environment, read from that environment&#39;s history (nothing is sent): &quot;3 of the differences also change between two sends in dev: …&quot;. A difference that is stable inside each environment is the finding, so it isn&#39;t offered.</li>
+</ul>
+<p><strong>Ignore these 3 fields</strong> adds exactly the fields the banner names to the request&#39;s <code>ignore</code> list (the request turns unsaved) and reads the result again from the two answers the history already holds. The limits:</p>
+<ul>
+<li>Only a field present on both sides whose value changed. Never a field on one side only, a changed type, a header, the status, the whole body or a list item itself (a field inside the items stands for that field of every item, <code>items › each › seenAt</code>).</li>
+<li>Never a place that held a secret (those are &quot;not compared&quot;), and never a field you chose: one in <code>only</code> or <code>shape</code>, or an object above it.</li>
+<li>At most 8, all named. With more, it says &quot;and N more change too&quot;, and the click doesn&#39;t add those.</li>
+<li>Nothing with <code>body: shape</code> or <code>none</code>, when the status differs, or against a type.</li>
+</ul>
+<h3 id="login">Logging in for the other environment <a class="self" href="#login" aria-label="Logging in for the other environment">#</a></h3>
+<p>Each environment uses its own values: a token one environment&#39;s login made never goes to the other. When an environment is missing a value the request needs, and a request of the collection makes it, picking that environment asks once: <strong>To compare, first send login in staging</strong>. It lists each request that will be sent with its method (up to three, &quot;POST login&quot;), and when both sides need one they are in the same question.</p>
+<ul>
+<li><strong>Cancel</strong> (first, and focused) sends nothing.</li>
+<li><strong>Send login and compare</strong> sends each listed request to its own environment, with that environment&#39;s values, then compares. What they make stays in that environment&#39;s session.</li>
+<li><strong>Type the value instead</strong> opens the missing-values dialog, whose title names the environment when it isn&#39;t the current one: &quot;1 value is missing to send get order in staging&quot;.</li>
+</ul>
+<p>A production environment is named in a warning inside the question (&quot;prod is a production environment: this sends POST login there.&quot;). If a request fails or doesn&#39;t give the value, nothing else is sent and its tab opens with the answer. With more than three requests, or a value nothing makes, you get the missing-values dialog as before. A secret going to a server for the first time still asks its own yes.</p>
 <h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
 <ul>
 <li><strong>You:</strong> each environment&#39;s secrets go only to that environment&#39;s host, with the usual <a href="security.html#consent">consent</a>; one environment&#39;s secret never reaches the other.</li>
 <li><strong>You:</strong> both answers are hidden against every vault secret the project uses before they are compared or shown, and a place that held a secret is &quot;not compared&quot;, never &quot;same&quot; or &quot;different&quot; (<a href="security.html#redaction">redaction</a>). Plain values in <code>ultraman/local/envs/</code> are ordinary variables and aren&#39;t hidden: keep a sensitive value in the <a href="security.html#vault">vault</a>.</li>
+<li><strong>You:</strong> the question before a login names every request, its method and its environment, production included, and a yes covers only what it listed. Each environment keeps its own session, and the menu&#39;s &quot;needs login&quot; is asked of Ultraman without sending anything.</li>
+<li><strong>You:</strong> the suggestion only names fields of the answers you already have, never a secret&#39;s place or a field you chose, and one click adds exactly the names it shows.</li>
 <li><strong>Your team:</strong> a compared write asks every time, and a production environment refuses every write unless you name it with <code>--allow-write</code>; an agent&#39;s compare can&#39;t write there at all (<a href="security.html#agents">agents</a>).</li>
 <li><strong>CI:</strong> a compare&#39;s results, in JUnit and in <code>--json</code>&#39;s <code>compare</code> line, list paths, kinds and types, not the values there. JUnit names a side whose check failed by its step only; the <code>--json</code> lines keep the check&#39;s message, as in any run (<a href="security.html#ci">in CI</a>).</li>
 <li><strong>Limit:</strong> the production box lives in a file under git: it guards against a careless write, not against someone who can push to the repository (<a href="security.html#limits">limits</a>).</li>
@@ -195,6 +225,6 @@ Compare only the steps that read, or allow it by name: --allow-write prod</code>
 <nav class="pager"><a rel="prev" href="environments.html"><small>Previous</small><span>Environments and secrets</span></a><a rel="next" href="importing.html"><small>Next</small><span>Importing</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

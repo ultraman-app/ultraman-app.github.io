@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+<link rel="stylesheet" href="../../docs.css?v=1.1.2">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -143,7 +143,7 @@
 </ol>
 <h2 id="sample">El proyecto de ejemplo <a class="self" href="#sample" aria-label="El proyecto de ejemplo">#</a></h2>
 <p>¿No sabes por dónde empezar? La primera vez que abres Ultraman, la pantalla de bienvenida te ofrece <strong>Ver el proyecto de ejemplo</strong>. También lo encuentras en el menú de proyectos, como <strong>Abrir el proyecto de ejemplo</strong>, y en una terminal con <code>ultraman sample</code> (muestra la ruta de su carpeta).</p>
-<p>Es una tienda pequeña: cuatro pipelines (ver productos, hacer un pedido, consultar un pedido y un endpoint inestable que falla a propósito, para que veas un paso en rojo y por qué), una colección <code>shop</code>, un entorno, una prueba de carga, y ejecuciones, un reporte de carga y un historial ya hechos, así que cada pantalla tiene datos antes de que ejecutes nada.</p>
+<p>Es una tienda pequeña: cuatro pipelines (ver productos, hacer un pedido, consultar un pedido y un endpoint inestable que falla a propósito, para que veas un paso en rojo y por qué), una colección <code>shop</code>, dos entornos (<code>shop</code> y <code>staging</code>), una prueba de carga, y ejecuciones, un reporte de carga y un historial ya hechos, así que cada pantalla tiene datos antes de que ejecutes nada.</p>
 <p>Las requests del ejemplo van a <code>https://shop.example</code>. A esa dirección le responde una pequeña tienda dentro de Ultraman: no hay que levantar ningún puerto y nada sale a la red. Cualquier otro host se envía como siempre.</p>
 <ul>
 <li>El ejemplo vive en la carpeta propia de Ultraman (<code>~/.ultraman/sample/</code>, o dentro de <code>ULTRAMAN_HOME</code>). Empieza limpio cada vez que lo abres, así que tus cambios no se conservan.</li>
@@ -151,6 +151,16 @@
 <li>La barra superior lo marca como <strong>Proyecto de ejemplo</strong>. <strong>Empezar tu propio proyecto</strong> te deja elegir una carpeta tuya.</li>
 <li>Sus números de carga no son una medición real: la tienda responde dentro de Ultraman, con una demora simulada.</li>
 </ul>
+<h3 id="sample-compare">Tres cosas para probar con Comparar <a class="self" href="#sample-compare" aria-label="Tres cosas para probar con Comparar">#</a></h3>
+<p><code>staging</code> es la misma tienda en la ruta <code>/stg</code>, con sus propios logins y pedidos y unas diferencias a propósito: la Grinder cuesta 54.9 ahí en vez de 49.9, y hay un cuarto producto. Ningún entorno es de producción.</p>
+<ol>
+<li>Abre la request <strong>products</strong> de la colección <code>shop</code> y luego <strong>Comparar con… › staging</strong>. Dice «The values differ at 2 paths.» sin que configures nada: la request ya trae <code>compare: { body: value }</code>.</li>
+<li>Abre <strong>me</strong> y luego <strong>Comparar con… › Mi último envío en shop</strong>. No se envía nada: compara los dos envíos que el historial del ejemplo ya tiene, y <code>lastSeen</code> cambia solo. La ventana ofrece ignorarlo; un clic lo agrega y el resultado queda igual.</li>
+<li>En <strong>me</strong>, elige <strong>Comparar con… › staging</strong>. staging dice «necesita login»: un sí envía <code>login</code> ahí y luego compara.</li>
+</ol>
+<p>La misma comparación desde una terminal, en la carpeta del ejemplo:</p>
+<pre tabindex="0"><code>ultraman run &quot;browse products&quot; --compare shop,staging</code></pre>
+<p>Consulta <a href="compare.html">Comparar</a> para el resto.</p>
 <h2 id="keys">Teclas útiles <a class="self" href="#keys" aria-label="Teclas útiles">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Tecla</th><th scope="col">Qué hace</th></tr></thead>
@@ -217,12 +227,13 @@
 <h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
 <ul>
 <li><strong>Nada de la tienda sale de tu máquina:</strong> Ultraman responde <code>shop.example</code> por dentro, y ese nombre nunca llega a la red, ni siquiera como consulta DNS. Cualquier otro host sale como siempre, con las mismas preguntas. Consulta <a href="security.html#leaves-your-machine">qué sale de tu computadora</a>.</li>
+<li><strong>staging es la misma tienda:</strong> es la ruta <code>/stg</code> del mismo nombre, respondida dentro de Ultraman con su propio estado, así que comparar las dos tampoco envía nada a la red. Un subdominio como <code>stg.shop.example</code> se sigue rechazando antes de cualquier consulta.</li>
 <li><strong>Nada se conserva:</strong> el ejemplo se vuelve a copiar cada vez que lo abres, y nada de lo que contiene se sube a ningún lado, porque no tiene sincronización con git. Consulta <a href="security.html#trusted-folders">carpetas de confianza</a>.</li>
 <li><strong>Sin secretos:</strong> el ejemplo no trae ninguno, y ninguna de las requests que trae usa tu bóveda. Consulta <a href="security.html#vault">la bóveda</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="why.html"><small>Anterior</small><span>Por qué Ultraman</span></a><a rel="next" href="security.html"><small>Siguiente</small><span>Seguridad y consentimiento</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

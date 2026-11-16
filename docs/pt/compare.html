@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/compare.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+<link rel="stylesheet" href="../../docs.css?v=1.1.2">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -179,15 +179,45 @@ Compare only the steps that read, or allow it by name: --allow-write prod</code>
 <li><strong>Contra um tipo:</strong> o arquivo de schema da request, ou a operação OpenAPI do contrato da coleção.</li>
 <li><strong>Meu último envio em</strong> um ambiente: nada é enviado; compara seus dois últimos envios ali. O histórico fica em cada computador, então um runner de CI novo não tem nenhum: ali, compare dois ambientes ou contra o tipo.</li>
 </ul>
+<p>O menu diz o que cada ambiente precisa antes de você escolher, sem enviar nada: <strong>precisa de login</strong> quando uma request da coleção gera o valor que falta à comparação, <strong>precisa de order_id</strong> quando nada o gera, e nada quando está pronto. Vem antes do resto da linha (<strong>dados reais</strong>, <strong>pergunta antes de escrever</strong>).</p>
 <p>O resultado abre sob a request: um cabeçalho com cada ambiente e a cor dele (um de produção em âmbar), uma frase (&quot;The values differ at 2 paths.&quot;), e os caminhos que diferem, lidos como breadcrumbs (<code>items › 2 › qty</code>, cada JSONPath no tooltip). <strong>Abrir as diferenças</strong> mostra as duas respostas <strong>Lado a lado</strong> ou <strong>Unificada</strong>.</p>
-<p>Passe o mouse sobre um valor de uma resposta para <strong>Comparar este campo</strong>, <strong>Comparar só o tipo</strong> ou <strong>Ignorar este campo</strong>: cada um acrescenta o caminho ao bloco <code>compare:</code> da request, e a request fica não salva como em qualquer edição. <strong>Escolher o que comparar</strong> põe a resposta em um modo de seleção: marque os campos e <strong>Pronto</strong> grava <code>only</code>. Sem resposta ainda, os campos vêm do tipo; senão, envie-a uma vez antes. A aba <strong>Opções</strong> da request tem uma seção <strong>Comparar</strong> com as mesmas regras: valores ou forma, os campos a comparar, os comparados só por tipo, os ignorados, regras de listas, headers e um arquivo de schema.</p>
+<p>Passe o mouse sobre um valor de uma resposta para <strong>Comparar este campo</strong>, <strong>Comparar só o tipo</strong> ou <strong>Ignorar este campo</strong>: cada um acrescenta o caminho ao bloco <code>compare:</code> da request, e a request fica não salva como em qualquer edição. <strong>Escolher o que comparar</strong> põe a resposta em um modo de seleção: marque os campos e <strong>Pronto</strong> grava <code>only</code>. Sem resposta ainda, os campos vêm do tipo; senão, envie-a uma vez antes. A aba <strong>Opções</strong> da request tem uma seção <strong>Comparar</strong> com as mesmas regras. Ela deixa três linhas à vista: <strong>Comparar do corpo</strong> (valores, forma ou nada), <strong>Campos a comparar</strong> e <strong>Campos a ignorar</strong>. O resto fica atrás de <strong>Mais</strong>: os campos comparados só por tipo, as regras de listas, o tipo da resposta, os headers e <code>reuse</code> (só aparece quando o arquivo o tem). Fechado, o Mais diz o que guarda numa linha de chips (&quot;1 regra de lista&quot;, &quot;tipo order&quot;), então nada do que você definiu fica fora de vista; ele se abre sozinho enquanto algo dentro dele é inválido.</p>
 <p>Uma pipeline (<strong>⋯ › Comparar em dois ambientes…</strong> no cabeçalho dela) ou uma coleção (o mesmo item no <strong>⋯</strong> dela na árvore) roda nos dois ambientes e mostra uma linha por passo comparado; <strong>Só o que difere</strong> mantém o resto recolhido.</p>
-<p>Cada ambiente usa os próprios valores: um token que o login de um ambiente gerou nunca vai para o outro. Quando o segundo ambiente ainda não gerou um valor de que a request precisa (o próprio login), a janela pergunta antes de enviar qualquer coisa e nomeia quem o gera: <strong>Enviar login em staging primeiro</strong> o envia lá e depois compara.</p>
 <p>Antes de enviar qualquer coisa, a janela pergunta o que o terminal pergunta: um segredo ou um arquivo indo pela primeira vez para o host do segundo ambiente, e um passo comparado que escreve, nomeado com os dois ambientes e as duas URLs, com <strong>Comparar as últimas respostas</strong> (nada é enviado) como primeira resposta. Um ambiente de produção diz isso na pergunta, e também um que aponta para o host de um ambiente de produção («qa aponta para o host de prod, um ambiente de produção»); o menu Comparar o marca ainda em âmbar. Contra um tipo, um passo que escreve em um ambiente de produção não é enviado pela janela: compare-o pelo terminal com <code>--allow-write</code>.</p>
+<h3 id="starting">A primeira comparação: o que deve ficar igual <a class="self" href="#starting" aria-label="A primeira comparação: o que deve ficar igual">#</a></h3>
+<p>Uma request sem bloco <code>compare:</code> compararia todos os campos, ids e datas incluídos, e isso se lê como uma parede de diferenças. Por isso, na primeira vez que você escolhe um ambiente ou <strong>Meu último envio em</strong> para uma request assim, a janela pergunta <strong>O que deve ficar igual?</strong>:</p>
+<ul>
+<li><strong>Mesma estrutura:</strong> os mesmos campos e tipos; os valores podem mudar. Para conferir o que um deploy mudou. Grava <code>compare: { body: shape }</code>.</li>
+<li><strong>Dados replicados:</strong> os mesmos valores. Para conferir que os dados foram copiados. Grava <code>compare: { body: value }</code>.</li>
+</ul>
+<p>Um cartão grava o bloco no rascunho (a request fica não salva, como em qualquer edição) e a comparação continua. <strong>Cancelar</strong> não envia nem grava nada. Os mesmos dois cartões ficam no topo de <strong>Opções</strong> enquanto a request não tem bloco. Uma request com qualquer bloco, mesmo <code>compare: {}</code>, nunca pergunta, e nem uma verificação contra um tipo.</p>
+<h3 id="suggestion">Campos que mudam sozinhos <a class="self" href="#suggestion" aria-label="Campos que mudam sozinhos">#</a></h3>
+<p>Alguns campos mudam a cada chamada: um horário de criação, um id de request. Depois de uma comparação que difere, a janela os oferece para <code>ignore</code> com um clique, num aviso sob a frase:</p>
+<ul>
+<li>Depois de <strong>Meu último envio em</strong> um ambiente, ela oferece todos os campos do corpo cujo valor mudou entre esses dois envios: &quot;These 3 fields change by themselves: createdAt · requestId · meta › traceId.&quot;</li>
+<li>Depois de uma comparação entre dois ambientes, ela oferece só as diferenças que também mudaram entre dois envios no primeiro ambiente, lidos do histórico dele (nada é enviado): &quot;3 of the differences also change between two sends in dev: …&quot;. Uma diferença estável dentro de cada ambiente é a descoberta, então não é oferecida.</li>
+</ul>
+<p><strong>Ignorar estes 3 campos</strong> adiciona exatamente os campos que o aviso nomeia à lista <code>ignore</code> da request (a request fica não salva) e lê o resultado de novo a partir das duas respostas que o histórico já tem. Os limites:</p>
+<ul>
+<li>Só um campo presente nos dois lados cujo valor mudou. Nunca um campo que existe de um lado só, um tipo que mudou, um header, o status, o corpo inteiro nem um item de lista em si (um campo dentro dos itens vale para esse campo de todos eles, <code>items › each › seenAt</code>).</li>
+<li>Nunca um lugar que tinha um segredo (ficam &quot;não comparados&quot;) nem um campo que você escolheu: um de <code>only</code> ou de <code>shape</code>, ou um objeto que o contém.</li>
+<li>No máximo 8, todos nomeados. Com mais, diz &quot;and N more change too&quot; e o clique não os adiciona.</li>
+<li>Nada com <code>body: shape</code> ou <code>none</code>, quando o status difere, nem contra um tipo.</li>
+</ul>
+<h3 id="login">Entrando no outro ambiente <a class="self" href="#login" aria-label="Entrando no outro ambiente">#</a></h3>
+<p>Cada ambiente usa os próprios valores: um token que o login de um ambiente gerou nunca vai para o outro. Quando um ambiente não tem um valor de que a request precisa e uma request da coleção o gera, escolher esse ambiente pergunta uma vez: <strong>Para comparar, primeiro envie login em staging</strong>. Ela lista cada request que será enviada com o método (até três, &quot;POST login&quot;), e quando os dois lados precisam de uma, elas vão na mesma pergunta.</p>
+<ul>
+<li><strong>Cancelar</strong> (primeiro e com o foco) não envia nada.</li>
+<li><strong>Enviar login e comparar</strong> envia cada request listada para o próprio ambiente, com os valores desse ambiente, e depois compara. O que elas geram fica só na sessão desse ambiente.</li>
+<li><strong>Digitar o valor em vez disso</strong> abre o diálogo de valores faltando, cujo título nomeia o ambiente quando ele não é o atual: &quot;Falta 1 valor para enviar get order em staging&quot;.</li>
+</ul>
+<p>Um ambiente de produção é nomeado num aviso dentro da pergunta (&quot;prod é um ambiente de produção: isto envia POST login para lá.&quot;). Se uma request falha ou não dá o valor, nada mais é enviado e a aba dela abre com a resposta. Com mais de três requests, ou um valor que nada gera, aparece o diálogo de valores faltando de sempre. Um segredo indo pela primeira vez a um servidor continua pedindo o próprio sim.</p>
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
 <ul>
 <li><strong>Você:</strong> os segredos de cada ambiente vão só para o host desse ambiente, com o <a href="security.html#consent">consentimento</a> de sempre; o segredo de um ambiente nunca chega ao outro.</li>
 <li><strong>Você:</strong> as duas respostas são ocultadas contra todo segredo do cofre que o projeto usa antes de serem comparadas ou mostradas, e um lugar que guardava um segredo fica &quot;sem comparar&quot;, nunca &quot;igual&quot; nem &quot;diferente&quot; (<a href="security.html#redaction">ocultação</a>). Os valores comuns em <code>ultraman/local/envs/</code> são variáveis normais e não são ocultados: guarde um valor sensível no <a href="security.html#vault">cofre</a>.</li>
+<li><strong>Você:</strong> a pergunta antes de um login nomeia cada request, o método e o ambiente, produção incluída, e um sim cobre só o que ela listou. Cada ambiente guarda a própria sessão, e o &quot;precisa de login&quot; do menu é perguntado ao Ultraman sem enviar nada.</li>
+<li><strong>Você:</strong> a sugestão só nomeia campos das respostas que você já tem, nunca o lugar de um segredo nem um campo que você escolheu, e um clique adiciona exatamente os nomes que ela mostra.</li>
 <li><strong>Sua equipe:</strong> uma escrita comparada pergunta sempre, e um ambiente de produção recusa toda escrita a menos que você o nomeie com <code>--allow-write</code>; a comparação de um agente não consegue escrever lá de jeito nenhum (<a href="security.html#agents">agentes</a>).</li>
 <li><strong>CI:</strong> os resultados de uma comparação, no JUnit e na linha <code>compare</code> do <code>--json</code>, listam caminhos, tipos de diferença e tipos JSON, não os valores. O JUnit nomeia um lado cuja verificação falhou só pelo seu passo; as linhas do <code>--json</code> mantêm a mensagem da verificação, como em qualquer execução (<a href="security.html#ci">no CI</a>).</li>
 <li><strong>Limite:</strong> a caixa de produção vive num arquivo sob o git: ela protege contra uma escrita descuidada, não contra quem pode dar push no repositório (<a href="security.html#limits">limites</a>).</li>
@@ -195,6 +225,6 @@ Compare only the steps that read, or allow it by name: --allow-write prod</code>
 <nav class="pager"><a rel="prev" href="environments.html"><small>Anterior</small><span>Ambientes e segredos</span></a><a rel="next" href="importing.html"><small>Seguinte</small><span>Importar</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

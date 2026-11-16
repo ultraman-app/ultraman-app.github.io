@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/requests.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.0">
+<link rel="stylesheet" href="../../docs.css?v=1.1.2">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -102,6 +102,10 @@
 <h2 id="auth">Auth <a class="self" href="#auth" aria-label="Auth">#</a></h2>
 <p>The <strong>Auth</strong> tab offers <strong>Inherited</strong>, <strong>None</strong>, <strong>Bearer</strong>, <strong>Basic</strong> and <strong>API key</strong> (a header or a query parameter, with the name you choose). A collection or a pipeline can set auth once; a request inherits it, sets its own, or says <strong>None</strong>. Values can be variables, usually <code>{{secrets.x}}</code>, so the token never sits in the file.</p>
 <p>Those are the types there are. For a token API, log in with one request, <strong>extract</strong> the token and use it as a bearer (<code>{{token}}</code>): that covers most login flows. There are no OAuth 2 flows, client certificates or request signing.</p>
+<h3 id="auth-from">From a request <a class="self" href="#auth-from" aria-label="From a request">#</a></h3>
+<p>In the window, a request&#39;s <strong>Auth</strong> tab (or a collection&#39;s settings) can take a bearer token <strong>From a request</strong>: pick the login request and the property of its answer (from its last answer, or typed as a JSONPath). Ultraman writes <code>auth: { bearer: &#39;{{token}}&#39; }</code> on the request or the collection, and an <code>extract</code> check on the login. On a collection the login gets <strong>None</strong> as its own auth when it had none, so it never sends the bearer it makes. The login&#39;s file is written only when its tab has no unsaved edits; otherwise it says &quot;Save login first&quot;.</p>
+<p>After that, when you Send and the token is missing, or the answer is a 401, the window sends the login first, in the same environment, and then your request. After a 401 the token is renewed once: a request that only reads (GET, HEAD, OPTIONS) goes again by itself, a write waits for you to send it again (&quot;Token renewed: send again&quot;), and a second 401 is shown as it came. A collection run from the window does the same for a missing token, not for a 401 inside a run. The first time for each collection, environment and login it asks <strong>Send {login} and continue</strong>, naming where the login goes; in a production environment it asks every time, with a warning.</p>
+<p>This is bearer only, and only in the window: the CLI, pipelines and agents keep using a login step as before.</p>
 <h2 id="options">Request options <a class="self" href="#options" aria-label="Request options">#</a></h2>
 <p><strong>Options</strong> tune one request: <strong>timeout</strong> (milliseconds, 30 000 by default, 0 for none), <strong>redirects</strong> (how many to follow, 10 by default, at most 20), <strong>max size</strong> of the response (50 MB), <strong>HTTP/2</strong>, <strong>plain HTTP</strong> (allow <code>http:</code> to a host that isn&#39;t localhost) and a <strong>custom CA</strong> (a <code>.pem</code> file in the project, trusted on top of the usual ones, for a server with its own certificate). Plain HTTP and a custom CA lower the protection of the connection, so the window warns when you turn them on.</p>
 <p>An empty option inherits, and the editor says from where in gray (&quot;30000 ms, by default&quot;). The order is: the environment&#39;s <a href="environments.html#options">request options</a>, then the pipeline&#39;s or the collection&#39;s, then the request&#39;s. The closest one wins.</p>
@@ -186,10 +190,11 @@
 <li><strong>You:</strong> GraphQL variables are a body: a secret in them asks the same yes as anywhere and shows as <code>[secret:x]</code>, and <strong>Load schema</strong> is a send, with the same questions. See <a href="security.html#consent">consent</a>.</li>
 <li><strong>Your team:</strong> a schema is read only from <code>ultraman/files/</code>, never through a link, and its descriptions and a server&#39;s error messages show as plain text. See <a href="security.html#files">files</a>.</li>
 <li><strong>You:</strong> a subscription&#39;s variables and <code>connection_init</code> payload are messages: a secret in them asks the same yes as a header, shows as <code>[secret:x]</code>, and a server that echoes it back gets it redacted. See <a href="security.html#consent">consent</a>.</li>
+<li><strong>You:</strong> the one yes behind <strong>Send {login} and continue</strong> is stored on this machine (<code>~/.ultraman/trust.json</code>), never in the project. Any change to the login request (its method, path, body, headers, extracts or what it inherits from the collection), or to where it goes once the environment&#39;s values are filled in, asks again; a production environment always asks, and that yes isn&#39;t kept. The login goes with its own collection&#39;s values. A token lands only in its own environment&#39;s session, and the window sends a login for you only for the names an auth reads: any other missing value still asks.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="security.html"><small>Previous</small><span>Security and consent</span></a><a rel="next" href="pipelines.html"><small>Next</small><span>Pipelines</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>
