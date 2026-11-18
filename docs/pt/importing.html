@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
 <title>Importar · Documentação do Ultraman</title>
-<meta name="description" content="O menu Importar ao lado de Nova coleção (área de Requests) traz o que você já tem: uma exportação do Postman, uma spec OpenAPI, um plano do JMeter ou um…">
+<meta name="description" content="O menu Importar ao lado de Nova coleção (área de Requests) traz o que você já tem: uma exportação do Postman, uma spec OpenAPI, um plano do JMeter, um script…">
 <link rel="canonical" href="https://ultraman-app.github.io/docs/pt/importing.html">
 <link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/importing.html">
 <link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/importing.html">
@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/importing.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -72,13 +72,13 @@
 </nav>
 <main id="docs-main">
 <h1 id="importing">Importar <a class="self" href="#importing" aria-label="Importar">#</a></h1>
-<p>O menu <strong>Importar</strong> ao lado de <strong>Nova coleção</strong> (área de Requests) traz o que você já tem: uma exportação do Postman, uma spec OpenAPI, um plano do JMeter ou um script do Artillery; o que fica ao lado de <strong>Nova pipeline</strong> (área de Pipelines) traz uma gravação do navegador. Assim você não começa do zero. Nada no projeto é sobrescrito: um nome já usado ganha <code>-2</code>. No fim, um resumo mostra o que entrou, o que foi adaptado, o que precisa de ajuste manual e quais arquivos foram pulados.</p>
+<p>O menu <strong>Importar</strong> ao lado de <strong>Nova coleção</strong> (área de Requests) traz o que você já tem: uma exportação do Postman, uma spec OpenAPI, um plano do JMeter, um script do Artillery ou um servidor MCP; o que fica ao lado de <strong>Nova pipeline</strong> (área de Pipelines) traz uma gravação do navegador. Assim você não começa do zero. Nada no projeto é sobrescrito: um nome já usado ganha <code>-2</code>. No fim, um resumo mostra o que entrou, o que foi adaptado, o que precisa de ajuste manual e quais arquivos foram pulados.</p>
 <h2 id="postman">Do Postman <a class="self" href="#postman" aria-label="Do Postman">#</a></h2>
 <p><strong>Importar › Postman</strong> aceita coleções (v2.0, v2.1), ambientes e globals exportados do Postman. Pastas, requests, bodies (os de GraphQL com a query e as variáveis), auth (bearer, basic, API key), variáveis e descrições entram como estavam. Os segredos dos ambientes vão para o cofre, nunca para um arquivo. Os scripts de teste comuns (status, equals, includes, tempo de resposta, <code>pm.environment.set</code>) viram checks; o resto fica nas <strong>Notas</strong> da request.</p>
 <h2 id="openapi">Do OpenAPI <a class="self" href="#openapi" aria-label="Do OpenAPI">#</a></h2>
 <p><strong>Importar › OpenAPI</strong> aceita um documento OpenAPI 3 (JSON ou YAML) e cria uma coleção: uma request por operação, com bodies de exemplo e checks de contrato (status e formato da resposta).</p>
 <h2 id="openapi-update">Atualizar a partir de uma spec mais nova <a class="self" href="#openapi-update" aria-label="Atualizar a partir de uma spec mais nova">#</a></h2>
-<p>Quando a spec da API muda (uma equipe que gera a spec a partir do código a regenera com frequência), não importe de novo: abra o menu da coleção › <strong>Atualizar a partir da spec…</strong> e escolha o documento mais novo. Uma prévia mostra o que muda (<code>2 novas · 5 atualizadas · 1 fora da spec · 0 precisam de ajuste manual</code>), cada request se abre para mostrar as próprias mudanças, e nada é gravado até você clicar em <strong>Aplicar</strong>.</p>
+<p>Quando a spec da API muda (uma equipe que gera a spec a partir do código a regenera com frequência), não importe de novo: abra o menu da coleção › <strong>Atualizar a partir de uma spec OpenAPI…</strong> e escolha o documento mais novo. Uma prévia mostra o que muda (<code>2 novas · 5 atualizadas · 1 fora da spec · 0 precisam de ajuste manual</code>), cada request se abre para mostrar as próprias mudanças, e nada é gravado até você clicar em <strong>Aplicar</strong>.</p>
 <p>Cada operação mantém o seu arquivo de request, então a request mantém o histórico, a base das mudanças de contrato e as respostas do mock. O Ultraman encontra a request pela operação que a importação guardou nela (<code>operation:</code> no arquivo), depois pelo <code>operationId</code> (se o path mudou, ele acompanha) e depois por método e path. Duas requests que reivindicam a mesma operação aparecem numa lista para você resolver; o Ultraman nunca tenta adivinhar.</p>
 <ul>
 <li><strong>A spec muda:</strong> os checks que ela escreveu (marcados com <code>source: openapi</code>), a descrição, o path quando o <code>operationId</code> mudou de lugar, e os parâmetros novos (com os valores de exemplo).</li>
@@ -86,6 +86,24 @@
 <li><strong>Operações novas</strong> entram do jeito que a importação as escreve. <strong>Operações que saíram da spec</strong> continuam, com uma linha nas notas e uma marca na árvore; apague-as você mesmo, se quiser.</li>
 </ul>
 <p>Uma coleção importada antes desse recurso existir é casada por método e path; os checks de schema que aquela importação copiou aparecem listados, e a prévia oferece removê-los.</p>
+<h2 id="mcp">De um servidor MCP <a class="self" href="#mcp" aria-label="De um servidor MCP">#</a></h2>
+<p><strong>Importar › De um servidor MCP…</strong> (área de Requests) transforma o que um servidor MCP oferece em uma coleção. Ele pede o endereço do servidor (<code>https://…/mcp</code>), o ambiente e como se autenticar (um segredo do seu cofre, enviado como bearer ou como um header com o nome que você indicar). O Ultraman abre uma sessão, lê as listas do servidor (ferramentas, recursos, templates de recursos e prompts, quantas páginas forem necessárias, com limites), encerra a sessão e mostra o <strong>plano</strong> antes de gravar qualquer coisa: o nome e a versão do servidor, cada item e quais ferramentas <strong>alteram dados</strong> (pelas dicas do próprio servidor). <strong>Criar coleção</strong> grava. Se o servidor responde 401 ou 403, uma nota sob <strong>Auth</strong> diz que ele pede autorização: escolha Bearer ou Header de API key, e um segredo.</p>
+<ul>
+<li><strong>Uma request por ferramenta</strong>, numa pasta <code>tools/</code>, com argumentos de exemplo feitos a partir do schema de entrada (os obrigatórios; os opcionais são listados nas notas), a descrição, um check de schema sobre <code>structuredContent</code> quando a ferramenta declara um schema de saída (marcado <code>source: mcp</code>) e as dicas da ferramenta nas notas.</li>
+<li><strong>Uma request por recurso</strong> em <code>resources/</code> (com o nome dele, ou o endereço). Um template como <code>users://{id}/profile</code> mantém o <code>{id}</code> como texto, com uma nota para trocá-lo: o que o servidor diz nunca lê uma variável sua, então escreva o endereço real (<code>users://42/profile</code>) antes de enviar. <strong>Atualizar a partir do servidor</strong> continua encontrando essa request: um endereço que combina com o template é a request dele, e mantém o seu endereço.</li>
+<li><strong>Uma request por prompt</strong> em <code>prompts/</code>, com os argumentos obrigatórios preenchidos com o próprio nome como texto de exemplo.</li>
+<li>A coleção registra o caminho do servidor e guarda as listas em <code>ultraman/files/</code>, para que a sugestão de nomes e o <strong>Do servidor</strong> funcionem em qualquer máquina.</li>
+<li><strong>Adaptado</strong> lista o que o plano mudou para encaixar: nomes <code>ns/tool</code> de um gateway mantidos como estão, um servidor que diz não ter capabilities mas responde mesmo assim, uma lista de templates que ele recusa, uma lista que parou numa página estranha. O que precisa da sua mão é listado à parte.</li>
+</ul>
+<p>A importação é um envio: numa pasta em que você não confia ela recusa, e um segredo indo para um endereço novo pede o seu sim antes. Lê no máximo 2 000 itens no total, as ferramentas primeiro, e o plano diz onde parou. O texto do servidor é mostrado como dado, nunca executado.</p>
+<h2 id="mcp-update">Atualizar a partir do servidor <a class="self" href="#mcp-update" aria-label="Atualizar a partir do servidor">#</a></h2>
+<p>Uma coleção feita assim tem <strong>Atualizar a partir do servidor…</strong> no menu, com o ambiente a consultar. Uma prévia mostra o que muda, e nada é gravado até você clicar em <strong>Aplicar</strong>. Ela nunca pede o segredo de novo: envia com a auth da própria coleção.</p>
+<ul>
+<li><strong>O servidor muda:</strong> a descrição, os checks <code>source: mcp</code> e os novos argumentos obrigatórios (com um exemplo).</li>
+<li><strong>Você mantém:</strong> o nome, os valores de argumentos que você pôs, headers, opções, seus próprios checks e notas. Os argumentos que o schema não tem mais são listados, não removidos.</li>
+<li><strong>Ferramentas, recursos e prompts novos</strong> entram como a importação os escreve; <strong>os que sumiram</strong> ficam, com uma linha nas notas e uma marca na árvore.</li>
+</ul>
+<p>Cada request é encontrada pela marca (a ferramenta, o recurso ou o prompt que ela chama), então uma request renomeada é acompanhada. Um agente pode fazer o mesmo: veja <a href="agents.html#tools">as ferramentas do agente</a>.</p>
 <h2 id="jmeter">Do JMeter <a class="self" href="#jmeter" aria-label="Do JMeter">#</a></h2>
 <p><strong>Importar › JMeter (.jmx)</strong> aceita um plano <code>.jmx</code>: uma pipeline por Thread Group, um bloco de preparação a partir de um Once Only Controller, um ambiente a partir das User Defined Variables e um teste de carga com um cenário por grupo. O que não tem tradução (scripts, alguns controllers) aparece na lista como &quot;precisa de ajuste manual&quot;, com o texto dele.</p>
 <h2 id="artillery">Do Artillery <a class="self" href="#artillery" aria-label="Do Artillery">#</a></h2>
@@ -100,12 +118,15 @@
 <ul>
 <li><strong>Você:</strong> importar não envia nada e não executa nada; a primeira request só sai quando você a envia ou executa, com o sim de sempre para qualquer segredo. Veja <a href="security.html#consent">consentimento</a>.</li>
 <li><strong>Você e sua equipe:</strong> os valores secretos de um ambiente do Postman vão para o cofre, nunca para um arquivo do projeto. Num HAR, os valores que batem com o seu cofre viram <code>{{secrets.x}}</code>; leia a proposta antes de salvar, porque uma gravação pode ter senhas que você nunca guardou. Veja <a href="security.html#vault">o cofre</a>.</li>
-<li><strong>Você:</strong> Atualizar a partir da spec só grava dentro da pasta daquela coleção e nunca apaga uma request nem o histórico dela; se houver uma request aberta com mudanças não salvas, ela é apontada antes de você aplicar.</li>
+<li><strong>Você:</strong> Atualizar a partir de uma spec OpenAPI só grava dentro da pasta daquela coleção e nunca apaga uma request nem o histórico dela; se houver uma request aberta com mudanças não salvas, ela é apontada antes de você aplicar.</li>
 <li><strong>Você:</strong> uma pipeline que veio de fora continua sem poder ler um segredo num check nem enviar, sem perguntar, um arquivo de fora de <code>ultraman/files/</code>. Veja <a href="security.html#files">arquivos</a>.</li>
+<li><strong>Você:</strong> importar de um servidor MCP envia só o necessário para ler as listas, nunca chama uma ferramenta, e o plano mostra quais ferramentas alteram dados antes de você criar qualquer coisa. A descrição de uma ferramenta é texto, não uma instrução. Veja <a href="security.html#consent">consentimento</a>.</li>
+<li><strong>Você e sua equipe:</strong> um segredo vai ao servidor só como o valor do cofre que você escolheu, nunca é gravado num arquivo (só <code>{{secrets.x}}</code>), e um servidor que o repita recebe o valor censurado. O id de sessão nunca é guardado.</li>
+<li><strong>Você:</strong> Atualizar a partir do servidor só grava dentro da pasta daquela coleção e nunca apaga uma request nem o histórico dela.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="compare.html"><small>Anterior</small><span>Comparar dois ambientes</span></a><a rel="next" href="mock.html"><small>Seguinte</small><span>Servidor mock</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

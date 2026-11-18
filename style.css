@@ -14,19 +14,21 @@
   --ok: #0B6B42; --warn: #8A5A00; --fail: #C42B3B;
   --k-req: #A04E00; --k-ext: #1F33D6; --k-as: #0B6B42; --k-flow: #7A3BC9; --k-stream: #0A6773; --k-wait: #5A6285;
   --shadow: 0 8px 24px rgb(11 16 48 / .12);
-  /* On the cobalt: white, a pale blue for what's quieter, and the command's well (the verdict gradient's own blue). */
+  /* On the cobalt: white, a pale blue for what's quieter, and the command's well. */
   --on-acc: #FFFFFF; --on-acc-mut: #DCE1FF; --deep: #1A2BC4;
   /* The terminal: night's page in both themes, so a run's output reads as one. */
   --term: #0B1030; --term-txt: #E8EBF7; --term-mut: #9AA2C6; --term-ok: #3FD68F;
-  --grad-ok: radial-gradient(120% 150% at 88% 12%, #6E8BFF 0%, #2E46FF 30%, #1A2BC4 58%, #0A1260 100%);
   --display: "Unbounded", "Atkinson Hyperlegible Next", ui-sans-serif, sans-serif;
   --font: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
   --mono: "Atkinson Hyperlegible Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+  /* The window's controls, shape and motion (app/src/tokens.css), same values. */
+  --ctl-h: 2.25rem; --r-sm: .25rem; --r-md: .375rem; --r-lg: .5rem;
+  --s1: .25rem; --s2: .5rem; --s3: .75rem; --t-fast: 120ms; --ease: cubic-bezier(.2, 0, 0, 1);
   --gutter: clamp(16px, 5vw, 72px);
   /* The page's width: past it, the margins grow on both sides instead of the content running to the left. */
   --page: 80rem;
   --side: max(var(--gutter), calc((100vw - var(--page)) / 2));
-  --mid: clamp(84px, 17vw, 250px);   /* the middle stripe, which holds the name */
+  --mid: clamp(64px, calc((100vw - 2 * var(--gutter)) / 7.6), 250px);   /* the middle stripe, which holds the name: sized so the whole word fits, centred */
   --thin: calc(var(--mid) * .21);
   --gap: calc(var(--thin) * 1.07);
   --slant: calc(var(--thin) * 2.57); /* the mark's slanted ends: 9 over 3.5 */
@@ -48,11 +50,11 @@ html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--txt); font: 17px/1.55 var(--font); }
 a { color: var(--acc-ink); text-underline-offset: .18em; }
 code { font-family: var(--mono); font-size: .88em; }
-:focus-visible { outline: 2px solid var(--acc-ink); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--acc-ink); outline-offset: 2px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* The header: cobalt, the three stripes and the name. */
-.hero { background: var(--acc); color: var(--on-acc); padding: calc(var(--gutter) * .9) 0 clamp(48px, 8vw, 104px); overflow: hidden; }
+.hero { background: var(--acc); color: var(--on-acc); padding: calc(var(--gutter) * .9) 0 clamp(40px, 5vw, 72px); overflow: hidden; }
 .hero :focus-visible { outline-color: var(--on-acc); }
 /* The way into the docs, above the stripes: white on the cobalt, each link a 44 px target. */
 .topnav { display: flex; justify-content: flex-end; gap: 4px 24px; padding: 0 var(--side) calc(var(--gutter) * .5); margin-top: calc(var(--gutter) * -.5); }
@@ -63,11 +65,11 @@ code { font-family: var(--mono); font-size: .88em; }
 .lane.top, .lane.bottom { height: var(--thin); }
 .lane.top { clip-path: polygon(0 0, 100% 0, 100% 100%, var(--slant) 100%); }
 .lane.bottom { clip-path: polygon(0 0, calc(100% - var(--slant)) 0, 100% 100%, 0 100%); }
-.lane.mid { height: var(--mid); display: flex; align-items: center; overflow: hidden; }
+.lane.mid { height: var(--mid); display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .word {
   font-family: var(--display); font-stretch: 125%; font-weight: 800; text-transform: uppercase;
-  font-size: calc(var(--mid) * 1.02); line-height: 1; letter-spacing: -.035em; color: var(--acc);
-  white-space: nowrap; padding-left: calc(var(--gutter) - .06em); transform: translateY(.04em);
+  font-size: calc(var(--mid) * 1.02); line-height: .96; letter-spacing: -.035em; color: var(--acc);
+  display: block; white-space: nowrap; transform: translateY(.04em);
 }
 
 .intro { padding: clamp(32px, 5vw, 64px) var(--gutter) 0 var(--side); max-width: calc(46rem + var(--gutter) + var(--side)); }
@@ -78,61 +80,67 @@ code { font-family: var(--mono); font-size: .88em; }
   .lede { margin: 0; }
 }
 
-.oses { display: flex; gap: 24px; margin-bottom: 12px; }
-.oses button { all: unset; cursor: pointer; font-weight: 600; color: var(--on-acc-mut); padding: 4px 0; border-bottom: 2px solid transparent; }
+.oses { display: flex; gap: 24px; margin-bottom: 4px; }
+.oses button { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; height: var(--ctl-h); cursor: pointer; font-weight: 600; color: var(--on-acc-mut); border-bottom: 2px solid transparent; }
 .oses button:hover { color: var(--on-acc); }
 .oses button[aria-selected="true"] { color: var(--on-acc); border-bottom-color: var(--on-acc); }
 .oses button:focus-visible { outline: 2px solid var(--on-acc); outline-offset: 4px; }
 /* Without JS the three commands show one under the other, and the tabs aren't there. */
 .oses { display: none; }
 .js .oses { display: flex; }
-.cmd { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; background: var(--deep); border-radius: 6px; padding: 14px 14px 14px 18px; margin-bottom: 12px; }
+.cmd { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; background: var(--deep); border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 12px; }
 .js .cmd { display: none; }
 .js .install[data-os="mac"] .cmd[data-os="mac"], .js .install[data-os="linux"] .cmd[data-os="linux"], .js .install[data-os="windows"] .cmd[data-os="windows"] { display: grid; }
 .cmd .where { grid-column: 1 / -1; margin: 0; font-size: 14px; color: var(--on-acc-mut); }
 /* One line, as it gets pasted; it scrolls if the screen is narrower. */
 .cmd code { font-size: clamp(13px, 1.5vw, 15px); color: var(--on-acc); white-space: nowrap; overflow-x: auto; min-width: 0; padding-bottom: 4px; scrollbar-width: thin; scrollbar-color: var(--on-acc-mut) transparent; }
 @media (max-width: 560px) { .cmd { grid-template-columns: minmax(0, 1fr); } .copy { justify-self: start; } }
-.copy { font: 600 14px var(--font); color: var(--acc); background: var(--on-acc); border: 0; border-radius: 4px; padding: 8px 14px; cursor: pointer; min-width: 76px; }
+/* The window's button: --ctl-h tall with no vertical padding, 600 13px/1, --r-sm; hover and press are colours and a 1 px move, never opacity. */
+.copy { font: 600 .8125rem/1 var(--font); color: var(--acc); background: var(--on-acc); border: 0; border-radius: var(--r-sm); height: var(--ctl-h); padding: 0 var(--s3); cursor: pointer; min-width: 76px; transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
 .copy:hover { background: var(--on-acc-mut); }
-.fine { font-size: 15px; color: var(--on-acc); margin: 18px 0 0; max-width: 58ch; }
+.copy:active { transform: translateY(1px); }
+.fine { font-size: 15px; color: var(--on-acc); margin: 18px 0 0; }
 .fine code, .fine a { color: var(--on-acc); }
 
 /* The rest: one column of text, real artifacts next to it. */
 main { padding: 0 var(--side); }
-section { padding: clamp(56px, 8vw, 112px) 0 0; }
-h2 { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-size: clamp(27px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -.015em; margin: 0 0 16px; max-width: 26ch; text-wrap: balance; }
+section { padding: clamp(48px, 6vw, 80px) 0 0; }
+h2 { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-size: clamp(27px, 3.4vw, 40px); line-height: 1.1; letter-spacing: .01em; margin: 0 0 16px; max-width: 26ch; text-wrap: balance; }
 .copytext { max-width: 40rem; margin-bottom: 32px; }
 .copytext p { margin: 0; color: var(--mut); }
 .copytext code { color: var(--txt); }
 .copytext p + p { margin-top: 14px; }
 /* Each section's way into its docs page. */
-.copytext p.more { color: var(--txt); font-weight: 600; }
+.copytext p.more, .card p.more { color: var(--txt); font-weight: 600; }
+/* A part of a section: the text font at 700, as the sheet's headings inside a screen (the display font is for titles). */
+h3 { font: 700 1.25rem/1.25 var(--font); margin: 0 0 var(--s2); text-wrap: balance; }
+.copytext p + h3 { margin-top: 28px; }
 
 pre { margin: 0; font: 13.5px/1.6 var(--mono); overflow-x: auto; }
 pre code { font-size: inherit; }
-.yaml, .snippet { background: var(--surf); border: 1px solid var(--line); border-radius: 6px; padding: 20px 22px; }
-.yaml .k, .snippet .k { color: var(--acc-ink); }
-.yaml .c { color: var(--mut); }
+/* Code as the sheet has it: a --surf2 pane with a --line edge, names in the text colour at 600, comments quiet and italic. */
+.yaml, .snippet { background: var(--surf2); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px 22px; }
+.yaml .k, .snippet .k { color: var(--txt); font-weight: 600; }
+.yaml .c { color: var(--mut); font-style: italic; }
 .snippet { max-width: 52rem; }
 
 /* The window itself, in the theme the page is in (index.html picks the night or day capture). */
 .shot { margin: 0; max-width: 72rem; }
-.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+.mcp .shot { max-width: 824px; }
 .shot figcaption { font-size: 15px; color: var(--mut); margin-top: 12px; max-width: 62ch; }
 .shot figcaption code { color: var(--txt); }
-.drawn { margin: 8px 0 40px; }
-.drawn .scroll { overflow-x: auto; padding: 12px 8px; border: 1px solid var(--line); border-radius: 8px;
+.drawn { margin: 40px 0; }
+.drawn .scroll { overflow-x: auto; padding: 12px 8px; border: 1px solid var(--line); border-radius: var(--r-lg);
   background: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--mut) 10%, transparent) 1px, transparent 0) 0 0 / 20px 20px, var(--surf); }
 .drawn figcaption { font-size: 15px; color: var(--mut); margin-top: 12px; max-width: 62ch; }
 .drawn figcaption code { color: var(--txt); }
 /* As wide as the page allows; under 900 px it keeps its size and scrolls. */
 .diagram { display: block; width: 100%; min-width: 900px; max-width: 1145px; height: auto; margin: 0 auto; }
-.twin { display: grid; gap: 24px 48px; align-items: start; }
-@media (min-width: 960px) { .twin { grid-template-columns: minmax(0, 34rem) minmax(0, 1fr); } }
-@media (min-width: 1200px) { .twin { grid-template-columns: minmax(0, 40rem) minmax(0, 1fr); } }
-.copytext.beside { margin: 0; }
-.copytext.beside p + p { margin-top: 14px; }
+/* The pipeline's block: its words beside the start of its file, the whole of it drawn under them, then what a run says
+   and what the checks do, each a part with its own artifact. */
+.lead .yaml { max-width: 40rem; }
+.part + .part { margin-top: 32px; }
 /* The window's diagram (app/src/app.css, .dgm): boxes on the raised surface with a --line-ui edge, each kind's icon on
    its tint, the method in its colour, data arrows dashed in --acc-ink with their names on a pill. */
 .diagram .box { fill: var(--surf2); stroke: var(--line-ui); stroke-width: 1; }
@@ -151,13 +159,12 @@ pre code { font-size: inherit; }
 .diagram .lbg { fill: var(--surf); stroke: color-mix(in srgb, var(--acc-ink) 35%, transparent); stroke-width: 1; }
 .diagram .etxt { fill: var(--acc-ink); font: 11px var(--mono); }
 
-.narrated { background: var(--term); color: var(--term-txt); border: 1px solid var(--line); border-radius: 6px; padding: 22px 24px; max-width: 60rem; }
+.narrated { background: var(--term); color: var(--term-txt); border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px 24px; max-width: 60rem; }
 .narrated .prompt { color: var(--term-mut); }
 .narrated .ok { color: var(--term-ok); }
 
 /* What the app's banner says when a response changed shape since the last send. */
-.artifact { max-width: 34rem; }
-.drift { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 6px; background: var(--surf); color: var(--txt); font-size: 14.5px; line-height: 1.45; }
+.drift { display: flex; gap: 10px; align-items: flex-start; max-width: 34rem; margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: var(--r-md); background: var(--surf); color: var(--txt); font-size: 14.5px; line-height: 1.45; }
 .drift svg { flex: none; margin-top: 3px; color: var(--warn); }
 .drift code { color: inherit; white-space: nowrap; }
 .narrated .total { font-weight: 700; }
@@ -167,33 +174,40 @@ pre code { font-size: inherit; }
 @keyframes show { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .js .narrated .line { opacity: 1; } .js .narrated.played .line { animation: none; } }
 
-.verdict { position: relative; isolation: isolate; overflow: hidden; background: var(--grad-ok); color: var(--on-acc); border-radius: 8px; padding: clamp(24px, 4vw, 44px); max-width: 52rem; }
-/* The app's grain over the gradient. */
-.verdict::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .22; mix-blend-mode: overlay; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-.vtitle { font-family: var(--display); font-stretch: 125%; font-weight: 800; font-size: clamp(44px, 6vw, 72px); line-height: 1; margin: 0 0 14px; }
+/* Flat, as in the window: 12 % of the tone over the ground, a 45 % edge, the word the one thing in the tone. */
+.verdict { background: color-mix(in srgb, var(--ok) 12%, var(--bg)); border: 1px solid color-mix(in srgb, var(--ok) 45%, transparent); color: var(--txt); border-radius: var(--r-lg); padding: clamp(24px, 4vw, 44px); max-width: 52rem; }
+.vtitle { font-family: var(--display); font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; color: var(--ok); font-size: clamp(44px, 6vw, 72px); line-height: 1; margin: 0 0 14px; }
 .vtext { font-variant-numeric: tabular-nums; font-size: clamp(18px, 2vw, 21px); margin: 0 0 22px; max-width: 34ch; }
-.vfoot { font-size: 14px; margin: 0; color: var(--on-acc); max-width: 52ch; }
+.vfoot { font-size: 14px; margin: 0; color: var(--mut); max-width: 52ch; }
 
 /* Wide screens: each section's words on the left and its artifact beside them, instead of one narrow column with
    half the screen empty. */
 @media (min-width: 1200px) {
-  .checks, .load, .promise, .vault, .agent { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
-  .checks .copytext, .load .copytext, .promise .copytext, .vault .copytext, .agent .copytext { margin-bottom: 0; }
-  .checks h2, .load h2, .promise h2, .vault h2, .agent h2 { max-width: 14ch; }
+  .lead, .mcp, .load, .promise { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
+  .lead .copytext, .mcp .copytext, .load .copytext, .promise .copytext { margin-bottom: 0; }
+  .lead h2, .mcp h2, .load h2, .promise h2 { max-width: 14ch; }
 }
 
 /* The question the window asks before a secret goes somewhere new, drawn as the app's dialog: the words are the app's. */
 .ask { margin: 0; max-width: 34rem; }
-.dialog { background: var(--surf); border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; box-shadow: var(--shadow); }
+.dialog { background: var(--surf); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px 22px; box-shadow: var(--shadow); }
 .dialog code { overflow-wrap: anywhere; }
 .asktitle { font-weight: 700; margin: 0 0 8px; line-height: 1.35; }
 .askbody { color: var(--mut); font-size: 15px; margin: 0 0 16px; }
 .askbody code { color: var(--txt); }
 .choices { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.choices li { background: var(--bg); border: 1px solid var(--line-ui); border-radius: 6px; padding: 10px 12px; font-size: 15px; font-weight: 600; }
+.choices li { background: var(--bg); border: 1px solid var(--line-ui); border-radius: var(--r-sm); padding: 10px 12px; font-size: 15px; font-weight: 600; }
 .choices li.first { outline: 2px solid var(--acc-ink); outline-offset: 1px; }
 .ask figcaption { font-size: 15px; color: var(--mut); margin-top: 12px; max-width: 62ch; }
+
+/* Three smaller things, each an informing card (the sheet's: --surf, a --line edge, a 700 title in the text font). */
+.cards { display: grid; gap: 16px; }
+@media (min-width: 900px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; } }
+.card { display: flex; flex-direction: column; background: var(--surf); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px 22px; }
+.card h3 { font-size: 1.0625rem; }
+.card p { margin: 0; color: var(--mut); font-size: 15px; }
+.card code { color: var(--txt); }
+.card p.more { margin-top: auto; padding-top: 14px; }
 
 /* What the page doesn't show, in one row of links. */
 .also h2 { font-size: clamp(21px, 2.2vw, 25px); }
@@ -202,9 +216,9 @@ pre code { font-size: inherit; }
 /* The run's output and the CI job are the widest artifacts (~700 px): beside their words only when they fit without
    scrolling. */
 @media (min-width: 1400px) {
-  .run, .mock, .ci { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
-  .run .copytext, .mock .copytext, .ci .copytext { margin-bottom: 0; }
-  .run h2, .mock h2, .ci h2 { max-width: 14ch; }
+  .part, .ci { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; }
+  .part .copytext, .ci .copytext { margin-bottom: 0; }
+  .ci h2 { max-width: 14ch; }
 }
 
 /* Phones. Wider screens let the name run off the right edge on purpose, but a phone kept only "ULTRA": here the
@@ -212,8 +226,8 @@ pre code { font-size: inherit; }
    44 px, and the code boxes give some padding back to the code. */
 @media (max-width: 600px) {
   :root { --mid: calc((100vw - 2 * var(--gutter)) / 7.6); }
-  .oses button { padding: 8px 0; }
-  .copy { min-height: 44px; }
+  .oses button { height: 44px; }
+  .copy { height: 44px; }
   .yaml, .snippet, .narrated { padding: 16px; }
 }
 
@@ -233,7 +247,8 @@ footer .mark { fill: var(--acc-ink); }
 @media (prefers-reduced-motion: no-preference) {
   /* The width, not a scale: the name is uncovered instead of squeezed, and the bottom stripe's point travels. */
   .js .lane { animation: trace 900ms cubic-bezier(.2, 0, 0, 1) both; }
-  .js .lane.mid { animation-delay: 70ms; }
+  /* The middle stripe is uncovered, not widened: the centred name must not travel while the stripe grows. */
+  .js .lane.mid { animation: uncover 900ms cubic-bezier(.2, 0, 0, 1) 70ms both; }
   .js .lane.bottom { animation-delay: 140ms; }
   .js .word { animation: arrive 1000ms 260ms cubic-bezier(.2, 0, 0, 1) both; }
 
@@ -242,7 +257,8 @@ footer .mark { fill: var(--acc-ink); }
   .js .diagram.played .box, .js .diagram.played .note, .js .diagram.played .edge.seq { animation-play-state: running; }
 }
 @keyframes trace { from { width: 0; } }
-@keyframes arrive { from { opacity: 0; transform: translate(-5%, .04em); } }
+@keyframes uncover { from { clip-path: inset(0 100% 0 0); } }
+@keyframes arrive { from { opacity: 0; transform: translateY(.2em); } }
 @keyframes step {
   0% { stroke: var(--line-ui); }
   30%, 62% { stroke: var(--acc); stroke-width: 2.5; }

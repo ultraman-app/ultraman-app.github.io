@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -91,7 +91,7 @@ api: https://api.example.com</code></pre>
 <h2 id="eye">Veja de onde vem um valor <a class="self" href="#eye" aria-label="Veja de onde vem um valor">#</a></h2>
 <p>Clicar no ambiente no topo abre uma visão rápida dele. Cada variável mostra de onde vem o valor: <code>shared</code>, <code>local</code>, <code>vault</code> ou <code>session</code>. Um segredo sempre aparece como <code>●●●●</code>.</p>
 <p>Embaixo, a <strong>sessão</strong> lista cada valor que os passos extraíram (ou que você digitou num diálogo), qual passo o gerou e quais passos o usam. O lápis edita o valor desta máquina (vazio volta ao compartilhado). Dá para limpar uma linha da sessão ou a sessão inteira; o valor volta quando o passo que o gera executar de novo. A sessão não é salva: fechar a janela a descarta.</p>
-<p>Quando uma request precisa de um valor que o ambiente não tem, um diálogo pede esse valor. Um valor comum pode ficar só nesta sessão, ser salvo no arquivo compartilhado do ambiente (vai para o git) ou ser salvo nesta máquina. Um segredo tem a caixa <strong>Salvar nesta máquina</strong>: marcada, ele vai para o cofre e nunca para um arquivo.</p>
+<p>Quando uma request precisa de um valor que o ambiente não tem, um diálogo pede esse valor. Se nenhum ambiente está escolhido e há ambientes para escolher, o diálogo os oferece primeiro como botões (<strong>Escolha um ambiente</strong>), com um de produção por último, à parte e marcado &quot;produção&quot;; escolher um é o mesmo que escolhê-lo na barra de cima. Um valor comum pode ficar só nesta sessão, ser salvo no arquivo compartilhado do ambiente (vai para o git) ou ser salvo nesta máquina. Um segredo tem a caixa <strong>Salvar nesta máquina</strong>: marcada, ele vai para o cofre e nunca para um arquivo.</p>
 <h2 id="options">Opções de request <a class="self" href="#options" aria-label="Opções de request">#</a></h2>
 <p>Um ambiente também pode ter <strong>opções de request</strong>: timeouts, redirects, HTTP/2, http simples para um serviço interno sem TLS, ou uma CA própria para um servidor com certificado próprio. Elas ficam em <code>options:</code> no arquivo do ambiente, no compartilhado ou só no desta máquina, e nunca como variável:</p>
 <pre tabindex="0"><code># ultraman/envs/internal.yaml
@@ -122,6 +122,6 @@ options:
 <nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="compare.html"><small>Seguinte</small><span>Comparar dois ambientes</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

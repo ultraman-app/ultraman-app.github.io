@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -78,6 +78,7 @@
 <p>Its settings live in <code>ultraman/load-tests/&lt;name&gt;.yaml</code>, shared through git, so the same test runs the same way for everyone. The first time, Load creates one with 10 users for 30 seconds.</p>
 <p>A pipeline can have several tests. <strong>New test…</strong> saves what&#39;s on screen under a new name, and <strong>Delete</strong> removes the selected test. The pipeline&#39;s own test, the one Load opens, can&#39;t be deleted from the window. Edits you haven&#39;t saved are still there when you come back to the load screen, and closing the window asks first.</p>
 <p><strong>Thresholds</strong> are rows under the shape: a limit on the whole test or on one request, such as p95, errors or requests/s, that either fails the run or only warns. A time needs its unit (<code>500ms</code>, <code>2s</code>).</p>
+<p><strong>Load test…</strong> is also in a request&#39;s menu (after Add to pipeline…) and in a collection&#39;s or folder&#39;s (after Create pipeline). It opens this screen on a pipeline made of that request or collection, and reuses the one that is exactly it if you made it before. A request with unsaved edits asks to be saved first, and the screen&#39;s way back says <strong>Back to</strong> the request.</p>
 <h2 id="shape">The shape of the load <a class="self" href="#shape" aria-label="The shape of the load">#</a></h2>
 <p>The presets draw the planned users as you type:</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -114,12 +115,12 @@
 <tr><td>Queues</td><td>the API got slower instead of failing</td><td>the p95 of the last fifth of the test is over five times the first fifth&#39;s and at least 50 ms more, and the requests per second stopped growing with the users; in an arrival-rate test, also when more than 1% of the arrivals were dropped</td></tr>
 <tr><td>Rejects</td><td>the API answered errors</td><td>more than 1% of the iterations failed; it says when the errors started and with how many users</td></tr>
 <tr><td>Broken</td><td>the problem is the pipeline or the address, not the load</td><td>the first 20 iterations all failed; &quot;The target refuses connections&quot; when the server isn&#39;t reachable</td></tr>
-<tr><td>Too few iterations</td><td>not enough to conclude</td><td>fewer than 20 iterations ran; raise the time or the users</td></tr>
-<tr><td>Limited</td><td>this computer was the limit, so the numbers say little about the API</td><td>Ultraman&#39;s own thread, memory or connections were at their limit</td></tr>
-<tr><td>Protected</td><td>Ultraman stopped the test to protect this computer</td><td>memory was running out; what it measured up to then is in the report</td></tr>
+<tr><td>Too few</td><td>not enough to conclude</td><td>fewer than 20 iterations ran; raise the time or the users</td></tr>
+<tr><td>At its limit</td><td>this computer was the limit, so the numbers say little about the API</td><td>Ultraman&#39;s own thread, memory or connections were at their limit</td></tr>
+<tr><td>Stopped</td><td>Ultraman stopped the test to protect this computer</td><td>memory was running out; what it measured up to then is in the report</td></tr>
 </tbody>
 </table></div>
-<p>A load never says &quot;holds&quot; on a computer that was at its limit: it says Limited. The <strong>This computer</strong> strip shows why.</p>
+<p>A load never says &quot;holds&quot; on a computer that was at its limit: it says At its limit. The <strong>This computer</strong> strip shows why.</p>
 <h2 id="report">The report <a class="self" href="#report" aria-label="The report">#</a></h2>
 <p>At the end, a verdict in words (it held, it queued, it broke…), the latencies (p50, p95, p99, max), throughput, errors per step with one failed request kept for each, where the time went, and APDEX if the test asks for it.</p>
 <ul>
@@ -142,6 +143,9 @@
 <li>The <code>limited</code> verdict applies here too: a connection count is a machine limit like any other.</li>
 <li>A GraphQL socket is one connection however many subscriptions it holds: the strip adds <strong>GraphQL subscriptions</strong>, a <code>subscribe</code> row reports the time to send it, and a subscription&#39;s <code>receive</code> the time to its next event.</li>
 </ul>
+<h2 id="load-mcp">MCP under load <a class="self" href="#load-mcp" aria-label="MCP under load">#</a></h2>
+<p>A pipeline with <code>mcp:</code> requests is a load scenario like any other: each virtual user opens <strong>one session per server</strong> on its first MCP call, shares it between its setup and every iteration, and ends it when the user stops. A user holds at most 8 servers&#39; sessions at once.</p>
+<p>The report gains an <strong>MCP sessions</strong> row with the opens: how many, and their time, which stays <strong>out of the verdict&#39;s p95</strong> so the handshake doesn&#39;t read as slowness. A tool that answers with an error, and a JSON-RPC error, count as failed requests. If the server drops sessions, the report says how many were lost and opened again; a server that does it under load is a finding. Recovered quirks of the server (an old protocol version, a missing field) are counted by kind, not per request. With <code>responses: discard</code> the result is still read for errors and then dropped.</p>
 <h2 id="scenarios">Several scenarios <a class="self" href="#scenarios" aria-label="Several scenarios">#</a></h2>
 <p>A test can mix pipelines: three people browsing for each one checking out. Each scenario has its own stages, or they share the test&#39;s stages split by weight. The report has a row and a verdict per scenario.</p>
 <h2 id="workers">More than one thread <a class="self" href="#workers" aria-label="More than one thread">#</a></h2>
@@ -152,10 +156,11 @@
 <li><strong>Whoever owns the API:</strong> the target is shown before the test starts, with a reminder to test only an API of your own.</li>
 <li><strong>You:</strong> brakes hold or stop users when your own computer is overloaded or low on memory, instead of freezing it.</li>
 <li><strong>Your team:</strong> a load test never holds a secret; its <code>inputs</code> can&#39;t carry <code>secrets.</code> or <code>env.</code> values. The reports in <code>ultraman/loads/</code> stay on your machine. See <a href="security.html#stored">where things are stored</a>.</li>
+<li><strong>Whoever owns the server:</strong> an MCP load is a load like any other: the target is shown before it starts, and a user never holds more than 8 servers&#39; sessions at once.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Previous</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Next</small><span>Environments and secrets</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

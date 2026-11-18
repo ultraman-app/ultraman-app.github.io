@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/ci.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -99,6 +99,7 @@
     path: ${{ steps.ultraman.outputs.junit }}
     retention-days: 7</code></pre>
 <p>Sem <code>if: always()</code>, o upload é pulado justamente quando você mais precisa dele.</p>
+<p>Uma coleção (<code>--collection</code>) relata um caso de teste por request, e uma request que falha não esconde as seguintes, então uma única execução lista todas as falhas. Acrescente <code>--bail</code> para parar na primeira.</p>
 <h2 id="inputs">Os inputs da action <a class="self" href="#inputs" aria-label="Os inputs da action">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Input</th><th scope="col">O que faz</th></tr></thead>
@@ -179,6 +180,6 @@ ultraman:
 <nav class="pager"><a rel="prev" href="cli.html"><small>Anterior</small><span>O terminal</span></a><a rel="next" href="team.html"><small>Seguinte</small><span>Trabalho em equipe</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

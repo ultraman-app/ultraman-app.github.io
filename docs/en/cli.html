@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/cli.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -104,14 +104,14 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--env X</code></td><td>The environment. With a single environment in the project it is used on its own; with several you must pass <code>--env</code>.</td></tr>
 <tr><td><code>--input k=v</code></td><td>A value for an input; repeat it for more. A value that starts with <code>[</code> or <code>{</code> is read as JSON when it is valid; anything else stays text (<code>id=00123</code> stays <code>00123</code>). The names <code>env.*</code> and <code>secrets.*</code> are reserved.</td></tr>
 <tr><td><code>--parallel N</code></td><td>Runs up to N pipelines at the same time (1 to 16). Each one prints whole when it ends.</td></tr>
-<tr><td><code>--bail</code></td><td>Stops starting new pipelines after the first one that fails. The ones running finish; the rest show as skipped.</td></tr>
+<tr><td><code>--bail</code></td><td>Stops starting new pipelines after the first one that fails. The ones running finish; the rest show as skipped. With <code>--collection</code> it stops the run at the first request that fails, as a pipeline does; without it, a collection runs every request and reports each one.</td></tr>
 <tr><td><code>--watch</code></td><td>Runs again whenever a file under <code>ultraman/</code> changes.</td></tr>
 <tr><td><code>--every D</code></td><td>Runs again on a timer: <code>30s</code>, <code>5m</code>, <code>1h</code> or a bare number of seconds, at least 5 seconds. It counts from the end of the previous run and combines with <code>--watch</code>.</td></tr>
 <tr><td><code>--no-notify</code></td><td>With <code>--watch</code> or <code>--every</code>, no desktop notification when a run fails and when it passes again.</td></tr>
 <tr><td><code>--json</code></td><td>One JSON event per line on standard output, for other tools. No colors.</td></tr>
 <tr><td><code>--junit FILE</code></td><td>Writes a JUnit XML report. See <a href="cli.html#junit">JUnit</a>.</td></tr>
 <tr><td><code>--contract M</code></td><td><code>strict</code>, <code>warn</code> or <code>off</code>: over each collection&#39;s contract mode, so CI fails on what the spec doesn&#39;t document. See <a href="requests.html#contract">the contract</a>.</td></tr>
-<tr><td><code>--compare a,b</code></td><td>Runs the selection in environment <code>a</code>, then in <code>b</code>, and compares the steps that have a <code>compare:</code> block; <code>--compare schema</code> checks one environment&#39;s answers against their type. See <a href="compare.html#cli">Compare</a>.</td></tr>
+<tr><td><code>--compare a,b</code></td><td>Runs the selection in environment <code>a</code>, then in <code>b</code>, and compares every request of a pipeline or collection you name (by its <code>compare:</code> block or, with none, by structure; <code>--all</code> and <code>--tag</code> compare only the blocks written); <code>--compare schema</code> checks one environment&#39;s answers against their type. See <a href="compare.html#cli">Compare</a>.</td></tr>
 <tr><td><code>--allow-write ENV</code></td><td>With <code>--compare</code>: says yes, for the environments named (<code>dev,stg</code>), to the steps that aren&#39;t a read. See <a href="compare.html#writes">Steps that write</a>.</td></tr>
 <tr><td><code>--local</code></td><td>Runs in this process even when the window has the project open. See <a href="cli.html#one-engine">One engine</a>.</td></tr>
 <tr><td><code>--yes</code></td><td>Answers yes to every question. Read <a href="cli.html#consent">Consent in the terminal</a> first.</td></tr>
@@ -119,6 +119,7 @@ ultraman run --collection shop --env staging</code></pre>
 </table></div>
 <p>Each run is saved in <code>ultraman/runs/</code>. Colors appear only in a terminal; <code>NO_COLOR</code> turns them off. Ctrl+C cancels the running step, saves the run and exits with 1.</p>
 <p>Exit codes: <strong>0</strong> everything passed, <strong>1</strong> a step failed (or you pressed Ctrl+C), <strong>2</strong> it never ran: a bad flag, a missing pipeline, input, environment or secret, an invalid pipeline, or nothing was sent because nobody said yes.</p>
+<p>A collection run (<code>--collection</code>) sends every request and reports each one. A request that fails doesn&#39;t stop the others, the checks of a failed request print <code>not checked: the request failed</code>, and a request that needs a value a failed login didn&#39;t make prints <code>not sent</code>. The last line counts the requests, <code>✗ collection shop · 2 of 7 requests failed</code> or <code>✓ collection shop · 7 requests · 44 ms</code>, and the exit code is 1 when any failed. <code>--bail</code> goes back to stopping at the first failure. See <a href="requests.html#collection-run">Running a collection</a>.</p>
 <h2 id="consent">Consent in the terminal <a class="self" href="#consent" aria-label="Consent in the terminal">#</a></h2>
 <p>Ultraman asks before it sends anything you haven&#39;t approved. In a terminal it asks when:</p>
 <ul>
@@ -148,6 +149,7 @@ ultraman run --collection shop --env staging</code></pre>
 <p>Exit codes: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or it was stopped (Ctrl+C or the generator&#39;s own brakes); <strong>2</strong> nothing was sent. The thresholds and verdicts are explained in <a href="load.html">Load</a>; for gates in a pipeline see <a href="ci.html#load-in-ci">CI</a>.</p>
 <h2 id="junit">JUnit for CI <a class="self" href="#junit" aria-label="JUnit for CI">#</a></h2>
 <p><code>--junit FILE</code> writes a JUnit XML report after the runs, also after Ctrl+C with what ran: a test suite per pipeline and a test case per top-level step, with what was sent and received for the ones that failed. Secrets are hidden in it like everywhere else. Missing folders are created.</p>
+<p>In a collection run (<code>--collection</code>) the report has a test case per request instead of one per step. A case fails with the first thing that failed in it, the request or one of its checks, and lists the checks that weren&#39;t read; a request the run never reached (Ctrl+C) is skipped.</p>
 <pre tabindex="0"><code>ultraman run --all --env ci --yes --junit reports/ultraman.xml</code></pre>
 <h2 id="secrets">Secrets <a class="self" href="#secrets" aria-label="Secrets">#</a></h2>
 <p>On your machine, <code>ultraman secret set api-key</code> saves one in the vault: it asks for the master password and the value, both without echo. A value piped in (<code>echo &quot;$VALUE&quot; | ultraman secret set api-key</code>) is read from standard input; the master password still needs a terminal. Names use letters, digits, <code>_</code>, <code>.</code> and <code>-</code>. <code>secret list</code> shows the names, <code>secret rm &lt;name&gt;</code> removes one (exit 1 if it isn&#39;t there) and <code>secret password</code> changes the master password. See <a href="security.html#vault">the vault</a>.</p>
@@ -170,6 +172,6 @@ ultraman run --collection shop --env staging</code></pre>
 <nav class="pager"><a rel="prev" href="mock.html"><small>Previous</small><span>Mock server</span></a><a rel="next" href="ci.html"><small>Next</small><span>CI</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

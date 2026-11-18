@@ -29,12 +29,12 @@
   "description": "A desktop app for testing APIs with pipelines of visible steps: run them, load-test them, run them in CI and hand them to AI agents over MCP.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Windows, macOS, Linux",
-  "softwareVersion": "1.1.2",
+  "softwareVersion": "1.2.1",
   "downloadUrl": "https://github.com/ultraman-app/ultraman-app.github.io/releases/latest"
 }
 </script>
 <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=9">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -46,13 +46,13 @@
   </nav>
   <div class="lanes" aria-hidden="true">
     <span class="lane top"></span>
-    <span class="lane mid"><span class="word">Ultraman</span></span>
+    <span class="lane mid" data-layout-ok="clip: the name is capitals only; they fill about three quarters of the stripe, and only the line box (room for accents and tails) passes it"><span class="word">Ultraman</span></span>
     <span class="lane bottom"></span>
   </div>
   <h1 class="sr">Ultraman</h1>
 
   <div class="intro">
-    <p class="lede">Build an API test the way you'd explain it: log in, create an order, check it shows up. Send single requests like in Postman, then watch every step run, put it under load, and let your agent use it.</p>
+    <p class="lede">Build an API test the way you'd explain it, watch every step run, put it under load and let your agent use it.</p>
 
     <div class="install" id="install" data-os="mac">
       <div class="oses" role="tablist" aria-label="Your system">
@@ -75,36 +75,45 @@
         <code>irm https://ultraman-app.github.io/install.ps1 | iex</code>
         <button class="copy" type="button">Copy</button>
       </div>
-      <p class="fine">It installs the app and the <code>ultraman</code> command for your user, with everything they need inside, and checks each download against the release's signed checksums first. No account, no admin rights. <a href="docs/en/getting-started.html#install">Installing, updating and uninstalling</a></p>
+      <p class="fine">No account, no admin rights, and nothing unsafe goes out without your yes. <a href="docs/en/security.html#promise">Security</a> · <a href="docs/en/getting-started.html#install">Installing and updating</a></p>
     </div>
-    <p class="fine"><strong>Ultraman never sends anything in an unsafe way without your explicit consent.</strong> A secret goes only to a host you approved, a file only from the folder you share, and nothing at all from a folder you haven't trusted. <a href="docs/en/security.html#promise">How it keeps you and your team safe</a></p>
   </div>
 </header>
 
 <main>
-  <section class="window">
-    <div class="copytext">
-      <h2>Start with the sample project</h2>
-      <p>New here? Open the sample project from Welcome, from the project menu or with <code>ultraman sample</code>: a small shop with pipelines, a collection, a load test, and runs and a report already there, so every screen has something to show. Its requests go to <code>shop.example</code>, which Ultraman answers itself, so nothing is sent to the network.</p>
-      <p class="more"><a href="docs/en/getting-started.html#sample">Read more about the sample project</a></p>
-    </div>
+  <section class="window" aria-label="The window">
     <figure class="shot">
       <picture>
         <source srcset="shots/window-night.webp" media="(prefers-color-scheme: dark)">
         <img src="shots/window-day.webp" width="1440" height="900" decoding="async" alt="The Ultraman window on the sample project: the place an order pipeline after a run with every step passed, and beside it the order request's body and its 201 Created response">
       </picture>
-      <figcaption>The sample's <code>place an order</code> after a run: each step with what it got, and the selected request with its response.</figcaption>
+      <figcaption>The sample project's <code>place an order</code> after a run: each step with what it got, and the selected request with its response.</figcaption>
+    </figure>
+  </section>
+
+  <section class="mcp">
+    <div class="copytext">
+      <h2>Test an MCP server like an API</h2>
+      <p>Import a server's tools, resources and prompts as requests, one for each, with a check from every tool's output schema. <b>From the server</b> describes the argument you're on: its words, type, examples and default. A load test opens one session per virtual user.</p>
+      <p class="more"><a href="docs/en/requests.html#mcp">Read more about MCP servers</a></p>
+    </div>
+    <figure class="shot">
+      <picture>
+        <source srcset="shots/mcp-arguments-night.png" media="(prefers-color-scheme: dark)">
+        <img src="shots/mcp-arguments-day.png" width="824" height="456" loading="lazy" decoding="async" alt="A request's Body set to MCP, calling the create_ticket tool with its arguments as JSON, and under it From the server: the tool's description, a Changes data mark, the required argument priority and the optional team">
+      </picture>
+      <figcaption>A tool's request after an import: the call, and what the server says about its arguments.</figcaption>
     </figure>
   </section>
 
   <section class="pipeline">
-    <h2>A pipeline is a file in your repo</h2>
-    <figure class="drawn">
-      <div class="scroll" tabindex="0" aria-label="The diagram; scrolls sideways on small screens"><!-- diagram --><svg class="diagram" viewBox="0 0 1145 252" width="1145" height="252" role="img" aria-label="The create order pipeline as a diagram: 6 steps left to right, with the checks under them"><path class="edge hang" style="--i:4" d="M629,126 L629,170"/><path class="edge hang" style="--i:7" d="M985,126 L985,170"/><path class="edge seq" style="--i:1" d="M170,95 C210,95 158,95 198,95"/><path class="edge seq" style="--i:1" d="M191,99 L198,95 L191,91"/><path class="edge seq" style="--i:2" d="M348,95 C388,95 336,95 376,95"/><path class="edge seq" style="--i:2" d="M369,99 L376,95 L369,91"/><path class="edge seq" style="--i:3" d="M526,95 C566,95 514,95 554,95"/><path class="edge seq" style="--i:3" d="M547,99 L554,95 L547,91"/><path class="edge seq" style="--i:5" d="M704,95 C744,95 692,95 732,95"/><path class="edge seq" style="--i:5" d="M725,99 L732,95 L725,91"/><path class="edge seq" style="--i:6" d="M882,95 C922,95 870,95 910,95"/><path class="edge seq" style="--i:6" d="M903,99 L910,95 L903,91"/><path class="edge data" style="--i:1" d="M95,64 C95,32 273,32 273,64"/><path class="edge data" style="--i:1" d="M269,57 L273,64 L277,57"/><rect class="lbg" x="154.9" y="32" width="58.199999999999996" height="16" rx="4"/><text class="etxt" x="184" y="44" text-anchor="middle">$.token</text><path class="edge data" style="--i:2" d="M95,64 C95,6.399999999999999 451,6.399999999999999 451,64"/><path class="edge data" style="--i:2" d="M447,57 L451,64 L455,57"/><rect class="lbg" x="237.3" y="12.799999999999997" width="71.4" height="16" rx="4"/><text class="etxt" x="273" y="24.799999999999997" text-anchor="middle">$.user_id</text><path class="edge data" style="--i:3" d="M451,64 C451,32 629,32 629,64"/><path class="edge data" style="--i:3" d="M625,57 L629,64 L633,57"/><rect class="lbg" x="510.9" y="32" width="58.199999999999996" height="16" rx="4"/><text class="etxt" x="540" y="44" text-anchor="middle">user_id</text><path class="edge data" style="--i:5" d="M629,64 C629,32 807,32 807,64"/><path class="edge data" style="--i:5" d="M803,57 L807,64 L811,57"/><rect class="lbg" x="698.8" y="32" width="38.4" height="16" rx="4"/><text class="etxt" x="718" y="44" text-anchor="middle">$.id</text><path class="edge data" style="--i:7" d="M807,126 C807,148 915,148 915,170"/><path class="edge data" style="--i:7" d="M911,163 L915,170 L919,163"/><rect class="lbg" x="828.6" y="140" width="64.8" height="16" rx="4"/><text class="etxt" x="861" y="152" text-anchor="middle">order_id</text><rect class="box" style="--i:0" x="20" y="64" width="150" height="62" rx="9"/><g class="kmark k-req"><rect class="kbg" x="30" y="75" width="22" height="22" rx="6"/><svg x="35" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></g><text class="lbl" x="60" y="84"><tspan class="meth warn">POST </tspan>request</text><text class="name" x="60" y="102">login</text><rect class="box" style="--i:1" x="198" y="64" width="150" height="62" rx="9"/><g class="kmark k-ext"><rect class="kbg" x="208" y="75" width="22" height="22" rx="6"/><svg x="213" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></g><text class="lbl" x="238" y="84">extract ← $login</text><text class="name" x="238" y="102">token</text><rect class="box" style="--i:2" x="376" y="64" width="150" height="62" rx="9"/><g class="kmark k-ext"><rect class="kbg" x="386" y="75" width="22" height="22" rx="6"/><svg x="391" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></g><text class="lbl" x="416" y="84">extract ← $login</text><text class="name" x="416" y="102">user_id</text><rect class="box" style="--i:3" x="554" y="64" width="150" height="62" rx="9"/><g class="kmark k-req"><rect class="kbg" x="564" y="75" width="22" height="22" rx="6"/><svg x="569" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></g><text class="lbl" x="594" y="84"><tspan class="meth warn">POST </tspan>request</text><text class="name" x="594" y="102">create</text><rect class="box" style="--i:5" x="732" y="64" width="150" height="62" rx="9"/><g class="kmark k-ext"><rect class="kbg" x="742" y="75" width="22" height="22" rx="6"/><svg x="747" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></g><text class="lbl" x="772" y="84">extract ← $create</text><text class="name" x="772" y="102">order_id</text><rect class="box" style="--i:6" x="910" y="64" width="150" height="62" rx="9"/><g class="kmark k-req"><rect class="kbg" x="920" y="75" width="22" height="22" rx="6"/><svg x="925" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></g><text class="lbl" x="950" y="84"><tspan class="meth ok">GET </tspan>request</text><text class="name" x="950" y="102">list</text><rect class="note" style="--i:4" x="551" y="170" width="156" height="62" rx="9"/><g class="kmark k-as"><rect class="kbg" x="561" y="181" width="22" height="22" rx="6"/><svg x="566" y="186" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></g><text class="lbl" x="591" y="190">assert ← $create</text><text class="name" x="591" y="208">status = 201</text><rect class="note" style="--i:7" x="845" y="170" width="280" height="62" rx="9"/><g class="kmark k-as"><rect class="kbg" x="855" y="181" width="22" height="22" rx="6"/><svg x="860" y="186" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></g><text class="lbl" x="885" y="190">assert ← $list</text><text class="name" x="885" y="208">$[*].id contains {{order_id…</text></svg><!-- /diagram --></div>
-      <figcaption>Log in, create an order, check it shows up in the list: <code>create order</code> as the window draws it. Dotted lines carry values from one step to the next; the checks hang below the step they check.</figcaption>
-    </figure>
-    <div class="twin">
-      <pre class="yaml" tabindex="0" aria-label="create-order.yaml"><code><span class="k">name:</span> create order
+    <div class="lead">
+      <div class="copytext">
+        <h2>A pipeline is a file in your repo</h2>
+        <p>Each step is a request, a value you take from a response, a check, a wait, a loop, a branch or a block you reuse, and you build it in the window without writing YAML. The file lands in git next to your code, where the team reviews it in a pull request.</p>
+        <p class="more"><a href="docs/en/pipelines.html#steps">Read more about pipelines</a></p>
+      </div>
+      <pre class="yaml" tabindex="0" aria-label="The start of create-order.yaml"><code><span class="k">name:</span> create order
 <span class="k">host:</span> "{{env.api}}"
 <span class="k">auth:</span> { bearer: "{{token}}" }
 <span class="k">steps:</span>
@@ -116,41 +125,19 @@
   - <span class="k">extract:</span> token
     <span class="k">from:</span> $login
     <span class="k">path:</span> $.token
-  - <span class="k">extract:</span> user_id
-    <span class="k">from:</span> $login
-    <span class="k">path:</span> $.user_id
-  - <span class="k">request:</span> create
-    <span class="k">method:</span> POST
-    <span class="k">path:</span> /users/:userId/orders
-    <span class="k">params:</span> { userId: "{{user_id}}" }
-    <span class="k">json:</span> { sku: A-1, qty: 2 }
-  - <span class="k">assert:</span> status
-    <span class="k">of:</span> $create
-    <span class="k">equals:</span> 201
-  - <span class="k">extract:</span> order_id
-    <span class="k">from:</span> $create
-    <span class="k">path:</span> $.id
-  - <span class="k">request:</span> list
-    <span class="k">method:</span> GET
-    <span class="k">path:</span> /orders
-  - <span class="k">assert:</span> contains
-    <span class="k">of:</span> $list
-    <span class="k">path:</span> $[*].id
-    <span class="k">value:</span> "{{order_id}}"</code></pre>
-      <div class="copytext beside">
-        <p>Each step is a request, a value you take from a response, a check, a wait, a loop, a branch or a block you reuse, like logging in, and you build it in the window without writing YAML. The YAML lands in git next to your code, where the team reviews it in a pull request.</p>
-        <p class="more"><a href="docs/en/pipelines.html#steps">Read more about pipelines</a></p>
+<span class="c">  # … and six more steps, drawn below</span></code></pre>
+    </div>
+    <figure class="drawn">
+      <div class="scroll" tabindex="0" aria-label="The diagram; scrolls sideways on small screens"><!-- diagram --><svg class="diagram" viewBox="0 0 1145 252" width="1145" height="252" role="img" aria-label="The create order pipeline as a diagram: 6 steps left to right, with the checks under them"><path class="edge hang" style="--i:4" d="M629,126 L629,170"/><path class="edge hang" style="--i:7" d="M985,126 L985,170"/><path class="edge seq" style="--i:1" d="M170,95 C210,95 158,95 198,95"/><path class="edge seq" style="--i:1" d="M191,99 L198,95 L191,91"/><path class="edge seq" style="--i:2" d="M348,95 C388,95 336,95 376,95"/><path class="edge seq" style="--i:2" d="M369,99 L376,95 L369,91"/><path class="edge seq" style="--i:3" d="M526,95 C566,95 514,95 554,95"/><path class="edge seq" style="--i:3" d="M547,99 L554,95 L547,91"/><path class="edge seq" style="--i:5" d="M704,95 C744,95 692,95 732,95"/><path class="edge seq" style="--i:5" d="M725,99 L732,95 L725,91"/><path class="edge seq" style="--i:6" d="M882,95 C922,95 870,95 910,95"/><path class="edge seq" style="--i:6" d="M903,99 L910,95 L903,91"/><path class="edge data" style="--i:1" d="M95,64 C95,32 273,32 273,64"/><path class="edge data" style="--i:1" d="M269,57 L273,64 L277,57"/><rect class="lbg" x="154.9" y="32" width="58.199999999999996" height="16" rx="4"/><text class="etxt" x="184" y="44" text-anchor="middle">$.token</text><path class="edge data" style="--i:2" d="M95,64 C95,6.399999999999999 451,6.399999999999999 451,64"/><path class="edge data" style="--i:2" d="M447,57 L451,64 L455,57"/><rect class="lbg" x="237.3" y="12.799999999999997" width="71.4" height="16" rx="4"/><text class="etxt" x="273" y="24.799999999999997" text-anchor="middle">$.user_id</text><path class="edge data" style="--i:3" d="M451,64 C451,32 629,32 629,64"/><path class="edge data" style="--i:3" d="M625,57 L629,64 L633,57"/><rect class="lbg" x="510.9" y="32" width="58.199999999999996" height="16" rx="4"/><text class="etxt" x="540" y="44" text-anchor="middle">user_id</text><path class="edge data" style="--i:5" d="M629,64 C629,32 807,32 807,64"/><path class="edge data" style="--i:5" d="M803,57 L807,64 L811,57"/><rect class="lbg" x="698.8" y="32" width="38.4" height="16" rx="4"/><text class="etxt" x="718" y="44" text-anchor="middle">$.id</text><path class="edge data" style="--i:7" d="M807,126 C807,148 915,148 915,170"/><path class="edge data" style="--i:7" d="M911,163 L915,170 L919,163"/><rect class="lbg" x="828.6" y="140" width="64.8" height="16" rx="4"/><text class="etxt" x="861" y="152" text-anchor="middle">order_id</text><rect class="box" style="--i:0" x="20" y="64" width="150" height="62" rx="9"/><g class="kmark k-req"><rect class="kbg" x="30" y="75" width="22" height="22" rx="6"/><svg x="35" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></g><text class="lbl" x="60" y="84"><tspan class="meth warn">POST </tspan>request</text><text class="name" x="60" y="102">login</text><rect class="box" style="--i:1" x="198" y="64" width="150" height="62" rx="9"/><g class="kmark k-ext"><rect class="kbg" x="208" y="75" width="22" height="22" rx="6"/><svg x="213" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></g><text class="lbl" x="238" y="84">extract ← $login</text><text class="name" x="238" y="102">token</text><rect class="box" style="--i:2" x="376" y="64" width="150" height="62" rx="9"/><g class="kmark k-ext"><rect class="kbg" x="386" y="75" width="22" height="22" rx="6"/><svg x="391" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></g><text class="lbl" x="416" y="84">extract ← $login</text><text class="name" x="416" y="102">user_id</text><rect class="box" style="--i:3" x="554" y="64" width="150" height="62" rx="9"/><g class="kmark k-req"><rect class="kbg" x="564" y="75" width="22" height="22" rx="6"/><svg x="569" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></g><text class="lbl" x="594" y="84"><tspan class="meth warn">POST </tspan>request</text><text class="name" x="594" y="102">create</text><rect class="box" style="--i:5" x="732" y="64" width="150" height="62" rx="9"/><g class="kmark k-ext"><rect class="kbg" x="742" y="75" width="22" height="22" rx="6"/><svg x="747" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></g><text class="lbl" x="772" y="84">extract ← $create</text><text class="name" x="772" y="102">order_id</text><rect class="box" style="--i:6" x="910" y="64" width="150" height="62" rx="9"/><g class="kmark k-req"><rect class="kbg" x="920" y="75" width="22" height="22" rx="6"/><svg x="925" y="80" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></g><text class="lbl" x="950" y="84"><tspan class="meth ok">GET </tspan>request</text><text class="name" x="950" y="102">list</text><rect class="note" style="--i:4" x="551" y="170" width="156" height="62" rx="9"/><g class="kmark k-as"><rect class="kbg" x="561" y="181" width="22" height="22" rx="6"/><svg x="566" y="186" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></g><text class="lbl" x="591" y="190">assert ← $create</text><text class="name" x="591" y="208">status = 201</text><rect class="note" style="--i:7" x="845" y="170" width="280" height="62" rx="9"/><g class="kmark k-as"><rect class="kbg" x="855" y="181" width="22" height="22" rx="6"/><svg x="860" y="186" width="12" height="12" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></g><text class="lbl" x="885" y="190">assert ← $list</text><text class="name" x="885" y="208">$[*].id contains {{order_id…</text></svg><!-- /diagram --></div>
+      <figcaption>Log in, create an order, check it shows up in the list: <code>create order</code> as the window draws it. Dotted lines carry values from one step to the next; the checks hang below the step they check.</figcaption>
+    </figure>
+    <div class="part">
+      <div class="copytext">
+        <h3>Run it and read what happened</h3>
+        <p>From the window or a terminal, every step says what it did, and a failed check shows what it expected and what came back. Secret values show as <code>[secret:name]</code> in the output and in the history.</p>
+        <p class="more"><a href="docs/en/pipelines.html#run">Read more about runs</a></p>
       </div>
-    </div>
-  </section>
-
-  <section class="run">
-    <div class="copytext">
-      <h2>Run it and read what happened</h2>
-      <p>From the window or a terminal, every step says what it did, and a failed check shows what it expected and what came back. Secret values show as <code>[secret:name]</code> in the output and in the history.</p>
-      <p class="more"><a href="docs/en/pipelines.html#run">Read more about runs</a></p>
-    </div>
-    <pre class="narrated" tabindex="0" aria-label="The output of ultraman run create order"><code><span class="prompt">$ ultraman run "create order"</span>
+      <pre class="narrated" tabindex="0" aria-label="The output of ultraman run create order"><code><span class="prompt">$ ultraman run "create order"</span>
 <span class="line"><span class="ok">  ✓</span> 1 request POST /auth/login · 200 · 16 ms</span>
 <span class="line"><span class="ok">  ✓</span> 2 extract token ← $.token from $login · bc6dcdac-3c80-484d-83d1-dedb0a905328</span>
 <span class="line"><span class="ok">  ✓</span> 3 extract user_id ← $.user_id from $login · u_ana</span>
@@ -160,47 +147,15 @@
 <span class="line"><span class="ok">  ✓</span> 7 request GET /orders · 200 · 3 ms</span>
 <span class="line"><span class="ok">  ✓</span> 8 assert $[*].id of $list contains {{order_id}}</span>
 <span class="line total"><span class="ok">✓</span> create order · 8 steps · 28 ms</span></code></pre>
-  </section>
-
-  <section class="checks">
-    <div class="copytext">
-      <h2>Checks that write themselves</h2>
-      <p><b>Generate checks</b> reads the response on screen and proposes its status and each field's type; you add a pattern or a JSON Schema where you need more. After every send, if a field went missing or changed type since the last time, a banner says so before your frontend finds out.</p>
-      <p class="more"><a href="docs/en/requests.html#generate-checks">Read more about checks</a></p>
     </div>
-    <div class="artifact">
-      <pre class="yaml" tabindex="0" aria-label="A request's checks"><code><span class="c"># proposed by Generate checks</span>
-<span class="k">- assert:</span> status
-  <span class="k">equals:</span> 200
-<span class="k">- assert:</span> type
-  <span class="k">path:</span> $.qty
-  <span class="k">value:</span> number
-<span class="k">- assert:</span> exists
-  <span class="k">header:</span> X-Request-Id
-<span class="c"># added by hand</span>
-<span class="k">- assert:</span> matches
-  <span class="k">path:</span> $.id
-  <span class="k">value:</span> /^ord_/
-<span class="k">- assert:</span> schema
-  <span class="k">value:</span> schemas/order.json</code></pre>
+    <div class="part">
+      <div class="copytext">
+        <h3>Checks that write themselves</h3>
+        <p><b>Generate checks</b> reads the response on screen and proposes its status and each field's type; you add a pattern or a JSON Schema where you need more. After every send, if a field went missing or changed type since the last time, a banner says so.</p>
+        <p class="more"><a href="docs/en/requests.html#generate-checks">Read more about checks</a></p>
+      </div>
       <p class="drift" role="note"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1.5 15 14H1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v3.5M8 11.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>The response changed shape since the last send: <code>$.qty removed</code>, <code>$.id: string → number</code></span></p>
     </div>
-  </section>
-
-  <section class="mock">
-    <div class="copytext">
-      <h2>A fake API from what you already sent</h2>
-      <p>Your frontend needs the API, and it's down, slow or not written yet: <code>ultraman mock</code> answers with the responses your sends got, and what it has no recording for can go on to the real API. Unless you say otherwise, it listens only on your machine and only pages on your machine can call it.</p>
-      <p class="more"><a href="docs/en/mock.html">Read more about the mock server</a></p>
-    </div>
-    <pre class="narrated" tabindex="0" aria-label="The output of ultraman mock with a proxy"><code><span class="prompt">$ ultraman mock --proxy https://staging.example.com</span>
-<span class="line">POST /auth/login ← shop/login · 18:15</span>
-<span class="line">GET /orders ← shop/orders · 18:16</span>
-<span class="line"><span class="prompt">what has no recording goes to https://staging.example.com as it came</span></span>
-<span class="line"><span class="prompt">mock at http://127.0.0.1:4300 · environment local · Ctrl+C to stop</span></span>
-<span class="line">POST /auth/login → 200 · shop/login</span>
-<span class="line">GET /orders → 200 · shop/orders</span>
-<span class="line">GET /orders/ord_9 → 200 <span class="ok">· proxied</span></span></code></pre>
   </section>
 
   <section class="load">
@@ -237,8 +192,11 @@
   <section class="promise">
     <div class="copytext">
       <h2>Nothing unsafe goes out without your yes</h2>
-      <p>Ultraman never sends anything in an unsafe way without your explicit consent. The first time a secret would go to a new host, or a file from outside <code>ultraman/files</code> would be sent, it stops and asks, and in a folder you haven't trusted it runs no git and sends nothing.</p>
+      <p>The first time a secret would go to a new host, or a file from outside <code>ultraman/files</code> would be sent, Ultraman stops and asks, and in a folder you haven't trusted it runs no git and sends nothing.</p>
       <p class="more"><a href="docs/en/security.html#promise">Read how it keeps you and your team safe</a></p>
+      <h3>Your secrets stay locked</h3>
+      <p>Saved secrets are encrypted on your machine under a master password only you know, and the vault locks again after 30 minutes without use. In an environment's file, a secret leaves only a reference.</p>
+      <p class="more"><a href="docs/en/security.html#vault">Read more about the vault</a></p>
     </div>
     <figure class="ask">
       <div class="dialog">
@@ -254,52 +212,43 @@
     </figure>
   </section>
 
-  <section class="vault">
-    <div class="copytext">
-      <h2>Your secrets stay locked</h2>
-      <p>Saved secrets are encrypted on your machine under a master password only you know, and the vault locks again after 30 minutes without use. In an environment, shared values go to git, your own stay on this machine, and a secret leaves only a reference in the file.</p>
-      <p class="more"><a href="docs/en/security.html#vault">Read more about the vault</a></p>
+  <section class="trio">
+    <h2 class="sr">Also in Ultraman</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>A fake API from what you already sent</h3>
+        <p><code>ultraman mock</code> answers with the responses your sends got, and what it has no recording for can go on to the real API. Unless you say otherwise, it listens only on your machine.</p>
+        <p class="more"><a href="docs/en/mock.html">Read more about the mock server</a></p>
+      </article>
+      <article class="card">
+        <h3>Hand it to your agent</h3>
+        <p>Point Claude Code or any MCP client at <code>ultraman mcp</code>: your agent finds your pipelines, builds new ones and runs them. Each call waits for your OK in the window, and a secret is used by name, never seen.</p>
+        <p class="more"><a href="docs/en/agents.html#connect">Read more about agents</a></p>
+      </article>
+      <article class="card">
+        <h3>Start with the sample project</h3>
+        <p>Open it from Welcome or with <code>ultraman sample</code>: a small shop with pipelines, a collection and a load test. Its requests go to <code>shop.example</code>, which Ultraman answers itself, so nothing is sent to the network.</p>
+        <p class="more"><a href="docs/en/getting-started.html#sample">Read more about the sample project</a></p>
+      </article>
     </div>
-    <pre class="snippet" tabindex="0" aria-label="The secrets folder, and listing the secrets"><code><span class="k">$</span> ls ~/.ultraman
-secrets.enc  vault.json
-<span class="k">$</span> ultraman secret list
-Master password:
-api_token</code></pre>
-  </section>
-
-  <section class="agent">
-    <div class="copytext">
-      <h2>Hand it to your agent</h2>
-      <p>Point Claude Code or any MCP client at <code>ultraman mcp</code>: your agent finds your pipelines, reuses your blocks to build new ones and runs them. Each call waits for your OK in the window, and the agent can use a secret by name but never sees its value.</p>
-      <p class="more"><a href="docs/en/agents.html#connect">Read more about agents</a></p>
-    </div>
-    <pre class="snippet" tabindex="0" aria-label="An MCP client's configuration"><code>{
-  <span class="k">"mcpServers"</span>: {
-    <span class="k">"ultraman"</span>: {
-      <span class="k">"command"</span>: "ultraman",
-      <span class="k">"args"</span>: ["mcp", "--project", "/path/to/your/repo"]
-    }
-  }
-}</code></pre>
-  </section>
-
-  <section class="also">
-    <h2>Also in the docs</h2>
-    <ul>
-      <li><a href="docs/en/requests.html">Requests, collections and history</a></li>
-      <li><a href="docs/en/requests.html#streams">WebSocket and SSE streams</a></li>
-      <li><a href="docs/en/importing.html">Imports from Postman, OpenAPI, JMeter, Artillery and HAR</a></li>
-      <li><a href="docs/en/team.html">Working as a team with git</a></li>
-      <li><a href="docs/en/ci.html#other-ci">Other CI systems</a></li>
-      <li><a href="docs/en/why.html">Next to Postman, k6, JMeter and others</a></li>
-      <li><a href="docs/en/faq.html">Questions</a></li>
-    </ul>
   </section>
 
   <section class="small">
     <div>
       <h2>Why a download from the browser warns</h2>
       <p>The installers aren't signed by Apple or Microsoft, so one downloaded with a browser from the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest">releases page</a> makes macOS and Windows ask before it opens. The commands above don't mark the download as coming from the internet, and they check its signature themselves. <a href="docs/en/getting-started.html#os-warning">What each system shows</a></p>
+    </div>
+    <div class="also">
+      <h2>Also in the docs</h2>
+      <ul>
+        <li><a href="docs/en/requests.html">Requests, collections and history</a></li>
+        <li><a href="docs/en/requests.html#streams">WebSocket and SSE streams</a></li>
+        <li><a href="docs/en/importing.html">Imports from Postman, OpenAPI, JMeter, Artillery and HAR</a></li>
+        <li><a href="docs/en/team.html">Working as a team with git</a></li>
+        <li><a href="docs/en/ci.html#other-ci">Other CI systems</a></li>
+        <li><a href="docs/en/why.html">Next to Postman, k6, JMeter and others</a></li>
+        <li><a href="docs/en/faq.html">Questions</a></li>
+      </ul>
     </div>
   </section>
 </main>

@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -74,7 +74,7 @@
 <h1>Documentación de Ultraman</h1>
 <p>Cómo funciona Ultraman, qué te da cada función y qué protege a tu equipo y a ti.</p>
 <ol class="toc">
-<li><a href="highlights.html">Lo que te da Ultraman</a><p>Ultraman prueba APIs HTTP, incluidos WebSocket y SSE: una sola app en tu computadora para requests sueltas, pruebas de varios pasos, carga y CI, todo guardado como archivos simples en tu propio repo de git. Ultraman nunca envía nada de forma insegura sin tu consentimiento explícito: un secreto solo va a un host que aprobaste, y una carpeta que no marcaste como de confianza no envía nada.</p></li>
+<li><a href="highlights.html">Lo que te da Ultraman</a><p>Ultraman prueba APIs HTTP, GraphQL, WebSocket, SSE y servidores MCP: una sola app en tu computadora para requests sueltas, pruebas de varios pasos, carga y CI, todo guardado como archivos simples en tu propio repo de git. Ultraman nunca envía nada de forma insegura sin tu consentimiento explícito: un secreto solo va a un host que aprobaste, y una carpeta que no marcaste como de confianza no envía nada.</p></li>
 <li><a href="why.html">Por qué Ultraman</a><p>Ultraman reúne requests de API, flujos de prueba, pruebas de carga y checks de CI en una sola app local, guardados como archivos simples en tu propio repo de git. Esta página explica en qué se diferencia de herramientas que quizá ya usas, y cuándo alguna de ellas es mejor opción.</p></li>
 <li><a href="getting-started.html">Primeros pasos</a><p>De la instalación de Ultraman a tu primera request y tu primera pipeline, y también cómo se actualiza, por qué tu sistema puede mostrar una advertencia y cómo desinstalarlo.</p></li>
 <li><a href="security.html">Seguridad y consentimiento</a><p>Qué te pregunta Ultraman antes de enviar algo, cómo mantiene tus secretos fuera de la vista y qué deja en tus manos: promesas que puedes comprobar, para ti, para tu equipo y para tu CI. No hay telemetría, ni analíticas, ni reportes de fallos, ni cuenta.</p></li>
@@ -83,7 +83,7 @@
 <li><a href="load.html">Carga</a><p>Carga (junto a Ejecutar) te dice cuántos usuarios, o cuánto tráfico, aguanta tu API antes de volverse lenta o empezar a fallar. Abre la pantalla de carga de la pipeline que tienes en pantalla: cada usuario virtual ejecuta la pipeline completa en bucle, y si un paso falla, esa iteración cuenta como error y el usuario empieza otra.</p></li>
 <li><a href="environments.html">Entornos y secretos</a><p>Con los entornos, las mismas requests se ejecutan contra local, staging o producción; con los secretos, los tokens y las contraseñas se quedan en tu computadora, cifrados, fuera de git y fuera de cualquier log.</p></li>
 <li><a href="compare.html">Comparar dos entornos</a><p>Comparar ejecuta la misma pipeline en dos entornos y te dice, paso a paso, si responden igual: después de un despliegue, verifica que staging tenga la estructura y los datos replicados que tiene desarrollo. También puede verificar las respuestas de un entorno contra su tipo, un JSON Schema o la spec OpenAPI de la colección.</p></li>
-<li><a href="importing.html">Importar</a><p>El menú Importar junto a Nueva colección (área de Requests) trae lo que ya tienes: una exportación de Postman, una spec OpenAPI, un plan de JMeter o un script de Artillery; el que está junto a Nueva pipeline (área de Pipelines) trae una grabación del navegador. Así no empiezas desde cero. No se sobrescribe nada del proyecto: si un nombre ya existe, se le agrega -2. Al final, un resumen indica qué entró, qué se adaptó, qué hay que terminar a mano y qué archivos se omitieron.</p></li>
+<li><a href="importing.html">Importar</a><p>El menú Importar junto a Nueva colección (área de Requests) trae lo que ya tienes: una exportación de Postman, una spec OpenAPI, un plan de JMeter, un script de Artillery o un servidor MCP; el que está junto a Nueva pipeline (área de Pipelines) trae una grabación del navegador. Así no empiezas desde cero. No se sobrescribe nada del proyecto: si un nombre ya existe, se le agrega -2. Al final, un resumen indica qué entró, qué se adaptó, qué hay que terminar a mano y qué archivos se omitieron.</p></li>
 <li><a href="mock.html">Servidor mock</a><p>El servidor mock responde las requests a tu API con respuestas que ya grabaste. Así, un front end (o un test) puede seguir trabajando aunque la API real esté caída, vaya lenta o todavía no exista. Se ejecuta en tu computadora y nadie más puede acceder a él, salvo que tú lo decidas.</p></li>
 <li><a href="cli.html">La terminal</a><p>El comando ultraman ejecuta tus pipelines y pruebas de carga desde una terminal, sirve el proyecto a otras herramientas y guarda secretos en la bóveda. Ejecútalo desde la carpeta del proyecto (o desde cualquier carpeta dentro de ella). Para usarlo en una máquina de build, consulta CI.</p></li>
 <li><a href="ci.html">CI</a><p>Ultraman se ejecuta en una pipeline de build con las mismas pipelines que usas en tu máquina, escribe un reporte JUnit y hace fallar el job cuando falla un paso o un umbral. Para GitHub Actions hay una action que, además, impide que los secretos vayan a cualquier lugar que nadie haya aprobado. En otros sistemas, instalas el comando y lo llamas.</p></li>
@@ -95,6 +95,6 @@
 </ol>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

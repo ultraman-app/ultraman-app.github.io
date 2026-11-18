@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -91,7 +91,7 @@ api: https://api.example.com</code></pre>
 <h2 id="eye">De dónde viene cada valor <a class="self" href="#eye" aria-label="De dónde viene cada valor">#</a></h2>
 <p>Al hacer clic en el entorno de arriba se abre una vista rápida. Cada variable indica de dónde viene su valor: <code>compartido</code>, <code>local</code>, <code>bóveda</code> o <code>sesión</code>. Un secreto siempre se muestra como <code>●●●●</code>.</p>
 <p>Debajo, la <strong>sesión</strong> lista cada valor que extrajeron los pasos (o que escribiste en un diálogo), qué paso lo generó y qué pasos lo usan. El lápiz edita el valor de esta máquina (si lo dejas vacío, vuelve al compartido). Puedes borrar una fila de la sesión, o la sesión entera; el valor vuelve cuando se ejecuta de nuevo el paso que lo genera. La sesión no se guarda: al cerrar la ventana, se pierde.</p>
-<p>Cuando una request necesita un valor que el entorno no tiene, un diálogo te lo pide. Un valor normal se puede guardar solo para esta sesión, en el archivo compartido del entorno (va a git) o en esta máquina. Un secreto tiene una casilla <strong>Guardar en este equipo</strong>: si la marcas, va a la bóveda y nunca a un archivo.</p>
+<p>Cuando una request necesita un valor que el entorno no tiene, un diálogo te lo pide. Si no hay un entorno elegido y hay entornos para elegir, el diálogo los ofrece primero como botones (<strong>Elige un entorno</strong>), con uno de producción al final, aparte y marcado &quot;producción&quot;; elegir uno equivale a elegirlo en la barra de arriba. Un valor normal se puede guardar solo para esta sesión, en el archivo compartido del entorno (va a git) o en esta máquina. Un secreto tiene una casilla <strong>Guardar en este equipo</strong>: si la marcas, va a la bóveda y nunca a un archivo.</p>
 <h2 id="options">Opciones de request <a class="self" href="#options" aria-label="Opciones de request">#</a></h2>
 <p>Un entorno también puede llevar <strong>opciones de request</strong>: timeouts, redirecciones, HTTP/2, HTTP plano para un servicio interno sin TLS o una CA propia para un servidor con su propio certificado. Van bajo <code>options:</code> en el archivo del entorno, el compartido o solo el de esta máquina, y nunca como variable:</p>
 <pre tabindex="0"><code># ultraman/envs/internal.yaml
@@ -122,6 +122,6 @@ options:
 <nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="compare.html"><small>Siguiente</small><span>Comparar dos entornos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

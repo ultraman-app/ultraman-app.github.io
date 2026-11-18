@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/ci.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -99,6 +99,7 @@
     path: ${{ steps.ultraman.outputs.junit }}
     retention-days: 7</code></pre>
 <p>Sin <code>if: always()</code>, la subida se omite justo cuando la necesitas.</p>
+<p>Una colección (<code>--collection</code>) informa un test case por request, y una request que falla no oculta las siguientes, así que una sola ejecución lista todos los fallos. Agrega <code>--bail</code> para detenerte en el primero.</p>
 <h2 id="inputs">Los inputs de la action <a class="self" href="#inputs" aria-label="Los inputs de la action">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Input</th><th scope="col">Qué hace</th></tr></thead>
@@ -179,6 +180,6 @@ ultraman:
 <nav class="pager"><a rel="prev" href="cli.html"><small>Anterior</small><span>La terminal</span></a><a rel="next" href="team.html"><small>Siguiente</small><span>Trabajar en equipo</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

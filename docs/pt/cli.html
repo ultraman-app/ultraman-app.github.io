@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/cli.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -104,14 +104,14 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--env X</code></td><td>O ambiente. Se o projeto tem um só, ele é usado automaticamente; se tem vários, é preciso passar <code>--env</code>.</td></tr>
 <tr><td><code>--input k=v</code></td><td>O valor de um input; repita para passar mais. Um valor que começa com <code>[</code> ou <code>{</code> é lido como JSON quando é válido; o resto fica como texto (<code>id=00123</code> continua <code>00123</code>). Os nomes <code>env.*</code> e <code>secrets.*</code> são reservados.</td></tr>
 <tr><td><code>--parallel N</code></td><td>Executa até N pipelines ao mesmo tempo (de 1 a 16). Cada uma é impressa inteira quando termina.</td></tr>
-<tr><td><code>--bail</code></td><td>Para de iniciar pipelines novas depois da primeira que falhar. As que já estão em execução terminam; as outras aparecem como puladas.</td></tr>
+<tr><td><code>--bail</code></td><td>Para de iniciar pipelines novas depois da primeira que falhar. As que já estão em execução terminam; as outras aparecem como puladas. Com <code>--collection</code> para a execução no primeiro request que falhar, como uma pipeline; sem ele, uma coleção executa todos os requests e informa cada um.</td></tr>
 <tr><td><code>--watch</code></td><td>Executa de novo sempre que um arquivo dentro de <code>ultraman/</code> muda.</td></tr>
 <tr><td><code>--every D</code></td><td>Executa de novo de tempos em tempos: <code>30s</code>, <code>5m</code>, <code>1h</code> ou só um número de segundos, no mínimo 5 segundos. Conta a partir do fim da execução anterior e dá para combinar com <code>--watch</code>.</td></tr>
 <tr><td><code>--no-notify</code></td><td>Com <code>--watch</code> ou <code>--every</code>, desliga a notificação na área de trabalho quando uma execução falha e quando volta a passar.</td></tr>
 <tr><td><code>--json</code></td><td>Um evento JSON por linha na saída padrão, para outras ferramentas. Sem cores.</td></tr>
 <tr><td><code>--junit FILE</code></td><td>Gera um relatório JUnit XML. Veja <a href="cli.html#junit">JUnit</a>.</td></tr>
 <tr><td><code>--contract M</code></td><td><code>strict</code>, <code>warn</code> ou <code>off</code>: substitui o modo do contrato de cada coleção, para o CI falhar com o que a spec não documenta. Veja <a href="requests.html#contract">o contrato</a>.</td></tr>
-<tr><td><code>--compare a,b</code></td><td>Executa a seleção no ambiente <code>a</code> e depois no <code>b</code>, e compara os passos que têm um bloco <code>compare:</code>; <code>--compare schema</code> confere as respostas de um ambiente com o tipo delas. Veja <a href="compare.html#cli">Comparar</a>.</td></tr>
+<tr><td><code>--compare a,b</code></td><td>Executa a seleção no ambiente <code>a</code> e depois no <code>b</code>, e compara cada request de uma pipeline ou coleção que você nomeia (pelo bloco <code>compare:</code> dela ou, sem ele, por estrutura; <code>--all</code> e <code>--tag</code> comparam só os blocos escritos); <code>--compare schema</code> confere as respostas de um ambiente com o tipo delas. Veja <a href="compare.html#cli">Comparar</a>.</td></tr>
 <tr><td><code>--allow-write ENV</code></td><td>Com <code>--compare</code>: diz sim, para os ambientes informados (<code>dev,stg</code>), aos passos que não são uma leitura. Veja <a href="compare.html#writes">Passos que escrevem</a>.</td></tr>
 <tr><td><code>--local</code></td><td>Executa neste processo mesmo com o projeto aberto na janela. Veja <a href="cli.html#one-engine">Um só motor</a>.</td></tr>
 <tr><td><code>--yes</code></td><td>Responde sim a todas as perguntas. Leia antes <a href="cli.html#consent">Consentimento no terminal</a>.</td></tr>
@@ -119,6 +119,7 @@ ultraman run --collection shop --env staging</code></pre>
 </table></div>
 <p>Cada execução fica salva em <code>ultraman/runs/</code>. As cores só aparecem num terminal; <code>NO_COLOR</code> desliga as cores. Ctrl+C cancela o passo em andamento, salva a execução e sai com 1.</p>
 <p>Códigos de saída: <strong>0</strong> tudo passou; <strong>1</strong> um passo falhou (ou você apertou Ctrl+C); <strong>2</strong> nem chegou a executar: uma flag errada, falta de pipeline, input, ambiente ou segredo, uma pipeline inválida, ou nada foi enviado porque ninguém disse sim.</p>
+<p>Uma execução de coleção (<code>--collection</code>) envia todas as requests e relata cada uma. Uma request que falha não interrompe as outras, os checks de uma request que falhou imprimem <code>not checked: the request failed</code>, e uma request que precisa de um valor que um login com falha não produziu imprime <code>not sent</code>. A última linha conta as requests, <code>✗ collection shop · 2 of 7 requests failed</code> ou <code>✓ collection shop · 7 requests · 44 ms</code>, e o código de saída é 1 se alguma falhou. <code>--bail</code> volta a parar na primeira falha. Veja <a href="requests.html#collection-run">Executar uma coleção</a>.</p>
 <h2 id="consent">Consentimento no terminal <a class="self" href="#consent" aria-label="Consentimento no terminal">#</a></h2>
 <p>O Ultraman pergunta antes de enviar qualquer coisa que você ainda não aprovou. No terminal, ele pergunta quando:</p>
 <ul>
@@ -148,6 +149,7 @@ ultraman run --collection shop --env staging</code></pre>
 <p>Códigos de saída: <strong>0</strong> todos os limiares se mantiveram e o veredito é aguenta, enfileira ou limitado; <strong>1</strong> um limiar falhou, a API rejeitou ou quebrou, saíram poucas requests, ou a carga foi interrompida (por Ctrl+C ou pelos freios do próprio gerador); <strong>2</strong> nada foi enviado. Os limiares e os vereditos estão explicados em <a href="load.html">Carga</a>; para usar a carga como barreira numa pipeline de build, veja <a href="ci.html#load-in-ci">CI</a>.</p>
 <h2 id="junit">JUnit para o CI <a class="self" href="#junit" aria-label="JUnit para o CI">#</a></h2>
 <p><code>--junit FILE</code> gera um relatório JUnit XML depois das execuções, inclusive depois de um Ctrl+C, com o que chegou a executar: uma suíte de testes por pipeline e um caso de teste por passo de primeiro nível, com o que foi enviado e recebido nos que falharam. Os segredos ficam ocultos nele, como em todo lugar. As pastas que faltam são criadas.</p>
+<p>Numa execução de coleção (<code>--collection</code>) o relatório traz um caso de teste por request em vez de um por passo. Um caso falha com a primeira coisa que falhou nele, a request ou um dos checks dela, e lista os checks que não foram lidos; uma request que a execução não alcançou (Ctrl+C) fica pulada.</p>
 <pre tabindex="0"><code>ultraman run --all --env ci --yes --junit reports/ultraman.xml</code></pre>
 <h2 id="secrets">Segredos <a class="self" href="#secrets" aria-label="Segredos">#</a></h2>
 <p>Na sua máquina, <code>ultraman secret set api-key</code> guarda um segredo no cofre: ele pede a senha mestra e o valor, os dois sem eco. Um valor passado por pipe (<code>echo &quot;$VALUE&quot; | ultraman secret set api-key</code>) é lido da entrada padrão; a senha mestra continua precisando de um terminal. Os nomes aceitam letras, dígitos, <code>_</code>, <code>.</code> e <code>-</code>. <code>secret list</code> mostra os nomes, <code>secret rm &lt;name&gt;</code> remove um (sai com 1 se ele não existir) e <code>secret password</code> troca a senha mestra. Veja <a href="security.html#vault">o cofre</a>.</p>
@@ -170,6 +172,6 @@ ultraman run --collection shop --env staging</code></pre>
 <nav class="pager"><a rel="prev" href="mock.html"><small>Anterior</small><span>Servidor mock</span></a><a rel="next" href="ci.html"><small>Seguinte</small><span>CI</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

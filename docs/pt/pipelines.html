@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -77,7 +77,7 @@
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Passo</th><th scope="col">O que faz</th></tr></thead>
 <tbody>
-<tr><td>request</td><td>envia uma request HTTP; os outros passos se referem a ela como <code>$nome</code></td></tr>
+<tr><td>request</td><td>envia uma request HTTP, uma operação GraphQL ou uma chamada MCP; os outros passos se referem a ela como <code>$nome</code></td></tr>
 <tr><td>extract</td><td>tira um valor de uma resposta (path JSON, header ou regex) e guarda em <code>{{nome}}</code></td></tr>
 <tr><td>assert</td><td>confere algo numa resposta (veja <a href="requests.html#checks">Checks</a>)</td></tr>
 <tr><td>wait</td><td>pausa por alguns milissegundos</td></tr>
@@ -91,8 +91,9 @@
 <tr><td>close</td><td>encerra um stream (um stream que ficar aberto é fechado quando a execução termina)</td></tr>
 </tbody>
 </table></div>
-<p><strong>Adicionar passo</strong> explica cada um. O <strong>+</strong> entre dois passos insere um ali mesmo. <strong>De uma coleção…</strong> adiciona uma request de uma coleção, com os checks dela, como cópia vinculada.</p>
+<p><strong>Adicionar passo</strong> explica cada um, com <strong>Request GraphQL</strong> e <strong>Chamada MCP</strong> ao lado de Request. O <strong>+</strong> entre dois passos insere um ali mesmo. <strong>De uma coleção…</strong> adiciona uma request de uma coleção, com os checks dela, como cópia vinculada.</p>
 <p><strong>GraphQL.</strong> Um passo request pode levar um body GraphQL, editado do mesmo jeito que na área de Requests (veja <a href="requests.html#graphql">GraphQL</a>); um passo vinculado usa o schema da coleção dele. A lista mostra o nome da operação (<code>POST /graphql · Order</code>), e uma resposta com <code>errors</code> faz o passo falhar, mesmo com um 200.</p>
+<p><strong>MCP numa pipeline.</strong> Um passo request pode levar um body MCP: uma ferramenta, um recurso ou um prompt. A lista o nomeia (<code>POST /mcp · search_customer</code>) e o passo vê o resultado da ferramenta, então um check lê <code>$.structuredContent…</code>. Um passo usa a lista da coleção que está no mesmo servidor e no mesmo endereço (no mesmo ambiente): <strong>Lista de …</strong> a nomeia, e um clique a abre. Veja <a href="requests.html#mcp">Servidores MCP</a>.</p>
 <h2 id="stream-steps">Streams numa pipeline <a class="self" href="#stream-steps" aria-label="Streams numa pipeline">#</a></h2>
 <p>Um stream WebSocket ou SSE vira quatro tipos de passo à vista, nesta ordem: abrir, enviar, esperar uma mensagem e fechar. O host da pipeline também serve o stream (<code>https</code> vira <code>wss</code>).</p>
 <pre tabindex="0"><code>steps:
@@ -215,6 +216,6 @@ steps:
 <nav class="pager"><a rel="prev" href="requests.html"><small>Anterior</small><span>Requests</span></a><a rel="next" href="load.html"><small>Seguinte</small><span>Carga</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

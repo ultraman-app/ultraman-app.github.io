@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -77,7 +77,7 @@
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Step</th><th scope="col">What it does</th></tr></thead>
 <tbody>
-<tr><td>request</td><td>sends an HTTP request; others refer to it as <code>$name</code></td></tr>
+<tr><td>request</td><td>sends an HTTP request, a GraphQL operation or an MCP call; others refer to it as <code>$name</code></td></tr>
 <tr><td>extract</td><td>takes a value from a response (JSON path, header or regex) into <code>{{name}}</code></td></tr>
 <tr><td>assert</td><td>checks something about a response (see <a href="requests.html#checks">Checks</a>)</td></tr>
 <tr><td>wait</td><td>pauses some milliseconds</td></tr>
@@ -91,8 +91,9 @@
 <tr><td>close</td><td>ends a stream (one left open is closed when the run ends)</td></tr>
 </tbody>
 </table></div>
-<p><strong>Add step</strong> explains each one. The <strong>+</strong> between two steps inserts one right there. <strong>From a collection…</strong> adds a collection request, with its checks, as a linked copy.</p>
+<p><strong>Add step</strong> explains each one, with <strong>GraphQL request</strong> and <strong>MCP call</strong> beside Request. The <strong>+</strong> between two steps inserts one right there. <strong>From a collection…</strong> adds a collection request, with its checks, as a linked copy.</p>
 <p><strong>GraphQL.</strong> A request step can carry a GraphQL body, edited the same way as in the Requests area (see <a href="requests.html#graphql">GraphQL</a>); a linked one uses its collection&#39;s schema. The list names its operation (<code>POST /graphql · Order</code>), and an answer with <code>errors</code> fails the step, even with a 200.</p>
+<p><strong>MCP in a pipeline.</strong> A request step can carry an MCP body: a tool, a resource or a prompt. The list names it (<code>POST /mcp · search_customer</code>), and the step sees the tool&#39;s result, so a check reads <code>$.structuredContent…</code>. A step uses the list of the collection on the same server and address (in the same environment): <strong>List from …</strong> names it, and a click opens it. See <a href="requests.html#mcp">MCP servers</a>.</p>
 <h2 id="stream-steps">Streams in a pipeline <a class="self" href="#stream-steps" aria-label="Streams in a pipeline">#</a></h2>
 <p>A WebSocket or an SSE stream is four kinds of step you can see, in order: open it, send, wait for a message, close it. The pipeline&#39;s host serves the stream too (<code>https</code> becomes <code>wss</code>).</p>
 <pre tabindex="0"><code>steps:
@@ -215,6 +216,6 @@ steps:
 <nav class="pager"><a rel="prev" href="requests.html"><small>Previous</small><span>Requests</span></a><a rel="next" href="load.html"><small>Next</small><span>Load</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

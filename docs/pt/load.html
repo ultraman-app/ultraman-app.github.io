@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.1.2">
+<link rel="stylesheet" href="../../docs.css?v=1.2.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -78,6 +78,7 @@
 <p>As configurações ficam em <code>ultraman/load-tests/&lt;nome&gt;.yaml</code>, compartilhado pelo git, então o mesmo teste executa do mesmo jeito para todo mundo. Na primeira vez, <strong>Carga</strong> cria um com 10 usuários por 30 segundos.</p>
 <p>Uma pipeline pode ter vários testes. <strong>Novo teste…</strong> salva o que está na tela com outro nome, e <strong>Apagar</strong> remove o teste selecionado. O teste da própria pipeline, que é o que <strong>Carga</strong> abre, não pode ser apagado pela janela. As alterações que você não salvou continuam lá quando você volta à tela de carga, e fechar a janela pergunta antes.</p>
 <p>Os <strong>Limiares</strong> são linhas embaixo da forma da carga: um limite para o teste inteiro ou para uma request, como p95, erros ou requests/s, que reprova a execução ou só avisa. Um tempo precisa da unidade (<code>500ms</code>, <code>2s</code>).</p>
+<p><strong>Teste de carga…</strong> também está no menu de uma request (depois de Adicionar a uma pipeline…) e no de uma coleção ou pasta (depois de Criar pipeline). Ele abre esta tela numa pipeline feita com essa request ou coleção, e reaproveita a que for exatamente isso se você já a fez. Uma request com alterações não salvas pede para ser salva primeiro, e o caminho de volta da tela diz <strong>Voltar para</strong> a request.</p>
 <h2 id="shape">A forma da carga <a class="self" href="#shape" aria-label="A forma da carga">#</a></h2>
 <p>Os presets desenham os usuários previstos enquanto você digita:</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -114,12 +115,12 @@
 <tr><td>Enfileira</td><td>a API ficou mais lenta em vez de falhar</td><td>o p95 do último quinto do teste passa de cinco vezes o do primeiro quinto e é pelo menos 50 ms maior, e as requests por segundo pararam de crescer junto com os usuários; num teste de taxa de chegada, também quando mais de 1% das chegadas foi descartado</td></tr>
 <tr><td>Rejeita</td><td>a API respondeu com erros</td><td>mais de 1% das iterações falhou; ele diz quando os erros começaram e com quantos usuários</td></tr>
 <tr><td>Quebrada</td><td>o problema é a pipeline ou o endereço, não a carga</td><td>todas as 20 primeiras iterações falharam; &quot;O destino recusa conexões&quot; quando o servidor não está acessível</td></tr>
-<tr><td>Poucas iterações</td><td>pouco para tirar conclusões</td><td>executaram menos de 20 iterações; aumente o tempo ou os usuários</td></tr>
-<tr><td>Limitado</td><td>o limite foi este computador, então os números dizem pouco sobre a API</td><td>a thread, a memória ou as conexões do próprio Ultraman chegaram ao limite</td></tr>
-<tr><td>Protegido</td><td>o Ultraman parou o teste para proteger este computador</td><td>a memória estava acabando; o que ele mediu até ali está no relatório</td></tr>
+<tr><td>Poucas</td><td>pouco para tirar conclusões</td><td>executaram menos de 20 iterações; aumente o tempo ou os usuários</td></tr>
+<tr><td>No limite</td><td>o limite foi este computador, então os números dizem pouco sobre a API</td><td>a thread, a memória ou as conexões do próprio Ultraman chegaram ao limite</td></tr>
+<tr><td>Interrompida</td><td>o Ultraman parou o teste para proteger este computador</td><td>a memória estava acabando; o que ele mediu até ali está no relatório</td></tr>
 </tbody>
 </table></div>
-<p>Uma carga nunca diz &quot;aguenta&quot; num computador que estava no limite: diz Limitado. A faixa <strong>Este computador</strong> mostra o porquê.</p>
+<p>Uma carga nunca diz &quot;aguenta&quot; num computador que estava no limite: diz No limite. A faixa <strong>Este computador</strong> mostra o porquê.</p>
 <h2 id="report">O relatório <a class="self" href="#report" aria-label="O relatório">#</a></h2>
 <p>No fim, vêm um veredito em palavras (aguentou, enfileirou, quebrou…), as latências (p50, p95, p99, máx.), o throughput, os erros por passo com uma request com falha guardada para cada um, para onde foi o tempo e o APDEX, se o teste pedir.</p>
 <ul>
@@ -142,6 +143,9 @@
 <li>O veredito <code>limited</code> vale aqui também: o número de conexões é um limite da máquina como qualquer outro.</li>
 <li>Um socket GraphQL é uma só conexão, não importa quantas subscriptions ele tenha: a faixa ganha <strong>Assinaturas GraphQL</strong>, uma linha <code>subscribe</code> mostra o tempo para enviá-la e o <code>receive</code> de uma subscription mostra o tempo até o próximo evento dela.</li>
 </ul>
+<h2 id="load-mcp">MCP sob carga <a class="self" href="#load-mcp" aria-label="MCP sob carga">#</a></h2>
+<p>Uma pipeline com requests <code>mcp:</code> é um cenário de carga como qualquer outro: cada usuário virtual abre <strong>uma sessão por servidor</strong> na sua primeira chamada MCP, a compartilha entre o seu setup e cada iteração, e a encerra quando o usuário termina. Um usuário mantém no máximo 8 sessões de servidores ao mesmo tempo.</p>
+<p>O relatório ganha uma linha <strong>Sessões MCP</strong> com as aberturas: quantas e o tempo delas, que fica <strong>fora do p95 do veredito</strong> para que o handshake não pareça lentidão. Uma ferramenta que responde com erro e um erro JSON-RPC contam como requests com falha. Se o servidor derruba sessões, o relatório diz quantas foram perdidas e abertas de novo; um servidor que faz isso sob carga é um achado. As esquisitices recuperadas do servidor (uma versão antiga de protocolo, um campo ausente) são contadas por tipo, não por request. Com <code>responses: discard</code> o resultado ainda é lido para procurar erros e depois descartado.</p>
 <h2 id="scenarios">Vários cenários <a class="self" href="#scenarios" aria-label="Vários cenários">#</a></h2>
 <p>Um teste pode misturar pipelines: três pessoas navegando para cada uma que finaliza a compra. Cada cenário tem as próprias etapas, ou todos dividem as etapas do teste conforme o peso. O relatório tem uma linha e um veredito por cenário.</p>
 <h2 id="workers">Mais de uma thread <a class="self" href="#workers" aria-label="Mais de uma thread">#</a></h2>
@@ -152,10 +156,11 @@
 <li><strong>Quem é dono da API:</strong> o alvo aparece antes de o teste começar, com um lembrete para testar só uma API sua.</li>
 <li><strong>Você:</strong> freios seguram ou param usuários quando o seu computador fica sobrecarregado ou com pouca memória, em vez de deixá-lo travar.</li>
 <li><strong>Sua equipe:</strong> um teste de carga nunca guarda um segredo; os <code>inputs</code> dele não podem levar valores <code>secrets.</code> nem <code>env.</code>. Os relatórios em <code>ultraman/loads/</code> ficam na sua máquina. Veja <a href="security.html#stored">onde as coisas ficam guardadas</a>.</li>
+<li><strong>Quem for dono do servidor:</strong> uma carga MCP é uma carga como qualquer outra: o alvo é mostrado antes de começar, e um usuário nunca mantém mais de 8 sessões de servidores ao mesmo tempo.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Anterior</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Seguinte</small><span>Ambientes e segredos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.1.2</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.2.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>
