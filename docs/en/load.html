@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -102,6 +102,8 @@
 <li><strong>Cookies</strong>: each user has its own cookie jar.</li>
 <li><strong>Data file</strong>: a CSV or JSON inside the project; each row is one user&#39;s (or one iteration&#39;s) values.</li>
 <li><strong>Pause, max</strong> and <strong>pacing</strong>: a random pause between the <strong>pause between iterations</strong> (beside the users) and this maximum, and a minimum time per iteration.</li>
+<li><strong>Waiting in a pipeline</strong>: a <code>repeat</code> with <code>until</code> polls on its own for each user; its pauses count in that iteration&#39;s time, not in a request&#39;s. When the test&#39;s time is up, an iteration still polling finishes its rounds (pauses of up to a minute each) before the load ends; Stop cuts it at once.</li>
+<li><strong>Cleanup</strong>: a pipeline&#39;s <a href="pipelines.html#finally">`finally` steps</a> run at the end of every iteration and show as rows after the pipeline&#39;s. Stop cuts one at once; for a sweep once per test, use <strong>After</strong>.</li>
 <li><strong>Responses</strong>: by default only the bodies a check or extract reads are kept, to save memory.</li>
 </ul>
 <h2 id="live">While it runs <a class="self" href="#live" aria-label="While it runs">#</a></h2>
@@ -161,6 +163,6 @@
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Previous</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Next</small><span>Environments and secrets</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

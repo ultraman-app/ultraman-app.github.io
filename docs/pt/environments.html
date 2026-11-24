@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -107,7 +107,7 @@ options:
 <li>só vai para hosts aos quais você disse sim: na primeira vez que um segredo iria para um host novo, o Ultraman pergunta (veja <a href="security.html#consent">Segurança e consentimento</a>).</li>
 </ul>
 <p>Um valor de ambiente pode apontar para um segredo (<code>token: &quot;{{secrets.token}}&quot;</code>), e assim cada ambiente pode usar o seu. No painel de Ambientes, transforme uma variável em segredo e, depois de um aviso, o valor vai para o cofre; o YAML guarda só a referência. O nome no cofre é, por padrão, <code>&lt;ambiente&gt;.&lt;variável&gt;</code> (por exemplo, <code>staging.token</code>), e você pode mudá-lo. Seus colegas definem os próprios valores nos cofres deles. <strong>Renomear</strong> atualiza os nomes do cofre que acompanham o nome do ambiente, se o cofre estiver aberto.</p>
-<p>Na primeira vez que uma execução precisa de um segredo, a janela pede a senha mestra: para criá-la ou para desbloquear o cofre. O cofre bloqueia de novo depois de 30 minutos sem uso; o cadeado no topo bloqueia o cofre na hora, troca a senha ou a esquece. Como ele é criptografado e o que protege e o que não protege: <a href="security.html#vault">o cofre</a>.</p>
+<p>Na primeira vez que uma execução precisa de um segredo, a janela pede a senha mestra: para criá-la ou para desbloquear o cofre. O cofre bloqueia de novo depois de 30 minutos sem uso; o cadeado no topo mostra se ele está aberto, bloqueia o cofre na hora, troca a senha ou a esquece. Como ele é criptografado e o que protege e o que não protege: <a href="security.html#vault">o cofre</a>.</p>
 <aside class="note"><p>Se você esquecer a senha mestra, não há como recuperar os segredos. <strong>Esqueceu?</strong> apaga todos os segredos salvos depois que você digita a confirmação; depois, defina-os de novo.</p></aside>
 <h3 id="remember">Lembrar neste computador <a class="self" href="#remember" aria-label="Lembrar neste computador">#</a></h3>
 <p><strong>Lembrar neste computador</strong> vem desligado e só existe na janela do desktop. Ele guarda a chave do cofre no chaveiro do sistema, para o cofre abrir sem perguntar. É trocar segurança por comodidade: no Windows e no Linux, outros apps que você executa podem ler essa entrada do chaveiro; no macOS, o Keychain pergunta antes. A própria caixa avisa isso. O terminal nunca usa essa chave: a CLI pede a senha mestra por conta própria.</p>
@@ -122,6 +122,6 @@ options:
 <nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="compare.html"><small>Seguinte</small><span>Comparar dois ambientes</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

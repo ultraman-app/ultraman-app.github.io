@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -81,7 +81,7 @@
 <tr><td>extract</td><td>tira um valor de uma resposta (path JSON, header ou regex) e guarda em <code>{{nome}}</code></td></tr>
 <tr><td>assert</td><td>confere algo numa resposta (veja <a href="requests.html#checks">Checks</a>)</td></tr>
 <tr><td>wait</td><td>pausa por alguns milissegundos</td></tr>
-<tr><td>repeat</td><td>executa os passos dele N vezes, ou uma vez para cada item de uma lista</td></tr>
+<tr><td>repeat</td><td>executa os passos dele N vezes, uma vez para cada item de uma lista, ou até uma condição se cumprir</td></tr>
 <tr><td>if</td><td>executa os passos dele só quando uma condição é verdadeira</td></tr>
 <tr><td>use</td><td>executa um <strong>bloco</strong> (uma pipeline reutilizável) com os inputs dele</td></tr>
 <tr><td>parallel</td><td>executa ramos ao mesmo tempo; o passo seguinte espera todos terminarem</td></tr>
@@ -175,12 +175,53 @@ steps:
     - - request: orders
         method: GET
         path: /orders</code></pre>
+<h2 id="until">Espere até ficar pronto <a class="self" href="#until" aria-label="Espere até ficar pronto">#</a></h2>
+<p>Um <code>repeat</code> com <code>until</code> repete os passos dele várias vezes até uma condição se cumprir, com um máximo de rodadas que você define. Serve quando algo demora: um pedido que é enviado, um trabalho que termina.</p>
+<pre tabindex="0"><code>- repeat: 20
+  until: { equals: [&quot;{{status}}&quot;, shipped] }
+  every: 2000
+  backoff: 1.5
+  steps:
+    - request: order
+      method: GET
+      path: /orders/{{order_id}}
+    - extract: status
+      from: $order
+      path: $.status</code></pre>
+<p>Depois de cada rodada a condição é verificada; quando se cumpre, a execução segue para o passo seguinte e a linha diz <code>cumpriu-se após 3 de 20</code>. <code>every</code> é a pausa entre as rodadas em milissegundos (um segundo se você não informar) e <code>backoff</code> a faz crescer a cada rodada (de 1 a 10); a pausa nunca passa de um minuto. Se um passo falhar dentro de uma rodada, o <code>repeat</code> para na hora (<code>round 2 failed</code>, em inglês). Se a condição nunca se cumprir, o passo falha e diz o que viu por último: <code>status equals shipped didn&#39;t hold after 20 rounds (19.4 s) · last: pending</code>.</p>
+<p>A condição é a mesma de um <code>if</code> (<code>exists</code>, <code>equals</code>, <code>matches</code>) e mostra a variável pelo nome. <code>until</code> vai com um número de rodadas, não com uma lista. Em volta de um <code>receive</code> de um stream funciona igual. Na janela a linha diz <code>até 20</code> em repouso e <code>rodada 3 de 20 · pending</code> enquanto roda.</p>
+<h2 id="finally">Limpe sempre <a class="self" href="#finally" aria-label="Limpe sempre">#</a></h2>
+<p>Uma pipeline pode terminar com uma lista <code>finally:</code>: passos que rodam depois dos outros aconteça o que acontecer, seja a execução passada, falha ou interrompida. Serve para apagar o que a execução criou: um pedido, um usuário, um registro.</p>
+<pre tabindex="0"><code>steps:
+  - request: create
+    method: POST
+    path: /orders
+    json: { sku: A-1 }
+  - extract: order_id
+    from: $create
+    path: $.id
+  - request: check
+    method: GET
+    path: /orders/{{order_id}}
+finally:
+  - if: { exists: order_id }
+    steps:
+      - request: remove
+        method: DELETE
+        path: /orders/{{order_id}}</code></pre>
+<p>A limpeza é numerada depois dos passos (o passo de <code>finally</code> acima é o 4) e enxerga os valores que os passos criaram. É de melhor esforço: cada passo roda mesmo que o anterior tenha falhado. Se um passo falhou, a execução continua reportando essa falha; se os passos passaram e a limpeza falha, a execução falha com o erro da limpeza. Quando os passos pararam antes de criar algo, proteja a limpeza com um <code>if</code>, como acima, para que ela não tente apagar o que nunca foi criado.</p>
+<p>Se você aperta <strong>Stop</strong>, a limpeza ainda roda, por até um minuto; um passo ainda em andamento nesse ponto falha com <code>the cleanup took over 60 s</code> (em inglês). Um passo da limpeza não pode ter <code>compare</code>. A limpeza pertence à pipeline: um bloco não pode ter <code>finally</code> (ponha a limpeza na pipeline que o usa). Num teste de carga cada iteração a roda, e as requests dela aparecem como linhas depois das da pipeline.</p>
+<p>Na janela, os passos terminam com uma seção <strong>Finally</strong> (&quot;roda depois dos passos, aconteça o que acontecer&quot;) abaixo do último passo. <strong>Adicionar um passo de limpeza</strong> põe um ali, e os botões <strong>descer</strong> e <strong>subir</strong> de uma linha levam um passo ao outro lado (o último passo ao descer entra em Finally, o primeiro passo de limpeza ao subir sai). A seção só existe numa pipeline, nunca num bloco.</p>
 <h2 id="find">Para se achar <a class="self" href="#find" aria-label="Para se achar">#</a></h2>
 <p>Dê <strong>tags</strong> a uma pipeline em <strong>Auth e opções</strong> (Enter ou vírgula adiciona uma) e elas aparecem como chips embaixo do nome; clicar num chip filtra por ele. Toda barra lateral tem uma caixa <strong>Filtrar…</strong> (um nome, ou <code>#tag</code>). <strong>Ctrl+P</strong> (Cmd+P no macOS) abre uma caixa única para pipelines, blocos e requests: digite algumas letras do nome, ou <code>#tag</code>, e aperte Enter para abrir.</p>
 <h2 id="diagram">Lista e diagrama <a class="self" href="#diagram" aria-label="Lista e diagrama">#</a></h2>
-<p>A <strong>Lista</strong> mostra cada passo numa linha, do jeito que os outros passos se referem a ele. O <strong>Diagrama</strong> desenha os mesmos passos com uma seta da request que produz um valor até a que o lê, e assim o fluxo de dados aparece num relance.</p>
+<p>A <strong>Lista</strong> mostra cada passo numa linha, do jeito que os outros passos se referem a ele. O <strong>Diagrama</strong> desenha os mesmos passos com uma seta da request que produz um valor até a que o lê, e assim o fluxo de dados aparece num relance. Os passos de limpeza ficam numa caixa própria, marcada &quot;finally&quot;, depois dos outros.</p>
 <h2 id="run">Executando <a class="self" href="#run" aria-label="Executando">#</a></h2>
 <p><strong>Executar</strong> percorre a pipeline de cima para baixo no ambiente selecionado. Cada passo mostra o status e o tempo; um check que falhou mostra a resposta que o derrubou. <strong>Vigiar</strong> executa de novo quando algo muda, ou de tempos em tempos. As execuções anteriores ficam listadas embaixo da pipeline.</p>
+<h3 id="executar-a-partir-de-um-passo-que-falhou">Executar a partir de um passo que falhou <a class="self" href="#executar-a-partir-de-um-passo-que-falhou" aria-label="Executar a partir de um passo que falhou">#</a></h3>
+<p>Quando uma execução falha, <strong>Executar a partir do passo N</strong> aparece na linha de falha da faixa, e a linha que falhou tem um ícone <strong>executar a partir daqui</strong> que faz o mesmo. Ele executa a pipeline de novo a partir desse passo: os passos anteriores não são enviados outra vez e seus valores da última execução são reaproveitados (aparecem &quot;da última execução&quot;). A faixa diz &quot;a partir do passo 3&quot; e conta só os passos que rodaram, por exemplo &quot;a partir do passo 3 · 4 passos · …&quot;.</p>
+<p>Os valores ficam 30 minutos, só na memória: bloquear o cofre ou reiniciar o Ultraman os esquece, e então a janela pede para executar a pipeline inteira. Ela pede o mesmo se você mudou um passo anterior ao escolhido, escolheu outro ambiente ou um stream foi aberto antes. Um token criado por um passo anterior pode ter expirado; se for o caso, execute a pipeline inteira. Se a limpeza da execução que falhou já rodou, o que ela apagou continua apagado, e a faixa avisa.</p>
+<p>Executar a partir daqui é só da janela: o terminal e o agente executam pipelines inteiras.</p>
 <h2 id="blocks">Blocos <a class="self" href="#blocks" aria-label="Blocos">#</a></h2>
 <p>Um bloco é uma pipeline feita para ser reaproveitada: um login, uma preparação. Ele declara <code>inputs</code> e <code>exports</code>. Uma pipeline executa o bloco com <code>use: login</code> e recebe os exports dele como variáveis.</p>
 <h2 id="helpers">Ajudantes <a class="self" href="#helpers" aria-label="Ajudantes">#</a></h2>
@@ -210,12 +251,13 @@ steps:
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
 <p>A <a href="security.html#promise">promessa</a> vale aqui como em qualquer lugar. O que esta parte acrescenta:</p>
 <ul>
-<li><strong>Você:</strong> uma condição, um check ou uma regex nunca lê o conteúdo de um segredo, nem de um valor gerado a partir de um: uma pipeline que tentasse isso é recusada em vez de executada, então o ramo que for seguido não pode revelar um segredo. Veja <a href="security.html#redaction">a ocultação</a>.</li>
+<li><strong>Você:</strong> uma condição (um <code>if</code> ou um <code>until</code>), um check ou uma regex nunca lê o conteúdo de um segredo, nem de um valor gerado a partir de um: uma pipeline que tentasse isso é recusada em vez de executada, então o ramo que for seguido não pode revelar um segredo. Veja <a href="security.html#redaction">a ocultação</a>.</li>
+<li><strong>A limpeza pede o mesmo sim:</strong> um passo de <code>finally</code> que enviaria um segredo a um host novo é perguntado antes de enviar qualquer coisa, como qualquer passo, e também roda depois de um Stop, com as mesmas proteções.</li>
 <li><strong>Sua equipe:</strong> uma pipeline de uma pasta em que você não confiou não envia nada pela janela. Veja <a href="security.html#trusted-folders">pastas confiáveis</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="requests.html"><small>Anterior</small><span>Requests</span></a><a rel="next" href="load.html"><small>Seguinte</small><span>Carga</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -104,6 +104,8 @@
 <li><strong>Confiar en esta carpeta</strong>: solo si sabes de dónde viene. Respondes una vez por carpeta, en esta máquina.</li>
 </ul>
 <p>Más detalles en <a href="security.html#trusted-folders">Carpetas de confianza</a>.</p>
+<p>Una carpeta que todavía no es un proyecto pregunta primero: <strong>Convertirla en proyecto</strong> agrega su carpeta <code>ultraman/</code>, y nada más cambia en ella. Ultraman abre una sola ventana: si lo abres de nuevo, trae esa ventana al frente.</p>
+<p>Si su motor no puede arrancar (un antivirus que retiene el Node que trae, un primer arranque de más de 90 segundos), la ventana dice por qué, y <strong>Abrir el registro</strong> muestra lo que la ventana y el motor escribieron en ese arranque. Si el motor se detiene mientras trabajas, un diálogo lo dice: <strong>Arrancarlo de nuevo</strong> lo trae de vuelta en el mismo proyecto, y lo que no guardaste se queda.</p>
 <p>Qué se guarda dónde:</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Carpeta</th><th scope="col">Qué</th><th scope="col">Se comparte por git</th></tr></thead>
@@ -178,7 +180,7 @@
 <h2 id="settings">Ajustes <a class="self" href="#settings" aria-label="Ajustes">#</a></h2>
 <p>El engranaje de la barra superior (o Ctrl/Cmd+,) abre <strong>Ajustes</strong>. Cada fila se aplica en cuanto eliges una opción:</p>
 <ul>
-<li><strong>Tamaño:</strong> Automático sigue el ancho de la ventana; también puedes fijarlo en 90, 100, 110, 125 o 150 %.</li>
+<li><strong>Tamaño:</strong> Automático sigue la escala de pantalla de tu sistema; también puedes fijarlo de 90 a 150 %, en pasos de 5.</li>
 <li><strong>Densidad:</strong> el espaciado, Cómoda o Compacta.</li>
 <li><strong>Código:</strong> el tamaño de los bodies, el JSON, el YAML y el editor de pasos, de 80 a 150 %.</li>
 <li><strong>Tema:</strong> Sistema sigue el modo claro u oscuro de tu computadora a medida que cambia; también puedes elegir Oscuro, Claro o Contraste.</li>
@@ -196,6 +198,7 @@
 <li><strong>Buscar actualizaciones</strong>, en <strong>?</strong> › <strong>Acerca de Ultraman</strong>, le pregunta a GitHub en ese momento, sin esperar al día siguiente. Te dice que tienes la última versión, vuelve a mostrar la tarjeta si hay una más reciente (aunque hayas elegido <strong>Ahora no</strong>) o explica por qué no pudo preguntar, con <strong>Reintentar</strong>.</li>
 <li>A mano: cierra Ultraman y vuelve a ejecutar el <a href="getting-started.html#install">comando de instalación</a>. Reemplaza la app y el comando en su lugar; si algo falla, la instalación anterior queda como estaba.</li>
 <li>Tus proyectos, tus secretos guardados y tus respuestas de confianza se conservan: viven en tus carpetas y en <code>~/.ultraman</code>.</li>
+<li>Mientras descarga, la tarjeta muestra cuánto falta. Si la actualización no se puede instalar, la tarjeta dice por qué y la versión que tienes sigue funcionando; si el comando <code>ultraman</code> no se pudo actualizar con ella, la ventana lo dice y lo vuelve a intentar la próxima vez que arranque.</li>
 <li>Para desactivar la comprobación, define <code>ULTRAMAN_NO_UPDATE_CHECK=1</code> en el entorno desde el que se inicia Ultraman.</li>
 </ul>
 <p>Qué está firmado:</p>
@@ -234,6 +237,6 @@
 <nav class="pager"><a rel="prev" href="why.html"><small>Anterior</small><span>Por qué Ultraman</span></a><a rel="next" href="security.html"><small>Siguiente</small><span>Seguridad y consentimiento</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

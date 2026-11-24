@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/ci.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -144,6 +144,26 @@
 <pre tabindex="0"><code>ultraman run --tag smoke --compare dev,stg --junit reports/compare.xml
 ultraman run --tag smoke --env stg --compare schema --junit reports/types.xml</code></pre>
 <p>Exit 1 means a difference (or a failed run), and 2 that nothing could be compared, so neither passes quietly. A runner has no terminal to ask about a compared step that writes: name the environments with <code>--allow-write dev,stg</code>, or compare only steps that read. <code>--yes</code> doesn&#39;t cover it. The JUnit file lists the paths that differ, not the values there. See <a href="compare.html">Compare</a>.</p>
+<h2 id="server-check">Check an MCP server in CI <a class="self" href="#server-check" aria-label="Check an MCP server in CI">#</a></h2>
+<p>A collection imported from an MCP server keeps the server&#39;s lists (its tools, resources and prompts) in the project. A job can list the server again and tell you what changed since, before a client finds out:</p>
+<pre tabindex="0"><code>ultraman run --collection my-server --server --env staging --junit reports/server.xml</code></pre>
+<p>The check sends only the listing: it opens a session, asks for the lists and ends it. It never calls a tool, reads a resource or gets a prompt. Against production, the log and the JUnit file will show production&#39;s item names and URIs. To run the collection&#39;s requests, add a second <code>ultraman run</code> in the same step.</p>
+<p>A collection pinned to a protocol (<code>protocol:</code> on its <code>mcp:</code>) is checked in that version, and a tool the server&#39;s listing leaves out (a schema Ultraman can&#39;t send safely) is never called &quot;gone&quot;: it fails the check, since no 2026-07-28 client can call it any more, and is only a warning when the saved lists were made in a legacy version.</p>
+<ul>
+<li><strong>Fails (exit 1):</strong> a tool, a resource template or a prompt that is gone; an argument removed or whose schema changed; a new required argument, or an optional one that became required; an input or output schema that changed in any other way that matters to a client (for example <code>additionalProperties</code> added), or an output schema removed.</li>
+<li><strong>Warns (exit 0):</strong> a new item; a resource that is gone (many servers list data as resources); a name listed twice; a changed description, title or <code>deprecated</code> mark; a new optional argument; an output schema added; changed annotations; the server speaking another MCP version family than the saved lists; a saved file that was cut for size. <code>--strict</code> makes warnings fail too.</li>
+<li><strong>Can&#39;t check (exit 2):</strong> the collection isn&#39;t an MCP server&#39;s, it has no saved lists, the lists file isn&#39;t valid, the server wants authorization or can&#39;t be reached, it refused or stopped listing a list the saved file has items of, or a schema is too deep to compare. Nothing was compared.</li>
+</ul>
+<p>Each line says what changed (&quot;tool search_customer: new required argument region&quot;). With <code>--json</code> they come as JSON lines, and <code>--junit FILE</code> writes a test case per saved item (also when the check can&#39;t be made: one failed case with the reason). The listing asks the same question as <code>run</code> before a secret goes to an origin, so a job needs <code>allow</code> or <code>--yes</code> as in <a href="ci.html#github-action">the GitHub Action</a>.</p>
+<pre tabindex="0"><code>- uses: ultraman-app/run-action@v1
+  env:
+    ULTRAMAN_SECRET_MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+  with:
+    args: --collection my-server --server --strict
+    env: staging
+    allow: mcp_token=https://mcp.staging.example.com</code></pre>
+<p>To accept a change on purpose, open the collection in the window, choose <strong>Update from the server…</strong>, review the preview and apply it, then commit the lists file (<code>ultraman/files/&lt;collection&gt;.mcp.json</code>). The next run compares with the new lists.</p>
+<aside class="note"><p>What the check keeps safe: it only lists, and what the server says is hidden against the secrets your project names (and, on a desktop, the vault&#39;s values) before it is compared or printed, so a token a server echoes shows as <code>[secret:name]</code>. A secret your project doesn&#39;t name is not known to the check.</p></aside>
 <h2 id="local-values">Values that live on a developer&#39;s machine <a class="self" href="#local-values" aria-label="Values that live on a developer&#39;s machine">#</a></h2>
 <p>Some environment values aren&#39;t in git: on each machine they live in <code>ultraman/local/envs/&lt;env&gt;.yaml</code>. On a runner the action writes that file from <code>local-env</code>, one <code>name: value</code> per line, and masks each value in the log first. Values are plain: no quotes, comments, multi-line values or other YAML; the action stops on one.</p>
 <pre tabindex="0"><code>with:
@@ -152,6 +172,13 @@ ultraman run --tag smoke --env stg --compare schema --junit reports/types.xml</c
     tenant: acme
     user: ${{ vars.TEST_USER }}</code></pre>
 <p>A credential belongs in an <code>ULTRAMAN_SECRET_*</code> variable instead: those are hidden in the reports too, while <code>local-env</code> values are hidden only in the log.</p>
+<h2 id="oauth2">OAuth 2 in CI <a class="self" href="#oauth2" aria-label="OAuth 2 in CI">#</a></h2>
+<p>A CI job has nobody to sign in. For an API behind OAuth 2, use the <strong>Client credentials</strong> flow (<a href="requests.html#oauth2-machine">machine to machine</a>) and give the client secret as an <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code> variable from your CI&#39;s secret store (<code>{{secrets.x}}</code> is read from it). Nothing else is needed: no vault, no password and no browser. A person&#39;s browser sign-in never goes to CI, and a run that needs one stops with exit 2 and the reason (<a href="cli.html#oauth2">the terminal</a>).</p>
+<p><code>allow</code> names where each goes: the client secret to the issuer&#39;s origin as <code>name=origin</code>, and the token to the API&#39;s origin as <code>oauth:name=origin</code> (only when the API&#39;s origin isn&#39;t the issuer&#39;s). The token&#39;s line lets only the token through: the secret itself still can&#39;t go to the API.</p>
+<pre tabindex="0"><code>allow: |
+  api_client=https://id.example.com
+  oauth:api_client=https://api.staging.example.com</code></pre>
+<p><strong>What keeps you safe:</strong> the client secret goes only to its issuer, and the token only to the API&#39;s origin, each only where it has been approved (<code>allow</code>); the token stays in memory for that run and is never in the report or the log.</p>
 <h2 id="other-ci">Other CI systems <a class="self" href="#other-ci" aria-label="Other CI systems">#</a></h2>
 <aside class="note"><p>Outside GitHub Actions there is no <code>allow</code>: <code>--yes</code> is everything or nothing. Run it only on branches your team controls.</p></aside>
 <p>Everything the action does is the <code>ultraman</code> command plus a few rules. On GitLab, Jenkins, CircleCI or your own runner:</p>
@@ -180,6 +207,6 @@ ultraman:
 <nav class="pager"><a rel="prev" href="cli.html"><small>Previous</small><span>The terminal</span></a><a rel="next" href="team.html"><small>Next</small><span>Working as a team</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

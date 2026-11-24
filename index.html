@@ -29,12 +29,12 @@
   "description": "A desktop app for testing APIs with pipelines of visible steps: run them, load-test them, run them in CI and hand them to AI agents over MCP.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Windows, macOS, Linux",
-  "softwareVersion": "1.5.0",
+  "softwareVersion": "1.6.1",
   "downloadUrl": "https://github.com/ultraman-app/ultraman-app.github.io/releases/latest"
 }
 </script>
 <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=11">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -94,7 +94,7 @@
   <section class="mcp">
     <div class="copytext">
       <h2>Test an MCP server like an API</h2>
-      <p>Import a server's tools, resources and prompts as requests, one for each, with a check from every tool's output schema. <b>From the server</b> describes the argument you're on: its words, type, examples and default. A load test opens one session per virtual user.</p>
+      <p>Import a server's tools, resources and prompts as requests, one for each, with a check from every tool's output schema. <b>From the server</b> describes the argument you're on: its words, type, examples and default. A load test opens one session per virtual user. It speaks MCP 2026-07-28 (no session) and 2025-03-26 to 2025-11-25 over HTTP, finding which one the server speaks or using the one you pin.</p>
       <p class="more"><a href="docs/en/requests.html#mcp">Read more about MCP servers</a></p>
     </div>
     <figure class="shot">
@@ -243,7 +243,7 @@
       <ul>
         <li><a href="docs/en/requests.html">Requests, collections and history</a></li>
         <li><a href="docs/en/requests.html#streams">WebSocket and SSE streams</a></li>
-        <li><a href="docs/en/importing.html">Imports from Postman, OpenAPI, JMeter, Artillery and HAR</a></li>
+        <li><a href="docs/en/importing.html">Imports from Postman, Bruno, Insomnia, OpenAPI, JMeter, Artillery and HAR</a></li>
         <li><a href="docs/en/team.html">Working as a team with git</a></li>
         <li><a href="docs/en/ci.html#other-ci">Other CI systems</a></li>
         <li><a href="docs/en/why.html">Next to Postman, k6, JMeter and others</a></li>

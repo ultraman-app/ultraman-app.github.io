@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -141,7 +141,7 @@
 <p>Ultraman also doesn&#39;t follow symbolic links (or Windows junctions) inside <code>ultraman/</code>. If a file there is a link, a dialog says where it points and nothing is saved through it; <strong>Save as a regular file here</strong> replaces the link instead.</p>
 <p><strong>Who it protects:</strong> you, your team and CI: a shared pipeline or a pull request can&#39;t make a request send your SSH keys, a <code>.env</code> file or a checkout&#39;s credentials without someone saying yes.</p>
 <h2 id="redirects">Redirects <a class="self" href="#redirects" aria-label="Redirects">#</a></h2>
-<p>When a server redirects a request to another origin, Ultraman drops the <code>authorization</code>, <code>cookie</code> and <code>proxy-authorization</code> headers. If the request carries a secret in another header, its custom headers stay behind too. A 307 or 308 that would resend a body containing a secret to another origin isn&#39;t followed: you get the redirect itself as the response. A redirect from <code>https</code> to <code>http</code> is refused, and a WebSocket or SSE handshake never follows a redirect.</p>
+<p>When a server redirects a request to another origin, Ultraman drops the <code>authorization</code>, <code>cookie</code> and <code>proxy-authorization</code> headers. If the request carries a secret in another header, its custom headers stay behind too. A 307 or 308 that would resend a body to another origin isn&#39;t followed (a password in it is as private as a secret): you get the redirect itself as the response. A redirect from <code>https</code> to <code>http</code> is refused, and a WebSocket or SSE handshake never follows a redirect.</p>
 <p><strong>Who it protects:</strong> you: the yes you gave for one host doesn&#39;t follow a redirect to another.</p>
 <h2 id="local-server">The local server <a class="self" href="#local-server" aria-label="The local server">#</a></h2>
 <p>The window, the <code>ultraman</code> command and the agent bridge talk to one local server per project (<code>ultraman serve</code>). It listens only on <code>127.0.0.1</code>, and:</p>
@@ -205,6 +205,6 @@
 <nav class="pager"><a rel="prev" href="getting-started.html"><small>Previous</small><span>Getting started</span></a><a rel="next" href="requests.html"><small>Next</small><span>Requests</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

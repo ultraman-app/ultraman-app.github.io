@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -107,7 +107,7 @@ options:
 <li>goes only to hosts you said yes to: the first time a secret would go to a new host, Ultraman asks (see <a href="security.html#consent">Security and consent</a>).</li>
 </ul>
 <p>An environment value can point to a secret (<code>token: &quot;{{secrets.token}}&quot;</code>), so each environment can use its own. In the Environments panel, turn a variable into a secret and its value moves to the vault after a warning; the YAML keeps only the reference. The vault name defaults to <code>&lt;environment&gt;.&lt;variable&gt;</code> (for example <code>staging.token</code>) and you can change it. Your teammates set their own values in their own vaults. <strong>Rename</strong> moves the vault names that follow the environment&#39;s name when the vault is open.</p>
-<p>The first time a run needs a secret, the window asks for the master password: to create it, or to unlock the vault. The vault locks again after 30 idle minutes; the lock at the top locks it now, changes the password or forgets it. How it is encrypted and what it does and doesn&#39;t protect: <a href="security.html#vault">the vault</a>.</p>
+<p>The first time a run needs a secret, the window asks for the master password: to create it, or to unlock the vault. The vault locks again after 30 idle minutes; the lock at the top shows whether it is open, locks it now, changes the password or forgets it. How it is encrypted and what it does and doesn&#39;t protect: <a href="security.html#vault">the vault</a>.</p>
 <aside class="note"><p>If you forget the master password, the secrets can&#39;t be recovered. <strong>Forgot it?</strong> deletes every saved secret after you type the confirmation; set them again afterwards.</p></aside>
 <h3 id="remember">Remember on this machine <a class="self" href="#remember" aria-label="Remember on this machine">#</a></h3>
 <p><strong>Remember on this machine</strong> is off by default and only exists in the desktop window. It keeps the vault&#39;s key in your system keychain so the vault opens without asking. It trades safety for convenience: on Windows and Linux other apps you run can read the keychain entry; on macOS the Keychain asks you first. The checkbox says so. The terminal never uses this key: the CLI asks for the master password itself.</p>
@@ -122,6 +122,6 @@ options:
 <nav class="pager"><a rel="prev" href="load.html"><small>Previous</small><span>Load</span></a><a rel="next" href="compare.html"><small>Next</small><span>Compare two environments</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

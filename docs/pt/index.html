@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -83,7 +83,7 @@
 <li><a href="load.html">Carga</a><p>Carga (ao lado de Executar) mostra quantos usuários, ou quanto tráfego, a sua API aguenta antes de ficar lenta ou começar a falhar. Abre a tela de carga da pipeline que você está vendo: cada usuário virtual executa a pipeline inteira em loop e, se um passo falha, aquela iteração conta como erro e o usuário começa outra.</p></li>
 <li><a href="environments.html">Ambientes e segredos</a><p>Com os ambientes, as mesmas requests executam contra local, staging ou produção; os segredos guardam tokens e senhas no seu computador, criptografados, fora do git e de qualquer log.</p></li>
 <li><a href="compare.html">Comparar dois ambientes</a><p>Comparar executa a mesma pipeline em dois ambientes e diz, passo a passo, se eles respondem igual: depois de um deploy, confira se o staging tem a estrutura e os dados replicados que o desenvolvimento tem. Também dá para conferir as respostas de um ambiente com o tipo delas, um JSON Schema ou a spec OpenAPI da coleção. Uma resposta que não é JSON (uma página de erro HTML) não combina com o tipo de um arquivo de schema.</p></li>
-<li><a href="importing.html">Importar</a><p>O menu Importar ao lado de Nova coleção (área de Requests) traz o que você já tem: uma exportação do Postman, uma spec OpenAPI, um plano do JMeter, um script do Artillery ou um servidor MCP; o que fica ao lado de Nova pipeline (área de Pipelines) traz uma gravação do navegador. Assim você não começa do zero. Nada no projeto é sobrescrito: um nome já usado ganha -2. No fim, um resumo mostra o que entrou, o que foi adaptado, o que precisa de ajuste manual e quais arquivos foram pulados.</p></li>
+<li><a href="importing.html">Importar</a><p>O menu Importar ao lado de Nova coleção (área de Requests) traz o que você já tem: uma exportação do Postman, uma spec OpenAPI, um plano do JMeter, um script do Artillery, uma coleção do Bruno, uma exportação do Insomnia ou um servidor MCP; o que fica ao lado de Nova pipeline (área de Pipelines) traz uma gravação do navegador. Assim você não começa do zero. Antes de escrever qualquer coisa, uma prévia mostra o que entraria; no fim, um resumo mostra o que entrou, o que foi adaptado, o que precisa de ajuste manual e quais arquivos foram pulados (uma linha sobre uma request a abre).</p></li>
 <li><a href="mock.html">Servidor mock</a><p>O servidor mock responde às requests da sua API com respostas que você já gravou. Assim, um front end (ou um teste) continua funcionando enquanto a API real está fora do ar, lenta ou ainda nem existe. Ele funciona no seu computador, e ninguém mais tem acesso a ele, a não ser que você queira.</p></li>
 <li><a href="cli.html">O terminal</a><p>O comando ultraman executa suas pipelines e testes de carga pelo terminal, serve o projeto para outras ferramentas e guarda segredos no cofre. Execute-o na pasta do projeto (ou em qualquer pasta dentro dela). Para usá-lo numa máquina de build, veja CI.</p></li>
 <li><a href="ci.html">CI</a><p>O Ultraman funciona num pipeline de build com as mesmas pipelines que você usa na sua máquina, gera um relatório JUnit e faz o job falhar quando um passo ou um limiar falha. Para o GitHub Actions existe uma action que, além disso, impede que os segredos vão para onde ninguém aprovou. Nos outros sistemas, basta instalar o comando e chamá-lo.</p></li>
@@ -95,6 +95,6 @@
 </ol>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

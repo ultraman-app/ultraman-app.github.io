@@ -76,7 +76,7 @@ code { font-family: var(--mono); font-size: .88em; }
 .lede { font-size: clamp(19px, 2.1vw, 23px); line-height: 1.45; margin: 0 0 36px; max-width: 38ch; }
 /* Wide screens: the words and the command side by side, on the same columns as the sections below. */
 @media (min-width: 1200px) {
-  .intro { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 46rem); gap: 0 clamp(48px, 5vw, 88px); align-items: start; max-width: none; padding-right: var(--side); }
+  .intro { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; max-width: none; padding-right: var(--side); }
   .lede { margin: 0; }
 }
 
@@ -125,7 +125,7 @@ pre code { font-size: inherit; }
 .snippet { max-width: 52rem; }
 
 /* The window itself, in the theme the page is in (index.html picks the night or day capture). */
-.shot { margin: 0; max-width: 72rem; }
+.shot { margin: 0; }
 .shot img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
 .mcp .shot { max-width: 824px; }
 .shot figcaption { font-size: 15px; color: var(--mut); margin-top: 12px; max-width: 62ch; }
@@ -139,7 +139,6 @@ pre code { font-size: inherit; }
 .diagram { display: block; width: 100%; min-width: 900px; max-width: 1145px; height: auto; margin: 0 auto; }
 /* The pipeline's block: its words beside the start of its file, the whole of it drawn under them, then what a run says
    and what the checks do, each a part with its own artifact. */
-.lead .yaml { max-width: 40rem; }
 .part + .part { margin-top: 32px; }
 /* The window's diagram (app/src/app.css, .dgm): boxes on the raised surface with a --line-ui edge, each kind's icon on
    its tint, the method in its colour, data arrows dashed in --acc-ink with their names on a pill. */
@@ -164,7 +163,7 @@ pre code { font-size: inherit; }
 .narrated .ok { color: var(--term-ok); }
 
 /* What the app's banner says when a response changed shape since the last send. */
-.drift { display: flex; gap: 10px; align-items: flex-start; max-width: 34rem; margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: var(--r-md); background: var(--surf); color: var(--txt); font-size: 14.5px; line-height: 1.45; }
+.drift { display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: var(--r-md); background: var(--surf); color: var(--txt); font-size: 14.5px; line-height: 1.45; }
 .drift svg { flex: none; margin-top: 3px; color: var(--warn); }
 .drift code { color: inherit; white-space: nowrap; }
 .narrated .total { font-weight: 700; }
@@ -189,7 +188,7 @@ pre code { font-size: inherit; }
 }
 
 /* The question the window asks before a secret goes somewhere new, drawn as the app's dialog: the words are the app's. */
-.ask { margin: 0; max-width: 34rem; }
+.ask { margin: 0; }
 .dialog { background: var(--surf); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px 22px; box-shadow: var(--shadow); }
 .dialog code { overflow-wrap: anywhere; }
 .asktitle { font-weight: 700; margin: 0 0 8px; line-height: 1.35; }
@@ -232,7 +231,8 @@ pre code { font-size: inherit; }
 }
 
 .small { display: grid; gap: 40px; padding-bottom: 24px; }
-@media (min-width: 900px) { .small { grid-template-columns: 1fr 1fr; gap: 64px; } }
+/* The same two columns as every section above, so each part's edges line up down the page (the owner, 2026-11-23). */
+@media (min-width: 1200px) { .small { grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 40px clamp(48px, 5vw, 88px); } }
 .small h2 { font-size: clamp(21px, 2.2vw, 25px); }
 .small p { color: var(--mut); margin: 0 0 10px; max-width: 58ch; }
 .small code { color: var(--txt); overflow-wrap: anywhere; }

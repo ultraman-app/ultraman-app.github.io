@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/cli.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -80,15 +80,16 @@
 <tr><td><code>ultraman run &lt;pipeline&gt;</code></td><td>Ejecuta una pipeline; la busca primero por nombre y luego por id.</td></tr>
 <tr><td><code>ultraman run --all</code>, <code>--tag X</code>, <code>--collection ID</code></td><td>Ejecuta varias pipelines a la vez.</td></tr>
 <tr><td><code>ultraman run --load &lt;test&gt;</code></td><td>Lanza una prueba de carga; <code>ultraman run &lt;pipeline&gt; --load</code> usa la prueba por defecto de esa pipeline.</td></tr>
-<tr><td><code>ultraman serve [--port 4100]</code></td><td>Inicia el servidor local del proyecto (con el que se comunican la ventana y los demás comandos).</td></tr>
+<tr><td><code>ultraman serve [--port 4100]</code></td><td>Inicia el servidor local del proyecto (con el que se comunican la ventana y los demás comandos). Si el proyecto ya tiene uno en marcha (el de la ventana u otro <code>ultraman serve</code>), lo dice y no inicia nada.</td></tr>
 <tr><td><code>ultraman secret set &lt;name&gt;</code>, <code>list</code>, <code>rm &lt;name&gt;</code>, <code>password</code></td><td>Administra la bóveda.</td></tr>
+<tr><td><code>ultraman secret signout &lt;server-url&gt;</code></td><td>Cierra un inicio de sesión OAuth 2 en este equipo. Consulta <a href="cli.html#oauth2">Iniciar sesión desde la terminal</a>.</td></tr>
 <tr><td><code>ultraman mock [--port 4300]</code></td><td>Sirve tu historial grabado como una API mock. Consulta <a href="mock.html">Servidor mock</a>.</td></tr>
 <tr><td><code>ultraman mcp [--project &lt;folder&gt;]</code></td><td>El puente al que se conecta un agente de IA. Consulta <a href="agents.html">Agentes</a>.</td></tr>
 <tr><td><code>ultraman sample</code></td><td>Deja el proyecto de ejemplo como nuevo en la carpeta propia de Ultraman y muestra su ruta. Consulta <a href="getting-started.html#sample">el proyecto de ejemplo</a>.</td></tr>
 <tr><td><code>ultraman --version</code></td><td>Muestra la versión.</td></tr>
 </tbody>
 </table></div>
-<p>Un comando sin argumentos, o uno desconocido, muestra cómo se usa y termina con 2.</p>
+<p>Un comando sin argumentos muestra cómo se usa y termina con 2; uno desconocido primero dice que no existe. <code>ultraman --help</code> muestra cómo se usa y termina con 0. Un puerto que otro programa ya ocupa (<code>serve</code>, <code>mock</code>) se dice con palabras, con cómo elegir otro: <code>--port 0</code> toma uno libre cualquiera.</p>
 <h2 id="run">Ejecutar pipelines <a class="self" href="#run" aria-label="Ejecutar pipelines">#</a></h2>
 <pre tabindex="0"><code>ultraman run &quot;create order&quot; --env local --input user=ana
 ultraman run --all --env ci --yes
@@ -106,7 +107,7 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--parallel N</code></td><td>Ejecuta hasta N pipelines al mismo tiempo (de 1 a 16). Cada una se muestra completa al terminar.</td></tr>
 <tr><td><code>--bail</code></td><td>Deja de iniciar pipelines nuevas después de la primera que falle. Las que están en marcha terminan; las demás aparecen como omitidas. Con <code>--collection</code> detiene la ejecución en el primer request que falle, como una pipeline; sin él, una colección ejecuta todos los requests e informa de cada uno.</td></tr>
 <tr><td><code>--watch</code></td><td>Vuelve a ejecutar cada vez que cambia un archivo dentro de <code>ultraman/</code>.</td></tr>
-<tr><td><code>--every D</code></td><td>Vuelve a ejecutar cada cierto tiempo: <code>30s</code>, <code>5m</code>, <code>1h</code> o un número de segundos sin unidad, con un mínimo de 5 segundos. Cuenta desde el final de la ejecución anterior y se puede combinar con <code>--watch</code>.</td></tr>
+<tr><td><code>--every D</code></td><td>Vuelve a ejecutar cada cierto tiempo: <code>30s</code>, <code>5m</code>, <code>1h</code> o un número de segundos sin unidad, con un mínimo de 5 segundos. Cuenta desde el final de la ejecución anterior y se puede combinar con <code>--watch</code>. Entre ejecuciones, los dos dicen qué esperan, cuándo es la próxima ejecución y que Ctrl+C los detiene.</td></tr>
 <tr><td><code>--no-notify</code></td><td>Con <code>--watch</code> o <code>--every</code>, desactiva la notificación de escritorio cuando una ejecución falla y cuando vuelve a pasar.</td></tr>
 <tr><td><code>--json</code></td><td>Un evento JSON por línea en la salida estándar, para otras herramientas. Sin colores.</td></tr>
 <tr><td><code>--junit FILE</code></td><td>Escribe un reporte JUnit XML. Consulta <a href="cli.html#junit">JUnit</a>.</td></tr>
@@ -117,8 +118,8 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--yes</code></td><td>Responde que sí a todas las preguntas. Antes, lee <a href="cli.html#consent">Consentimiento en la terminal</a>.</td></tr>
 </tbody>
 </table></div>
-<p>Cada ejecución se guarda en <code>ultraman/runs/</code>. Los colores solo aparecen en una terminal; <code>NO_COLOR</code> los desactiva. Ctrl+C cancela el paso en curso, guarda la ejecución y termina con 1.</p>
-<p>Códigos de salida: <strong>0</strong> todo pasó; <strong>1</strong> falló un paso (o presionaste Ctrl+C); <strong>2</strong> no llegó a ejecutarse: un flag incorrecto, falta una pipeline, un input, un entorno o un secreto, una pipeline no es válida, o no se envió nada porque nadie dio un sí.</p>
+<p>Cada ejecución se guarda en <code>ultraman/runs/</code>. Los colores solo aparecen en una terminal; <code>NO_COLOR</code> los desactiva. Ctrl+C cancela el paso en curso, corre la <a href="pipelines.html#finally">limpieza `finally`</a> de la pipeline (hasta un minuto), guarda la ejecución, termina con <code>■ &lt;pipeline&gt; · stopped (Ctrl+C) at step N</code> y sale con 130; un segundo Ctrl+C deja de esperar en la terminal (una ejecución entregada al serve de la ventana termina su limpieza allí).</p>
+<p>Códigos de salida: <strong>0</strong> todo pasó; <strong>1</strong> falló un paso; <strong>2</strong> no llegó a ejecutarse: un flag incorrecto, falta una pipeline, un input, un entorno o un secreto, una pipeline no es válida, o no se envió nada porque nadie dio un sí; <strong>130</strong> presionaste Ctrl+C (detuvo una ejecución, una carga, un inicio de sesión o la pregunta de una contraseña). Ctrl+C ante una pregunta de sí o no es un no: exit 2.</p>
 <p>Una ejecución de colección (<code>--collection</code>) envía todas las requests e informa de cada una. Una request que falla no detiene a las demás, los checks de una request que falló imprimen <code>not checked: the request failed</code>, y una request que necesita un valor que un login fallido no produjo imprime <code>not sent</code>. La última línea cuenta las requests, <code>✗ collection shop · 2 of 7 requests failed</code> o <code>✓ collection shop · 7 requests · 44 ms</code>, y el código de salida es 1 si alguna falló. <code>--bail</code> vuelve a detenerse en el primer fallo. Ver <a href="requests.html#collection-run">Ejecutar una colección</a>.</p>
 <h2 id="consent">Consentimiento en la terminal <a class="self" href="#consent" aria-label="Consentimiento en la terminal">#</a></h2>
 <p>Ultraman pregunta antes de enviar algo que no hayas aprobado. En una terminal pregunta cuando:</p>
@@ -146,7 +147,7 @@ ultraman run --collection shop --env staging</code></pre>
 </tbody>
 </table></div>
 <p><code>--all</code>, <code>--tag</code>, <code>--collection</code>, <code>--bail</code>, <code>--parallel</code>, <code>--watch</code> y <code>--every</code> no se aplican a una carga.</p>
-<p>Códigos de salida: <strong>0</strong> se cumplieron todos los umbrales y el veredicto es aguanta, encola o limitado; <strong>1</strong> falló un umbral, la API rechazó o se rompió, salieron muy pocas requests, o la carga se detuvo (con Ctrl+C o por los frenos del propio generador); <strong>2</strong> no se envió nada. Los umbrales y los veredictos se explican en <a href="load.html">Carga</a>; para usarlos como compuertas en una pipeline, consulta <a href="ci.html#load-in-ci">CI</a>.</p>
+<p>Códigos de salida: <strong>0</strong> se cumplieron todos los umbrales y el veredicto es aguanta, encola o limitado; <strong>1</strong> falló un umbral, la API rechazó o se rompió, salieron muy pocas requests, o la detuvieron los frenos del propio generador; <strong>2</strong> no se envió nada; <strong>130</strong> presionaste Ctrl+C. Los umbrales y los veredictos se explican en <a href="load.html">Carga</a>; para usarlos como compuertas en una pipeline, consulta <a href="ci.html#load-in-ci">CI</a>.</p>
 <h2 id="junit">JUnit para CI <a class="self" href="#junit" aria-label="JUnit para CI">#</a></h2>
 <p><code>--junit FILE</code> escribe un reporte JUnit XML al terminar las ejecuciones, también después de un Ctrl+C con lo que llegó a ejecutarse: un test suite por pipeline y un test case por paso de primer nivel, con lo que se envió y se recibió en los que fallaron. Los secretos aparecen ocultos, como en todas partes. Las carpetas que falten se crean.</p>
 <p>En una ejecución de colección (<code>--collection</code>) el reporte trae un test case por request en vez de uno por paso. Un caso falla con lo primero que falló en él, la request o uno de sus checks, y lista los checks que no se leyeron; una request a la que la ejecución no llegó (Ctrl+C) queda omitida.</p>
@@ -154,6 +155,11 @@ ultraman run --collection shop --env staging</code></pre>
 <h2 id="secrets">Secretos <a class="self" href="#secrets" aria-label="Secretos">#</a></h2>
 <p>En tu máquina, <code>ultraman secret set api-key</code> guarda un secreto en la bóveda: te pide la contraseña maestra y el valor, sin mostrar ninguno de los dos en pantalla. Si el valor llega por un pipe (<code>echo &quot;$VALUE&quot; | ultraman secret set api-key</code>), se lee de la entrada estándar; la contraseña maestra sigue necesitando una terminal. Los nombres usan letras, dígitos, <code>_</code>, <code>.</code> y <code>-</code>. <code>secret list</code> muestra los nombres, <code>secret rm &lt;name&gt;</code> elimina uno (termina con 1 si no existe) y <code>secret password</code> cambia la contraseña maestra. Consulta <a href="security.html#vault">la bóveda</a>.</p>
 <p>En una máquina de build no hay bóveda. Pasa el secreto como una variable de entorno llamada <code>ULTRAMAN_SECRET_</code> seguida de su nombre en mayúsculas, con cada carácter que no sea letra ni dígito convertido en <code>_</code>: <code>api-key</code> se convierte en <code>ULTRAMAN_SECRET_API_KEY</code>. Tiene prioridad sobre la bóveda y no necesita contraseña. Sin <code>--yes</code>, un secreto solo va adonde se haya aprobado.</p>
+<h2 id="oauth2">Iniciar sesión desde la terminal <a class="self" href="#oauth2" aria-label="Iniciar sesión desde la terminal">#</a></h2>
+<p>Cuando una ejecución necesita el inicio de sesión OAuth 2 de una persona y no hay uno, el comando no abre tu navegador. Imprime el host que lo pide, la dirección para iniciar sesión y &quot;Waiting for the sign-in&quot;, y tú abres la dirección; espera hasta 5 minutos (Ctrl+C lo detiene, sin enviar nada). El inicio de sesión se guarda en la bóveda de este equipo, como el de la ventana. En un entorno de producción pregunta <code>[y/N]</code> antes, cada vez, incluso con <code>--yes</code>.</p>
+<p>Sin terminal (CI, una tubería en ambos extremos), un inicio de sesión por navegador es exit 2 con el motivo, nunca una espera: inicia sesión una vez en una terminal, o usa el flujo de client credentials. Con la sesión ya iniciada también hace falta una terminal: el inicio de sesión está en la bóveda, y su contraseña maestra se escribe allí. Una request máquina a máquina no necesita iniciar sesión ni bóveda: define <code>ULTRAMAN_SECRET_&lt;NOMBRE&gt;</code> para su client secret (<a href="cli.html#secrets">secretos</a>).</p>
+<p><code>ultraman secret signout https://mcp.example.com/mcp</code> cierra la sesión: el inicio de sesión en ese servidor sale de la bóveda de este equipo (pide la contraseña maestra) y se revoca en su servidor de inicio de sesión cuando este lo ofrece, como hace <strong>Sign out</strong> en la ventana. Da la dirección del servidor tal como la nombra la request o la colección del servidor MCP. Todos los proyectos de este equipo pierden ese inicio de sesión; la próxima request allí te pide iniciar sesión de nuevo.</p>
+<p><strong>Qué te mantiene a salvo:</strong> el comando inicia sesión antes de la primera request, así que un rechazo no envía nada; el token va a la bóveda de este equipo y solo al servidor para el que se emitió; una carpeta no confiable no inicia sesión.</p>
 <h2 id="env-vars">Variables de entorno <a class="self" href="#env-vars" aria-label="Variables de entorno">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Variable</th><th scope="col">Qué hace</th></tr></thead>
@@ -168,10 +174,10 @@ ultraman run --collection shop --env staging</code></pre>
 </tbody>
 </table></div>
 <h2 id="one-engine">La ventana y la terminal a la vez <a class="self" href="#one-engine" aria-label="La ventana y la terminal a la vez">#</a></h2>
-<p>Si la ventana tiene el proyecto abierto, <code>ultraman run</code> le pasa la ejecución: la ves en vivo en la ventana y la terminal muestra lo mismo de siempre. Con <code>--local</code> se ejecuta en la terminal, que es lo que quieres en una máquina de build compartida. Las ejecuciones de <a href="ci.html">CI</a> siempre lo usan.</p>
+<p>Si la ventana tiene el proyecto abierto, <code>ultraman run</code> le pasa la ejecución y lo dice en una línea: la ves en vivo en la ventana y la terminal muestra lo mismo de siempre. Si la ventana rechaza la ejecución (sus secretos están bloqueados, la carpeta no es de confianza allí) o se cierra antes de que termine, la terminal lo dice con palabras y guarda lo que llegó. Con <code>--local</code> se ejecuta en la terminal, que es lo que quieres en una máquina de build compartida. Las ejecuciones de <a href="ci.html">CI</a> siempre lo usan.</p>
 <nav class="pager"><a rel="prev" href="mock.html"><small>Anterior</small><span>Servidor mock</span></a><a rel="next" href="ci.html"><small>Siguiente</small><span>CI</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

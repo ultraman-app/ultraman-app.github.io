@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -104,6 +104,8 @@
 <li><strong>Trust this folder</strong>: only if you know where it came from. You answer once per folder, on this machine.</li>
 </ul>
 <p>More in <a href="security.html#trusted-folders">Trusted folders</a>.</p>
+<p>A folder that isn&#39;t a project yet asks first: <strong>Make it a project</strong> adds its <code>ultraman/</code> folder, and nothing else in it changes. Ultraman runs one window at a time: opening it again brings that window forward.</p>
+<p>If its engine can&#39;t start (an antivirus holding back the Node it carries, a first start slower than 90 seconds), the window says why, and <strong>Open the log</strong> shows what the window and the engine wrote during that start. If the engine stops while you work, a dialog says so: <strong>Start it again</strong> brings it back on the same project, and what you haven&#39;t saved stays.</p>
 <p>What lives where:</p>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Folder</th><th scope="col">What</th><th scope="col">Shared through git</th></tr></thead>
@@ -178,7 +180,7 @@
 <h2 id="settings">Settings <a class="self" href="#settings" aria-label="Settings">#</a></h2>
 <p>The gear in the top bar (or Ctrl/Cmd+,) opens <strong>Settings</strong>. Each row applies as soon as you pick it:</p>
 <ul>
-<li><strong>Size:</strong> Automatic follows the window&#39;s width; or fix it at 90, 100, 110, 125 or 150 %.</li>
+<li><strong>Size:</strong> Automatic follows your system&#39;s display scale; or set it yourself from 90 to 150 %, in steps of 5.</li>
 <li><strong>Density:</strong> Comfortable or Compact spacing.</li>
 <li><strong>Code:</strong> the size of bodies, JSON, YAML and the step editor, from 80 to 150 %.</li>
 <li><strong>Theme:</strong> System follows your computer&#39;s light or dark setting as it changes; or choose Dark, Light or Contrast.</li>
@@ -196,6 +198,7 @@
 <li><strong>Check for updates</strong>, under <strong>?</strong> › <strong>About Ultraman</strong>, asks GitHub right away instead of waiting for the next day. It says you&#39;re up to date, brings the card back when there is a newer version (even after <strong>Not now</strong>), or says why it couldn&#39;t ask, with <strong>Try again</strong>.</li>
 <li>By hand: close Ultraman and run the <a href="getting-started.html#install">install command</a> again. It replaces the app and the command in place; if anything fails, the previous install stays as it was.</li>
 <li>Your projects, saved secrets and trust answers stay: they live in your folders and in <code>~/.ultraman</code>.</li>
+<li>While it downloads, the card shows how far it is. If the update can&#39;t be installed, the card says why and the version you have keeps working; if the <code>ultraman</code> command couldn&#39;t be updated with it, the window says so and tries again at its next start.</li>
 <li>To turn the check off, set <code>ULTRAMAN_NO_UPDATE_CHECK=1</code> in the environment Ultraman starts from.</li>
 </ul>
 <p>What is signed:</p>
@@ -234,6 +237,6 @@
 <nav class="pager"><a rel="prev" href="why.html"><small>Previous</small><span>Why Ultraman</span></a><a rel="next" href="security.html"><small>Next</small><span>Security and consent</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

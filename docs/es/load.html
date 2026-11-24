@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -102,6 +102,8 @@
 <li><strong>Cookies</strong>: cada usuario tiene su propio almacén de cookies.</li>
 <li><strong>Archivo de datos</strong>: un CSV o JSON dentro del proyecto; cada fila tiene los valores de un usuario (o de una iteración).</li>
 <li><strong>Pausa, máximo</strong> y <strong>ritmo</strong>: una pausa aleatoria entre la <strong>pausa entre iteraciones</strong> (junto a los usuarios) y este máximo, y un tiempo mínimo por iteración.</li>
+<li><strong>Esperas en una pipeline</strong>: un <code>repeat</code> con <code>until</code> consulta por su cuenta para cada usuario; sus pausas cuentan en el tiempo de esa iteración, no en el de una request. Cuando se acaba el tiempo de la prueba, una iteración que sigue consultando termina sus rondas (con pausas de hasta un minuto cada una) antes de que la carga acabe; Stop la corta de inmediato.</li>
+<li><strong>Limpieza</strong>: los <a href="pipelines.html#finally">pasos `finally`</a> de una pipeline corren al final de cada iteración y aparecen como filas después de las de la pipeline. Stop corta uno de inmediato; para un barrido una vez por prueba usa <strong>Después</strong>.</li>
 <li><strong>Respuestas</strong>: por defecto solo se conservan los bodies que lee un check o un extract, para ahorrar memoria.</li>
 </ul>
 <h2 id="live">Mientras se ejecuta <a class="self" href="#live" aria-label="Mientras se ejecuta">#</a></h2>
@@ -161,6 +163,6 @@
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Anterior</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Siguiente</small><span>Entornos y secretos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

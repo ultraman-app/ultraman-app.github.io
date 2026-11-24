@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/cli.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -80,15 +80,16 @@
 <tr><td><code>ultraman run &lt;pipeline&gt;</code></td><td>Runs a pipeline, found by name and then by id.</td></tr>
 <tr><td><code>ultraman run --all</code>, <code>--tag X</code>, <code>--collection ID</code></td><td>Runs several pipelines at once.</td></tr>
 <tr><td><code>ultraman run --load &lt;test&gt;</code></td><td>Plays a load test; <code>ultraman run &lt;pipeline&gt; --load</code> uses that pipeline&#39;s default test.</td></tr>
-<tr><td><code>ultraman serve [--port 4100]</code></td><td>Starts the project&#39;s local server (the window and the other commands talk to it).</td></tr>
+<tr><td><code>ultraman serve [--port 4100]</code></td><td>Starts the project&#39;s local server (the window and the other commands talk to it). If the project already has one running (the window&#39;s or another <code>ultraman serve</code>), it says so and starts nothing.</td></tr>
 <tr><td><code>ultraman secret set &lt;name&gt;</code>, <code>list</code>, <code>rm &lt;name&gt;</code>, <code>password</code></td><td>Manages the vault.</td></tr>
+<tr><td><code>ultraman secret signout &lt;server-url&gt;</code></td><td>Signs out of an OAuth 2 sign-in on this computer. See <a href="cli.html#oauth2">Sign in from the terminal</a>.</td></tr>
 <tr><td><code>ultraman mock [--port 4300]</code></td><td>Serves your recorded history as a mock API. See <a href="mock.html">Mock server</a>.</td></tr>
 <tr><td><code>ultraman mcp [--project &lt;folder&gt;]</code></td><td>The bridge an AI agent connects to. See <a href="agents.html">Agents</a>.</td></tr>
 <tr><td><code>ultraman sample</code></td><td>Resets the sample project in Ultraman&#39;s own folder and prints its path. See <a href="getting-started.html#sample">the sample project</a>.</td></tr>
 <tr><td><code>ultraman --version</code></td><td>Prints the version.</td></tr>
 </tbody>
 </table></div>
-<p>A command with no arguments, or an unknown one, prints the usage and exits with 2.</p>
+<p>A command with no arguments prints the usage and exits with 2; an unknown one says so first. <code>ultraman --help</code> prints the usage and exits with 0. A port that another program holds (<code>serve</code>, <code>mock</code>) is said in words, with how to pick another: <code>--port 0</code> takes any free one.</p>
 <h2 id="run">Run pipelines <a class="self" href="#run" aria-label="Run pipelines">#</a></h2>
 <pre tabindex="0"><code>ultraman run &quot;create order&quot; --env local --input user=ana
 ultraman run --all --env ci --yes
@@ -106,7 +107,7 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--parallel N</code></td><td>Runs up to N pipelines at the same time (1 to 16). Each one prints whole when it ends.</td></tr>
 <tr><td><code>--bail</code></td><td>Stops starting new pipelines after the first one that fails. The ones running finish; the rest show as skipped. With <code>--collection</code> it stops the run at the first request that fails, as a pipeline does; without it, a collection runs every request and reports each one.</td></tr>
 <tr><td><code>--watch</code></td><td>Runs again whenever a file under <code>ultraman/</code> changes.</td></tr>
-<tr><td><code>--every D</code></td><td>Runs again on a timer: <code>30s</code>, <code>5m</code>, <code>1h</code> or a bare number of seconds, at least 5 seconds. It counts from the end of the previous run and combines with <code>--watch</code>.</td></tr>
+<tr><td><code>--every D</code></td><td>Runs again on a timer: <code>30s</code>, <code>5m</code>, <code>1h</code> or a bare number of seconds, at least 5 seconds. It counts from the end of the previous run and combines with <code>--watch</code>. Between runs, both say what they wait for, when the next run is and that Ctrl+C stops them.</td></tr>
 <tr><td><code>--no-notify</code></td><td>With <code>--watch</code> or <code>--every</code>, no desktop notification when a run fails and when it passes again.</td></tr>
 <tr><td><code>--json</code></td><td>One JSON event per line on standard output, for other tools. No colors.</td></tr>
 <tr><td><code>--junit FILE</code></td><td>Writes a JUnit XML report. See <a href="cli.html#junit">JUnit</a>.</td></tr>
@@ -117,8 +118,8 @@ ultraman run --collection shop --env staging</code></pre>
 <tr><td><code>--yes</code></td><td>Answers yes to every question. Read <a href="cli.html#consent">Consent in the terminal</a> first.</td></tr>
 </tbody>
 </table></div>
-<p>Each run is saved in <code>ultraman/runs/</code>. Colors appear only in a terminal; <code>NO_COLOR</code> turns them off. Ctrl+C cancels the running step, saves the run and exits with 1.</p>
-<p>Exit codes: <strong>0</strong> everything passed, <strong>1</strong> a step failed (or you pressed Ctrl+C), <strong>2</strong> it never ran: a bad flag, a missing pipeline, input, environment or secret, an invalid pipeline, or nothing was sent because nobody said yes.</p>
+<p>Each run is saved in <code>ultraman/runs/</code>. Colors appear only in a terminal; <code>NO_COLOR</code> turns them off. Ctrl+C cancels the running step, runs the pipeline&#39;s <a href="pipelines.html#finally">`finally` cleanup</a> (up to a minute), saves the run, ends with <code>■ &lt;pipeline&gt; · stopped (Ctrl+C) at step N</code> and exits with 130; a second Ctrl+C stops waiting in the terminal (a run handed to the window&#39;s serve still finishes its cleanup there).</p>
+<p>Exit codes: <strong>0</strong> everything passed, <strong>1</strong> a step failed, <strong>2</strong> it never ran: a bad flag, a missing pipeline, input, environment or secret, an invalid pipeline, or nothing was sent because nobody said yes; <strong>130</strong> you pressed Ctrl+C (a run, a load, a sign-in or a password question it stopped). Ctrl+C at a yes/no question is a no: exit 2.</p>
 <p>A collection run (<code>--collection</code>) sends every request and reports each one. A request that fails doesn&#39;t stop the others, the checks of a failed request print <code>not checked: the request failed</code>, and a request that needs a value a failed login didn&#39;t make prints <code>not sent</code>. The last line counts the requests, <code>✗ collection shop · 2 of 7 requests failed</code> or <code>✓ collection shop · 7 requests · 44 ms</code>, and the exit code is 1 when any failed. <code>--bail</code> goes back to stopping at the first failure. See <a href="requests.html#collection-run">Running a collection</a>.</p>
 <h2 id="consent">Consent in the terminal <a class="self" href="#consent" aria-label="Consent in the terminal">#</a></h2>
 <p>Ultraman asks before it sends anything you haven&#39;t approved. In a terminal it asks when:</p>
@@ -146,7 +147,7 @@ ultraman run --collection shop --env staging</code></pre>
 </tbody>
 </table></div>
 <p><code>--all</code>, <code>--tag</code>, <code>--collection</code>, <code>--bail</code>, <code>--parallel</code>, <code>--watch</code> and <code>--every</code> don&#39;t apply to a load.</p>
-<p>Exit codes: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or it was stopped (Ctrl+C or the generator&#39;s own brakes); <strong>2</strong> nothing was sent. The thresholds and verdicts are explained in <a href="load.html">Load</a>; for gates in a pipeline see <a href="ci.html#load-in-ci">CI</a>.</p>
+<p>Exit codes: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or the generator&#39;s own brakes stopped it; <strong>2</strong> nothing was sent; <strong>130</strong> you pressed Ctrl+C. The thresholds and verdicts are explained in <a href="load.html">Load</a>; for gates in a pipeline see <a href="ci.html#load-in-ci">CI</a>.</p>
 <h2 id="junit">JUnit for CI <a class="self" href="#junit" aria-label="JUnit for CI">#</a></h2>
 <p><code>--junit FILE</code> writes a JUnit XML report after the runs, also after Ctrl+C with what ran: a test suite per pipeline and a test case per top-level step, with what was sent and received for the ones that failed. Secrets are hidden in it like everywhere else. Missing folders are created.</p>
 <p>In a collection run (<code>--collection</code>) the report has a test case per request instead of one per step. A case fails with the first thing that failed in it, the request or one of its checks, and lists the checks that weren&#39;t read; a request the run never reached (Ctrl+C) is skipped.</p>
@@ -154,6 +155,11 @@ ultraman run --collection shop --env staging</code></pre>
 <h2 id="secrets">Secrets <a class="self" href="#secrets" aria-label="Secrets">#</a></h2>
 <p>On your machine, <code>ultraman secret set api-key</code> saves one in the vault: it asks for the master password and the value, both without echo. A value piped in (<code>echo &quot;$VALUE&quot; | ultraman secret set api-key</code>) is read from standard input; the master password still needs a terminal. Names use letters, digits, <code>_</code>, <code>.</code> and <code>-</code>. <code>secret list</code> shows the names, <code>secret rm &lt;name&gt;</code> removes one (exit 1 if it isn&#39;t there) and <code>secret password</code> changes the master password. See <a href="security.html#vault">the vault</a>.</p>
 <p>On a build machine there is no vault. Pass a secret as an environment variable named <code>ULTRAMAN_SECRET_</code> plus its name in upper case, with every character that isn&#39;t a letter or a digit turned into <code>_</code>: <code>api-key</code> is <code>ULTRAMAN_SECRET_API_KEY</code>. It wins over the vault and needs no password. Without <code>--yes</code>, a secret still goes only where it has been approved.</p>
+<h2 id="oauth2">Sign in from the terminal <a class="self" href="#oauth2" aria-label="Sign in from the terminal">#</a></h2>
+<p>When a run needs a person&#39;s OAuth 2 sign-in and there isn&#39;t one, the command doesn&#39;t open your browser. It prints the host that asks, the sign-in address and &quot;Waiting for the sign-in&quot;, and you open the address yourself; it waits up to 5 minutes (Ctrl+C stops, with nothing sent). The sign-in is saved in this computer&#39;s vault like the window&#39;s. In a production environment it asks <code>[y/N]</code> first, every time, even with <code>--yes</code>.</p>
+<p>With no terminal (CI, a pipe on both ends), a browser sign-in is exit 2 with the reason, never a wait: sign in once in a terminal, or use the client credentials flow. Signed in already, it still needs a terminal: the sign-in is in the vault, and its master password is typed there. A machine-to-machine request needs no sign-in and no vault: set <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code> for its client secret (<a href="cli.html#secrets">secrets</a>).</p>
+<p><code>ultraman secret signout https://mcp.example.com/mcp</code> signs out: the sign-in to that server leaves this computer&#39;s vault (it asks for the master password) and is revoked at its sign-in server when that server offers it, as the window&#39;s <strong>Sign out</strong> does. Give the server&#39;s address as the request or the MCP server&#39;s collection names it. Every project on this computer loses that sign-in; the next request there asks you to sign in again.</p>
+<p><strong>What keeps you safe:</strong> the command signs in before the first request, so a refusal sends nothing; the token goes to the vault on this computer and only to the server it was issued for; an untrusted folder doesn&#39;t sign in.</p>
 <h2 id="env-vars">Environment variables <a class="self" href="#env-vars" aria-label="Environment variables">#</a></h2>
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Variable</th><th scope="col">What it does</th></tr></thead>
@@ -168,10 +174,10 @@ ultraman run --collection shop --env staging</code></pre>
 </tbody>
 </table></div>
 <h2 id="one-engine">The window and the terminal together <a class="self" href="#one-engine" aria-label="The window and the terminal together">#</a></h2>
-<p>If the window is open on the project, <code>ultraman run</code> hands the run to it: you see it live in the window, and the terminal prints the same as always. <code>--local</code> runs it in the terminal instead, which is what you want on a shared build machine. <a href="ci.html">CI</a> runs always use it.</p>
+<p>If the window is open on the project, <code>ultraman run</code> hands the run to it and says so in a line: you see it live in the window, and the terminal prints the same as always. If the window refuses the run (its secrets are locked, the folder isn&#39;t trusted there) or closes before it ends, the terminal says so in words, and what arrived is saved. <code>--local</code> runs it in the terminal instead, which is what you want on a shared build machine. <a href="ci.html">CI</a> runs always use it.</p>
 <nav class="pager"><a rel="prev" href="mock.html"><small>Previous</small><span>Mock server</span></a><a rel="next" href="ci.html"><small>Next</small><span>CI</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

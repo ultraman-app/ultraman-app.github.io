@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/load.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -102,6 +102,8 @@
 <li><strong>Cookies</strong>: cada usuário guarda os seus próprios cookies.</li>
 <li><strong>Arquivo de dados</strong>: um CSV ou JSON dentro do projeto; cada linha traz os valores de um usuário (ou de uma iteração).</li>
 <li><strong>Pausa, máximo</strong> e <strong>ritmo</strong>: uma pausa aleatória entre a <strong>pausa entre iterações</strong> (ao lado dos usuários) e este máximo, e um tempo mínimo por iteração.</li>
+<li><strong>Esperas em uma pipeline</strong>: um <code>repeat</code> com <code>until</code> consulta por conta própria para cada usuário; as pausas dele contam no tempo dessa iteração, não no de uma request. Quando o tempo do teste acaba, uma iteração que ainda está consultando termina suas rodadas (com pausas de até um minuto cada) antes de a carga acabar; Stop a corta na hora.</li>
+<li><strong>Limpeza</strong>: os <a href="pipelines.html#finally">passos `finally`</a> de uma pipeline rodam no fim de cada iteração e aparecem como linhas depois das da pipeline. Stop corta um na hora; para uma varredura uma vez por teste, use <strong>Depois</strong>.</li>
 <li><strong>Respostas</strong>: por padrão, só ficam guardados os bodies que um check ou extract lê, para economizar memória.</li>
 </ul>
 <h2 id="live">Durante a execução <a class="self" href="#live" aria-label="Durante a execução">#</a></h2>
@@ -161,6 +163,6 @@
 <nav class="pager"><a rel="prev" href="pipelines.html"><small>Anterior</small><span>Pipelines</span></a><a rel="next" href="environments.html"><small>Seguinte</small><span>Ambientes e segredos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

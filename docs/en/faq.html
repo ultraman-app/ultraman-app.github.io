@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/faq.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -94,7 +94,7 @@
 <h3 id="graphql">Does it do GraphQL? <a class="self" href="#graphql" aria-label="Does it do GraphQL?">#</a></h3>
 <p>Yes: a request can carry a GraphQL body, with completion from the API&#39;s schema (loaded from the server or saved in the project), and an answer with <code>errors</code> fails the step even when the status is 200, under load too. Subscriptions work over <code>graphql-transport-ws</code>, in the Requests area and as pipeline steps. Not yet: GraphQL over SSE, GET and persisted queries, batching and file uploads. See <a href="requests.html#graphql">GraphQL</a>.</p>
 <h3 id="auth">Which kinds of authentication? <a class="self" href="#auth" aria-label="Which kinds of authentication?">#</a></h3>
-<p>Bearer token, basic auth and API key (in a header or in the query string), set on a request, a collection or a pipeline. <code>ca</code> trusts your own server certificate authority. There are no client certificates (mTLS), OAuth2 flows, AWS SigV4 or NTLM. For an API that hands out tokens, a login step, an extract of the token and a bearer auth that uses it cover the usual case. See <a href="pipelines.html#steps">Pipelines</a>.</p>
+<p>Bearer token, basic auth and API key (in a header or in the query string), set on a request, a collection or a pipeline. <code>ca</code> trusts your own server certificate authority. OAuth 2 sign-in is there for MCP servers (see <a href="requests.html#oauth2">Requests</a>). There are no client certificates (mTLS), AWS SigV4 or NTLM. For an API that hands out tokens, a login step, an extract of the token and a bearer auth that uses it cover the usual case. See <a href="pipelines.html#steps">Pipelines</a>.</p>
 <h3 id="import">Can I bring my existing work? <a class="self" href="#import" aria-label="Can I bring my existing work?">#</a></h3>
 <p>Yes: Postman collections and environments, OpenAPI 3 documents, JMeter <code>.jmx</code> plans, Artillery scripts, and traffic recorded in your browser as a HAR file. Secrets from a Postman environment go to the vault. What can&#39;t be translated is listed, not lost, and an import never sends a request or runs a script. See <a href="importing.html">Importing</a>.</p>
 <h3 id="requirements">Does it need Node, Java or anything installed? <a class="self" href="#requirements" aria-label="Does it need Node, Java or anything installed?">#</a></h3>
@@ -116,6 +116,6 @@
 <nav class="pager"><a rel="prev" href="coming-from.html"><small>Previous</small><span>Coming from another tool</span></a><a rel="next" href="../en/reference.html"><small>Next</small><span>Format reference (YAML)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/ci.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -144,6 +144,26 @@
 <pre tabindex="0"><code>ultraman run --tag smoke --compare dev,stg --junit reports/compare.xml
 ultraman run --tag smoke --env stg --compare schema --junit reports/types.xml</code></pre>
 <p>El código 1 significa una diferencia (o una ejecución fallida), y el 2 que no se pudo comparar nada, así que ninguno pasa en silencio. Un runner no tiene terminal para preguntar por un paso comparado que escribe: nombra los entornos con <code>--allow-write dev,stg</code>, o compara solo pasos que leen. <code>--yes</code> no lo cubre. El archivo JUnit lista las rutas que difieren, no los valores de ahí. Consulta <a href="compare.html">Comparar</a>.</p>
+<h2 id="server-check">Revisar un servidor MCP en CI <a class="self" href="#server-check" aria-label="Revisar un servidor MCP en CI">#</a></h2>
+<p>Una colección importada de un servidor MCP guarda en el proyecto las listas del servidor (sus tools, resources y prompts). Un job puede listar el servidor otra vez y decirte qué cambió desde entonces, antes de que lo descubra un cliente:</p>
+<pre tabindex="0"><code>ultraman run --collection mi-servidor --server --env staging --junit reports/server.xml</code></pre>
+<p>La revisión envía solo el listado: abre una sesión, pide las listas y la cierra. Nunca llama a una tool, lee un resource ni pide un prompt. Contra producción, el log y el archivo JUnit mostrarán los nombres y las URI de los ítems de producción. Para correr las requests de la colección, agrega un segundo <code>ultraman run</code> en el mismo paso.</p>
+<p>Una colección con el protocolo fijado (<code>protocol:</code> en su <code>mcp:</code>) se revisa en esa versión, y una herramienta que el listado del servidor deja fuera (un esquema que Ultraman no puede enviar con seguridad) nunca se llama &quot;gone&quot;: hace fallar la revisión, porque ningún cliente 2026-07-28 puede llamarla ya, y es solo una advertencia cuando las listas guardadas se hicieron en una versión legacy.</p>
+<ul>
+<li><strong>Falla (exit 1):</strong> una tool, una plantilla de resource o un prompt que ya no está; un argumento quitado o cuyo esquema cambió; un argumento nuevo obligatorio, o uno opcional que pasó a ser obligatorio; un esquema de entrada o de salida que cambió de otra forma que le importa a un cliente (por ejemplo, <code>additionalProperties</code> agregado), o un esquema de salida quitado.</li>
+<li><strong>Avisa (exit 0):</strong> un ítem nuevo; un resource que ya no está (muchos servidores listan datos como resources); un nombre listado dos veces; una descripción, un título o una marca <code>deprecated</code> cambiados; un argumento nuevo opcional; un esquema de salida agregado; anotaciones cambiadas; el servidor hablando otra familia de versiones de MCP que la de las listas guardadas; un archivo guardado que se cortó por tamaño. <code>--strict</code> hace que los avisos también fallen.</li>
+<li><strong>No se pudo revisar (exit 2):</strong> la colección no es de un servidor MCP, no tiene listas guardadas, el archivo de listas no es válido, el servidor pide autorización o no responde, rechazó o dejó de listar una lista de la que el archivo guardado tiene ítems, o un esquema es demasiado profundo para compararlo. No se comparó nada.</li>
+</ul>
+<p>Cada línea dice qué cambió (&quot;tool search_customer: new required argument region&quot;). Con <code>--json</code> salen como líneas JSON, y <code>--junit FILE</code> escribe un test case por cada ítem guardado (también cuando la revisión no se pudo hacer: un caso fallido con el motivo). El listado hace la misma pregunta que <code>run</code> antes de que un secreto vaya a un origen, así que un job necesita <code>allow</code> o <code>--yes</code>, como en <a href="ci.html#github-action">la GitHub Action</a>.</p>
+<pre tabindex="0"><code>- uses: ultraman-app/run-action@v1
+  env:
+    ULTRAMAN_SECRET_MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+  with:
+    args: --collection mi-servidor --server --strict
+    env: staging
+    allow: mcp_token=https://mcp.staging.example.com</code></pre>
+<p>Para aceptar un cambio a propósito, abre la colección en la ventana, elige <strong>Actualizar desde el servidor…</strong>, revisa la vista previa y aplícala; después haz commit del archivo de listas (<code>ultraman/files/&lt;colección&gt;.mcp.json</code>). La próxima corrida compara con las listas nuevas.</p>
+<aside class="note"><p>Qué cuida la revisión: solo lista, y lo que dice el servidor se oculta contra los secretos que tu proyecto nombra (y, en un escritorio, los valores de la bóveda) antes de compararse o imprimirse, así que un token que el servidor repita aparece como <code>[secret:nombre]</code>. Un secreto que tu proyecto no nombra no lo conoce la revisión.</p></aside>
 <h2 id="local-values">Valores que viven en la máquina de cada desarrollador <a class="self" href="#local-values" aria-label="Valores que viven en la máquina de cada desarrollador">#</a></h2>
 <p>Algunos valores de entorno no están en git: en cada máquina viven en <code>ultraman/local/envs/&lt;env&gt;.yaml</code>. En un runner, la action escribe ese archivo a partir de <code>local-env</code>, un <code>name: value</code> por línea, y antes enmascara cada valor en el log. Los valores son simples: sin comillas, comentarios, valores de varias líneas ni ningún otro YAML; si encuentra alguno, la action se detiene.</p>
 <pre tabindex="0"><code>with:
@@ -152,6 +172,13 @@ ultraman run --tag smoke --env stg --compare schema --junit reports/types.xml</c
     tenant: acme
     user: ${{ vars.TEST_USER }}</code></pre>
 <p>Una credencial debe ir en una variable <code>ULTRAMAN_SECRET_*</code>: esas también se ocultan en los reportes, mientras que los valores de <code>local-env</code> solo se ocultan en el log.</p>
+<h2 id="oauth2">OAuth 2 en CI <a class="self" href="#oauth2" aria-label="OAuth 2 en CI">#</a></h2>
+<p>Un trabajo de CI no tiene a nadie que inicie sesión. Para una API detrás de OAuth 2, usa el flujo <strong>Client credentials</strong> (<a href="requests.html#oauth2-machine">máquina a máquina</a>) y da el client secret como una variable <code>ULTRAMAN_SECRET_&lt;NOMBRE&gt;</code> del almacén de secretos de tu CI (<code>{{secrets.x}}</code> se lee de ahí). No hace falta nada más: ni bóveda, ni contraseña, ni navegador. El inicio de sesión por navegador de una persona nunca va a CI, y una ejecución que lo necesita se detiene con exit 2 y el motivo (<a href="cli.html#oauth2">la terminal</a>).</p>
+<p><code>allow</code> dice adónde va cada uno: el client secret al origen del emisor como <code>name=origin</code>, y el token al origen de la API como <code>oauth:name=origin</code> (solo cuando el origen de la API no es el del emisor). La línea del token deja pasar solo el token: el secreto mismo sigue sin poder ir a la API.</p>
+<pre tabindex="0"><code>allow: |
+  api_client=https://id.example.com
+  oauth:api_client=https://api.staging.example.com</code></pre>
+<p><strong>Qué te mantiene a salvo:</strong> el client secret va solo a su emisor, y el token solo al origen de la API, cada uno solo adonde se aprobó (<code>allow</code>); el token queda en memoria durante esa ejecución y nunca está en el reporte ni en el log.</p>
 <h2 id="other-ci">Otros sistemas de CI <a class="self" href="#other-ci" aria-label="Otros sistemas de CI">#</a></h2>
 <aside class="note"><p>Fuera de GitHub Actions no existe <code>allow</code>: <code>--yes</code> es todo o nada. Ejecútalo solo en ramas que controle tu equipo.</p></aside>
 <p>Todo lo que hace la action se reduce al comando <code>ultraman</code> más unas cuantas reglas. En GitLab, Jenkins, CircleCI o tu propio runner:</p>
@@ -180,6 +207,6 @@ ultraman:
 <nav class="pager"><a rel="prev" href="cli.html"><small>Anterior</small><span>La terminal</span></a><a rel="next" href="team.html"><small>Siguiente</small><span>Trabajar en equipo</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

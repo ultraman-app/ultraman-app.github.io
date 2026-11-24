@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/pipelines.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -81,7 +81,7 @@
 <tr><td>extract</td><td>takes a value from a response (JSON path, header or regex) into <code>{{name}}</code></td></tr>
 <tr><td>assert</td><td>checks something about a response (see <a href="requests.html#checks">Checks</a>)</td></tr>
 <tr><td>wait</td><td>pauses some milliseconds</td></tr>
-<tr><td>repeat</td><td>runs its steps N times, or once per item of a list</td></tr>
+<tr><td>repeat</td><td>runs its steps N times, once per item of a list, or until a condition holds</td></tr>
 <tr><td>if</td><td>runs its steps only when a condition holds</td></tr>
 <tr><td>use</td><td>runs a <strong>block</strong> (a reusable pipeline) with its inputs</td></tr>
 <tr><td>parallel</td><td>runs branches at the same time; the next step waits for all</td></tr>
@@ -175,12 +175,53 @@ steps:
     - - request: orders
         method: GET
         path: /orders</code></pre>
+<h2 id="until">Wait until it&#39;s ready <a class="self" href="#until" aria-label="Wait until it&#39;s ready">#</a></h2>
+<p>A <code>repeat</code> with <code>until</code> runs its steps again and again until a condition holds, up to the number of rounds you give. Use it when something takes a while: an order that ships, a job that finishes.</p>
+<pre tabindex="0"><code>- repeat: 20
+  until: { equals: [&quot;{{status}}&quot;, shipped] }
+  every: 2000
+  backoff: 1.5
+  steps:
+    - request: order
+      method: GET
+      path: /orders/{{order_id}}
+    - extract: status
+      from: $order
+      path: $.status</code></pre>
+<p>After each round the condition is checked; when it holds, the run goes on with the next step, and the row says <code>held after 3 of 20</code>. <code>every</code> is the pause between rounds in milliseconds (a second if you leave it out) and <code>backoff</code> makes it grow each round (1 to 10); the pause is never more than a minute. A step that fails inside a round stops the <code>repeat</code> at once (<code>round 2 failed</code>). If the condition never holds, the step fails and says what it last saw: <code>status equals shipped didn&#39;t hold after 20 rounds (19.4 s) · last: pending</code>.</p>
+<p>The condition is the same as in an <code>if</code> (<code>exists</code>, <code>equals</code>, <code>matches</code>) and shows its variable by its name. <code>until</code> goes with a number of rounds, not with a list. Around a stream&#39;s <code>receive</code> it works the same way. In the window the row reads <code>up to 20</code> at rest and <code>round 3 of 20 · pending</code> while it runs.</p>
+<h2 id="finally">Clean up, always <a class="self" href="#finally" aria-label="Clean up, always">#</a></h2>
+<p>A pipeline can end with a <code>finally:</code> list: steps that run after the others whatever happened, whether the run passed, failed or was stopped. Use it to remove what the run made: an order, a user, a record.</p>
+<pre tabindex="0"><code>steps:
+  - request: create
+    method: POST
+    path: /orders
+    json: { sku: A-1 }
+  - extract: order_id
+    from: $create
+    path: $.id
+  - request: check
+    method: GET
+    path: /orders/{{order_id}}
+finally:
+  - if: { exists: order_id }
+    steps:
+      - request: remove
+        method: DELETE
+        path: /orders/{{order_id}}</code></pre>
+<p>The cleanup is numbered after the steps (the <code>finally</code> steps above are 4 here) and sees the values the steps made. It is best effort: each step runs even if the one before it failed. If a step failed, the run still reports that failure; if the steps passed and the cleanup fails, the run fails with the cleanup&#39;s error. When the steps stopped before making something, guard the cleanup with an <code>if</code>, as above, so it doesn&#39;t try to remove what was never made.</p>
+<p>When you press <strong>Stop</strong>, the cleanup still runs, for up to a minute; a step still running at that point fails with <code>the cleanup took over 60 s</code>. A step in the cleanup can&#39;t have a <code>compare</code>. A cleanup belongs to a pipeline: a block can&#39;t have <code>finally</code> (put the cleanup in the pipeline that uses it). In a load test every iteration runs it, and its requests show as rows after the pipeline&#39;s.</p>
+<p>In the window, the steps end with a <strong>Finally</strong> section (&quot;runs after the steps, whatever happens&quot;) under the last step. <strong>Add a cleanup step</strong> puts one there, and a row&#39;s <strong>move down</strong> and <strong>move up</strong> buttons carry a step across the line (the last step down goes into Finally, the first cleanup step up leaves it). The section is only on a pipeline, never on a block.</p>
 <h2 id="find">Find your way around <a class="self" href="#find" aria-label="Find your way around">#</a></h2>
 <p>Give a pipeline <strong>tags</strong> in <strong>Auth and options</strong> (Enter or a comma adds one) and they show as chips under its name; a click on a chip filters by it. Every sidebar has a <strong>Filter…</strong> box (a name, or <code>#tag</code>). <strong>Ctrl+P</strong> (Cmd+P on macOS) opens one box over pipelines, blocks and requests: type some letters of the name, or <code>#tag</code>, and Enter opens it.</p>
 <h2 id="diagram">List and diagram <a class="self" href="#diagram" aria-label="List and diagram">#</a></h2>
-<p>The <strong>List</strong> shows each step as one line, the way others refer to it. The <strong>Diagram</strong> draws the same steps with an arrow from the request that produces a value to the one that reads it, so the data flow is visible at a glance.</p>
+<p>The <strong>List</strong> shows each step as one line, the way others refer to it. The <strong>Diagram</strong> draws the same steps with an arrow from the request that produces a value to the one that reads it, so the data flow is visible at a glance. The cleanup steps sit in their own box, marked &quot;finally&quot;, after the others.</p>
 <h2 id="run">Running <a class="self" href="#run" aria-label="Running">#</a></h2>
 <p><strong>Run</strong> runs the pipeline top to bottom against the selected environment. Each step shows its status and time; a failed check shows the response that failed it. <strong>Watch</strong> reruns it when something changes, or on a timer. Past runs stay listed under the pipeline.</p>
+<h3 id="run-from-a-failed-step">Run from a failed step <a class="self" href="#run-from-a-failed-step" aria-label="Run from a failed step">#</a></h3>
+<p>When a run fails, <strong>Run from step N</strong> appears on the strip&#39;s failure line, and the failed row has a <strong>run from here</strong> icon that does the same. It runs the pipeline again from that step: the steps before it are not sent again, and their values are reused from the last run (they show &quot;from the last run&quot;). The strip says &quot;from step 3&quot; and counts only the steps that ran, for example &quot;from step 3 · 4 steps · …&quot;.</p>
+<p>The values are kept for 30 minutes, in memory only: locking the vault or restarting Ultraman forgets them, and then the window asks you to run the whole pipeline. It asks the same if you changed a step before the one you chose, picked another environment, or a stream was opened before it. A token made by an earlier step may have expired by now; if so, run the whole pipeline. When the failed run&#39;s cleanup already ran, what it removed is still gone, and the strip says so.</p>
+<p>Run from here is the window&#39;s only: the terminal and the agent run whole pipelines.</p>
 <h2 id="blocks">Blocks <a class="self" href="#blocks" aria-label="Blocks">#</a></h2>
 <p>A block is a pipeline meant to be reused: a login, a setup. It declares <code>inputs</code> and <code>exports</code>. A pipeline runs it with <code>use: login</code>, and gets its exports as variables.</p>
 <h2 id="helpers">Helpers <a class="self" href="#helpers" aria-label="Helpers">#</a></h2>
@@ -210,12 +251,13 @@ steps:
 <h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
 <p>The <a href="security.html#promise">promise</a> applies here as everywhere. What this part adds:</p>
 <ul>
-<li><strong>You:</strong> a condition, a check or a regex never reads the content of a secret, or of a value made from one: a pipeline that would is refused instead of run, so a branch you take can&#39;t reveal a secret. See <a href="security.html#redaction">redaction</a>.</li>
+<li><strong>You:</strong> a condition (an <code>if</code> or an <code>until</code>), a check or a regex never reads the content of a secret, or of a value made from one: a pipeline that would is refused instead of run, so a branch you take can&#39;t reveal a secret. See <a href="security.html#redaction">redaction</a>.</li>
+<li><strong>The cleanup asks the same yes:</strong> a <code>finally</code> step that would send a secret to a new host is asked about before anything is sent, like any step, and it also runs after a Stop, with the same guards.</li>
 <li><strong>Your team:</strong> a pipeline from a folder you haven&#39;t trusted doesn&#39;t send anything from the window. See <a href="security.html#trusted-folders">trusted folders</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="requests.html"><small>Previous</small><span>Requests</span></a><a rel="next" href="load.html"><small>Next</small><span>Load</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

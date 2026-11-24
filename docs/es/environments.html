@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/environments.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -107,7 +107,7 @@ options:
 <li>solo va a los hosts a los que les diste el sí: la primera vez que un secreto fuera a ir a un host nuevo, Ultraman te pregunta (consulta <a href="security.html#consent">Seguridad y consentimiento</a>).</li>
 </ul>
 <p>Un valor de entorno puede apuntar a un secreto (<code>token: &quot;{{secrets.token}}&quot;</code>), así cada entorno puede usar el suyo. En el panel de Entornos, convierte una variable en secreto y, tras un aviso, su valor pasa a la bóveda; el YAML solo conserva la referencia. El nombre en la bóveda es <code>&lt;entorno&gt;.&lt;variable&gt;</code> por defecto (por ejemplo <code>staging.token</code>), y puedes cambiarlo. Cada compañero de equipo guarda sus propios valores en su propia bóveda. <strong>Renombrar</strong> mueve los nombres de la bóveda que siguen el nombre del entorno, si la bóveda está abierta.</p>
-<p>La primera vez que una ejecución necesita un secreto, la ventana te pide la contraseña maestra: para crearla o para abrir la bóveda. La bóveda se vuelve a bloquear tras 30 minutos sin uso; el candado de arriba la bloquea al momento, cambia la contraseña o la olvida. Cómo se cifra y qué protege y qué no: <a href="security.html#vault">la bóveda</a>.</p>
+<p>La primera vez que una ejecución necesita un secreto, la ventana te pide la contraseña maestra: para crearla o para abrir la bóveda. La bóveda se vuelve a bloquear tras 30 minutos sin uso; el candado de arriba muestra si está abierta, la bloquea al momento, cambia la contraseña o la olvida. Cómo se cifra y qué protege y qué no: <a href="security.html#vault">la bóveda</a>.</p>
 <aside class="note"><p>Si olvidas la contraseña maestra, los secretos no se pueden recuperar. <strong>¿La olvidaste?</strong> borra todos los secretos guardados después de que escribas la confirmación; después, vuelve a cargarlos.</p></aside>
 <h3 id="remember">Recordar en este equipo <a class="self" href="#remember" aria-label="Recordar en este equipo">#</a></h3>
 <p><strong>Recordar en este equipo</strong> viene desactivado y solo existe en la ventana de escritorio. Guarda la clave de la bóveda en el llavero del sistema para que la bóveda se abra sin preguntarte. Cambia seguridad por comodidad: en Windows y Linux, otras aplicaciones que ejecutes pueden leer esa entrada del llavero; en macOS, el Llavero te pregunta antes. La casilla lo advierte. La terminal nunca usa esta clave: la CLI pide la contraseña maestra por su cuenta.</p>
@@ -122,6 +122,6 @@ options:
 <nav class="pager"><a rel="prev" href="load.html"><small>Anterior</small><span>Carga</span></a><a rel="next" href="compare.html"><small>Siguiente</small><span>Comparar dos entornos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

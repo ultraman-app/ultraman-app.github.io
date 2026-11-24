@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/faq.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -94,7 +94,7 @@
 <h3 id="graphql">Ele faz GraphQL? <a class="self" href="#graphql" aria-label="Ele faz GraphQL?">#</a></h3>
 <p>Sim: uma request pode levar um body GraphQL, com autocompletar a partir do schema da API (carregado do servidor ou salvo no projeto), e uma resposta com <code>errors</code> faz o passo falhar mesmo com status 200, inclusive sob carga. As subscriptions funcionam sobre <code>graphql-transport-ws</code>, na área de Requests e como passos de pipeline. Ainda não: GraphQL sobre SSE, GET e persisted queries, batching e upload de arquivos. Veja <a href="requests.html#graphql">GraphQL</a>.</p>
 <h3 id="auth">Quais tipos de autenticação? <a class="self" href="#auth" aria-label="Quais tipos de autenticação?">#</a></h3>
-<p>Bearer token, basic auth e API key (num header ou na query string), definidos numa request, numa coleção ou numa pipeline. <code>ca</code> faz confiar na autoridade certificadora do seu próprio servidor. Não há certificados de cliente (mTLS), fluxos OAuth2, AWS SigV4 nem NTLM. Para uma API que emite tokens, um passo de login, um extract do token e uma auth bearer que o use resolvem o caso comum. Veja <a href="pipelines.html#steps">Pipelines</a>.</p>
+<p>Bearer token, basic auth e API key (num header ou na query string), definidos numa request, numa coleção ou numa pipeline. <code>ca</code> faz confiar na autoridade certificadora do seu próprio servidor. O login OAuth 2 existe para servidores MCP (veja <a href="requests.html#oauth2">Requests</a>). Não há certificados de cliente (mTLS), AWS SigV4 nem NTLM. Para uma API que emite tokens, um passo de login, um extract do token e uma auth bearer que o use resolvem o caso comum. Veja <a href="pipelines.html#steps">Pipelines</a>.</p>
 <h3 id="import">Dá para trazer o que eu já tenho? <a class="self" href="#import" aria-label="Dá para trazer o que eu já tenho?">#</a></h3>
 <p>Sim: coleções e ambientes do Postman, documentos OpenAPI 3, planos <code>.jmx</code> do JMeter, scripts do Artillery e tráfego gravado no navegador como arquivo HAR. Os segredos de um ambiente do Postman vão para o cofre. O que não dá para traduzir aparece listado, não se perde, e uma importação nunca envia uma request nem executa um script. Veja <a href="importing.html">Importar</a>.</p>
 <h3 id="requirements">Preciso ter Node, Java ou alguma outra coisa instalada? <a class="self" href="#requirements" aria-label="Preciso ter Node, Java ou alguma outra coisa instalada?">#</a></h3>
@@ -116,6 +116,6 @@
 <nav class="pager"><a rel="prev" href="coming-from.html"><small>Anterior</small><span>Vindo de outra ferramenta</span></a><a rel="next" href="../en/reference.html"><small>Seguinte</small><span>Format reference (YAML)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

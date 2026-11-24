@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/coming-from.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -83,7 +83,7 @@
 <tr><td><code>{{variable}}</code></td><td><code>{{env.x}}</code>, <code>{{secrets.x}}</code> o <code>{{x}}</code> (sesión, variable de colección)</td></tr>
 <tr><td>Tests (<code>pm.test</code>)</td><td>checks: assert y extract, sin código</td></tr>
 <tr><td><code>pm.environment.set</code> desde una respuesta</td><td>un extract</td></tr>
-<tr><td>Request GraphQL</td><td>un body GraphQL (<strong>Nueva request GraphQL</strong>); una respuesta con <code>errors</code> hace fallar el paso</td></tr>
+<tr><td>Request GraphQL</td><td>el tipo <strong>GraphQL</strong> (<strong>Nueva request</strong>, luego la celda del tipo); una respuesta con <code>errors</code> hace fallar el paso</td></tr>
 <tr><td>Suscripción GraphQL</td><td><strong>Suscribirse</strong> en una request cuya operación es una suscripción; pasos <code>subscribe</code> en una pipeline</td></tr>
 <tr><td>Collection Runner</td><td><strong>Ejecutar</strong> en el menú de la colección, o <code>ultraman run --collection</code></td></tr>
 <tr><td>Flows</td><td>pipelines</td></tr>
@@ -138,7 +138,7 @@
 <div class="table-wrap" tabindex="0"><table>
 <thead><tr><th scope="col">Herramienta</th><th scope="col">Ultraman</th></tr></thead>
 <tbody>
-<tr><td>La request WebSocket de Postman</td><td>una request de stream en el área Requests (<strong>Nuevo WebSocket o SSE</strong>)</td></tr>
+<tr><td>La request WebSocket de Postman</td><td>una request de stream en el área Requests (<strong>Nueva request</strong>, luego <strong>WebSocket</strong> o <strong>SSE</strong> en la celda del tipo)</td></tr>
 <tr><td>Los mensajes guardados de Postman</td><td>la pestaña <strong>Mensajes</strong> de la request</td></tr>
 <tr><td>k6 <code>ws.connect</code>, <code>socket.on(&#39;message&#39;)</code></td><td>un paso <code>websocket</code> y un <code>receive</code></td></tr>
 <tr><td>El engine <code>ws</code> de Artillery: <code>connect</code>, <code>send</code></td><td>un paso <code>websocket</code> y un paso <code>send</code></td></tr>
@@ -165,6 +165,6 @@
 <nav class="pager"><a rel="prev" href="agents.html"><small>Anterior</small><span>Agentes (MCP)</span></a><a rel="next" href="faq.html"><small>Siguiente</small><span>Preguntas</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

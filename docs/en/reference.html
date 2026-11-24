@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://ultraman-app.github.io/docs/en/reference.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.5.0">
+<link rel="stylesheet" href="../../docs.css?v=1.6.1">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -70,7 +70,7 @@
 <p>Durations are written two ways, by field. In <strong>pipelines, steps, options and stream files</strong> every time is a plain integer of milliseconds (<code>timeout: 10000</code>, <code>wait: 500</code>, <code>listen: 2000</code>); <code>10s</code> is an error there. In <strong>load tests</strong> (<code>for</code>, <code>pacing</code>, <code>thinkTime</code>, thresholds, <code>maxWait</code>, <code>apdex</code>) a duration is text such as <code>500ms</code>, <code>30s</code>, <code>1.5m</code> or <code>1h</code>, and a bare number there is <strong>seconds</strong>, so <code>p95: 500</code> means 500 seconds: write the unit. A <code>wait</code> step is milliseconds; a load test&#39;s <code>thinkTime</code> is a duration (<code>2s</code>).</p>
 <p>Required and allowed keys:</p>
 <ul>
-<li>A pipeline or block needs <code>name</code>, <code>host</code> and <code>steps</code>. The only other top-level keys are <code>description</code>, <code>tags</code>, <code>auth</code>, <code>options</code>, <code>headers</code>, <code>inputs</code> and <code>exports</code>.</li>
+<li>A pipeline or block needs <code>name</code>, <code>host</code> and <code>steps</code>. The only other top-level keys are <code>description</code>, <code>tags</code>, <code>auth</code>, <code>options</code>, <code>headers</code>, <code>inputs</code>, <code>finally</code> and <code>exports</code>. <code>finally</code> is a list of steps that run after <code>steps</code> whatever happened; it is numbered after them, a step in it has no <code>compare</code>, and a block can&#39;t have it.</li>
 <li>A <code>request</code> step needs <code>method</code> and <code>path</code>. The path has no <code>?</code> (put the query in <code>query</code>), and every <code>:param</code> in it needs a key in <code>params</code> (and every key in <code>params</code> a <code>:param</code>).</li>
 <li>A request has one body key at most: <code>json</code>, <code>body</code>, <code>form</code>, <code>multipart</code> or <code>file</code>.</li>
 <li>In a step&#39;s <code>query</code>, <code>headers</code>, <code>form</code> and <code>multipart</code>, a key that starts with <code>~</code> is a disabled row: it is kept in the file and not sent (<code>~x-debug: &quot;1&quot;</code>).</li>
@@ -85,7 +85,8 @@ headers: { x-tenant: acme }       # sent by every request (a step&#39;s own head
 inputs: [user]                    # values the run asks for (a block&#39;s are filled with `use … with`)
 exports: [token]                  # a block&#39;s values the caller gets
 options: { timeout: 10000, redirects: 5, maxSize: 5242880, http2: false }   # plainHttp / ca relax TLS: the user is warned
-steps: [ ... ]</code></pre>
+steps: [ ... ]
+finally: [ ... ]                  # steps that run after `steps` whatever happened (passed, failed or stopped); not in a block</code></pre>
 <h3 id="steps-each-starts-with-its-kind">Steps (each starts with its kind) <a class="self" href="#steps-each-starts-with-its-kind" aria-label="Steps (each starts with its kind)">#</a></h3>
 <pre tabindex="0"><code>- request: login                  # a name others refer to as $login
   description: optional
@@ -131,6 +132,12 @@ steps: [ ... ]</code></pre>
 
 - repeat: 3                       # or a list as text: repeat: &quot;{{ids}}&quot; with as: id
   steps: [ ... ]
+
+- repeat: 20                      # until: a number of rounds (at most), not a list; the same conditions as `if`
+  until: { equals: [&quot;{{status}}&quot;, shipped] }   # checked after each round; the run goes on when it holds
+  every: 2000                     # ms between rounds (default 1000); never more than 60000
+  backoff: 1.5                    # the pause grows by this factor each round (1 to 10, default 1)
+  steps: [ ... ]                  # not held after the last round = the step fails, saying what it last saw
 
 - if: { exists: coupon }          # or { equals: [a, b] }, { matches: [text, /re/] }; no else
                                  # a condition, an assert, a `where` or a `regex` never reads a secret, a value made
@@ -237,6 +244,7 @@ steps: [ ... ]</code></pre>
     tool: search_customer
     arguments: { query: &quot;{{email}}&quot;, limit: 10 }
     allowErrors: true            # optional (tools only): an isError result doesn&#39;t fail the step
+    protocol: auto               # optional: auto (default) or 2026-07-28, 2025-11-25, 2025-06-18, 2025-03-26; wins over the collection&#39;s
 
 - request: customer card
   method: POST
@@ -255,7 +263,7 @@ steps: [ ... ]</code></pre>
 - extract: first_customer         # a tool that answers JSON as text: .@json reads inside the text
   from: $search customer
   path: $.content[0].text.@json.customers[0].id</code></pre>
-<p><strong>The response a step reads</strong> is the JSON-RPC <code>result</code>, unwrapped from the envelope and from any event stream: for a tool, <code>content</code> (a list of blocks: text, image, embedded resource), <code>structuredContent</code> when the tool has one, and <code>isError</code>; for a resource, <code>contents</code>; for a prompt, <code>messages</code>. The status stays the HTTP status. A JSON-RPC error fails the step (<code>MCP error &lt;code&gt;: &lt;message&gt;</code>), and so does <code>isError: true</code> unless <code>allowErrors</code>. The session (one per server per run, opened at the first call and ended at the run&#39;s end) belongs to the engine: its id is never shown or saved. Where the server bends the standard and one reading is safe, the step passes with a note; otherwise it fails naming the fault.</p>
+<p><strong>The response a step reads</strong> is the JSON-RPC <code>result</code>, unwrapped from the envelope and from any event stream: for a tool, <code>content</code> (a list of blocks: text, image, embedded resource), <code>structuredContent</code> when the tool has one, and <code>isError</code>; for a resource, <code>contents</code>; for a prompt, <code>messages</code>. The status stays the HTTP status. A JSON-RPC error fails the step (<code>MCP error &lt;code&gt;: &lt;message&gt;</code>), and so does <code>isError: true</code> unless <code>allowErrors</code>. The session (one per server per run, opened at the first call and ended at the run&#39;s end) belongs to the engine: its id is never shown or saved. In 2026-07-28 there is no session at all. Where the server bends the standard and one reading is safe, the step passes with a note; otherwise it fails naming the fault.</p>
 <p><strong>`.@json`: a path inside a JSON text.</strong> A tool often answers JSON as a string in <code>content[0].text</code>. In a path, <code>.@json</code> parses the string found so far and goes on inside it: <code>$.content[0].text.@json.customers[0].id</code>.</p>
 <ul>
 <li>Only the dot form is the operator; a key really named <code>@json</code> is written <code>[&#39;@json&#39;]</code>. It can repeat (JSON inside JSON) and can follow <code>[*]</code>: the items that don&#39;t parse are skipped. A text that is a bare scalar (<code>&#39;5&#39;</code> gives 5) works on its own but has nothing deeper.</li>
@@ -293,7 +301,7 @@ contract: { openapi: files/shop.yaml, mode: warn }   # optional: the OpenAPI spe
                                   # file under files/, a path on the host or a URL); strict fails a run&#39;s step
 graphql: { schema: files/shop.graphql, subscriptions: /graphql/ws }   # optional: the schema its GraphQL requests use (a file
                                   # under files/) and where its subscriptions open their socket (default: the request&#39;s path)
-mcp: { path: /mcp, schema: files/shop.mcp.json }   # optional: a collection imported from an MCP server: its address on the host and the
+mcp: { path: /mcp, protocol: 2026-07-28, schema: files/shop.mcp.json }   # optional (protocol: auto or a version; a request&#39;s own wins): a collection imported from an MCP server: its address on the host and the
                                   # server&#39;s last lists (tools, resources, prompts) that the name completion reads; Update from the server asks there</code></pre>
 <p>A request, <code>ultraman/requests/&lt;collection&gt;/&lt;folders…&gt;/&lt;id&gt;.yaml</code> (save_request takes this whole file):</p>
 <pre tabindex="0"><code>request: me                       # its id comes from this name
@@ -367,6 +375,6 @@ apdex: { satisfied: 300ms, tolerating: 1200ms }   # or apdex: true</code></pre>
 <nav class="pager"><a rel="prev" href="faq.html"><small>Previous</small><span>Questions</span></a><span></span></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.5.0</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>
