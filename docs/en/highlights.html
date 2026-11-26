@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/highlights.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,12 +68,13 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="highlights">What Ultraman gives you <a class="self" href="#highlights" aria-label="What Ultraman gives you">#</a></h1>
-<p>Ultraman tests HTTP APIs, GraphQL, WebSocket, SSE and MCP servers: one app on your computer for single requests, multi-step tests, load and CI, all saved as plain files in your own git repo. Ultraman never sends anything in an unsafe way without your explicit consent: a secret goes only to a host you approved, and a folder you haven&#39;t trusted sends nothing.</p>
+<p>Ultraman tests HTTP APIs, GraphQL, WebSocket, SSE and MCP servers: one app on your computer for single requests, multi-step tests, load and CI, all saved as plain files in your own git repo. A secret&#39;s value lives in an encrypted vault, never in the files Ultraman writes, and your agent never sees it: a secret goes only to a host you approved, and a folder you haven&#39;t trusted sends nothing.</p>
 <p>Each part below says what it does for you and where to read more. If you&#39;d rather start from your role, jump to <a href="highlights.html#start">Where to start</a>.</p>
 <h2 id="pipelines">Pipelines you can see <a class="self" href="#pipelines" aria-label="Pipelines you can see">#</a></h2>
 <p>A <strong>pipeline</strong> is a test written as a list of steps: log in, take the token from the response, create an order, check that it shows up. You get a test you can read like a sentence: every step is a row (&quot;token ← $login $.token&quot;), and the same pipeline shows as a diagram, with an arrow from the request that produces a value to the one that uses it. It&#39;s saved as YAML in your repo, so a change to a test is reviewed in a pull request like any other code. → <a href="pipelines.html">Pipelines</a></p>
@@ -83,7 +85,7 @@
 <h2 id="importing">Bring what you already have <a class="self" href="#importing" aria-label="Bring what you already have">#</a></h2>
 <p>You don&#39;t start from zero: Postman collections and environments, OpenAPI documents, JMeter plans, Artillery scripts and traffic recorded in your browser become collections, pipelines, environments and load tests. What can&#39;t be translated is listed, not lost. An import reads only the file you pick, and sends nothing. → <a href="importing.html">Importing</a></p>
 <h2 id="secrets">Your secrets go only where you said <a class="self" href="#secrets" aria-label="Your secrets go only where you said">#</a></h2>
-<p>Ultraman never sends anything in an unsafe way without your explicit consent. A secret, written <code>{{secrets.token}}</code>, lives in an encrypted vault on your computer, never in the repo. The first time a request would send it to a server you haven&#39;t approved for it, Ultraman asks; so does a file from outside the project&#39;s <code>ultraman/files/</code> folder. Where a secret&#39;s value would show (a response, the history, a run report, an export), you see <code>[secret:token]</code> instead. A folder you don&#39;t trust yet opens in restricted mode: it sends nothing and runs no git. That is what lets you open a pipeline a colleague wrote, or one from the internet, without it quietly sending your token somewhere else. What this can&#39;t cover is said plainly in <a href="security.html#limits">the limits</a>. → <a href="security.html">Security and consent</a>, <a href="environments.html">Environments and secrets</a></p>
+<p>A secret&#39;s value never goes into the files Ultraman writes, and your agent never sees it. A secret, written <code>{{secrets.token}}</code>, lives in an encrypted vault on your computer, never in the repo. The first time a request would send it to a server you haven&#39;t approved for it, Ultraman asks; so does a file from outside the project&#39;s <code>ultraman/files/</code> folder. Where a secret&#39;s value would show (a response, the history, a run report, an export), you see <code>[secret:token]</code> instead. A folder you don&#39;t trust yet opens in restricted mode: it sends nothing and runs no git. That is what lets you open a pipeline a colleague wrote, or one from the internet, without it quietly sending your token somewhere else. What this can&#39;t cover is said plainly in <a href="security.html#limits">the limits</a>. → <a href="security.html">Security and consent</a>, <a href="environments.html">Environments and secrets</a></p>
 <h2 id="team">A team that shares through git <a class="self" href="#team" aria-label="A team that shares through git">#</a></h2>
 <p>Your team shares tests the way it shares code, with no account and no server in between: pipelines, collections, environments, load tests and the files requests send are all files under <code>ultraman/</code>. <strong>Sync</strong> commits and pushes only those, and shows conflicts side by side. Secrets, this machine&#39;s values and your history stay on your computer. → <a href="team.html">Working as a team</a></p>
 <h2 id="ci">The same tests in CI <a class="self" href="#ci" aria-label="The same tests in CI">#</a></h2>
@@ -104,7 +106,7 @@
 <tr><td>DevOps or SRE</td><td>How do I run it in CI and fail the build?</td><td><a href="ci.html">CI</a>, <a href="ci.html#allow">Allowing secrets in CI</a>, <a href="ci.html#load-in-ci">Load in CI</a>, <a href="cli.html">The terminal</a></td></tr>
 <tr><td>Performance tester</td><td>Can it replace my load tool?</td><td><a href="load.html">Load</a>, <a href="load.html#report">The report</a>, <a href="why.html#not-for">Where another tool fits better</a></td></tr>
 <tr><td>Tech lead</td><td>How does my team share and review tests?</td><td><a href="why.html">Why Ultraman</a>, <a href="team.html">Working as a team</a>, <a href="team.html#reviews">In pull requests</a></td></tr>
-<tr><td>Security</td><td>Can I trust it with our credentials?</td><td><a href="security.html#promise">The promise</a>, <a href="security.html#leaves-your-machine">What leaves your machine</a>, <a href="security.html#agents">Agents</a>, <a href="security.html#limits">Limits</a></td></tr>
+<tr><td>Security</td><td>Can I trust it with our credentials?</td><td><a href="security.html#promise">The promise</a>, <a href="security.html#leaves-your-machine">What leaves your machine</a>, <a href="security.html#agents">Agents</a>, <a href="security.html#limits">Limits</a>, <a href="security-history.html">Security history</a></td></tr>
 <tr><td>Coming from Postman, JMeter or Artillery</td><td>What is my tool&#39;s word called here?</td><td><a href="coming-from.html">Coming from another tool</a>, <a href="importing.html">Importing</a></td></tr>
 </tbody>
 </table></div>
@@ -112,6 +114,6 @@
 <nav class="pager"><span></span><a rel="next" href="why.html"><small>Next</small><span>Why Ultraman</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

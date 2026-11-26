@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -74,7 +76,7 @@
 <h1>Documentação do Ultraman</h1>
 <p>Como o Ultraman funciona, o que cada recurso oferece e o que protege você e sua equipe.</p>
 <ol class="toc">
-<li><a href="highlights.html">O que o Ultraman oferece</a><p>O Ultraman testa APIs HTTP, GraphQL, WebSocket, SSE e servidores MCP: um único app no seu computador para requests avulsas, testes de vários passos, carga e CI, tudo salvo em arquivos simples no seu próprio repositório git. Ele nunca envia nada de forma insegura sem o seu consentimento explícito: um segredo só vai para um host que você aprovou, e uma pasta em que você ainda não confia não envia nada.</p></li>
+<li><a href="highlights.html">O que o Ultraman oferece</a><p>O Ultraman testa APIs HTTP, GraphQL, WebSocket, SSE e servidores MCP: um único app no seu computador para requests avulsas, testes de vários passos, carga e CI, tudo salvo em arquivos simples no seu próprio repositório git. O valor de um segredo fica num cofre criptografado, nunca nos arquivos que o Ultraman escreve, e o seu agente nunca o vê: um segredo só vai para um host que você aprovou, e uma pasta em que você ainda não confia não envia nada.</p></li>
 <li><a href="why.html">Por que o Ultraman</a><p>O Ultraman junta requests de API, fluxos de teste, testes de carga e checks de CI num só app local, salvos em arquivos simples no seu próprio repositório git. Esta página mostra em que ele difere das ferramentas que você talvez já use, e quando uma delas é a melhor escolha.</p></li>
 <li><a href="getting-started.html">Primeiros passos</a><p>Da instalação do Ultraman até a sua primeira request e a sua primeira pipeline, além de como ele se atualiza, por que o seu sistema pode emitir um aviso sobre ele e como removê-lo.</p></li>
 <li><a href="security.html">Segurança e consentimento</a><p>O que o Ultraman pergunta antes de enviar qualquer coisa, como ele mantém os seus segredos longe dos olhos e o que fica por sua conta: promessas que você pode conferir, para você, a sua equipe e o seu CI. Não há telemetria, analytics, relatório de falhas nem conta.</p></li>
@@ -91,10 +93,11 @@
 <li><a href="agents.html">Agentes (MCP)</a><p>Um agente de IA (o Claude Code ou qualquer outro cliente MCP) pode usar o Ultraman através de ultraman mcp. Ele faz o mesmo que você faz na janela: lê e escreve requests, pipelines e testes de carga, envia e executa, importa, inicia o servidor mock, lê relatórios e compara. Cada chamada passa pela sua aprovação.</p></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a><p>Algumas ideias têm o mesmo nome aqui, outras têm outro nome, e umas poucas não existem de propósito.</p></li>
 <li><a href="faq.html">Perguntas</a><p>Respostas curtas para o que as equipes perguntam antes de adotar o Ultraman, inclusive os &quot;nãos&quot; sinceros. Cada resposta leva à página que entra em mais detalhes.</p></li>
+<li><a href="security-history.html">Histórico de segurança</a><p>Como a segurança do Ultraman foi revisada até agora, em números: o que cada revisão examinou, o que encontrou e o que aconteceu com o que encontrou.</p></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a><p>Everything lives as YAML under ultraman/ in the user&#39;s project. Unknown keys are errors: write only what&#39;s listed. Variables: {{env.x}} (the environment), {{secrets.x}} (a secret: usable, never visible), {{x}} (an input, an extract or a collection variable).</p></li>
 </ol>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

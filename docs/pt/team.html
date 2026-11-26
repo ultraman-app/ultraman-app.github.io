@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/team.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -77,7 +79,7 @@
 <p>Se o projeto está num repositório git com um remoto, a barra superior mostra quantos arquivos faltam sincronizar (&quot;2 alterações não sincronizadas&quot;) e oferece <strong>Sincronizar</strong>. Salvar (Ctrl+S) só grava no seu disco; nada chega ao remoto até você sincronizar.</p>
 <p>A sincronização mexe em seis pastas, e só nelas: <code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code>, <code>ultraman/envs/</code>, <code>ultraman/requests/</code> (as coleções), <code>ultraman/load-tests/</code> e <code>ultraman/files/</code> (os arquivos que as requests enviam). Ela faz o commit dessas pastas (o painel lista os arquivos e uma mensagem que você pode editar), busca as mudanças do remoto, faz o merge, dá push e recarrega. O resto do repositório, as outras mudanças que você não commitou e o que está em stage continuam intactos. Ela usa o git do seu sistema e as suas próprias credenciais; o app nunca pede senha.</p>
 <h2 id="conflicts">Conflitos <a class="self" href="#conflicts" aria-label="Conflitos">#</a></h2>
-<p>Se uma pipeline mudou no seu disco e também no remoto, um diálogo mostra as duas versões lado a lado, como passos ou como YAML. Escolha <strong>Ficar com a minha</strong>, <strong>Usar a do remoto</strong> ou <strong>Salvar a minha como cópia</strong>. Esc cancela sem mudar nada.</p>
+<p>Se uma pipeline mudou no seu disco e também no remoto, um diálogo mostra as duas versões lado a lado, como passos ou como YAML. Escolha <strong>Ficar com a minha</strong>, <strong>Usar a do remoto</strong> ou <strong>Ficar com as duas</strong> (a sua é salva ao lado como <code>&lt;nome&gt;-mine</code>, igual para pipelines, requests, ambientes, testes de carga e arquivos copiados; nunca grava por cima de outro arquivo). Esc cancela sem mudar nada. O que você escolher, a versão que ficou de fora continua no <a href="team.html#history">histórico do arquivo</a>.</p>
 <h2 id="errors">Quando a sincronização falha <a class="self" href="#errors" aria-label="Quando a sincronização falha">#</a></h2>
 <p>A sincronização mostra o motivo e o que o git respondeu. Os casos mais comuns:</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -92,7 +94,19 @@
 </tbody>
 </table></div>
 <h2 id="on-disk">Mudou no disco <a class="self" href="#on-disk" aria-label="Mudou no disco">#</a></h2>
-<p>Se você executa <code>git pull</code> num terminal, ou altera um YAML em outro editor, a janela percebe sozinha. Se a pipeline aberta tinha mudanças não salvas, aparece &quot;Mudou no disco enquanto você editava.&quot; com a opção <strong>Recarregar</strong>.</p>
+<p>Se você executa <code>git pull</code> num terminal, ou altera um YAML em outro editor, a janela percebe sozinha: ela confere os arquivos abertos ao ganhar o foco, ao trocar de aba, antes de cada salvamento e a cada 5 segundos. Um arquivo sem mudanças não salvas simplesmente mostra a versão nova. Se uma request, pipeline ou ambiente aberto tinha mudanças não salvas, aparece &quot;Mudou no disco enquanto você editava.&quot; com quatro opções:</p>
+<ul>
+<li><strong>Ficar com a minha</strong>: a sua versão fica; ao salvar, ela grava por cima da do disco.</li>
+<li><strong>Ficar com a do disco</strong>: o editor mostra o arquivo como está agora. A sua versão não salva fica guardada à parte no histórico do arquivo.</li>
+<li><strong>Ficar com as duas</strong>: a sua é salva como um arquivo novo ao lado (<code>&lt;nome&gt;-mine</code>) e o editor mostra a do disco.</li>
+<li><strong>Comparar</strong>: as duas versões lado a lado, com as mesmas três opções.</li>
+</ul>
+<p>Nenhuma opção perde uma versão: a outra fica no <a href="team.html#history">histórico do arquivo</a>.</p>
+<h2 id="drafts">O trabalho não salvo volta <a class="self" href="#drafts" aria-label="O trabalho não salvo volta">#</a></h2>
+<p>Enquanto uma request, pipeline, ambiente ou teste de carga tem mudanças não salvas, o Ultraman guarda um rascunho neste computador. Se a janela fecha, trava ou recarrega, a aba volta com as suas mudanças e o aviso &quot;Suas alterações não salvas foram recuperadas&quot;; <strong>Descartá-las</strong> volta ao arquivo (o rascunho fica guardado à parte no histórico). O rascunho some quando você salva ou descarta. Se o arquivo mudou no disco enquanto isso, aparecem as quatro opções acima.</p>
+<h2 id="history">O histórico de um arquivo <a class="self" href="#history" aria-label="O histórico de um arquivo">#</a></h2>
+<p>Antes de o Ultraman gravar por cima de um arquivo de uma pasta do projeto ou apagá-lo (ao salvar, no Sincronizar, pelo agente, numa importação ou numa restauração), ele guarda a versão que substitui; quando um arquivo muda fora do Ultraman, guarda a última versão que conhecia. <strong>Versões deste arquivo…</strong> no menu ⋯ dele (o de uma request na árvore, o de uma pipeline ou de um ambiente ao lado de Salvar) abre as versões do arquivo e os commits do git numa só lista: escolha uma para vê-la ao lado do arquivo como está agora, e <strong>Restaurar esta versão</strong> a grava de volta byte a byte. <strong>Apagados recentemente…</strong> (no menu ⋯ de uma coleção, ou ao lado de Este arquivo na mesma janela) lista os arquivos que o Ultraman ou o disco removeram, com Restaurar. Cada arquivo guarda até 20 versões, por 30 dias, na pasta do próprio Ultraman neste computador (<code>~/.ultraman</code>), nunca no projeto.</p>
+<p>Se outro programa está com um arquivo aberto (um editor, um antivírus verificando), Salvar espera até dois segundos, depois avisa e oferece <strong>Tentar de novo</strong>; o arquivo fica como estava.</p>
 <h2 id="personal">O que fica só com você <a class="self" href="#personal" aria-label="O que fica só com você">#</a></h2>
 <p>Os seus segredos, os valores de ambiente desta máquina, o histórico, as execuções anteriores e os relatórios de carga nunca são sincronizados. Cada pessoa define os próprios segredos no próprio cofre.</p>
 <h2 id="trusted">Pastas confiáveis <a class="self" href="#trusted" aria-label="Pastas confiáveis">#</a></h2>
@@ -102,6 +116,7 @@
 <h2 id="safety">O que mantém você seguro <a class="self" href="#safety" aria-label="O que mantém você seguro">#</a></h2>
 <ul>
 <li><strong>Sua equipe:</strong> só essas seis pastas entram no commit e no push; segredos, valores locais, histórico e relatórios ficam em cada máquina (<a href="security.html#stored">o que fica guardado</a>).</li>
+<li><strong>Você:</strong> os rascunhos e as versões anteriores de um arquivo ficam na pasta do próprio Ultraman neste computador (<code>~/.ultraman</code>), fora do projeto: o git nunca os vê, um commit não consegue plantar um, e nem o agente nem a CLI os leem.</li>
 <li><strong>Você:</strong> uma pasta em que você não confiou não envia nada e não executa git (<a href="security.html#trusted-folders">pastas confiáveis</a>).</li>
 <li><strong>Sua equipe:</strong> uma mudança num teste é um diff legível, então um host ou header novo não entra sem ninguém ver.</li>
 <li><strong>CI:</strong> os mesmos arquivos executam no seu pipeline de CI, com os segredos próprios dele (<a href="ci.html#github-action">CI</a>).</li>
@@ -109,6 +124,6 @@
 <nav class="pager"><a rel="prev" href="ci.html"><small>Anterior</small><span>CI</span></a><a rel="next" href="agents.html"><small>Seguinte</small><span>Agentes (MCP)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

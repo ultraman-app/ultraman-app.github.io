@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/why.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html">Historial de seguridad</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,12 +68,15 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html">Historial de seguridad</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="why">Por qué Ultraman <a class="self" href="#why" aria-label="Por qué Ultraman">#</a></h1>
 <p>Ultraman reúne requests de API, flujos de prueba, pruebas de carga y checks de CI en una sola app local, guardados como archivos simples en tu propio repo de git. Esta página explica en qué se diferencia de herramientas que quizá ya usas, y cuándo alguna de ellas es mejor opción.</p>
+<h2 id="problem">El problema <a class="self" href="#problem" aria-label="El problema">#</a></h2>
+<p>Tus pruebas de API tienen las llaves de tus sistemas, y ahora también las escribe y las corre un agente de IA. Ultraman está hecho para que el valor de una clave nunca entre en los archivos que escribe y el agente nunca lo vea: los secretos viven en una bóveda cifrada en tu computadora, solo van a los hosts que aprobaste y en todo lo demás se ven como <code>[secret:nombre]</code>. Consulta <a href="security.html">Seguridad y consentimiento</a>.</p>
 <h2 id="idea">La idea en pocas palabras <a class="self" href="#idea" aria-label="La idea en pocas palabras">#</a></h2>
 <p>Ultraman encaja con un equipo que guarda las pruebas de su API junto al código, las revisa en pull requests y quiere que un mismo archivo sirva de prueba manual, de check de CI y de escenario de carga.</p>
 <ul>
@@ -80,6 +84,7 @@
 <li><strong>Nada escondido en código.</strong> Los pasos son requests, extracts, checks, esperas, repeticiones y ramas que puedes leer. Lo que hace un paso siempre está a la vista y en el diff.</li>
 <li><strong>Tu repo de git es el lugar compartido.</strong> Sin cuenta ni workspace: <strong>Sincronizar</strong> hace commit solo de las carpetas de Ultraman, y un cambio en una prueba se revisa como cualquier cambio de código.</li>
 <li><strong>Los secretos son tuyos.</strong> Un secreto vive en una bóveda cifrada en tu computadora y solo va a los hosts a los que les dijiste que sí.</li>
+<li><strong>Tu agente trabaja, tú decides.</strong> Un agente de IA se conecta por MCP, encuentra tus pipelines, las escribe y las ejecuta, y lo que inicia espera tu OK en la ventana (las llamadas de solo lectura se pueden dejar pasar durante una sesión); usa un secreto por su nombre y nunca ve su valor. Ultraman también prueba servidores MCP. Consulta <a href="agents.html">Agentes</a> y <a href="requests.html#mcp">Servidores MCP</a>.</li>
 </ul>
 <p>Las comparaciones de abajo tratan del enfoque, y se verificaron con la documentación de cada herramienta en noviembre de 2026. Las herramientas cambian: lo que hacen hoy lo dice su propia documentación.</p>
 <h2 id="postman">Postman <a class="self" href="#postman" aria-label="Postman">#</a></h2>
@@ -135,12 +140,12 @@
 <li>carga desde varias máquinas o desde la nube: Ultraman genera la carga desde una sola computadora, con hasta 8 hilos (consulta <a href="load.html#workers">Más de un hilo</a>);</li>
 <li>carga con navegadores reales;</li>
 <li>cuentas, roles y permisos en un workspace hospedado: en Ultraman, el control de acceso es tu repo de git (consulta <a href="faq.html#permissions">Permisos</a>);</li>
-<li>flujos OAuth2, certificados de cliente, AWS SigV4 o NTLM (consulta <a href="faq.html#auth">Autenticación</a>);</li>
+<li>certificados de cliente, AWS SigV4 o NTLM (OAuth 2 sí está: consulta <a href="faq.html#auth">Autenticación</a>);</li>
 <li>una herramienta en el navegador sin nada que instalar.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="highlights.html"><small>Anterior</small><span>Lo que te da Ultraman</span></a><a rel="next" href="getting-started.html"><small>Siguiente</small><span>Primeros pasos</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

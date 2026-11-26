@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/team.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html">Historial de seguridad</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html">Historial de seguridad</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -77,7 +79,7 @@
 <p>Si el proyecto está en un repo git con un remoto, la barra superior indica cuántos archivos faltan por sincronizar (&quot;2 cambios sin sincronizar&quot;) y ofrece <strong>Sincronizar</strong>. Guardar (Ctrl+S) solo escribe en tu disco; nada llega al remoto hasta que sincronizas.</p>
 <p>La sincronización toca seis carpetas, y solo esas: <code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code>, <code>ultraman/envs/</code>, <code>ultraman/requests/</code> (las colecciones), <code>ultraman/load-tests/</code> y <code>ultraman/files/</code> (los archivos que envían las requests). Hace commit de ellas (el panel muestra los archivos y un mensaje que puedes editar), trae los cambios del remoto, los fusiona, hace push y recarga. El resto de tu repo, tus otros cambios sin commit y lo que tengas en staging quedan intactos. Usa el git de tu sistema y tus propias credenciales; la app nunca te pide una contraseña.</p>
 <h2 id="conflicts">Conflictos <a class="self" href="#conflicts" aria-label="Conflictos">#</a></h2>
-<p>Si una pipeline cambió tanto en tu disco como en el remoto, un diálogo muestra las dos versiones lado a lado, como pasos o como YAML. Elige <strong>Quedarme con la mía</strong>, <strong>Usar la del remoto</strong> o <strong>Guardar la mía como copia</strong>. Esc cancela sin cambiar nada.</p>
+<p>Si una pipeline cambió tanto en tu disco como en el remoto, un diálogo muestra las dos versiones lado a lado, como pasos o como YAML. Elige <strong>Quedarme con la mía</strong>, <strong>Usar la del remoto</strong> o <strong>Quedarme con las dos</strong> (la tuya se guarda al lado como <code>&lt;nombre&gt;-mine</code>, igual para pipelines, requests, entornos, pruebas de carga y archivos copiados; nunca escribe encima de otro archivo). Esc cancela sin cambiar nada. Elijas lo que elijas, la versión que no quedó sigue en el <a href="team.html#history">historial del archivo</a>.</p>
 <h2 id="errors">Cuando falla la sincronización <a class="self" href="#errors" aria-label="Cuando falla la sincronización">#</a></h2>
 <p>La sincronización muestra el motivo y lo que respondió git. Los casos más comunes:</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -92,7 +94,19 @@
 </tbody>
 </table></div>
 <h2 id="on-disk">Cambió en el disco <a class="self" href="#on-disk" aria-label="Cambió en el disco">#</a></h2>
-<p>Si haces <code>git pull</code> en una terminal, o cambias un YAML con otro editor, la ventana lo detecta por sí sola. Si la pipeline que tienes abierta tenía cambios sin guardar, muestra &quot;Cambió en disco mientras la editabas.&quot; y ofrece <strong>Recargar</strong>.</p>
+<p>Si haces <code>git pull</code> en una terminal, o cambias un YAML con otro editor, la ventana lo detecta por sí sola: revisa los archivos que tienes abiertos al recibir el foco, al cambiar de pestaña, antes de cada guardado y cada 5 segundos. Un archivo sin cambios sin guardar simplemente muestra la versión nueva. Si una request, pipeline o entorno que tienes abierto tenía cambios sin guardar, muestra &quot;Cambió en disco mientras la editabas.&quot; y ofrece cuatro opciones:</p>
+<ul>
+<li><strong>Quedarme con la mía</strong>: tu versión se queda; al guardar escribe encima de la del disco.</li>
+<li><strong>Tomar la del disco</strong>: el editor muestra el archivo como está ahora. Tu versión sin guardar queda apartada en el historial del archivo.</li>
+<li><strong>Quedarme con las dos</strong>: la tuya se guarda como un archivo nuevo al lado (<code>&lt;nombre&gt;-mine</code>) y el editor muestra la del disco.</li>
+<li><strong>Comparar</strong>: las dos versiones lado a lado, con las mismas tres opciones.</li>
+</ul>
+<p>Ninguna opción pierde una versión: la otra queda en el <a href="team.html#history">historial del archivo</a>.</p>
+<h2 id="drafts">Tu trabajo sin guardar vuelve <a class="self" href="#drafts" aria-label="Tu trabajo sin guardar vuelve">#</a></h2>
+<p>Mientras una request, pipeline, entorno o prueba de carga tiene cambios sin guardar, Ultraman guarda un borrador en esta computadora. Si la ventana se cierra, se cuelga o se recarga, la pestaña vuelve con tus cambios y el aviso &quot;Se recuperaron tus cambios sin guardar&quot;; <strong>Descartarlos</strong> vuelve al archivo (el borrador queda apartado en su historial). El borrador se va cuando guardas o descartas. Si el archivo cambió en disco mientras tanto, aparecen las cuatro opciones de arriba.</p>
+<h2 id="history">El historial de un archivo <a class="self" href="#history" aria-label="El historial de un archivo">#</a></h2>
+<p>Antes de que Ultraman escriba encima de un archivo de una carpeta del proyecto o lo borre (al guardar, con Sincronizar, el agente, una importación o una restauración), guarda la versión que reemplaza; cuando un archivo cambia fuera de Ultraman, guarda la última versión que conocía. <strong>Versiones de este archivo…</strong> en su menú ⋯ (el de una request en el árbol, el de una pipeline o un entorno junto a Guardar) abre las versiones del archivo y sus commits de git en una sola lista: elige una para verla junto al archivo como está ahora, y <strong>Restaurar esta versión</strong> la vuelve a escribir byte a byte. <strong>Borrados hace poco…</strong> (en el menú ⋯ de una colección, o junto a Este archivo en la misma ventana) lista los archivos que Ultraman o el disco quitaron, con Restaurar. Cada archivo guarda hasta 20 versiones, durante 30 días, en la carpeta propia de Ultraman en esta computadora (<code>~/.ultraman</code>), nunca en el proyecto.</p>
+<p>Si otro programa tiene un archivo abierto (un editor, un antivirus que lo revisa), Guardar espera hasta dos segundos, luego lo dice y ofrece <strong>Reintentar</strong>; el archivo queda como estaba.</p>
 <h2 id="personal">Qué es personal <a class="self" href="#personal" aria-label="Qué es personal">#</a></h2>
 <p>Tus secretos, los valores de entorno de esta máquina, el historial, las ejecuciones anteriores y los reportes de carga nunca se sincronizan. Cada persona guarda sus propios secretos en su propia bóveda.</p>
 <h2 id="trusted">Carpetas de confianza <a class="self" href="#trusted" aria-label="Carpetas de confianza">#</a></h2>
@@ -102,6 +116,7 @@
 <h2 id="safety">Qué te mantiene a salvo <a class="self" href="#safety" aria-label="Qué te mantiene a salvo">#</a></h2>
 <ul>
 <li><strong>Tu equipo:</strong> solo esas seis carpetas se incluyen en el commit y el push; los secretos, los valores locales, el historial y los reportes se quedan en cada máquina (<a href="security.html#stored">qué se guarda</a>).</li>
+<li><strong>Tú:</strong> los borradores y las versiones anteriores de un archivo viven en la carpeta propia de Ultraman en esta computadora (<code>~/.ultraman</code>), fuera del proyecto: git nunca los ve, un commit no puede plantar uno, y ni el agente ni la CLI los leen.</li>
 <li><strong>Tú:</strong> una carpeta en la que no has confiado no envía nada ni ejecuta git (<a href="security.html#trusted-folders">carpetas de confianza</a>).</li>
 <li><strong>Tu equipo:</strong> un cambio en una prueba es un diff legible, así que un host o un header nuevo no puede colarse sin que nadie lo vea.</li>
 <li><strong>CI:</strong> los mismos archivos se ejecutan en tu pipeline de CI con sus propios secretos (<a href="ci.html#github-action">CI</a>).</li>
@@ -109,6 +124,6 @@
 <nav class="pager"><a rel="prev" href="ci.html"><small>Anterior</small><span>CI</span></a><a rel="next" href="agents.html"><small>Siguiente</small><span>Agentes (MCP)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

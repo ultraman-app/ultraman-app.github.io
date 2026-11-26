@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Historial de seguridad · Documentación de Ultraman</title>
+<meta name="description" content="Cómo se ha revisado hasta ahora la seguridad de Ultraman, en números: qué miró cada revisión, qué encontró y qué pasó con lo que encontró.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/es/security-history.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/security-history.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/security-history.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/security-history.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security-history.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
+</head>
+<body>
+<a class="skip" href="#docs-main">Saltar al contenido</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Idioma"><a href="../en/security-history.html" lang="en" hreflang="en">English</a>
+<a href="../es/security-history.html" lang="es" hreflang="es" aria-current="true">Español</a>
+<a href="../pt/security-history.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Instalar</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menú</summary>
+<nav aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="compare.html">Comparar dos entornos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html" aria-current="page">Historial de seguridad</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentación">
+<ul>
+<li><a href="highlights.html">Lo que te da Ultraman</a></li>
+<li><a href="why.html">Por qué Ultraman</a></li>
+<li><a href="getting-started.html">Primeros pasos</a></li>
+<li><a href="security.html">Seguridad y consentimiento</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Carga</a></li>
+<li><a href="environments.html">Entornos y secretos</a></li>
+<li><a href="compare.html">Comparar dos entornos</a></li>
+<li><a href="importing.html">Importar</a></li>
+<li><a href="mock.html">Servidor mock</a></li>
+<li><a href="cli.html">La terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Trabajar en equipo</a></li>
+<li><a href="agents.html">Agentes (MCP)</a></li>
+<li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
+<li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html" aria-current="page">Historial de seguridad</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="security-history">Historial de seguridad <a class="self" href="#security-history" aria-label="Historial de seguridad">#</a></h1>
+<p>Cómo se ha revisado hasta ahora la seguridad de Ultraman, en números: qué miró cada revisión, qué encontró y qué pasó con lo que encontró.</p>
+<p>Son revisiones internas, hechas como parte del desarrollo de Ultraman. Ninguna entidad externa lo ha auditado (<a href="security.html#limits">Límites honestos</a>). Esta página da solo totales, nunca el detalle de un problema concreto.</p>
+<h2 id="how">Cómo es una revisión <a class="self" href="#how" aria-label="Cómo es una revisión">#</a></h2>
+<p>Una revisión lee el código desde el lado de quien ataca: qué podría hacerle hacer a Ultraman una carpeta de proyecto que viene de otra persona, un servidor hostil, una página web u otro programa en la misma computadora. Las funciones grandes se revisan mientras se construyen, y cada versión se revisa antes de salir.</p>
+<ul>
+<li>Cada hallazgo se anota con una gravedad: el juicio de quien revisa sobre cuánto daño podría hacer y con qué facilidad.</li>
+<li>La mayoría de los arreglos llegan con una prueba que falla antes del arreglo y pasa después, para que el problema no vuelva sin que nadie lo note.</li>
+<li>Cuando una revisión encuentra algo grave, los arreglos pasan por una segunda revisión.</li>
+</ul>
+<h2 id="counts">Las cifras <a class="self" href="#counts" aria-label="Las cifras">#</a></h2>
+<p>Del 31 de octubre al 24 de noviembre de 2026, las revisiones registraron 301 hallazgos.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Gravedad</th><th scope="col">Encontrados</th><th scope="col">Arreglados</th><th scope="col">Siguen abiertos</th><th scope="col">Sin cambios</th></tr></thead>
+<tbody>
+<tr><td>Crítica</td><td>2</td><td>2</td><td>0</td><td>0</td></tr>
+<tr><td>Alta</td><td>23</td><td>23</td><td>0</td><td>0</td></tr>
+<tr><td>Media</td><td>100</td><td>99</td><td>1</td><td>0</td></tr>
+<tr><td>Baja</td><td>167</td><td>160</td><td>6</td><td>1</td></tr>
+<tr><td>Informativa, estética o sin calificar</td><td>9</td><td>7</td><td>0</td><td>2</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>301</strong></td><td><strong>291</strong></td><td><strong>7</strong></td><td><strong>3</strong></td></tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Siguen abiertos:</strong> el de gravedad media afecta solo a un entorno de desarrollo, no a la app que instalas. Los otros seis son de gravedad baja.</li>
+<li><strong>Sin cambios:</strong> uno de gravedad baja se dejó como está a propósito, y figura entre los <a href="security.html#limits">límites honestos</a>. Dos notas resultaron no ser problemas y se conservaron como cuidado adicional.</li>
+<li>Algunos arreglos cierran una parte del problema; lo que queda está registrado.</li>
+<li>No se cuentan los problemas menores que aparecieron junto con estos y se arreglaron sin un número propio.</li>
+</ul>
+<h2 id="rounds">Las rondas <a class="self" href="#rounds" aria-label="Las rondas">#</a></h2>
+<p>En el orden en que ocurrieron. &quot;Crítica o alta&quot; suma las dos; &quot;Baja u otra&quot; incluye las informativas.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Qué se revisó</th><th scope="col">Hallazgos</th><th scope="col">Crítica o alta</th><th scope="col">Media</th><th scope="col">Baja u otra</th></tr></thead>
+<tbody>
+<tr><td>El producto entero tal como era entonces: el servidor local, los archivos del proyecto, los secretos, las importaciones, git, el puente del agente, la app de escritorio, los scripts de instalación y el CI</td><td>13</td><td>3</td><td>6</td><td>4</td></tr>
+<tr><td>Pruebas de carga</td><td>21</td><td>0</td><td>4</td><td>17</td></tr>
+<tr><td>Streams de WebSocket y SSE</td><td>30</td><td>0</td><td>6</td><td>24</td></tr>
+<tr><td>La GitHub Action para CI</td><td>3</td><td>3</td><td>0</td><td>0</td></tr>
+<tr><td>Las defensas del servidor local, y cómo confía en él la CLI</td><td>9</td><td>1</td><td>7</td><td>1</td></tr>
+<tr><td>GraphQL, contratos OpenAPI, y renombrar o borrar una pipeline</td><td>14</td><td>3</td><td>5</td><td>6</td></tr>
+<tr><td>Una revisión de versión: las defensas del servidor local, los secretos dentro de funciones de plantilla, cómo se ocultan los secretos en las respuestas, y más</td><td>14</td><td>5</td><td>5</td><td>4</td></tr>
+<tr><td>Una revisión de versión: todo lo que cambió desde la versión anterior, salvo Compare</td><td>8</td><td>0</td><td>2</td><td>6</td></tr>
+<tr><td>Compare y los entornos de producción</td><td>23</td><td>0</td><td>4</td><td>19</td></tr>
+<tr><td>El login que se envía primero, antes de una request que necesita su token</td><td>12</td><td>1</td><td>3</td><td>8</td></tr>
+<tr><td>Servidores MCP como requests y como importaciones, pasos que esperan hasta que algo esté listo, y qué requests cuentan como lecturas</td><td>33</td><td>2</td><td>17</td><td>14</td></tr>
+<tr><td>Pasos de limpieza y retomar una ejecución que falló</td><td>11</td><td>0</td><td>6</td><td>5</td></tr>
+<tr><td>Importaciones de Bruno e Insomnia, y actualizar lo que hizo una importación</td><td>12</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Fragmentos de código: Copy as cURL y la pestaña Code</td><td>10</td><td>2</td><td>4</td><td>4</td></tr>
+<tr><td>Importar una carpeta en la app de escritorio</td><td>7</td><td>0</td><td>1</td><td>6</td></tr>
+<tr><td>Revisar si un servidor MCP cambió, y sus dos versiones del protocolo</td><td>13</td><td>0</td><td>5</td><td>8</td></tr>
+<tr><td>Inicio de sesión OAuth 2</td><td>16</td><td>0</td><td>5</td><td>11</td></tr>
+<tr><td>Tandas de arreglos y de mejoras de velocidad, y los cambios que las acompañaron</td><td>38</td><td>4</td><td>11</td><td>23</td></tr>
+<tr><td>Los borradores y el historial de cada archivo</td><td>14</td><td>1</td><td>3</td><td>10</td></tr>
+</tbody>
+</table></div>
+<h2 id="reading">Cómo leer estas cifras <a class="self" href="#reading" aria-label="Cómo leer estas cifras">#</a></h2>
+<ul>
+<li>Muestran que las revisiones ocurren y que casi todo lo que encontraron está arreglado. No muestran que no quede nada por encontrar.</li>
+<li>Más hallazgos no significan un área más débil: un área revisada más veces, o más a fondo, registra más.</li>
+<li>Nada de esto es una auditoría externa ni una certificación.</li>
+<li>Para reportar un problema, mira la <a href="https://github.com/ultraman-app/ultraman-app.github.io/security/policy" rel="noopener">política de seguridad</a>: los reportes van en privado, a través de GitHub.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="faq.html"><small>Anterior</small><span>Preguntas</span></a><a rel="next" href="../en/reference.html"><small>Siguiente</small><span>Format reference (YAML)</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+</body>
+</html>

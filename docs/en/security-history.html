@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; base-uri 'none'">
+<title>Security history · Ultraman docs</title>
+<meta name="description" content="How Ultraman&#39;s security has been reviewed so far, in numbers: what each review looked at, what it found and what happened to it.">
+<link rel="canonical" href="https://ultraman-app.github.io/docs/en/security-history.html">
+<link rel="alternate" hreflang="en" href="https://ultraman-app.github.io/docs/en/security-history.html">
+<link rel="alternate" hreflang="es" href="https://ultraman-app.github.io/docs/es/security-history.html">
+<link rel="alternate" hreflang="pt" href="https://ultraman-app.github.io/docs/pt/security-history.html">
+<link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security-history.html">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="../../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
+</head>
+<body>
+<a class="skip" href="#docs-main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="../../index.html"><img src="../../icon.svg" alt="" width="28" height="28"><span>Ultraman</span></a>
+<nav class="langs" aria-label="Language"><a href="../en/security-history.html" lang="en" hreflang="en" aria-current="true">English</a>
+<a href="../es/security-history.html" lang="es" hreflang="es">Español</a>
+<a href="../pt/security-history.html" lang="pt" hreflang="pt">Português</a></nav>
+<a class="install" href="../../index.html#install">Install</a>
+</header>
+<div class="layout">
+<details class="menu"><summary>Menu</summary>
+<nav aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="compare.html">Compare two environments</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html" aria-current="page">Security history</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav></details>
+<nav class="side" aria-label="Documentation">
+<ul>
+<li><a href="highlights.html">What Ultraman gives you</a></li>
+<li><a href="why.html">Why Ultraman</a></li>
+<li><a href="getting-started.html">Getting started</a></li>
+<li><a href="security.html">Security and consent</a></li>
+<li><a href="requests.html">Requests</a></li>
+<li><a href="pipelines.html">Pipelines</a></li>
+<li><a href="load.html">Load</a></li>
+<li><a href="environments.html">Environments and secrets</a></li>
+<li><a href="compare.html">Compare two environments</a></li>
+<li><a href="importing.html">Importing</a></li>
+<li><a href="mock.html">Mock server</a></li>
+<li><a href="cli.html">The terminal</a></li>
+<li><a href="ci.html">CI</a></li>
+<li><a href="team.html">Working as a team</a></li>
+<li><a href="agents.html">Agents (MCP)</a></li>
+<li><a href="coming-from.html">Coming from another tool</a></li>
+<li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html" aria-current="page">Security history</a></li>
+<li><a href="../en/reference.html">Format reference (YAML)</a></li>
+</ul>
+</nav>
+<main id="docs-main">
+<h1 id="security-history">Security history <a class="self" href="#security-history" aria-label="Security history">#</a></h1>
+<p>How Ultraman&#39;s security has been reviewed so far, in numbers: what each review looked at, what it found and what happened to it.</p>
+<p>These are internal reviews, done as part of building Ultraman. No outside party has audited it (<a href="security.html#limits">Honest limits</a>). This page gives totals only, never the details of a single problem.</p>
+<h2 id="how">How a review works <a class="self" href="#how" aria-label="How a review works">#</a></h2>
+<p>A review reads the code from an attacker&#39;s side: what a project folder from someone else, a hostile server, a web page or another program on the same computer could make Ultraman do. Large features are reviewed as they are built, and a release is reviewed before it goes out.</p>
+<ul>
+<li>Each finding is written down with a severity: the reviewer&#39;s judgment of how much harm it could do, and how easily.</li>
+<li>Most fixes come with a test that fails before the fix and passes after it, so the problem can&#39;t come back unnoticed.</li>
+<li>When a review finds something serious, the fixes get a second review.</li>
+</ul>
+<h2 id="counts">The counts <a class="self" href="#counts" aria-label="The counts">#</a></h2>
+<p>From 31 October to 24 November 2026 the reviews recorded 301 findings.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">Severity</th><th scope="col">Found</th><th scope="col">Fixed</th><th scope="col">Still open</th><th scope="col">Not changed</th></tr></thead>
+<tbody>
+<tr><td>Critical</td><td>2</td><td>2</td><td>0</td><td>0</td></tr>
+<tr><td>High</td><td>23</td><td>23</td><td>0</td><td>0</td></tr>
+<tr><td>Medium</td><td>100</td><td>99</td><td>1</td><td>0</td></tr>
+<tr><td>Low</td><td>167</td><td>160</td><td>6</td><td>1</td></tr>
+<tr><td>Informational, cosmetic or not rated</td><td>9</td><td>7</td><td>0</td><td>2</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>301</strong></td><td><strong>291</strong></td><td><strong>7</strong></td><td><strong>3</strong></td></tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Still open:</strong> the Medium one affects only a development setup, not the app you install. The other six are Low.</li>
+<li><strong>Not changed:</strong> one Low was kept as it is on purpose, and it is listed among the <a href="security.html#limits">honest limits</a>. Two notes turned out not to be problems and were kept as extra care.</li>
+<li>Some fixes close part of a problem; what remains is recorded.</li>
+<li>Smaller issues found alongside these and fixed without a number of their own are not counted.</li>
+</ul>
+<h2 id="rounds">The rounds <a class="self" href="#rounds" aria-label="The rounds">#</a></h2>
+<p>In the order they happened. &quot;Critical or high&quot; adds both; &quot;Low or other&quot; includes the informational ones.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead><tr><th scope="col">What was reviewed</th><th scope="col">Findings</th><th scope="col">Critical or high</th><th scope="col">Medium</th><th scope="col">Low or other</th></tr></thead>
+<tbody>
+<tr><td>The whole product as it was then: the local server, project files, secrets, imports, git, the agent bridge, the desktop app, the install scripts and CI</td><td>13</td><td>3</td><td>6</td><td>4</td></tr>
+<tr><td>Load testing</td><td>21</td><td>0</td><td>4</td><td>17</td></tr>
+<tr><td>WebSocket and server-sent event streams</td><td>30</td><td>0</td><td>6</td><td>24</td></tr>
+<tr><td>The GitHub Action for CI</td><td>3</td><td>3</td><td>0</td><td>0</td></tr>
+<tr><td>The local server&#39;s guard, and how the CLI trusts it</td><td>9</td><td>1</td><td>7</td><td>1</td></tr>
+<tr><td>GraphQL, OpenAPI contracts, and renaming or deleting a pipeline</td><td>14</td><td>3</td><td>5</td><td>6</td></tr>
+<tr><td>A release review: the local server&#39;s guard, secrets inside template functions, how secrets are hidden in responses, and more</td><td>14</td><td>5</td><td>5</td><td>4</td></tr>
+<tr><td>A release review: everything changed since the release before, Compare apart</td><td>8</td><td>0</td><td>2</td><td>6</td></tr>
+<tr><td>Compare and production environments</td><td>23</td><td>0</td><td>4</td><td>19</td></tr>
+<tr><td>The login sent first, before a request that needs its token</td><td>12</td><td>1</td><td>3</td><td>8</td></tr>
+<tr><td>MCP servers as requests and as imports, steps that wait until something is ready, and which requests count as reads</td><td>33</td><td>2</td><td>17</td><td>14</td></tr>
+<tr><td>Cleanup steps and resuming a failed run</td><td>11</td><td>0</td><td>6</td><td>5</td></tr>
+<tr><td>Bruno and Insomnia imports, and updating what an import made</td><td>12</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Code snippets: Copy as cURL and the Code tab</td><td>10</td><td>2</td><td>4</td><td>4</td></tr>
+<tr><td>Importing a folder in the desktop app</td><td>7</td><td>0</td><td>1</td><td>6</td></tr>
+<tr><td>Checking an MCP server for changes, and its two protocol versions</td><td>13</td><td>0</td><td>5</td><td>8</td></tr>
+<tr><td>OAuth 2 sign-in</td><td>16</td><td>0</td><td>5</td><td>11</td></tr>
+<tr><td>Batches of fixes and speed work, and the changes around them</td><td>38</td><td>4</td><td>11</td><td>23</td></tr>
+<tr><td>Drafts and the history of each file</td><td>14</td><td>1</td><td>3</td><td>10</td></tr>
+</tbody>
+</table></div>
+<h2 id="reading">How to read these numbers <a class="self" href="#reading" aria-label="How to read these numbers">#</a></h2>
+<ul>
+<li>They show that reviews happen and that nearly everything they found is fixed. They don&#39;t show that nothing is left to find.</li>
+<li>More findings don&#39;t mean a weaker area: an area reviewed more often, or more deeply, records more.</li>
+<li>None of this is an outside audit or a certification.</li>
+<li>To report a problem, see the <a href="https://github.com/ultraman-app/ultraman-app.github.io/security/policy" rel="noopener">security policy</a>: reports go privately, through GitHub.</li>
+</ul>
+<nav class="pager"><a rel="prev" href="faq.html"><small>Previous</small><span>Questions</span></a><a rel="next" href="../en/reference.html"><small>Next</small><span>Format reference (YAML)</span></a></nav>
+</main>
+</div>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+</body>
+</html>

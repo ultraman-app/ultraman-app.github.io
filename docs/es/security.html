@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Saltar al contenido</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html">Historial de seguridad</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Si vienes de otra herramienta</a></li>
 <li><a href="faq.html">Preguntas</a></li>
+<li><a href="security-history.html">Historial de seguridad</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -183,6 +185,7 @@
 <tr><td><code>ultraman/history/</code>, <code>runs/</code>, <code>loads/</code>, <code>mcp/</code>, <code>mock/</code></td><td>historial, ejecuciones, reportes de carga, el registro de llamadas del agente y las elecciones del mock (con los secretos ya ocultos)</td><td>no</td></tr>
 <tr><td><code>~/.ultraman/vault.json</code>, <code>secrets.enc</code></td><td>la bóveda, cifrada</td><td>no, fuera del proyecto</td></tr>
 <tr><td><code>~/.ultraman/trust.json</code></td><td>tus carpetas de confianza y tus síes</td><td>no, fuera del proyecto</td></tr>
+<tr><td><code>~/.ultraman/projects/</code></td><td>los borradores de tus pestañas sin guardar y las versiones anteriores de cada archivo del proyecto (<a href="team.html#history">el historial de un archivo</a>)</td><td>no, fuera del proyecto</td></tr>
 <tr><td><code>~/.ultraman/serve-&lt;port&gt;.key</code>, <code>.token</code></td><td>cómo se identifican la CLI y la ventana ante el servidor local</td><td>no, fuera del proyecto</td></tr>
 <tr><td><code>~/.ultraman/update-check.json</code></td><td>la última comprobación de actualizaciones</td><td>no, fuera del proyecto</td></tr>
 <tr><td>el llavero de tu sistema</td><td>la clave de la bóveda, solo con <strong>Recordar en este equipo</strong></td><td>no</td></tr>
@@ -200,11 +203,11 @@
 <li><strong>CI ejecuta lo que dice el workflow.</strong> Un pull request que modifica el propio archivo del workflow queda fuera de lo que Ultraman puede comprobar, y <code>yes: true</code> o <code>--yes</code> desactivan las preguntas. Mantén tus secretos lejos de los pull requests que vienen de forks (<a href="ci.html">CI</a>).</li>
 <li><strong>Un agente con acceso a una shell</strong> también puede ejecutar comandos por su cuenta: las tarjetas de aprobación solo cubren lo que pasa por Ultraman.</li>
 <li><strong>Los instaladores no están firmados por Microsoft ni por Apple</strong>, así que tu sistema muestra una advertencia la primera vez que abres Ultraman. Lo que sí está firmado: las actualizaciones (verificadas con una clave integrada en la app) y los checksums de la versión que los scripts de instalación comprueban antes de instalar. El comando de instalación de una línea ejecuta un script descargado del sitio de Ultraman, así que, para ese script, confía en el sitio.</li>
-<li><strong>Sin auditoría independiente.</strong> Las revisiones de seguridad de Ultraman las hacen las mismas personas que lo construyen, antes de cada versión; ninguna entidad externa lo ha auditado. Si tu política exige una auditoría antes de guardar credenciales en una herramienta, esa es hoy la respuesta honesta.</li>
+<li><strong>Sin auditoría independiente.</strong> Las revisiones de seguridad de Ultraman las hacen las mismas personas que lo construyen, antes de cada versión; ninguna entidad externa lo ha auditado. Si tu política exige una auditoría antes de guardar credenciales en una herramienta, esa es hoy la respuesta honesta. Lo que encontraron las revisiones hasta ahora, en números: <a href="security-history.html">Historial de seguridad</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="getting-started.html"><small>Anterior</small><span>Primeros pasos</span></a><a rel="next" href="requests.html"><small>Siguiente</small><span>Requests</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas las versiones</a></footer>
 </body>
 </html>

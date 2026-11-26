@@ -28,15 +28,20 @@ for (const t of tabs) {
   });
 }
 
+// The copy icon turns into a check for a moment. If the browser won't copy, the command gets selected for Ctrl+C.
+const CHECK = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
 for (const b of document.querySelectorAll('.copy')) {
+  const icon = b.innerHTML, label = b.getAttribute('aria-label');
   b.addEventListener('click', async () => {
+    const code = b.previousElementSibling; // each Copy follows its own line
     try {
-      await navigator.clipboard.writeText(b.parentElement.querySelector('code').textContent);
-      b.textContent = 'Copied';
+      await navigator.clipboard.writeText(code.textContent);
+      b.innerHTML = CHECK;
+      b.setAttribute('aria-label', 'Copied');
     } catch {
-      b.textContent = 'Select it';
+      getSelection().selectAllChildren(code);
     }
-    setTimeout(() => { b.textContent = 'Copy'; }, 1800);
+    setTimeout(() => { b.innerHTML = icon; b.setAttribute('aria-label', label); }, 1800);
   });
 }
 

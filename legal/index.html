@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>License and notices: Ultraman</title>
+<meta name="description" content="Ultraman's license, its price, who makes it, how releases are signed, and the notices of the third-party software it includes.">
+<link rel="canonical" href="https://ultraman-app.github.io/legal/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2E46FF">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preload" href="../fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../style.css?v=10">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<main class="page">
+  <h1>License and notices</h1>
+  <p><a href="../">Back to Ultraman</a></p>
+
+  <h2 id="license">Ultraman's license</h2>
+  <p>Questions about Ultraman's license: open an issue at <a href="https://github.com/ultraman-app/ultraman-app.github.io/issues">github.com/ultraman-app/ultraman-app.github.io/issues</a>.</p>
+
+  <h2 id="price">Price</h2>
+  <p>Ultraman is free to download and use today.</p>
+
+  <h2 id="maker">Who makes it</h2>
+  <p>Ultraman is made by one independent developer. Questions and bug reports go to <a href="https://github.com/ultraman-app/ultraman-app.github.io/issues">the project's issues</a>. A security problem goes privately, through GitHub's private reporting, as the <a href="https://github.com/ultraman-app/ultraman-app.github.io/security/policy">security policy</a> says.</p>
+
+  <h2 id="signing">How releases are signed</h2>
+  <ul>
+    <li><strong>The install commands check a signature.</strong> Each release publishes a list of checksums (<code>SHA256SUMS</code>) and a signature of that list made with Ultraman's release key. The install scripts for macOS, Linux and Windows carry the key's public half and install only files that match a list with a valid signature; otherwise they stop and change nothing. The key's fingerprint is in <a href="../docs/en/getting-started.html#install">Getting started</a> and in the repository's security policy, to compare one copy with the other.</li>
+    <li><strong>Updates from the window are signed.</strong> The window installs an update only if it is signed with Ultraman's update key, whose public half is built into the app.</li>
+    <li><strong>The installers are not signed with an Apple or Microsoft certificate.</strong> On Windows they are unsigned; on macOS they are signed only ad hoc, not notarized. An installer downloaded in a browser makes your system warn the first time you open it (<a href="../docs/en/getting-started.html#os-warning">When your system warns</a>); the install commands don't trigger that warning.</li>
+  </ul>
+
+  <h2 id="security-history">Security reviews</h2>
+  <p>Ultraman's security reviews are internal; no outside party has audited it. What they found so far, as counts by severity and by round, is in <a href="../docs/en/security-history.html">Security history</a>.</p>
+
+  <h2 id="notices">Third-party notices</h2>
+  <p>Ultraman includes open-source software, each part under its own license: the npm packages of the CLI and the window, the Rust crates of the desktop shell, the bundled Node.js and the fonts. The full list with every license text is in <a href="third-party-notices.txt">third-party-notices.txt</a>, generated from what each release ships.</p>
+</main>
+
+<footer>
+  <svg class="mark" viewBox="0 0 24 18" width="24" height="18" aria-hidden="true"><path d="M0 0h24v3.5H9z"/><path d="M0 7.25h24v3.5H0z"/><path d="M0 14.5h15l9 3.5H0z"/></svg>
+  <p>Ultraman, built on <a href="https://github.com/AbeOrigin/UltraTon">UltraTon</a>.</p>
+  <p><a href="../privacy.html">Privacy</a></p>
+</footer>
+</body>
+</html>

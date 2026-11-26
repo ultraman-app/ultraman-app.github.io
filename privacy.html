@@ -11,11 +11,11 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-<main style="max-width:44rem;margin:0 auto;padding:48px var(--side,24px) 0">
+<main class="page">
   <h1>Privacy Policy: Ultraman and its Claude plugin</h1>
   <p><a href="./">Back to Ultraman</a></p>
 
@@ -26,11 +26,16 @@
   <p>Your project files (pipelines, requests, environments, run and load history) live in your own folder or git repository. Secret values live in an encrypted vault in your user folder (<code>~/.ultraman</code>), protected by a key only you hold. The MCP server talks only to the Ultraman app on the same computer.</p>
 
   <h2>What goes over the network</h2>
-  <p>Only (1) the requests your own project defines, to the APIs you choose, after you approve them; and (2) at most once a day, an update check that reads the latest release from GitHub's public API (<code>api.github.com</code>). GitHub's own privacy policy applies to that request.</p>
+  <p>Only (1) the requests your own project defines, to the APIs you choose, after you approve them; and (2) at most once a day, or when you choose Check for updates, an update check that reads the latest release from GitHub's public API (<code>api.github.com</code>). Only when that release is newer than yours, the desktop window also reads its update file (<code>latest.json</code>) from <code>github.com</code>, and the update itself downloads from GitHub only when you choose to install it. GitHub's own privacy policy applies to those requests.</p>
   <p>To turn the update check off, start Ultraman (and its CLI) with the environment variable <code>ULTRAMAN_NO_UPDATE_CHECK=1</code>; then nothing is requested.</p>
 
   <h2>What Claude receives</h2>
   <p>The results of the calls you approve, with secret values replaced by <code>[secret:name]</code>. What Claude does with them is governed by Anthropic's terms for your account.</p>
+
+  <h2>What we read</h2>
+  <p>Once a week we read public counters from GitHub (downloads per release file, stars, forks, issues, discussions, and how many public workflow files name our CI action) and the number of clicks Google Search Console reports for this site. They count files and clicks, not people, and Ultraman sends nothing for them.</p>
+  <p lang="es">Una vez por semana leemos contadores públicos de GitHub (descargas de cada archivo, estrellas, forks, issues, discusiones y cuántos archivos de workflow públicos nombran nuestra acción de CI) y la cantidad de clics que Google Search Console informa para este sitio. Cuentan archivos y clics, no personas, y Ultraman no envía nada para ello.</p>
+  <p lang="pt">Uma vez por semana lemos contadores públicos do GitHub (downloads de cada arquivo, estrelas, forks, issues, discussões e quantos arquivos de workflow públicos citam a nossa ação de CI) e o número de cliques que o Google Search Console informa para este site. Contam arquivos e cliques, não pessoas, e o Ultraman não envia nada para isso.</p>
 
   <h2>Sharing and sale</h2>
   <p>We share and sell no data; we hold none.</p>

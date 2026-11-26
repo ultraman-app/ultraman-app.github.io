@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://ultraman-app.github.io/docs/en/reference.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -39,6 +39,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html" aria-current="page">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -61,6 +62,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html" aria-current="page">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -372,9 +374,9 @@ apdex: { satisfied: 300ms, tolerating: 1200ms }   # or apdex: true</code></pre>
 <p>Limits: a test has at most 10 scenarios and 50 stages per scenario; <code>users</code> is 0 to 1000, <code>rate</code> 0 to 1000 iterations per second, <code>iterations</code> 1 to 1,000,000; no scenario lasts over 3600 s (1 h); and at no second may the planned users add up to over 1000. Stages are all <code>users</code> or all <code>rate</code> in a scenario, and a rate scenario takes no <code>iterations</code>. A stage needs <code>for</code> and one of <code>users</code> or <code>rate</code>. Secrets are never written in <code>inputs</code>.</p>
 <p>Exit codes of <code>ultraman run --load</code>: <strong>0</strong> every threshold held and the verdict is holds, queues or limited; <strong>1</strong> a threshold failed, the API rejected or broke, too few requests went out, or the run was stopped; <strong>2</strong> the test never started (a file that doesn&#39;t parse, a missing pipeline, input or secret).</p>
 <p>Thresholds: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>, <code>failedIterations</code>, <code>minRps</code>, <code>apdex</code> (0 to 1), <code>maxWait</code>, <code>streamErrors</code> (a percentage of the connections tried: streams the server closed mid-run, failed handshakes and dropped messages), <code>steps</code> (per step name: <code>p50</code>, <code>p95</code>, <code>p99</code>, <code>max</code>, <code>errors</code>; a <code>receive</code> or a <code>websocket</code>/<code>sse</code> step by its name) and <code>warn</code> (the same, as warnings).</p>
-<nav class="pager"><a rel="prev" href="faq.html"><small>Previous</small><span>Questions</span></a><span></span></nav>
+<nav class="pager"><a rel="prev" href="security-history.html"><small>Previous</small><span>Security history</span></a><span></span></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

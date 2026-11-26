@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/getting-started.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -91,7 +93,17 @@
 <ul>
 <li>No macOS e no Linux, se <code>~/.local/bin</code> não estiver no seu PATH, o script mostra a linha que você deve acrescentar ao perfil do seu shell. No Windows, abra um terminal novo para ele pegar o PATH atualizado.</li>
 <li>No Linux, o app é um AppImage e precisa do FUSE: se ele não abrir, instale o <code>libfuse2</code>.</li>
+<li>Rode-o num terminal seu: um terminal dentro de um app isolado (no Windows, um empacotado como MSIX) instala na pasta privada desse app, onde só ele vê o comando e as atualizações do app não chegam.</li>
 </ul>
+<p><strong>Para ler o script antes que ele rode</strong>, faça em dois passos: baixe, leia e depois execute.</p>
+<pre tabindex="0"><code>curl -fsSL https://ultraman-app.github.io/install.sh -o install.sh
+sh install.sh</code></pre>
+<pre tabindex="0"><code>irm https://ultraman-app.github.io/install.ps1 -OutFile install.ps1
+Get-Content install.ps1 -Raw | iex</code></pre>
+<p>A segunda linha executa o arquivo que você leu, do mesmo jeito que o comando de uma linha executa o que baixa.</p>
+<p>A impressão digital SHA-256 da chave de release é <code>d3:e8:ce:35:a9:38:99:f4:1e:89:44:95:6e:f0:91:06:db:25:d8:4d:92:1d:a1:b6:25:f2:54:05:76:70:75:df</code>. O mesmo valor está na página de instalação e no <code>SECURITY.md</code> do repositório público: duas cópias para comparar, assim um script alterado aparece; nenhuma prova a outra. Para lê-la do <code>install.sh</code> que você baixou (macOS e Linux, com OpenSSL):</p>
+<pre tabindex="0"><code>sed -n &#39;/BEGIN PUBLIC KEY/,/END PUBLIC KEY/p&#39; install.sh | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</code></pre>
+<p><strong>Um instalador no lugar</strong>: a página de instalação e a <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest" rel="noopener">página de releases</a> têm um para cada sistema. Ele instala só o app, sem o comando <code>ultraman</code> (no Linux o AppImage é o app: dê permissão de execução), nada confere a assinatura dele por você, e o macOS e o Windows perguntam antes de abri-lo na primeira vez (<a href="getting-started.html#os-warning">Quando o seu sistema avisa</a>).</p>
 <p><strong>Só o comando</strong>, sem o app, para uma máquina de build ou um servidor:</p>
 <pre tabindex="0"><code>curl -fsSL https://ultraman-app.github.io/install.sh | sh -s -- --cli</code></pre>
 <pre tabindex="0"><code>$env:ULTRAMAN_CLI_ONLY = 1; irm https://ultraman-app.github.io/install.ps1 | iex</code></pre>
@@ -190,7 +202,7 @@
 </ul>
 <p>Essas escolhas ficam guardadas só neste computador: não entram no projeto e o git não as sincroniza. <strong>Redefinir</strong> volta tamanho, densidade, código, tema, movimento e a opção de janelas largas ao padrão, e mantém o idioma como está.</p>
 <h2 id="update">Atualizações <a class="self" href="#update" aria-label="Atualizações">#</a></h2>
-<p>Quando a janela abre, o Ultraman pergunta ao GitHub se há uma versão mais nova, no máximo uma vez por dia. Essa pergunta é a única coisa que sai: o GitHub vê o seu endereço IP, e nada sobre você nem sobre os seus projetos. O comando <code>ultraman</code> sozinho, num terminal ou no CI, nunca faz essa pergunta.</p>
+<p>Quando a janela abre, o Ultraman pergunta ao GitHub se há uma versão mais nova, no máximo uma vez por dia. Se houver, a janela também lê do github.com o arquivo de atualização dessa versão. O GitHub vê o seu endereço IP, e nada sobre você nem sobre os seus projetos. O comando <code>ultraman</code> sozinho, num terminal ou no CI, nunca faz essa pergunta.</p>
 <ul>
 <li>Se houver uma versão mais nova, ela aparece num cartão no canto inferior esquerdo, com <strong>O que mudou</strong> e <strong>Atualizar e reiniciar</strong>. Nada é baixado antes de você clicar.</li>
 <li><strong>Atualizar e reiniciar</strong> espera até que suas mudanças estejam salvas e nada esteja em execução; aí baixa a versão nova, confere a assinatura, instala e reinicia. O comando <code>ultraman</code> é atualizado junto.</li>
@@ -237,6 +249,6 @@
 <nav class="pager"><a rel="prev" href="why.html"><small>Anterior</small><span>Por que o Ultraman</span></a><a rel="next" href="security.html"><small>Seguinte</small><span>Segurança e consentimento</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

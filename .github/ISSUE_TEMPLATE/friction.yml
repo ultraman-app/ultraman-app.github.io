@@ -1,0 +1,24 @@
+name: Something got in your way
+description: Not a bug, but a step that was slow, confusing or annoying
+labels: ["friction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for telling us. English, Spanish or Portuguese are all fine.
+
+        Don't paste secrets: tokens, passwords, keys or real customer data.
+  - type: textarea
+    id: friction
+    attributes:
+      label: What got in your way?
+      description: One line is enough. What you were doing and where it got slow or unclear.
+    validations:
+      required: true
+  - type: checkboxes
+    id: secrets
+    attributes:
+      label: Before you send
+      options:
+        - label: I removed secrets and tokens from what I paste.
+          required: true

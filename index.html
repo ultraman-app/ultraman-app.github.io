@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ultraman: API test pipelines you can see, run and load-test</title>
-<meta name="description" content="Ultraman is a desktop app for testing APIs: build a pipeline step by step, see every response, put it under load, mock it, run it in CI and hand it to your AI agent over MCP. Pipelines are YAML files in your repo.">
+<title>Ultraman: API tests your agent can run, with secrets it never sees</title>
+<meta name="description" content="API tests your agent can run, with secrets it never sees. Requests, pipelines and load tests are files in your git repo. You, your CI and your AI agent run the same ones. Each secret goes only to the hosts you approved, and the agent uses it by name without ever reading it.">
 <link rel="canonical" href="https://ultraman-app.github.io/">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#2E46FF">
@@ -13,28 +13,29 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ultraman">
 <meta property="og:url" content="https://ultraman-app.github.io/">
-<meta property="og:title" content="Ultraman: API test pipelines you can see, run and load-test">
-<meta property="og:description" content="Build an API test the way you'd explain it, watch every step run, put it under load and let your agent use it. Local, with the files in your repo.">
+<meta property="og:title" content="API tests your agent can run, with secrets it never sees.">
+<meta property="og:description" content="API tests your agent can run, with secrets it never sees. Requests, pipelines and load tests are files in your git repo. You, your CI and your AI agent run the same ones. Each secret goes only to the hosts you approved, and the agent uses it by name without ever reading it.">
 <meta property="og:image" content="https://ultraman-app.github.io/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Ultraman's name inside the three stripes of its mark, on cobalt blue, above the window running a pipeline">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="API tests your agent can run, with secrets it never sees.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Ultraman",
   "url": "https://ultraman-app.github.io/",
-  "description": "A desktop app for testing APIs with pipelines of visible steps: run them, load-test them, run them in CI and hand them to AI agents over MCP.",
+  "description": "API tests your agent can run, with secrets it never sees. A desktop app for testing APIs: requests, pipelines and load tests are files in your git repo that you, your CI and your AI agent run.",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Windows, macOS, Linux",
-  "softwareVersion": "1.6.1",
+  "softwareVersion": "1.6.3",
   "downloadUrl": "https://github.com/ultraman-app/ultraman-app.github.io/releases/latest"
 }
 </script>
 <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=14">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -49,10 +50,11 @@
     <span class="lane mid" data-layout-ok="clip: the name is capitals only; they fill about three quarters of the stripe, and only the line box (room for accents and tails) passes it"><span class="word">Ultraman</span></span>
     <span class="lane bottom"></span>
   </div>
-  <h1 class="sr">Ultraman</h1>
-
   <div class="intro">
-    <p class="lede">Build an API test the way you'd explain it, watch every step run, put it under load and let your agent use it.</p>
+    <div class="words">
+      <h1 class="claim">API tests your agent can run, with secrets it never sees.</h1>
+      <p class="lede">Ultraman is a desktop app for testing APIs. Requests, pipelines and load tests are files in your git repo, and you, your CI and your AI agent run the same ones. Each secret goes only to the hosts you approved.</p>
+    </div>
 
     <div class="install" id="install" data-os="mac">
       <div class="oses" role="tablist" aria-label="Your system">
@@ -61,22 +63,33 @@
         <button role="tab" id="tab-windows" aria-controls="cmd-windows" aria-selected="false" data-os="windows">Windows</button>
       </div>
       <div class="cmd" role="tabpanel" id="cmd-mac" aria-labelledby="tab-mac" data-os="mac">
-        <p class="where">In Terminal:</p>
-        <code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code>
-        <button class="copy" type="button">Copy</button>
+        <p class="get"><a class="dl" href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest/download/Ultraman-macos-arm64.dmg">Download for macOS</a> <span>Apple silicon · <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest/download/Ultraman-macos-x64.dmg">Intel</a></span></p>
+        <p class="say note">The app only. Your system asks before it opens it the first time.</p>
+        <p class="say">Or in Terminal, the app and the <code>ultraman</code> command:</p>
+        <div class="ln"><code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code><button class="copy" type="button" aria-label="Copy the command"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>
+        <p class="read"><a href="docs/en/getting-started.html#install">Read the script before it runs</a></p>
       </div>
       <div class="cmd" role="tabpanel" id="cmd-linux" aria-labelledby="tab-linux" data-os="linux">
-        <p class="where">In a terminal:</p>
-        <code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code>
-        <button class="copy" type="button">Copy</button>
+        <p class="get"><a class="dl" href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest/download/Ultraman-linux-x64.AppImage">Download for Linux</a> <span>AppImage, x64</span></p>
+        <p class="say note">The app only: make the AppImage executable, then open it.</p>
+        <p class="say">Or in a terminal, the app and the <code>ultraman</code> command:</p>
+        <div class="ln"><code>curl -fsSL https://ultraman-app.github.io/install.sh | sh</code><button class="copy" type="button" aria-label="Copy the command"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>
+        <p class="read"><a href="docs/en/getting-started.html#install">Read the script before it runs</a></p>
       </div>
       <div class="cmd" role="tabpanel" id="cmd-windows" aria-labelledby="tab-windows" data-os="windows">
-        <p class="where">In PowerShell:</p>
-        <code>irm https://ultraman-app.github.io/install.ps1 | iex</code>
-        <button class="copy" type="button">Copy</button>
+        <p class="get"><a class="dl" href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest/download/Ultraman-windows-x64-setup.exe">Download for Windows</a> <span>x64</span></p>
+        <p class="say note">The app only. Your system asks before it opens it the first time.</p>
+        <p class="say">Or in PowerShell, the app and the <code>ultraman</code> command:</p>
+        <div class="ln"><code>irm https://ultraman-app.github.io/install.ps1 | iex</code><button class="copy" type="button" aria-label="Copy the command"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div>
+        <p class="read"><a href="docs/en/getting-started.html#install">Read the script before it runs</a></p>
       </div>
       <p class="fine">No account, no admin rights, and nothing unsafe goes out without your yes. <a href="docs/en/security.html#promise">Security</a> · <a href="docs/en/getting-started.html#install">Installing and updating</a></p>
     </div>
+    <ul class="proofs">
+      <li><a href="#agent">The agent asks, you approve</a></li>
+      <li><a href="#one-file">One file: by hand, in CI, under load</a></li>
+      <li><a href="docs/en/importing.html">Bring your Postman, Insomnia, Bruno or JMeter work</a></li>
+    </ul>
   </div>
 </header>
 
@@ -106,7 +119,7 @@
     </figure>
   </section>
 
-  <section class="pipeline">
+  <section class="pipeline" id="one-file">
     <div class="lead">
       <div class="copytext">
         <h2>A pipeline is a file in your repo</h2>
@@ -220,7 +233,7 @@
         <p><code>ultraman mock</code> answers with the responses your sends got, and what it has no recording for can go on to the real API. Unless you say otherwise, it listens only on your machine.</p>
         <p class="more"><a href="docs/en/mock.html">Read more about the mock server</a></p>
       </article>
-      <article class="card">
+      <article class="card" id="agent">
         <h3>Hand it to your agent</h3>
         <p>Point Claude Code or any MCP client at <code>ultraman mcp</code>: your agent finds your pipelines, builds new ones and runs them. Each call waits for your OK in the window, and a secret is used by name, never seen.</p>
         <p class="more"><a href="docs/en/agents.html#connect">Read more about agents</a></p>
@@ -236,7 +249,9 @@
   <section class="small">
     <div>
       <h2>Why a download from the browser warns</h2>
-      <p>The installers aren't signed by Apple or Microsoft, so one downloaded with a browser from the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest">releases page</a> makes macOS and Windows ask before it opens. The commands above don't mark the download as coming from the internet, and they check its signature themselves. <a href="docs/en/getting-started.html#os-warning">What each system shows</a></p>
+      <p>The installers aren't signed by Apple or Microsoft, so one downloaded with a browser (the Download links above, or the <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases/latest">releases page</a>) makes macOS and Windows ask before it opens. The commands above don't mark the download as coming from the internet, and they check its signature themselves. <a href="docs/en/getting-started.html#os-warning">What each system shows</a></p>
+      <p>The script installs only a release whose <code>SHA256SUMS</code> carries a valid signature from Ultraman's release key. The key's SHA-256 fingerprint is <code>d3:e8:ce:35:a9:38:99:f4:1e:89:44:95:6e:f0:91:06:db:25:d8:4d:92:1d:a1:b6:25:f2:54:05:76:70:75:df</code>, the same as in the public repo's <a href="https://github.com/ultraman-app/ultraman-app.github.io/blob/main/SECURITY.md">SECURITY.md</a>: two copies to compare, so a script changed on its way to you shows; neither proves the other. <a href="docs/en/getting-started.html#install">How to check it</a></p>
+      <p>Not for you if you need gRPC, JavaScript scripts or a hosted workspace. <a href="docs/en/why.html#not-for">When to pick something else</a></p>
     </div>
     <div class="also">
       <h2>Also in the docs</h2>
@@ -264,8 +279,9 @@
   <p><a href="docs/en/getting-started.html#uninstall">Uninstall</a></p>
   <p><a href="https://github.com/ultraman-app/ultraman-app.github.io/releases">All versions</a></p>
   <p><a href="privacy.html">Privacy</a></p>
+  <p><a href="legal/">Legal</a></p>
 </footer>
 
-<script src="main.js?v=2" defer></script>
+<script src="main.js?v=4" defer></script>
 </body>
 </html>

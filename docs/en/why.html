@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/why.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,12 +68,15 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="why">Why Ultraman <a class="self" href="#why" aria-label="Why Ultraman">#</a></h1>
 <p>Ultraman puts API requests, test flows, load tests and CI checks in one local app, saved as plain files in your own git repo. This page says how that differs from tools you may already use, and when one of them is the better choice.</p>
+<h2 id="problem">The problem <a class="self" href="#problem" aria-label="The problem">#</a></h2>
+<p>Your API tests hold the keys to your systems, and now an AI agent writes and runs them too. Ultraman is built so that a key&#39;s value never goes into the files it writes and the agent never sees it: secrets live in an encrypted vault on your computer, go only to hosts you approved, and show as <code>[secret:name]</code> everywhere else. See <a href="security.html">Security and consent</a>.</p>
 <h2 id="idea">The idea in short <a class="self" href="#idea" aria-label="The idea in short">#</a></h2>
 <p>Ultraman fits a team that keeps its API tests next to its code, reviews them in pull requests, and wants one file to serve as the manual test, the CI check and the load scenario.</p>
 <ul>
@@ -80,6 +84,7 @@
 <li><strong>Nothing hidden in code.</strong> Steps are requests, extracts, checks, waits, repeats and branches you can read. What a step does is always on screen and in the diff.</li>
 <li><strong>Your git repo is the shared place.</strong> No account and no workspace: <strong>Sync</strong> commits only Ultraman&#39;s folders, and a change to a test reviews like any change to code.</li>
 <li><strong>Secrets stay yours.</strong> A secret lives in an encrypted vault on your computer and goes only to hosts you said yes to.</li>
+<li><strong>Your agent works, you decide.</strong> An AI agent connects over MCP, finds your pipelines, writes and runs them, and what it starts waits for your OK in the window (read-only calls can be let through for a session); it uses a secret by name and never sees its value. Ultraman also tests MCP servers themselves. See <a href="agents.html">Agents</a> and <a href="requests.html#mcp">MCP servers</a>.</li>
 </ul>
 <p>The comparisons below are about approach and were checked against each tool&#39;s own documentation in November 2026. Tools change: their documentation says what they do today.</p>
 <h2 id="postman">Postman <a class="self" href="#postman" aria-label="Postman">#</a></h2>
@@ -135,12 +140,12 @@
 <li>load from several machines or from the cloud: Ultraman generates load from one computer, on up to 8 threads (see <a href="load.html#workers">More than one thread</a>);</li>
 <li>load through real browsers;</li>
 <li>accounts, roles and permissions in a hosted workspace: Ultraman&#39;s access control is your git repo (see <a href="faq.html#permissions">Permissions</a>);</li>
-<li>OAuth2 flows, client certificates, AWS SigV4 or NTLM (see <a href="faq.html#auth">Authentication</a>);</li>
+<li>client certificates, AWS SigV4 or NTLM (OAuth 2 is there: see <a href="faq.html#auth">Authentication</a>);</li>
 <li>a tool in the browser with nothing to install.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="highlights.html"><small>Previous</small><span>What Ultraman gives you</span></a><a rel="next" href="getting-started.html"><small>Next</small><span>Getting started</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

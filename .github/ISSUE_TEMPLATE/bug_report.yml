@@ -7,6 +7,8 @@ body:
       value: |
         Thanks for telling us. English, Spanish or Portuguese are all fine.
 
+        Don't paste secrets: tokens, passwords, keys or real customer data. A made-up value shows the problem just as well.
+
         Is it a security problem? Please don't post it here: [report it privately](https://github.com/ultraman-app/ultraman-app.github.io/security/advisories/new).
   - type: input
     id: version

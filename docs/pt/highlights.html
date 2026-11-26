@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/highlights.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,12 +68,13 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
 <main id="docs-main">
 <h1 id="highlights">O que o Ultraman oferece <a class="self" href="#highlights" aria-label="O que o Ultraman oferece">#</a></h1>
-<p>O Ultraman testa APIs HTTP, GraphQL, WebSocket, SSE e servidores MCP: um único app no seu computador para requests avulsas, testes de vários passos, carga e CI, tudo salvo em arquivos simples no seu próprio repositório git. Ele nunca envia nada de forma insegura sem o seu consentimento explícito: um segredo só vai para um host que você aprovou, e uma pasta em que você ainda não confia não envia nada.</p>
+<p>O Ultraman testa APIs HTTP, GraphQL, WebSocket, SSE e servidores MCP: um único app no seu computador para requests avulsas, testes de vários passos, carga e CI, tudo salvo em arquivos simples no seu próprio repositório git. O valor de um segredo fica num cofre criptografado, nunca nos arquivos que o Ultraman escreve, e o seu agente nunca o vê: um segredo só vai para um host que você aprovou, e uma pasta em que você ainda não confia não envia nada.</p>
 <p>Cada parte abaixo conta o que ela resolve para você e onde ler mais. Se preferir começar pela sua função, vá direto para <a href="highlights.html#start">Por onde começar</a>.</p>
 <h2 id="pipelines">Pipelines que você enxerga <a class="self" href="#pipelines" aria-label="Pipelines que você enxerga">#</a></h2>
 <p>Uma <strong>pipeline</strong> é um teste escrito como uma lista de passos: fazer login, pegar o token da resposta, criar um pedido, conferir se ele aparece. O resultado é um teste que se lê como uma frase: cada passo é uma linha (&quot;token ← $login $.token&quot;), e a mesma pipeline aparece como diagrama, com uma seta da request que gera um valor até a que o usa. Ela fica salva em YAML no seu repositório, então qualquer mudança num teste é revisada num pull request, como o resto do código. → <a href="pipelines.html">Pipelines</a></p>
@@ -83,7 +85,7 @@
 <h2 id="importing">Traga o que você já tem <a class="self" href="#importing" aria-label="Traga o que você já tem">#</a></h2>
 <p>Você não começa do zero: coleções e ambientes do Postman, documentos OpenAPI, planos do JMeter, scripts do Artillery e tráfego gravado no navegador viram coleções, pipelines, ambientes e testes de carga. O que não dá para converter aparece numa lista, em vez de se perder. A importação lê só o arquivo que você escolher e não envia nada. → <a href="importing.html">Importar</a></p>
 <h2 id="secrets">Seus segredos só vão aonde você mandou <a class="self" href="#secrets" aria-label="Seus segredos só vão aonde você mandou">#</a></h2>
-<p>O Ultraman nunca envia nada de forma insegura sem o seu consentimento explícito. Um segredo, escrito <code>{{secrets.token}}</code>, fica num cofre criptografado no seu computador, nunca no repositório. Na primeira vez que uma request for enviá-lo a um servidor que você não aprovou para ele, o Ultraman pergunta; o mesmo vale para um arquivo de fora da pasta <code>ultraman/files/</code> do projeto. Onde o valor de um segredo apareceria (numa resposta, no histórico, num relatório de execução, numa exportação), você vê <code>[secret:token]</code> no lugar. Uma pasta em que você ainda não confia abre em modo restrito: não envia nada e não executa git. É isso que permite abrir uma pipeline escrita por um colega, ou baixada da internet, sem que ela mande o seu token para outro lugar às escondidas. O que isso não cobre está dito sem rodeios em <a href="security.html#limits">os limites</a>. → <a href="security.html">Segurança e consentimento</a>, <a href="environments.html">Ambientes e segredos</a></p>
+<p>O valor de um segredo nunca entra nos arquivos que o Ultraman escreve, e o seu agente nunca o vê. Um segredo, escrito <code>{{secrets.token}}</code>, fica num cofre criptografado no seu computador, nunca no repositório. Na primeira vez que uma request for enviá-lo a um servidor que você não aprovou para ele, o Ultraman pergunta; o mesmo vale para um arquivo de fora da pasta <code>ultraman/files/</code> do projeto. Onde o valor de um segredo apareceria (numa resposta, no histórico, num relatório de execução, numa exportação), você vê <code>[secret:token]</code> no lugar. Uma pasta em que você ainda não confia abre em modo restrito: não envia nada e não executa git. É isso que permite abrir uma pipeline escrita por um colega, ou baixada da internet, sem que ela mande o seu token para outro lugar às escondidas. O que isso não cobre está dito sem rodeios em <a href="security.html#limits">os limites</a>. → <a href="security.html">Segurança e consentimento</a>, <a href="environments.html">Ambientes e segredos</a></p>
 <h2 id="team">Uma equipe que compartilha pelo git <a class="self" href="#team" aria-label="Uma equipe que compartilha pelo git">#</a></h2>
 <p>A sua equipe compartilha testes do mesmo jeito que compartilha código, sem conta nem servidor no meio: pipelines, coleções, ambientes, testes de carga e os arquivos que as requests enviam são todos arquivos dentro de <code>ultraman/</code>. <strong>Sincronizar</strong> faz commit e push só deles e mostra os conflitos lado a lado. Os segredos, os valores desta máquina e o seu histórico ficam no seu computador. → <a href="team.html">Trabalho em equipe</a></p>
 <h2 id="ci">Os mesmos testes no CI <a class="self" href="#ci" aria-label="Os mesmos testes no CI">#</a></h2>
@@ -104,7 +106,7 @@
 <tr><td>DevOps ou SRE</td><td>Como rodo no CI e faço o build falhar?</td><td><a href="ci.html">CI</a>, <a href="ci.html#allow">Liberar segredos no CI</a>, <a href="ci.html#load-in-ci">Carga no CI</a>, <a href="cli.html">O terminal</a></td></tr>
 <tr><td>Especialista em performance</td><td>Ele substitui a minha ferramenta de carga?</td><td><a href="load.html">Carga</a>, <a href="load.html#report">O relatório</a>, <a href="why.html#not-for">Onde outra ferramenta se sai melhor</a></td></tr>
 <tr><td>Tech lead</td><td>Como a minha equipe compartilha e revisa testes?</td><td><a href="why.html">Por que o Ultraman</a>, <a href="team.html">Trabalho em equipe</a>, <a href="team.html#reviews">Em pull requests</a></td></tr>
-<tr><td>Segurança</td><td>Posso confiar nossas credenciais a ele?</td><td><a href="security.html#promise">A promessa</a>, <a href="security.html#leaves-your-machine">O que sai da sua máquina</a>, <a href="security.html#agents">Agentes</a>, <a href="security.html#limits">Limites</a></td></tr>
+<tr><td>Segurança</td><td>Posso confiar nossas credenciais a ele?</td><td><a href="security.html#promise">A promessa</a>, <a href="security.html#leaves-your-machine">O que sai da sua máquina</a>, <a href="security.html#agents">Agentes</a>, <a href="security.html#limits">Limites</a>, <a href="security-history.html">Histórico de segurança</a></td></tr>
 <tr><td>Vem do Postman, JMeter ou Artillery</td><td>Que nome tem aqui aquilo que eu conheço da minha ferramenta?</td><td><a href="coming-from.html">Se você vem de outra ferramenta</a>, <a href="importing.html">Importar</a></td></tr>
 </tbody>
 </table></div>
@@ -112,6 +114,6 @@
 <nav class="pager"><span></span><a rel="next" href="why.html"><small>Seguinte</small><span>Por que o Ultraman</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

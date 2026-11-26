@@ -73,11 +73,20 @@ code { font-family: var(--mono); font-size: .88em; }
 }
 
 .intro { padding: clamp(32px, 5vw, 64px) var(--gutter) 0 var(--side); max-width: calc(46rem + var(--gutter) + var(--side)); }
-.lede { font-size: clamp(19px, 2.1vw, 23px); line-height: 1.45; margin: 0 0 36px; max-width: 38ch; }
+/* The one sentence: the display face of the headings, a step smaller so it fits the words' column. */
+.claim { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-size: clamp(26px, 4.2vw, 36px); line-height: 1.15; margin: 0 0 16px; max-width: 22ch; text-wrap: balance; }
+.lede { font-size: clamp(17px, 1.6vw, 19px); line-height: 1.45; margin: 0 0 20px; max-width: 42ch; }
+/* The proofs come after the install box, so a phone sees the download without scrolling past them. */
+.proofs { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 2px; }
+.proofs a { color: var(--on-acc); font-weight: 600; display: inline-flex; align-items: center; min-height: 44px; }
 /* Wide screens: the words and the command side by side, on the same columns as the sections below. */
 @media (min-width: 1200px) {
   .intro { display: grid; grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); gap: 0 clamp(48px, 5vw, 88px); align-items: start; max-width: none; padding-right: var(--side); }
-  .lede { margin: 0; }
+  /* Wide: the words and the proofs on the left, the install box on the right. */
+  .claim { font-size: clamp(32px, 2.6vw, 36px); }
+  .words { grid-column: 1; grid-row: 1; }
+  .install { grid-column: 2; grid-row: 1 / span 2; }
+  .proofs { grid-column: 1; grid-row: 2; }
 }
 
 .oses { display: flex; gap: 24px; margin-bottom: 4px; }
@@ -88,17 +97,27 @@ code { font-family: var(--mono); font-size: .88em; }
 /* Without JS the three commands show one under the other, and the tabs aren't there. */
 .oses { display: none; }
 .js .oses { display: flex; }
-.cmd { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; background: var(--deep); border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 12px; }
+.cmd { background: var(--deep); border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 12px; }
 .js .cmd { display: none; }
-.js .install[data-os="mac"] .cmd[data-os="mac"], .js .install[data-os="linux"] .cmd[data-os="linux"], .js .install[data-os="windows"] .cmd[data-os="windows"] { display: grid; }
-.cmd .where { grid-column: 1 / -1; margin: 0; font-size: 14px; color: var(--on-acc-mut); }
-/* One line, as it gets pasted; it scrolls if the screen is narrower. */
-.cmd code { font-size: clamp(13px, 1.5vw, 15px); color: var(--on-acc); white-space: nowrap; overflow-x: auto; min-width: 0; padding-bottom: 4px; scrollbar-width: thin; scrollbar-color: var(--on-acc-mut) transparent; }
-@media (max-width: 560px) { .cmd { grid-template-columns: minmax(0, 1fr); } .copy { justify-self: start; } }
-/* The window's button: --ctl-h tall with no vertical padding, 600 13px/1, --r-sm; hover and press are colours and a 1 px move, never opacity. */
-.copy { font: 600 .8125rem/1 var(--font); color: var(--acc); background: var(--on-acc); border: 0; border-radius: var(--r-sm); height: var(--ctl-h); padding: 0 var(--s3); cursor: pointer; min-width: 76px; transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
-.copy:hover { background: var(--on-acc-mut); }
-.copy:active { transform: translateY(1px); }
+.js .install[data-os="mac"] .cmd[data-os="mac"], .js .install[data-os="linux"] .cmd[data-os="linux"], .js .install[data-os="windows"] .cmd[data-os="windows"] { display: block; }
+/* The installer first, as the window's button: --ctl-h tall with no vertical padding, 600 13px/1, --r-sm; hover and
+   press are colours and a 1 px move, never opacity. */
+.get { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); margin: 0; font-size: 14px; color: var(--on-acc-mut); }
+.get a { color: var(--on-acc); }
+.get .dl { display: inline-flex; align-items: center; text-decoration: none; font: 600 .8125rem/1 var(--font); color: var(--acc); background: var(--on-acc); border-radius: var(--r-sm); height: var(--ctl-h); padding: 0 var(--s3); transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+.get .dl:hover { background: var(--on-acc-mut); }
+.get .dl:active { transform: translateY(1px); }
+.say { margin: 0 0 var(--s2); font-size: 14px; color: var(--on-acc-mut); }
+.say code { color: var(--on-acc); }
+.say.note { margin: var(--s2) 0 var(--s3); }
+/* Then the one line, in a code well with the terminal's colours; it scrolls sideways if the screen is narrower. */
+.ln { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s2); background: var(--term); border-radius: var(--r-sm); padding: var(--s1) var(--s1) var(--s1) var(--s3); }
+.ln code { font-size: 14px; color: var(--term-txt); white-space: nowrap; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--term-mut) transparent; }
+.copy { display: inline-grid; place-items: center; width: var(--ctl-h); height: var(--ctl-h); padding: 0; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--term-mut); cursor: pointer; transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease); }
+.copy:hover, .copy:focus-visible { color: var(--term-txt); background: var(--deep); }
+.copy svg { fill: none; stroke: currentColor; stroke-width: 2; }
+.read { margin: var(--s2) 0 0; font-size: 14px; }
+.read a { color: var(--on-acc); }
 .fine { font-size: 15px; color: var(--on-acc); margin: 18px 0 0; }
 .fine code, .fine a { color: var(--on-acc); }
 
@@ -106,6 +125,10 @@ code { font-family: var(--mono); font-size: .88em; }
 main { padding: 0 var(--side); }
 section { padding: clamp(48px, 6vw, 80px) 0 0; }
 h2 { font-family: var(--display); font-stretch: 112%; font-weight: 700; font-size: clamp(27px, 3.4vw, 40px); line-height: 1.1; letter-spacing: .01em; margin: 0 0 16px; max-width: 26ch; text-wrap: balance; }
+/* A text page (legal, privacy): one readable column at any width (--side grows past 80rem and would squeeze it), and
+   its h1 is the title, so its sections take the small heading size. */
+.page { max-width: 44rem; margin: 0 auto; padding: 48px 24px 0; }
+.page h2 { font-size: clamp(21px, 2.2vw, 25px); margin-top: 32px; }
 .copytext { max-width: 40rem; margin-bottom: 32px; }
 .copytext p { margin: 0; color: var(--mut); }
 .copytext code { color: var(--txt); }
@@ -226,8 +249,14 @@ pre code { font-size: inherit; }
 @media (max-width: 600px) {
   :root { --mid: calc((100vw - 2 * var(--gutter)) / 7.6); }
   .oses button { height: 44px; }
-  .copy { height: 44px; }
+  .copy { width: 44px; height: 44px; }
+  .get .dl { height: 44px; }
   .yaml, .snippet, .narrated { padding: 16px; }
+}
+/* A finger on any screen size (a tablet too): the install box's targets at 44 px. */
+@media (pointer: coarse) {
+  .oses button, .get .dl { height: 44px; }
+  .copy { width: 44px; height: 44px; }
 }
 
 .small { display: grid; gap: 40px; padding-bottom: 24px; }

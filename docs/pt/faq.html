@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/faq.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Ir para o conteúdo</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html" aria-current="page">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agentes (MCP)</a></li>
 <li><a href="coming-from.html">Vindo de outra ferramenta</a></li>
 <li><a href="faq.html" aria-current="page">Perguntas</a></li>
+<li><a href="security-history.html">Histórico de segurança</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -94,9 +96,9 @@
 <h3 id="graphql">Ele faz GraphQL? <a class="self" href="#graphql" aria-label="Ele faz GraphQL?">#</a></h3>
 <p>Sim: uma request pode levar um body GraphQL, com autocompletar a partir do schema da API (carregado do servidor ou salvo no projeto), e uma resposta com <code>errors</code> faz o passo falhar mesmo com status 200, inclusive sob carga. As subscriptions funcionam sobre <code>graphql-transport-ws</code>, na área de Requests e como passos de pipeline. Ainda não: GraphQL sobre SSE, GET e persisted queries, batching e upload de arquivos. Veja <a href="requests.html#graphql">GraphQL</a>.</p>
 <h3 id="auth">Quais tipos de autenticação? <a class="self" href="#auth" aria-label="Quais tipos de autenticação?">#</a></h3>
-<p>Bearer token, basic auth e API key (num header ou na query string), definidos numa request, numa coleção ou numa pipeline. <code>ca</code> faz confiar na autoridade certificadora do seu próprio servidor. O login OAuth 2 existe para servidores MCP (veja <a href="requests.html#oauth2">Requests</a>). Não há certificados de cliente (mTLS), AWS SigV4 nem NTLM. Para uma API que emite tokens, um passo de login, um extract do token e uma auth bearer que o use resolvem o caso comum. Veja <a href="pipelines.html#steps">Pipelines</a>.</p>
+<p>Bearer token, basic auth e API key (num header ou na query string), definidos numa request, numa coleção ou numa pipeline. <code>ca</code> faz confiar na autoridade certificadora do seu próprio servidor. O OAuth 2 existe em dois fluxos: o login no navegador (um servidor MCP que segue o padrão não pede configuração) e client credentials para CI e serviços (veja <a href="requests.html#oauth2">Requests</a>). Não há certificados de cliente (mTLS), AWS SigV4 nem NTLM. Para uma API que emite tokens, um passo de login, um extract do token e uma auth bearer que o use resolvem o caso comum. Veja <a href="pipelines.html#steps">Pipelines</a>.</p>
 <h3 id="import">Dá para trazer o que eu já tenho? <a class="self" href="#import" aria-label="Dá para trazer o que eu já tenho?">#</a></h3>
-<p>Sim: coleções e ambientes do Postman, documentos OpenAPI 3, planos <code>.jmx</code> do JMeter, scripts do Artillery e tráfego gravado no navegador como arquivo HAR. Os segredos de um ambiente do Postman vão para o cofre. O que não dá para traduzir aparece listado, não se perde, e uma importação nunca envia uma request nem executa um script. Veja <a href="importing.html">Importar</a>.</p>
+<p>Sim: coleções e ambientes do Postman, exportações do Insomnia, coleções do Bruno, documentos OpenAPI 3, planos <code>.jmx</code> do JMeter, scripts do Artillery e tráfego gravado no navegador como arquivo HAR. Os segredos de um ambiente do Postman vão para o cofre. O que não dá para traduzir aparece listado, não se perde, e uma importação nunca envia uma request nem executa um script. Veja <a href="importing.html">Importar</a>.</p>
 <h3 id="requirements">Preciso ter Node, Java ou alguma outra coisa instalada? <a class="self" href="#requirements" aria-label="Preciso ter Node, Java ou alguma outra coisa instalada?">#</a></h3>
 <p>Não. O instalador traz tudo, inclusive o Node, para a sua pasta de usuário, sem precisar de permissão de administrador. Veja <a href="getting-started.html#install">Instalar</a>.</p>
 <h3 id="command-only">Dá para usar sem o app desktop? <a class="self" href="#command-only" aria-label="Dá para usar sem o app desktop?">#</a></h3>
@@ -105,7 +107,7 @@
 <h3 id="permissions">Quem pode ver e alterar os nossos testes? <a class="self" href="#permissions" aria-label="Quem pode ver e alterar os nossos testes?">#</a></h3>
 <p>Quem pode ler ou escrever no seu repositório git: o Ultraman não tem contas, papéis nem workspaces próprios. As mudanças nos testes chegam à equipe por <strong>Sincronizar</strong> e são revisadas como pull requests. Os segredos nunca são sincronizados: cada pessoa guarda os seus no próprio cofre. Veja <a href="team.html">Trabalho em equipe</a>.</p>
 <h3 id="conflicts">O que acontece quando duas pessoas alteram a mesma pipeline? <a class="self" href="#conflicts" aria-label="O que acontece quando duas pessoas alteram a mesma pipeline?">#</a></h3>
-<p><strong>Sincronizar</strong> mostra as duas versões lado a lado, como passos ou como YAML, e você escolhe <strong>Ficar com a minha</strong>, <strong>Usar a do remoto</strong> ou <strong>Salvar a minha como cópia</strong>. Esc cancela sem mudar nada. Veja <a href="team.html#conflicts">Conflitos</a>.</p>
+<p><strong>Sincronizar</strong> mostra as duas versões lado a lado, como passos ou como YAML, e você escolhe <strong>Ficar com a minha</strong>, <strong>Usar a do remoto</strong> ou <strong>Ficar com as duas</strong>. Esc cancela sem mudar nada, e a versão que ficou de fora continua no histórico do arquivo. Veja <a href="team.html#conflicts">Conflitos</a>.</p>
 <h3 id="ci">Funciona no CI? <a class="self" href="#ci" aria-label="Funciona no CI?">#</a></h3>
 <p>Sim. <code>ultraman run</code> executa pipelines, coleções ou testes de carga, gera um relatório JUnit e sai com 0 (passou), 1 (um check ou limiar falhou) ou 2 (não deu para executar). No GitHub, a action <code>ultraman-app/run-action@v1</code> instala e executa; em outros sistemas, instale só a CLI. O runner não tem cofre: os segredos vêm de variáveis de ambiente <code>ULTRAMAN_SECRET_&lt;NAME&gt;</code>. Veja <a href="ci.html">CI</a>.</p>
 <h2 id="load-questions">Carga <a class="self" href="#load-questions" aria-label="Carga">#</a></h2>
@@ -113,9 +115,9 @@
 <p>Não. Uma carga é executada num só computador, numa thread por padrão e em até 8 com <code>--workers</code>. Se você precisa gerar carga a partir de muitas máquinas ou da nuvem, escolha uma ferramenta feita para isso (veja <a href="why.html#not-for">Quando escolher outra coisa</a>).</p>
 <h3 id="scale">Quanta carga ele consegue gerar? <a class="self" href="#scale" aria-label="Quanta carga ele consegue gerar?">#</a></h3>
 <p>Tanta quanto o seu computador conseguir enviar: depende da máquina, da rede e do peso de cada request. A faixa <strong>Este computador</strong> acompanha a sua máquina durante a execução e, quando ela foi o gargalo, o veredito diz <code>limited</code> em vez de culpar a API. Veja <a href="load.html#workers">Mais de uma thread</a>.</p>
-<nav class="pager"><a rel="prev" href="coming-from.html"><small>Anterior</small><span>Vindo de outra ferramenta</span></a><a rel="next" href="../en/reference.html"><small>Seguinte</small><span>Format reference (YAML)</span></a></nav>
+<nav class="pager"><a rel="prev" href="coming-from.html"><small>Anterior</small><span>Vindo de outra ferramenta</span></a><a rel="next" href="security-history.html"><small>Seguinte</small><span>Histórico de segurança</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">Todas as versões</a></footer>
 </body>
 </html>

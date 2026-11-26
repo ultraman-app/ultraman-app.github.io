@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/team.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -77,7 +79,7 @@
 <p>If the project is in a git repo with a remote, the top bar says how many files are left to sync (&quot;2 changes not synced&quot;) and offers <strong>Sync</strong>. Saving (Ctrl+S) only writes to your disk; nothing reaches the remote until you sync.</p>
 <p>Sync touches six folders, and only those: <code>ultraman/pipelines/</code>, <code>ultraman/blocks/</code>, <code>ultraman/envs/</code>, <code>ultraman/requests/</code> (the collections), <code>ultraman/load-tests/</code> and <code>ultraman/files/</code> (the files requests send). It commits them (the panel lists the files and a message you can edit), fetches the remote&#39;s changes, merges them, pushes and reloads. The rest of your repo, your other uncommitted changes and what you have staged are left alone. It uses your system&#39;s git and your own credentials; the app never asks for a password.</p>
 <h2 id="conflicts">Conflicts <a class="self" href="#conflicts" aria-label="Conflicts">#</a></h2>
-<p>If a pipeline changed on your disk and on the remote, a dialog shows both versions side by side, as steps or as YAML. Choose <strong>Keep mine</strong>, <strong>Use the remote&#39;s</strong>, or <strong>Save mine as a copy</strong>. Esc cancels and changes nothing.</p>
+<p>If a pipeline changed on your disk and on the remote, a dialog shows both versions side by side, as steps or as YAML. Choose <strong>Keep mine</strong>, <strong>Use the remote&#39;s</strong>, or <strong>Keep both</strong> (yours is saved beside it as <code>&lt;name&gt;-mine</code>, for pipelines, requests, environments, load tests and copied files alike; it never writes over another file). Esc cancels and changes nothing. Whatever you choose, the version that lost stays in the <a href="team.html#history">file&#39;s history</a>.</p>
 <h2 id="errors">When sync fails <a class="self" href="#errors" aria-label="When sync fails">#</a></h2>
 <p>Sync shows the reason and what git said. The usual ones:</p>
 <div class="table-wrap" tabindex="0"><table>
@@ -92,7 +94,19 @@
 </tbody>
 </table></div>
 <h2 id="on-disk">Changed on disk <a class="self" href="#on-disk" aria-label="Changed on disk">#</a></h2>
-<p>If you <code>git pull</code> in a terminal, or change a YAML with another editor, the window notices by itself. If the pipeline you have open had unsaved changes, it says &quot;It changed on disk while you were editing it&quot; and offers <strong>Reload</strong>.</p>
+<p>If you <code>git pull</code> in a terminal, or change a YAML with another editor, the window notices by itself: it checks the files you have open when it gets the focus, when you switch tabs, before every Save and every 5 seconds. A file without unsaved changes simply shows the new version. If a request, pipeline or environment you have open had unsaved changes, it says &quot;It changed on disk while you were editing it&quot; and offers four choices:</p>
+<ul>
+<li><strong>Keep mine</strong>: your version stays; Save writes it over the disk&#39;s.</li>
+<li><strong>Take the disk&#39;s</strong>: the editor shows the file as it is now. Your unsaved version is set aside in the file&#39;s history.</li>
+<li><strong>Keep both</strong>: yours is saved as a new file beside it (<code>&lt;name&gt;-mine</code>), and the editor shows the disk&#39;s.</li>
+<li><strong>Diff</strong>: both versions side by side, with the same three choices.</li>
+</ul>
+<p>Nothing you choose loses a version: the other one stays in the <a href="team.html#history">file&#39;s history</a>.</p>
+<h2 id="drafts">Unsaved work comes back <a class="self" href="#drafts" aria-label="Unsaved work comes back">#</a></h2>
+<p>While a request, pipeline, environment or load test has unsaved changes, Ultraman keeps a draft of it on this computer. If the window closes, crashes or reloads, the tab comes back with your changes and the note &quot;Restored your unsaved changes&quot;; <strong>Discard them</strong> goes back to the file (the draft is set aside in its history). A draft goes when you save or discard. If the file changed on disk meanwhile, you get the four choices above.</p>
+<h2 id="history">A file&#39;s history <a class="self" href="#history" aria-label="A file&#39;s history">#</a></h2>
+<p>Before Ultraman writes over or deletes a file in a project folder (a Save, Sync, the agent, an import, a Restore), it keeps the version it replaces; when a file changes outside Ultraman, it keeps the last version it knew. <strong>Versions of this file…</strong> in its ⋯ menu (a request&#39;s in the tree, a pipeline&#39;s and an environment&#39;s beside Save) opens the file&#39;s versions and its git commits in one list: pick one to see it beside the file as it is now, and <strong>Restore this version</strong> writes it back byte for byte. <strong>Recently deleted…</strong> (in a collection&#39;s ⋯ menu, or beside This file in the same window) lists the files Ultraman or the disk removed, with Restore. Each file keeps up to 20 versions, for 30 days, in Ultraman&#39;s own folder on this computer (<code>~/.ultraman</code>), never in the project.</p>
+<p>If another program holds a file open (an editor, an antivirus scan), Save waits up to two seconds, then says so and offers <strong>Retry</strong>; the file stays as it was.</p>
 <h2 id="personal">What stays personal <a class="self" href="#personal" aria-label="What stays personal">#</a></h2>
 <p>Your secrets, this machine&#39;s environment values, the history, past runs and load reports are never synced. Each person sets their own secrets in their own vault.</p>
 <h2 id="trusted">Trusted folders <a class="self" href="#trusted" aria-label="Trusted folders">#</a></h2>
@@ -102,6 +116,7 @@
 <h2 id="safety">What keeps you safe <a class="self" href="#safety" aria-label="What keeps you safe">#</a></h2>
 <ul>
 <li><strong>Your team:</strong> only those six folders are committed and pushed; secrets, local values, history and reports stay on each machine (<a href="security.html#stored">what is stored</a>).</li>
+<li><strong>You:</strong> drafts and a file&#39;s past versions live in Ultraman&#39;s own folder on this computer (<code>~/.ultraman</code>), outside the project: git never sees them, a commit can&#39;t plant one, and neither the agent nor the CLI reads them.</li>
 <li><strong>You:</strong> a folder you haven&#39;t trusted sends nothing and runs no git (<a href="security.html#trusted-folders">trusted folders</a>).</li>
 <li><strong>Your team:</strong> a test change is a readable diff, so a new host or header can&#39;t slip in unseen.</li>
 <li><strong>CI:</strong> the same files run in your pipeline with their own secrets (<a href="ci.html#github-action">CI</a>).</li>
@@ -109,6 +124,6 @@
 <nav class="pager"><a rel="prev" href="ci.html"><small>Previous</small><span>CI</span></a><a rel="next" href="agents.html"><small>Next</small><span>Agents (MCP)</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

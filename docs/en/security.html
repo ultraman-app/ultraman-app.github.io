@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/security.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -183,6 +185,7 @@
 <tr><td><code>ultraman/history/</code>, <code>runs/</code>, <code>loads/</code>, <code>mcp/</code>, <code>mock/</code></td><td>history, runs, load reports, the agent&#39;s call log, the mock&#39;s choices (secrets already hidden)</td><td>no</td></tr>
 <tr><td><code>~/.ultraman/vault.json</code>, <code>secrets.enc</code></td><td>the vault, encrypted</td><td>no, outside the project</td></tr>
 <tr><td><code>~/.ultraman/trust.json</code></td><td>your trusted folders and yeses</td><td>no, outside the project</td></tr>
+<tr><td><code>~/.ultraman/projects/</code></td><td>drafts of your unsaved tabs and each project file&#39;s past versions (<a href="team.html#history">a file&#39;s history</a>)</td><td>no, outside the project</td></tr>
 <tr><td><code>~/.ultraman/serve-&lt;port&gt;.key</code>, <code>.token</code></td><td>how the CLI and the window prove themselves to the local server</td><td>no, outside the project</td></tr>
 <tr><td><code>~/.ultraman/update-check.json</code></td><td>the last update check</td><td>no, outside the project</td></tr>
 <tr><td>your system keychain</td><td>the vault&#39;s key, only with <strong>Remember on this machine</strong></td><td>no</td></tr>
@@ -200,11 +203,11 @@
 <li><strong>CI runs what the workflow says.</strong> A pull request that changes the workflow file itself is outside what Ultraman can check, and <code>yes: true</code> or <code>--yes</code> turns the questions off. Keep your secrets away from pull requests from forks (<a href="ci.html">CI</a>).</li>
 <li><strong>An agent with a shell</strong> can also run commands on its own: the approval cards cover only what goes through Ultraman.</li>
 <li><strong>The installers aren&#39;t signed by Microsoft or Apple</strong>, so your system warns the first time you open Ultraman. What is signed: updates (checked against a key built into the app) and the release checksums the install scripts verify before installing. The one-line install command runs a script fetched from Ultraman&#39;s site, so it trusts the site for that script.</li>
-<li><strong>No independent audit.</strong> Ultraman&#39;s security reviews are done by the people who build it, before each release; no outside party has audited it. If your policy needs one before you store credentials in a tool, that is the honest answer today.</li>
+<li><strong>No independent audit.</strong> Ultraman&#39;s security reviews are done by the people who build it, before each release; no outside party has audited it. If your policy needs one before you store credentials in a tool, that is the honest answer today. What the reviews found so far, in numbers: <a href="security-history.html">Security history</a>.</li>
 </ul>
 <nav class="pager"><a rel="prev" href="getting-started.html"><small>Previous</small><span>Getting started</span></a><a rel="next" href="requests.html"><small>Next</small><span>Requests</span></a></nav>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>

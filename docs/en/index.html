@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="x-default" href="https://ultraman-app.github.io/docs/en/index.html">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="../../icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../docs.css?v=1.6.1">
+<link rel="stylesheet" href="../../docs.css?v=1.6.3">
 </head>
 <body>
 <a class="skip" href="#docs-main">Skip to content</a>
@@ -45,6 +45,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav></details>
@@ -67,6 +68,7 @@
 <li><a href="agents.html">Agents (MCP)</a></li>
 <li><a href="coming-from.html">Coming from another tool</a></li>
 <li><a href="faq.html">Questions</a></li>
+<li><a href="security-history.html">Security history</a></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a></li>
 </ul>
 </nav>
@@ -74,7 +76,7 @@
 <h1>Ultraman docs</h1>
 <p>How Ultraman works, what each feature gives you and what keeps you and your team safe.</p>
 <ol class="toc">
-<li><a href="highlights.html">What Ultraman gives you</a><p>Ultraman tests HTTP APIs, GraphQL, WebSocket, SSE and MCP servers: one app on your computer for single requests, multi-step tests, load and CI, all saved as plain files in your own git repo. Ultraman never sends anything in an unsafe way without your explicit consent: a secret goes only to a host you approved, and a folder you haven&#39;t trusted sends nothing.</p></li>
+<li><a href="highlights.html">What Ultraman gives you</a><p>Ultraman tests HTTP APIs, GraphQL, WebSocket, SSE and MCP servers: one app on your computer for single requests, multi-step tests, load and CI, all saved as plain files in your own git repo. A secret&#39;s value lives in an encrypted vault, never in the files Ultraman writes, and your agent never sees it: a secret goes only to a host you approved, and a folder you haven&#39;t trusted sends nothing.</p></li>
 <li><a href="why.html">Why Ultraman</a><p>Ultraman puts API requests, test flows, load tests and CI checks in one local app, saved as plain files in your own git repo. This page says how that differs from tools you may already use, and when one of them is the better choice.</p></li>
 <li><a href="getting-started.html">Getting started</a><p>From installing Ultraman to your first request and your first pipeline, plus how it updates, why your system may warn about it, and how to remove it.</p></li>
 <li><a href="security.html">Security and consent</a><p>What Ultraman asks before it sends anything, how it keeps your secrets out of sight, and what it leaves to you: the promises you can check, for you, your team and your CI. There is no telemetry, no analytics, no crash reporting and no account.</p></li>
@@ -91,10 +93,11 @@
 <li><a href="agents.html">Agents (MCP)</a><p>An AI agent (Claude Code, or any other MCP client) can use Ultraman through ultraman mcp. It can do what you do in the window: read and write requests, pipelines and load tests, send and run them, import, start the mock server, read reports and compare them. You approve every call.</p></li>
 <li><a href="coming-from.html">Coming from another tool</a><p>Some ideas have the same name here, some have another, and a few don&#39;t exist on purpose.</p></li>
 <li><a href="faq.html">Questions</a><p>Short answers to what teams ask before they adopt Ultraman, the honest &quot;no&quot;s included. Each answer links to the page that goes deeper.</p></li>
+<li><a href="security-history.html">Security history</a><p>How Ultraman&#39;s security has been reviewed so far, in numbers: what each review looked at, what it found and what happened to it.</p></li>
 <li><a href="../en/reference.html">Format reference (YAML)</a><p>Everything lives as YAML under ultraman/ in the user&#39;s project. Unknown keys are errors: write only what&#39;s listed. Variables: {{env.x}} (the environment), {{secrets.x}} (a secret: usable, never visible), {{x}} (an input, an extract or a collection variable).</p></li>
 </ol>
 </main>
 </div>
-<footer class="foot"><span>Ultraman 1.6.1</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
+<footer class="foot"><span>Ultraman 1.6.3</span> <a href="https://github.com/ultraman-app/ultraman-app.github.io/releases" rel="noopener">All versions</a></footer>
 </body>
 </html>
